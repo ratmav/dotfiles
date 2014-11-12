@@ -1,0 +1,121 @@
+" Set encoding:
+set encoding=utf-8
+
+" Highlight current line:
+set cursorline
+
+" Code folding:
+set foldmethod=syntax
+set foldcolumn=2
+set mouse=a
+  " Open folds up to the number specified when opening a file:
+  set foldlevelstart=100
+
+" Highlight search results:
+set hlsearch
+
+" Autoindent width:
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+
+" Highlight text when a line is longer than 80 columns:
+autocmd BufEnter * set colorcolumn=79
+
+" Backspace should behave like other applications:
+set backspace=2
+
+" Use space as leader:
+let mapleader=" "
+
+" Move tabs:
+  " Move tab LEFT:
+  nnoremap <Leader>l :execute "tabmove" tabpagenr() - 2<CR>
+  " Move tab RIGHT:
+  nnoremap <Leader>r :execute "tabmove" tabpagenr()<CR>
+
+" Set font:
+set guifont=Source\ Code\ Pro\ for\ Powerline\ Light\ 11
+" This requires the 'Sauce Code Powerline Light font to be
+" installed. These fonts can be cloned from
+" https://github.com/Lokaltog/powerline-fonts. A copy of the
+" .otf files should be in stored in Dropbox along with this
+" file (vimrc.current). To install the fonts, copy the .otf
+" files to ~/.fonts, then run 'fc-cache -vf ~/.fonts'. Once
+" the fonts are installed, they set be available for the
+  " 'set guifont' option above. You should also set your terminal
+  " to use the new font.
+
+" Display line numbers:
+set nu
+
+" Set GUI window size:
+if has("gui_running")
+  set lines=35 columns=100
+endif
+
+" Always show the status line (makes vim-airline always visible):
+set laststatus=2
+
+" Whitespace management:
+  " Highlight unwanted spaces:
+  autocmd BufEnter * highlight Extrawhitespace ctermbg=red guibg=red
+  autocmd BufEnter * match ExtraWhitespace /\s\+$/
+  " Leader command to remove whitespace:
+  nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
+
+" Add blank lines and remain in Normal mode:
+nnoremap <silent><Leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
+
+" =============== PLUGINS ===============
+
+" Pathogen plugin (handles other plugins, autoindent disabled):
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+
+" Solarized (Darker colorscheme for easy reading):
+let g:solarized_termtrans=1
+let g:solarized_visibility='low'
+syntax enable
+set background=dark
+colorscheme solarized
+
+" Nerdtree plugin (Browse directory tree):
+let g:NERDTreeWinSize = 80
+nnoremap <Leader>n :NERDTreeToggle<CR>
+
+" Rainbow Parenthesis (Match parentheses, etc. by color):
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" Syntastic (Syntax checker):
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+  " Manual quick check
+  let g:syntastic_mode_map={'mode': 'passive'}
+  nnoremap <Leader>s :SyntasticCheck<CR>
+  " Use Rubocop and JSHint:
+  let g:syntastic_ruby_checkers=['mri', 'rubocop']
+  let g:syntastic_javascript_checkers=['jshint']
+
+" Tagbar (Browse CTags):
+nnoremap <Leader>t :TagbarToggle<CR>
+
+" Dragvisuals (Move blocks around in block visual (Ctrl+V) mode):
+vmap  <expr>  <S-LEFT>  DVB_Drag('left')
+vmap  <expr>  <S-RIGHT> DVB_Drag('right')
+vmap  <expr>  <S-DOWN>  DVB_Drag('down')
+vmap  <expr>  <S-UP>    DVB_Drag('up')
+vmap  <expr>  D         DVB_Duplicate()
+  " Remove any introduced trailing whitespace after moving:
+  let g:DVB_TrimWS=1
+
+" Rvm-vim (New buffers use project gemset and ruby version):
+autocmd BufEnter * Rvm
+
+" Vim-airline (Populate vim-airline font glyphs from guifont):
+  " **Note**: Vim-airline REQUIRES the vim-fugitive plugin for git info!
+let g:airline_powerline_fonts = 1
