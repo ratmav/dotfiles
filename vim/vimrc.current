@@ -107,9 +107,6 @@ nnoremap <Leader>g :GundoToggle<CR>
 " Tagbar (Browse CTags):
 nnoremap <Leader>t :TagbarToggle<CR>
 
-" Rvm-vim (New buffers use project gemset and ruby version):
-autocmd BufEnter * Rvm
-
 " Vim-airline (Populate vim-airline font glyphs from guifont):
   " **Note**: Vim-airline REQUIRES the vim-fugitive plugin for git info!
 let g:airline_powerline_fonts = 1
