@@ -91,15 +91,11 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-" Syntastic (Syntax checker):
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=1
-  " Manual quick check
-  let g:syntastic_mode_map={'mode': 'passive'}
-  nnoremap <Leader>s :SyntasticCheck<CR>
-  " Use Rubocop and JSHint:
-  let g:syntastic_ruby_checkers=['mri', 'rubocop']
-  let g:syntastic_javascript_checkers=['jshint']
+" Vim Rubocop:
+nnoremap <Leader>r :RuboCop<CR>
+
+" JSHint2:
+nnoremap <Leader>j :JSHint<CR>
 
 " Gundo (Browse Vim's 'undo' tree):
 nnoremap <Leader>g :GundoToggle<CR>
