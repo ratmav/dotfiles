@@ -30,9 +30,9 @@ let mapleader=" "
 
 " Move tabs:
   " Move tab LEFT:
-  nnoremap <Leader>l :execute "tabmove" tabpagenr() - 2<CR>
+  nnoremap <Leader>h :execute "tabmove" tabpagenr() - 2<CR>
   " Move tab RIGHT:
-  nnoremap <Leader>r :execute "tabmove" tabpagenr()<CR>
+  nnoremap <Leader>l :execute "tabmove" tabpagenr()<CR>
 
 " Set font:
 set guifont=Source\ Code\ Pro\ for\ Powerline\ Light\ 11
