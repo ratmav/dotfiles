@@ -37,14 +37,9 @@ let mapleader=" "
 " Set font:
 set guifont=Source\ Code\ Pro\ for\ Powerline\ Light\ 11
 " This requires the 'Sauce Code Powerline Light font to be
-" installed. These fonts can be cloned from
-" https://github.com/Lokaltog/powerline-fonts. A copy of the
-" .otf files should be in stored in Dropbox along with this
-" file (vimrc.current). To install the fonts, copy the .otf
-" files to ~/.fonts, then run 'fc-cache -vf ~/.fonts'. Once
-" the fonts are installed, they set be available for the
-  " 'set guifont' option above. You should also set your terminal
-  " to use the new font.
+" installed. To install the fonts systemwide, copy the .otf
+" files to ~/.fonts/font_dir, then run 'fc-cache -vf
+" ~/.fonts/font_dir'.
 
 " Display line numbers:
 set nu
