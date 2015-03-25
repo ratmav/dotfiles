@@ -1,9 +1,16 @@
+# GPG Key ID.
 export GPGKEY=68DF5757
 
+# rbenv setup.
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# nvm setup.
 export NVM_DIR="/home/ratmav/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# Make pesonal scripts available in $PATH.
 export PATH="$HOME/Scripts:$PATH"
+
+# Ansible setup from source checkout.
+source /home/ratmav/Tools/source_builds/ansible/hacking/env-setup -q
