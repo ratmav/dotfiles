@@ -41,7 +41,7 @@ let mapleader=" "
 set guifont=Source\ Code\ Pro\ for\ Powerline\ Light\ 11
 " This requires the 'Sauce Code Powerline Light font to be
 " installed. To install the fonts systemwide, copy the .otf
-" files from font subdirectory in the vim dotfiles to ~/.fonts/, 
+" files from font subdirectory in the vim dotfiles to ~/.fonts/,
 " then run 'fc-cache -vf ~/.fonts/'.
 
 " Display line numbers:
@@ -83,17 +83,15 @@ colorscheme solarized
 let g:NERDTreeWinSize = 80
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
+" Vim-airline (Populate vim-airline font glyphs from guifont):
+  " **Note**: Vim-airline REQUIRES the vim-fugitive plugin for git info!
+let g:airline_powerline_fonts = 1
+
 " Rainbow Parenthesis (Match parentheses, etc. by color):
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
-
-" Vim Rubocop:
-nnoremap <Leader>r :RuboCop<CR>
-
-" JSHint2:
-nnoremap <Leader>j :JSHint<CR>
 
 " Gundo (Browse Vim's 'undo' tree):
 nnoremap <Leader>g :GundoToggle<CR>
@@ -101,6 +99,13 @@ nnoremap <Leader>g :GundoToggle<CR>
 " Tagbar (Browse CTags):
 nnoremap <Leader>t :TagbarToggle<CR>
 
-" Vim-airline (Populate vim-airline font glyphs from guifont):
-  " **Note**: Vim-airline REQUIRES the vim-fugitive plugin for git info!
-let g:airline_powerline_fonts = 1
+" LINTERS
+
+" Syntastic:
+nnoremap <Leader>s :SyntasticCheck<CR>
+
+" Rubocop:
+nnoremap <Leader>r :RuboCop<CR>
+
+" JSHint2:
+nnoremap <Leader>j :JSHint<CR>
