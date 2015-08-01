@@ -31,6 +31,9 @@ inoremap jj <ESC>
 " Use space as leader:
 let mapleader=" "
 
+" Disable SQL Omnicomplete, which is tied to <C-c> for some reason.
+let g:omni_sql_no_default_maps = 1
+
 " Move tabs:
   " Move tab LEFT:
   nnoremap <Leader>h :execute "tabmove" tabpagenr() - 2<CR>
