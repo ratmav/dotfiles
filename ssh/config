@@ -1,0 +1,4 @@
+IdentityFile ~/.ssh/your-private_key # For per-project keys.
+
+Host domain.or.ip.address # For per-host/domain agent forwarding (deployments).
+  ForwardAgent yes
