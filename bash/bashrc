@@ -12,8 +12,11 @@ export NVM_DIR="/home/ratmav/.nvm"
 # Make pesonal scripts available in $PATH.
 export PATH="$HOME/Scripts:$PATH"
 
+# Set the path for the Ansible config file.
+export ANSIBLE_CONFIG="$HOME/ansible.cfg"
+
 # Set the path for the Ansible hosts file.
-export ANSIBLE_INVENTORY="$HOME/Tools/Ansible/ansible_hosts"
+export ANSIBLE_INVENTORY="$HOME/ansible_hosts"
 
 # Run Ansible from source.
 source /home/ratmav/Tools/source_builds/ansible/hacking/env-setup -q
