@@ -38,7 +38,7 @@ let g:omni_sql_no_default_maps = 1
   " Move tab LEFT:
   nnoremap <Leader>h :execute "tabmove" tabpagenr() - 2<CR>
   " Move tab RIGHT:
-  nnoremap <Leader>l :execute "tabmove" tabpagenr()<CR>
+  nnoremap <Leader>l :execute "tabmove" tabpagenr() + 1<CR>
 
 " Set font:
 set guifont=Source\ Code\ Pro\ for\ Powerline\ Light\ 11
@@ -73,7 +73,6 @@ nnoremap <silent><Leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
 " Pathogen plugin (handles other plugins, autoindent disabled):
 execute pathogen#infect()
 syntax on
-filetype plugin indent on
 
 " Solarized (Darker colorscheme for easy reading):
 let g:solarized_termtrans=1
