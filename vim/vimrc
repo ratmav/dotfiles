@@ -25,9 +25,6 @@ autocmd BufEnter * set colorcolumn=79
 " Backspace should behave like other applications:
 set backspace=2
 
-" Remap 'Esc' key:
-inoremap jj <ESC>
-
 " Use space as leader:
 let mapleader=" "
 
