@@ -13,8 +13,8 @@ export NVM_DIR="/home/ratmav/.nvm"
 export PATH="$HOME/Scripts:$PATH"
 
 # Run Ansible from source.
-source /home/ratmav/Tools/source_builds/ansible/hacking/env-setup -q
+source /home/ratmav/Tools/Source\ Builds/ansible/hacking/env-setup -q
 
 # Ansible config.
-export ANSIBLE_CONFIG="$HOME/ansible.cfg"
-export ANSIBLE_INVENTORY="$HOME/ansible_hosts"
+export ANSIBLE_CONFIG="$HOME/Projects/dotfiles/ansible/ansible.cfg"
+export ANSIBLE_INVENTORY="$HOME/Tools/ansible_hosts"
