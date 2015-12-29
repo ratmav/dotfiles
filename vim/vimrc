@@ -1,13 +1,15 @@
 " Set encoding:
 set encoding=utf-8
 
+" No mouse:
+set mouse-=a
+
 " Highlight current line:
 set cursorline
 
 " Code folding:
 set foldmethod=syntax
 set foldcolumn=2
-set mouse=a
   " Open folds up to the number specified when opening a file:
   set foldlevelstart=100
 
