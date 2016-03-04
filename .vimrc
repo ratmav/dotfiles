@@ -73,7 +73,6 @@ let g:NERDTreeWinSize = 80
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Vim-airline (Populate vim-airline font glyphs from guifont):
-  " **Note**: Vim-airline REQUIRES the vim-fugitive plugin for git info!
 let g:airline_powerline_fonts = 1
 
 " Rainbow Parenthesis (Match parentheses, etc. by color):
@@ -81,14 +80,3 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
-
-" LINTERS
-
-" Syntastic:
-nnoremap <Leader>s :SyntasticCheck<CR>
-
-" Rubocop:
-nnoremap <Leader>r :RuboCop<CR>
-
-" JSHint2:
-nnoremap <Leader>j :JSHint<CR>
