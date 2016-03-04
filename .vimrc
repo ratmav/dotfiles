@@ -1,3 +1,8 @@
+" Load Pathogen runtime:
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+
+syntax on
+
 " Set encoding:
 set encoding=utf-8
 
@@ -57,9 +62,7 @@ nnoremap <silent><Leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
 
 " =============== PLUGINS ===============
 
-" Pathogen plugin (handles other plugins, autoindent disabled):
 execute pathogen#infect()
-syntax on
 
 " Solarized (Darker colorscheme for easy reading):
 let g:solarized_termtrans=1
