@@ -16,18 +16,3 @@
 [submodule ".vim/bundle/rainbow_parentheses.vim"]
 	path = .vim/bundle/rainbow_parentheses.vim
 	url = https://github.com/kien/rainbow_parentheses.vim.git
-[submodule "applications/guake"]
-	path = applications/guake
-	url = https://github.com/Guake/guake.git
-[submodule "applications/keepassx"]
-	path = applications/keepassx
-	url = https://github.com/keepassx/keepassx.git
-[submodule "applications/vim"]
-	path = applications/vim
-	url = https://github.com/vim/vim.git
-[submodule "applications/tmux"]
-	path = applications/tmux
-	url = https://github.com/tmux/tmux.git
-[submodule "applications/ansible"]
-	path = applications/ansible
-	url = https://github.com/ansible/ansible.git
