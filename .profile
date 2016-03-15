@@ -21,7 +21,10 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-# Ansible
-source ~/Workspace/dotfiles/applications/ansible/hacking/env-setup -q
-export ANSIBLE_CONFIG="~/Workspace/dotfiles/.ansible.cfg"
-export ANSIBLE_INVENTORY=~/Workspace/ansible_inventory/
+# Load personal scripts and executables.
+export PATH="$PATH:$HOME/Scripts"
+
+# Start tmux if it's not already running.
+if command -v tmux>/dev/null; then
+  [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux
+fi
