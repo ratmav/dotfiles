@@ -2,12 +2,12 @@
 
 echo "copying dotfiles to home directory..."
 cp -R ./ ~/
-echo "..done\n"
+echo "..done"
 
 echo "installing fonts..."
 fc-cache -f -v
-echo "..done\n"
+echo "..done"
 
 echo "configuring global gitignore..."
 git config --global core.excludesfile '~/.gitignore'
-echo "..done\n"
+echo "..done"
