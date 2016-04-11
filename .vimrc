@@ -40,9 +40,9 @@ let g:omni_sql_no_default_maps = 1
 
 " Move tabs:
   " Move tab LEFT:
-  nnoremap <Leader>h :execute "tabmove" tabpagenr() - 2<CR>
+  nnoremap <Leader>h :execute "tabmove -1"<CR>
   " Move tab RIGHT:
-  nnoremap <Leader>l :execute "tabmove" tabpagenr() + 1<CR>
+  nnoremap <Leader>l :execute "tabmove +1"<CR>
 
 " Display line numbers:
 set nu
