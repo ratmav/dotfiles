@@ -83,3 +83,10 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+" =============== FILE TYPES ===============
+
+" Makefile
+autocmd FileType make setlocal noexpandtab
+autocmd FileType make setlocal shiftwidth=8
+autocmd FileType make setlocal softtabstop=8
