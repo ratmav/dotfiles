@@ -15,7 +15,7 @@ fc-cache -f -v >> /dev/null &>/dev/null # STFU.
 echo "..done"
 
 echo "installing scripts..."
-printf "\nexport PATH=\"\$PATH:\$HOME/Scripts\"" >> ~/.profile
+printf "\nexport PATH=\"\$PATH:\$HOME/Scripts\"" >> ~/.bashrc
 cp -R Scripts ~/
 echo "..done"
 
