@@ -1,13 +1,15 @@
 #!/bin/bash
 
-declare -a files=(".tmux.conf" ".vimrc" ".gitignore_global" "Scripts")
+declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" "Scripts")
 
 check_homebrew() {
+
   echo "...checking homebrew install"
   if type brew >/dev/null 2>&1; then
     echo "......homebrew already installed"
   else
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
+    /usr/bin/ruby -e "$(curl -fsSL $URL)"
     echo "......installed homebrew"
   fi
 }
@@ -33,8 +35,8 @@ copy_fonts() {
 
 check_symlinks() {
   echo "checking symlinks..."
-  for file in "${files[@]}"; do
-    verify_symlink "$file"
+  for FILE in "${FILES[@]}"; do
+    verify_symlink "$FILE"
   done
 }
 
