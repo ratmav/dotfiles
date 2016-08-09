@@ -1,5 +1,5 @@
 " Load Pathogen runtime:
-runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
 
 syntax on
 
@@ -8,6 +8,10 @@ set encoding=utf-8
 
 " No mouse:
 set mouse-=a
+
+" No unused backups:
+set nobackup
+set nowritebackup
 
 " Highlight current line:
 set cursorline

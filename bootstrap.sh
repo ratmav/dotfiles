@@ -1,25 +1,71 @@
 #!/bin/bash
 
-echo "copying tmux config..."
-cp .tmux.conf ~/
-echo "..done"
+declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" "Scripts")
 
-echo "copying vim config and plugins..."
-cp .vimrc ~/
-cp -R .vim ~/
-echo "..done"
+check_homebrew() {
 
-echo "installing fonts..."
-cp -R .fonts ~/
-fc-cache -f -v >> /dev/null &>/dev/null # STFU.
-echo "..done"
+  echo "...checking homebrew install"
+  if type brew >/dev/null 2>&1; then
+    echo "......homebrew already installed"
+  else
+    URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
+    /usr/bin/ruby -e "$(curl -fsSL $URL)"
+    echo "......installed homebrew"
+  fi
+}
 
-echo "installing scripts..."
-printf "\nexport PATH=\"\$PATH:\$HOME/Scripts\"" >> ~/.bashrc
-cp -R Scripts ~/
-echo "..done"
+configure_gitignore() {
+  echo "configuring global gitignore..."
+  git config --global core.excludesfile "$HOME/.gitignore_global"
+  echo "...configured"
+}
 
-echo "configuring global gitignore..."
-cp .gitignore_global ~/
-git config --global core.excludesfile '~/.gitignore_global'
-echo "..done"
+# NOTE: Can't link because nesting is too deep via Git submodules.
+copy_vim_submodules() {
+  echo "copying vim submodules..."
+  cp -R vim_submodules ~/.vim
+  echo "...copied submodules"
+}
+
+copy_fonts() {
+  echo "copying fonts..."
+  cp fonts/* ~/Library/Fonts/
+  echo "...copied fonts"
+}
+
+check_symlinks() {
+  echo "checking symlinks..."
+  for FILE in "${FILES[@]}"; do
+    verify_symlink "$FILE"
+  done
+}
+
+verify_symlink() {
+  if [[ -h ~/$1 ]]; then
+    echo "...link present for $1"
+  else
+    ln -s "$PWD/$1" "$HOME/$1"
+    echo "...linked $1"
+  fi
+}
+
+overwrite_bash_profile() {
+  echo "Overwriting bash profile..."
+  rm -f ~/.bash_profile
+  echo "...removed old bash profile"
+  verify_symlink ".bash_profile"
+}
+
+main() {
+  overwrite_bash_profile
+  check_symlinks
+  copy_vim_submodules
+  copy_fonts
+  configure_gitignore
+  if [[ $(uname) == "Darwin" ]]; then
+    echo "Running Mac-specific checks..."
+    check_homebrew
+  fi
+}
+
+main "$@"
