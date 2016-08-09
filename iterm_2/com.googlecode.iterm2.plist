@@ -31,7 +31,7 @@
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSFontPanelAttributes</key>
-	<string>1, 9</string>
+	<string>1, 0</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/Repositories/dotfiles/iterm_2</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
@@ -66,12 +66,14 @@
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
+	<key>NSWindow Frame NSFontPanel</key>
+	<string>769 33 445 77 0 0 1280 777 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>269 342 606 456 0 0 1280 800 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>332 306 620 392 0 0 1280 800 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>269 100 796 473 0 0 1280 800 </string>
+	<string>206 56 796 473 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>0 0 1280 800 0 0 1280 777 </string>
 	<key>New Bookmarks</key>
@@ -644,7 +646,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>AndaleMono 14</string>
+			<string>SauceCodePowerline-Light 14</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -698,7 +700,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<true/>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -775,7 +777,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-08-07T14:35:48Z</date>
+	<date>2016-08-09T04:48:51Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
