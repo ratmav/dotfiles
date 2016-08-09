@@ -14,6 +14,12 @@ check_homebrew() {
   fi
 }
 
+configure_git_editor() {
+  echo "configuring git editor..."
+  git config --global core.editor $(which vim)
+  echo "...configured"
+}
+
 configure_gitignore() {
   echo "configuring global gitignore..."
   git config --global core.excludesfile "$HOME/.gitignore_global"
@@ -62,6 +68,7 @@ main() {
   copy_vim_submodules
   copy_fonts
   configure_gitignore
+  configure_git_editor
   if [[ $(uname) == "Darwin" ]]; then
     echo "Running Mac-specific checks..."
     check_homebrew
