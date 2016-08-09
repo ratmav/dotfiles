@@ -1,38 +1,64 @@
 #!/bin/bash
 
-# echo "installing fonts..."
-# fc-cache -f -v >> /dev/null &>/dev/null # STFU.
-# 
-# echo "installing scripts..."
-# printf "\nexport PATH=\"\$PATH:\$HOME/Scripts\"" >> ~/.bashrc
-# 
-# echo "configuring global gitignore..."
-# git config --global core.excludesfile '~/.gitignore_global'
-
 declare -a files=(".tmux.conf" ".vimrc" ".vim" ".gitignore_global" "Scripts")
+declare -a fonts=(./fonts/*.otf)
 
-symlink() {
-  echo "COMMAND: ln -s $1 ~/$1"
+check_homebrew() {
+  echo "...checking homebrew install"
+  if type brew >/dev/null 2>&1; then
+    echo "......homebrew already installed"
+  else
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    echo "......installed homebrew"
+  fi
 }
 
-link_files() {
-  echo "...linking..." 
-  for file in "${files[@]}"; do
-    symlink "$file"
-    echo "....linked $file.."
+configure_gitignore() {
+  echo "configuring global gitignore..."
+  git config --global core.excludesfile '~/.gitignore_global'
+  echo "...configured"
+}
+
+copy_fonts() {
+  echo "copying fonts..."
+  for font in "${fonts[@]}"; do
+    echo "COMMAND: cp $1 ~/Library/Fonts/"
+    echo "...copied $1 font"
   done
 }
 
-install_fonts() {
-  cp fonts/* ~/Library/Fonts/
+check_symlinks() {
+  echo "checking symlinks..." 
+  for file in "${files[@]}"; do
+    verify_symlink "$file"
+  done
 }
 
-link_files
-# WIP:  Install fonts.
-# TODO: Append to .bashrc for script path.
-# TODO: Configure global gitignore.
-# TODO: Remove NERDTree, use netrw.
-# TODO: Make this idempotent - i.e, check for links first, check for font files first, check for script path in .bashrc.
-# TODO: Swap .bashrc for .bash_profile?
-# TODO: Install homebrew if it isn't present.
-# FIND: Dump and save iTerm preferences?
+verify_symlink() {
+  if [[ -h ~/$1 ]]; then
+    echo "...link present for $1"
+  else
+    ln -s $PWD/$1 ~/$1
+    echo "...linked $1"
+  fi
+}
+
+overwrite_bash_profile() {
+  echo "Overwriting bash profile..."
+  rm -f ~/.bash_profile
+  echo "...removed old bash profile"
+  verify_symlink ".bash_profile"
+}
+
+main() {
+  overwrite_bash_profile
+  check_symlinks
+  copy_fonts
+  configure_gitignore
+  if [[ `uname` == "Darwin" ]]; then
+    echo "Running Mac-specific checks..."
+    check_homebrew
+  fi
+}
+
+main "$@"
