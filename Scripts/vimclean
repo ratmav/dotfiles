@@ -1,0 +1,20 @@
+#!/bin/bash
+
+clean() {
+  find ./ -type f -name "\.*sw[klmnop]" -delete
+}
+
+check_vim() {
+  if pgrep "vim" > /dev/null; then
+    echo "Vim still running; close before attemping to clean!"
+  else
+    clean
+    echo "Clean!"
+  fi
+}
+
+main() {
+  check_vim
+}
+
+main "$@"
