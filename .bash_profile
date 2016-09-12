@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Start tmux if present and not already running.
+if command -v tmux>/dev/null; then
+  [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux
+fi
+
 # Put the current working directory in the prompt.
 export PS1="\u@\h\w$ "
 
