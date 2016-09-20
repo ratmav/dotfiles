@@ -3,8 +3,7 @@
 declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" "Scripts")
 
 check_homebrew() {
-
-  echo "...checking homebrew install"
+  echo "...checking homebrew install..."
   if type brew >/dev/null 2>&1; then
     echo "......homebrew already installed"
   else
@@ -33,10 +32,17 @@ copy_vim_submodules() {
   echo "...copied submodules"
 }
 
-copy_fonts() {
-  echo "copying fonts..."
+copy_fonts_mac() {
+  echo "...copying fonts on mac..."
   cp fonts/* ~/Library/Fonts/
-  echo "...copied fonts"
+  echo "......copied fonts"
+}
+
+copy_fonts_linux() {
+  echo "...copying fonts on linux..."
+  cp -R fonts ~/.fonts
+  fc-cache -f -v
+  echo "......copied fonts"
 }
 
 check_symlinks() {
@@ -62,17 +68,24 @@ overwrite_bash_profile() {
   verify_symlink ".bash_profile"
 }
 
+system_specific_tasks() {
+  if [[ $(uname) == "Darwin" ]]; then
+    echo "Running Mac-specific checks..."
+    check_homebrew
+    copy_fonts_mac
+  elif [[ $(uname) == "Linux" ]]; then
+    echo "Running Linux-specific checks..."
+    copy_fonts_linux
+  fi
+}
+
 main() {
   overwrite_bash_profile
   check_symlinks
   copy_vim_submodules
-  copy_fonts
   configure_gitignore
   configure_git_editor
-  if [[ $(uname) == "Darwin" ]]; then
-    echo "Running Mac-specific checks..."
-    check_homebrew
-  fi
+  system_specific_tasks
 }
 
 main "$@"
