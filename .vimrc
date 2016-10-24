@@ -64,6 +64,12 @@ set laststatus=2
 " Add blank lines and remain in Normal mode:
 nnoremap <silent><Leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
 
+" Open file in new tab w/ tab autocompletion:
+nnoremap <Leader>f :tabe<Space>
+
+" Access Git via Fugitive:
+nnoremap <Leader>g :Git<Space>
+
 " =============== PLUGINS ===============
 
 execute pathogen#infect()
