@@ -94,6 +94,11 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+" Vim-livedown (Browser-based WYSIWYG editor):
+nnoremap <Leader>lp :LivedownPreview
+nnoremap <Leader>lk :LivedownKill
+nnoremap <Leader>lt :LivedownToggle
+
 " =============== FILE TYPES ===============
 
 " Makefile

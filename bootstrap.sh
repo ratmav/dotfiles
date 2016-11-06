@@ -2,9 +2,9 @@
 
 declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" "Scripts")
 
-check_homebrew() {
+install_homebrew() {
   echo "...checking homebrew install..."
-  if type brew >/dev/null 2>&1; then
+  if type brew > /dev/null 2>&1; then
     echo "......homebrew already installed"
   else
     URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
@@ -28,7 +28,7 @@ configure_gitignore() {
 # NOTE: Can't link because nesting is too deep via Git submodules.
 copy_vim_submodules() {
   echo "copying vim submodules..."
-  cp -r vim_submodules ~/.vim
+  cp -r vim_submodules/* ~/.vim
   echo "...copied submodules"
 }
 
@@ -71,11 +71,33 @@ overwrite_bash_profile() {
 system_specific_tasks() {
   if [[ $(uname) == "Darwin" ]]; then
     echo "Running Mac-specific checks..."
-    check_homebrew
+    install_homebrew
     copy_fonts_mac
   elif [[ $(uname) == "Linux" ]]; then
     echo "Running Linux-specific checks..."
     copy_fonts_linux
+  fi
+}
+
+install_nvm() {
+  echo "...checking nvm install..."
+  if [ -f "$HOME/.nvm/nvm.sh" ]; then
+    echo "......nvm already installed"
+  else
+    URL="https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh"
+    curl -o- $URL | bash
+    echo "......installed nvm"
+  fi
+}
+
+install_node() {
+  install_nvm
+  echo "...checking node install..."
+  if type node > /dev/null 2>&1; then
+    echo "......node already installed"
+  else
+    nvm install stable
+    echo "......installed node"
   fi
 }
 
@@ -86,6 +108,7 @@ main() {
   configure_gitignore
   configure_git_editor
   system_specific_tasks
+  install_node
 }
 
 main "$@"
