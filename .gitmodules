@@ -13,3 +13,6 @@
 [submodule ".vim/bundle/rainbow_parentheses.vim"]
 	path = vim_submodules/bundle/rainbow_parentheses.vim
 	url = https://github.com/kien/rainbow_parentheses.vim.git
+[submodule "vim_submodules/bundle/vim-livedown"]
+	path = vim_submodules/bundle/vim-livedown
+	url = git://github.com/shime/vim-livedown.git

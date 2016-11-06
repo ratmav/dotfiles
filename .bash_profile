@@ -27,3 +27,7 @@ export PATH="$PATH:$HOME/Scripts/"
 if [ -f ~/.local_bash_profile ]; then
   source ~/.local_bash_profile
 fi
+
+# NVM (https://github.com/creationix/nvm#installation).
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
