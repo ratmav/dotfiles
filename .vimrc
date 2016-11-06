@@ -95,9 +95,7 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 " Vim-livedown (Browser-based WYSIWYG editor):
-nnoremap <Leader>mp :LivedownPreview
-nnoremap <Leader>mk :LivedownKill
-nnoremap <Leader>mt :LivedownToggle
+nnoremap <Leader>m :LivedownToggle<CR>
 
 " =============== FILE TYPES ===============
 
