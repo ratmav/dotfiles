@@ -10,7 +10,7 @@ personal configuration and documentation collection project for general purpose 
 ```bash
 $ git clone --recursive https://github.com/ratmav/dotfiles.git
 $ cp ~/.bash_profile ~/.local_bash_profile # To save system-specific configs.
-$ cd dotfiles && ./bootstrap.sh
+$ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 ```
 
 ## Update
@@ -18,5 +18,5 @@ $ cd dotfiles && ./bootstrap.sh
 ```bash
 $ cd dotfiles
 $ git pull --recurse-submodules
-$ ./bootstrap.sh
+$ ./bootstrap.sh && source ~/.bash_profile
 ```
