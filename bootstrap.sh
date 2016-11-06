@@ -96,7 +96,7 @@ install_node() {
   if type node > /dev/null 2>&1; then
     echo "......node already installed"
   else
-    nvm install stable
+    source $HOME/.bash_profile && nvm install stable
     echo "......installed node"
   fi
 }
