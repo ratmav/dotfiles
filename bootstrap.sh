@@ -28,7 +28,9 @@ configure_gitignore() {
 # NOTE: Can't link because nesting is too deep via Git submodules.
 copy_vim_submodules() {
   echo "copying vim submodules..."
-  cp -r vim_submodules/* ~/.vim
+  rm -rf ~/.vim
+  mkdir ~/.vim
+  cp -r vim_submodules/* ~/.vim/
   echo "...copied submodules"
 }
 

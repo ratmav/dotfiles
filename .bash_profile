@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Start tmux if present and not already running.
+# Start tmux if installed, screen term not in use,
+# tmux not already running, and interactive shell.
 if command -v tmux>/dev/null; then
-  [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux
+  [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && [[ $- == *i* ]] && exec tmux
 fi
 
 # Put the current working directory in the prompt.
