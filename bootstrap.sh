@@ -101,6 +101,12 @@ install_node() {
   fi
 }
 
+install_livedown() {
+  echo "...(re)installing livedown..."
+  source $HOME/.bash_profile && npm install -g livedown
+  echo "...(re)installed livedown..."
+}
+
 main() {
   overwrite_bash_profile
   check_symlinks
@@ -109,6 +115,7 @@ main() {
   configure_git_editor
   system_specific_tasks
   install_node
+  install_livedown
 }
 
 main "$@"
