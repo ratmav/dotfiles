@@ -1,6 +1,3 @@
-" Load Pathogen runtime:
-execute pathogen#infect()
-
 syntax on
 
 " Set encoding:
@@ -67,11 +64,24 @@ nnoremap <silent><Leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
 " Open file in new tab w/ tab autocompletion:
 nnoremap <Leader>f :tabe<Space>
 
-" Access Git via Fugitive:
-nnoremap <Leader>g :Git<Space>
+" =============== FILE TYPES
 
-" =============== PLUGINS ===============
+" Makefile
+autocmd FileType make setlocal noexpandtab
+autocmd FileType make setlocal shiftwidth=8
+autocmd FileType make setlocal softtabstop=8
 
+" =============== PLUGINS
+
+" netrw (File browser):
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+nnoremap <Leader>n :Vexplore<CR>
+
+" =============== 3RD PARTY PLUGINS
 execute pathogen#infect()
 
 " Solarized (Darker colorscheme for easy reading):
@@ -81,11 +91,10 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-" Nerdtree plugin (Browse directory tree):
-let g:NERDTreeWinSize = 80
-nnoremap <Leader>n :NERDTreeToggle<CR>
+" Fugitive (Pass commands to Git in a subshell):
+nnoremap <Leader>g :Git<Space>
 
-" Vim-airline (Populate vim-airline font glyphs from guifont):
+" Vim-airline (Status bar, needs patched fonts and Fugitive):
 let g:airline_powerline_fonts = 1
 
 " Rainbow Parenthesis (Match parentheses, etc. by color):
@@ -96,10 +105,3 @@ au Syntax * RainbowParenthesesLoadBraces
 
 " Vim-livedown (Browser-based WYSIWYG editor):
 nnoremap <Leader>m :LivedownToggle<CR>
-
-" =============== FILE TYPES ===============
-
-" Makefile
-autocmd FileType make setlocal noexpandtab
-autocmd FileType make setlocal shiftwidth=8
-autocmd FileType make setlocal softtabstop=8

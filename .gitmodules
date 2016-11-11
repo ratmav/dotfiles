@@ -7,9 +7,6 @@
 [submodule ".vim/bundle/vim-fugitive"]
 	path = vim_submodules/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule ".vim/bundle/nerdtree"]
-	path = vim_submodules/bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
 [submodule ".vim/bundle/rainbow_parentheses.vim"]
 	path = vim_submodules/bundle/rainbow_parentheses.vim
 	url = https://github.com/kien/rainbow_parentheses.vim.git
