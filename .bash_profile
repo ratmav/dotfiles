@@ -2,7 +2,7 @@
 
 # Start tmux if installed, screen term not in use,
 # tmux not already running, and interactive shell.
-if command -v tmux>/dev/null; then
+if command -v tmux > /dev/null; then
   [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && [[ $- == *i* ]] && exec tmux
 fi
 
