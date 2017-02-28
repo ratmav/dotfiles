@@ -4,3 +4,6 @@
 
 # Mac directory metadata.
 .DS_Store
+
+# Python byte code.
+*.pyc
