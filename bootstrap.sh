@@ -1,6 +1,7 @@
 #!/bin/bash
 
-declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" "Scripts")
+declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" ".ansible.cfg"
+                  "Scripts")
 
 install_homebrew() {
   echo "...checking homebrew install..."
