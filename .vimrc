@@ -76,7 +76,7 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
-let g:netrw_list_hide= '.*\.swp$,.*\.pyc'
+let g:netrw_list_hide= '.*\.swp$,.*\.pyc,.*\.DS_Store'
 nnoremap <Leader>n :Vexplore<CR>
 
 " =============== 3RD PARTY PLUGINS
@@ -102,4 +102,5 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 " Vim-livedown (Browser-based WYSIWYG editor):
-nnoremap <Leader>m :LivedownToggle<CR>
+nnoremap <Leader>m :LivedownPreview<CR>
+nnoremap <Leader>M :LivedownKill<CR>
