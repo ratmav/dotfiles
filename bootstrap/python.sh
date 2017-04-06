@@ -9,7 +9,7 @@ install_python() {
     echo "......python already installed"
   else
     brew install python
-    echo "...installed livedown..."
+    echo "...installed python via homebrew..."
   fi
   for package in ${PYPI[@]}; do
     install_pypi $package
