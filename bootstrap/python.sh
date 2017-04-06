@@ -12,7 +12,6 @@ install_python() {
     echo "...installed livedown..."
   fi
   for package in ${PYPI[@]}; do
-    echo "PACKAGE: $package"
     install_pypi $package
   done
 }
