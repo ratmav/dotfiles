@@ -11,17 +11,17 @@ install_python() {
     brew install python
     echo "...installed python via homebrew..."
   fi
-  for package in ${PYPI[@]}; do
-    install_pypi $package
+  for package in "${PYPI[@]}"; do
+    install_pypi "$package"
   done
 }
 
 install_pypi() {
   echo "...checking $1 install..."
-  if type $1 > /dev/null 2>&1; then
+  if type "$1" > /dev/null 2>&1; then
     echo "......$1 already installed"
   else
-    source $HOME/.bash_profile && pip install $1
+    source "$HOME/.bash_profile" && pip install "$1"
     echo "...installed $1..."
   fi
 }

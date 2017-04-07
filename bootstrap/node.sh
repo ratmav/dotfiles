@@ -17,7 +17,7 @@ install_node() {
   if type node > /dev/null 2>&1; then
     echo "......node already installed"
   else
-    source $HOME/.bash_profile && nvm install stable
+    source "$HOME/.bash_profile" && nvm install stable
     echo "......installed node"
   fi
 }
@@ -27,7 +27,7 @@ install_livedown() {
   if type livedown > /dev/null 2>&1; then
     echo "......livedown already installed"
   else
-    source $HOME/.bash_profile && npm install -g livedown
+    source "$HOME/.bash_profile" && npm install -g livedown
     echo "...installed livedown..."
   fi
 }
