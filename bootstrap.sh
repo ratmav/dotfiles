@@ -4,8 +4,8 @@ source ./bootstrap/mac_os.sh
 source ./bootstrap/linux.sh
 
 
-declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" ".ansible.cfg"
-                  "Scripts")
+declare -a FILES=(".bash_profile" ".tmux.conf" ".vimrc" ".gitignore_global"
+                  ".ansible.cfg" "Scripts")
 
 bash_profile() {
   echo "...checking bash profile"
