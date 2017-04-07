@@ -4,8 +4,20 @@ source ./bootstrap/mac_os.sh
 source ./bootstrap/linux.sh
 
 
-declare -a FILES=(".bash_profile" ".tmux.conf" ".vimrc" ".gitignore_global"
-                  ".ansible.cfg" "Scripts")
+declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" ".ansible.cfg"
+                  "Scripts")
+
+bash_profile() {
+  echo "...checking bash profile"
+  if [[ -L $HOME/.bash_profile ]]; then
+    echo "......bash profile symlink exists"
+  else
+    cp $HOME/.bash_profile $HOME/.local_bash_profile
+    echo "......moved current bash profile to local bash profile"
+    rm -f $HOME/.bash_profile
+    echo "......removed old bash profile."
+  fi
+}
 
 configure_git_editor() {
   echo "configuring git editor..."
@@ -28,9 +40,9 @@ copy_vim_submodules() {
   echo "...copied submodules"
 }
 
-
 check_symlinks() {
   echo "checking symlinks..."
+  bash_profile
   for FILE in "${FILES[@]}"; do
     if [[ -h ~/$FILE ]]; then
       echo "...link present for $FILE"
@@ -41,14 +53,6 @@ check_symlinks() {
   done
 }
 
-local_bash_profile() {
-  if [[ -f $HOME/.local_bash_profile ]]; then
-    echo "...local bash profile present"
-  else
-    cp $HOME/.bash_profile $HOME/.local_bash_profile
-    echo "...moved current bash profile to local bash profile"
-  fi
-}
 
 system_specific_tasks() {
   if [[ $(uname) == "Darwin" ]]; then
@@ -61,7 +65,6 @@ system_specific_tasks() {
 }
 
 main() {
-  local_bash_profile
   check_symlinks
   copy_vim_submodules
   configure_gitignore
