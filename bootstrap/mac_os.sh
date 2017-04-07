@@ -21,9 +21,20 @@ install_homebrew() {
   fi
 }
 
+install_shellcheck() {
+  echo "...checking shellcheck install..."
+  if type shellcheck > /dev/null 2>&1; then
+    echo "......shellcheck already installed"
+  else
+    brew install shellcheck
+    echo "......installed shellcheck"
+  fi
+}
+
 bootstrap_mac_os() {
   copy_fonts_mac
   install_homebrew
+  install_shellcheck
   bootstrap_node
   bootstrap_python
 }
