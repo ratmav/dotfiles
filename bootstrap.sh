@@ -12,16 +12,16 @@ bash_profile() {
   if [[ -L $HOME/.bash_profile ]]; then
     echo "......bash profile symlink exists"
   else
-    cp $HOME/.bash_profile $HOME/.local_bash_profile
+    cp "$HOME/.bash_profile" "$HOME/.local_bash_profile"
     echo "......moved current bash profile to local bash profile"
-    rm -f $HOME/.bash_profile
+    rm -f "$HOME/.bash_profile"
     echo "......removed old bash profile."
   fi
 }
 
 configure_git_editor() {
   echo "configuring git editor..."
-  git config --global core.editor $(which vim)
+  git config --global core.editor "$(which vim)"
   echo "...configured"
 }
 
