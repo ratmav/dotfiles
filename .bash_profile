@@ -33,7 +33,6 @@ if [[ $(uname) == "Darwin" ]]; then
   # Initialize virtualenv.
   export WORKON_HOME=~/.envs
   source /usr/local/bin/virtualenvwrapper.sh
-  source `which activate.sh`
 fi
 
 # Link to personal scripts.
