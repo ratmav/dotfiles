@@ -6,7 +6,7 @@
 
 ```bash
 $ brew install python
-$ pip install virtualenv virtualenvwrapper autoenv pep8
+$ pip install virtualenv virtualenvwrapper pep8
 ```
 
 # Notes

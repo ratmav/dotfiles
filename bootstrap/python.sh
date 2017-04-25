@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-declare -a PYPI=("virtualenv" "virtualenvwrapper" "autoenv" "pep8")
+declare -a PYPI=("virtualenv" "virtualenvwrapper" "pep8")
 
 install_python() {
   echo "...checking python install..."
