@@ -29,10 +29,6 @@ if [[ $(uname) == "Darwin" ]]; then
   # NVM (https://github.com/creationix/nvm#installation).
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-  # Initialize virtualenv.
-  export WORKON_HOME=~/.envs
-  source /usr/local/bin/virtualenvwrapper.sh
 fi
 
 # Link to personal scripts.

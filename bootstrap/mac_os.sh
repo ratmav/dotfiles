@@ -24,7 +24,6 @@ install_homebrew() {
 bootstrap_mac_os() {
   copy_fonts_mac
   install_homebrew
-  install_shellcheck
   bootstrap_node
   bootstrap_python
 }
