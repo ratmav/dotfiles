@@ -1,8 +1,6 @@
 #!/bin/bash
 
 
-declare -a PYPI=("virtualenv" "virtualenvwrapper" "pep8")
-
 install_python() {
   echo "...checking python install..."
   if brew list | grep python > /dev/null 2>&1; then
@@ -11,19 +9,18 @@ install_python() {
     brew install python
     echo "...installed python via homebrew..."
   fi
-  for package in "${PYPI[@]}"; do
-    install_pypi "$package"
-  done
 }
 
 install_pypi() {
-  echo "...checking $1 install..."
-  if type "$1" > /dev/null 2>&1; then
-    echo "......$1 already installed"
-  else
-    source "$HOME/.bash_profile" && pip install "$1"
-    echo "...installed $1..."
-  fi
+  for package in virtualenv pep8; do
+    echo "...checking $package install..."
+    if type "$package" > /dev/null 2>&1; then
+      echo "......$package already installed"
+    else
+      source "$HOME/.bash_profile" && pip install -U "$package"
+      echo "...installed $1..."
+    fi
+  done
 }
 
 bootstrap_python() {
