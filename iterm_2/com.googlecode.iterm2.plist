@@ -10,6 +10,8 @@
 	<integer>1</integer>
 	<key>CopySelection</key>
 	<false/>
+	<key>Custom Color Presets</key>
+	<dict/>
 	<key>Default Bookmark Guid</key>
 	<string>28CF4A06-1EA1-45F7-8F5C-979C2CE7399C</string>
 	<key>HideActivityIndicator</key>
@@ -33,7 +35,7 @@
 	<key>NSFontPanelAttributes</key>
 	<string>1, 0</string>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/Repositories/dotfiles/iterm_2</string>
+	<string>~/Downloads/base16-iterm2</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 459}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -51,7 +53,7 @@
 	gAKACoAN0xAJChEVGVdOUy5rZXlzoxITFIADgASABaMWFxiABoAHgAiACVpJZGVudGlm
 	aWVyVVdpZHRoVkhpZGRlblEwI0BowAAAAAAACNIhIiMkWiRjbGFzc25hbWVYJGNsYXNz
 	ZXNcTlNEaWN0aW9uYXJ5oiMlWE5TT2JqZWN00xAJCicrGaMSExSAA4AEgAWjLC0YgAuA
-	DIAIgAlRMSNAczAAAAAAANIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
+	DIAIgAlRMSNAdCAAAAAAANIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
 	TlNLZXllZEFyY2hpdmVy0Tg5VUFycmF5gAEACAARABoAIwAtADIANwBGAEwAUQBcAGMA
 	ZgBoAGoAbABzAHsAfwCBAIMAhQCJAIsAjQCPAJEAnACiAKkAqwC0ALUAugDFAM4A2wDe
 	AOcA7gDyAPQA9gD4APwA/gEAAQIBBAEGAQ8BFAEjAScBLwFBAUQBSgAAAAAAAAIBAAAA
@@ -79,11 +81,11 @@
 	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
 	<string>654 663 616 174 0 0 1920 1058 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>74 152 796 473 0 0 1920 1058 </string>
+	<string>370 220 796 473 0 0 1440 900 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>155 473 592 584 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 1920 1080 0 0 1920 1058 </string>
+	<string>0 0 1440 900 0 0 1440 878 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -284,6 +286,8 @@
 			<integer>100</integer>
 			<key>Command</key>
 			<string></string>
+			<key>Cursor Boost</key>
+			<real>0.0</real>
 			<key>Cursor Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -645,6 +649,8 @@
 				<key>Red Component</key>
 				<real>0.023</real>
 			</dict>
+			<key>Minimum Contrast</key>
+			<real>0.28940862341772144</real>
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Name</key>
@@ -655,6 +661,8 @@
 			<true/>
 			<key>Normal Font</key>
 			<string>SauceCodePowerline-Light 14</string>
+			<key>Only The Default BG Color Uses Transparency</key>
+			<false/>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -691,6 +699,8 @@
 			<string></string>
 			<key>Silence Bell</key>
 			<true/>
+			<key>Smart Cursor Color</key>
+			<false/>
 			<key>Sync Title</key>
 			<false/>
 			<key>Tags</key>
@@ -698,13 +708,13 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.10663369082840236</real>
+			<real>0.13138868343195267</real>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
 			<true/>
 			<key>Use Bright Bold</key>
-			<true/>
+			<false/>
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
@@ -732,7 +742,7 @@
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<false/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
@@ -779,7 +789,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/ratmav/Repositories/dotfiles/iterm_2</string>
+	<string>/Users/pm-10101/Projects/dotfiles/iterm_2</string>
 	<key>PromptOnQuit</key>
 	<false/>
 	<key>SUAutomaticallyUpdate</key>
@@ -793,7 +803,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-04-26T04:43:46Z</date>
+	<date>2017-05-09T02:55:35Z</date>
 	<key>ShowFullScreenTabBar</key>
 	<false/>
 	<key>TabViewType</key>
@@ -807,7 +817,7 @@
 	<key>WindowNumber</key>
 	<false/>
 	<key>WordCharacters</key>
-	<string>/-+\~_.</string>
+	<string>\</string>
 	<key>iTerm Version</key>
 	<string>3.0.15</string>
 </dict>
