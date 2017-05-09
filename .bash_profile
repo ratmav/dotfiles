@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Start tmux if installed, screen term not in use,
+# tmux not already running, and interactive shell.
+if command -v tmux > /dev/null; then
+  [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && [[ $- == *i* ]] && exec tmux
+fi
+
 # Source additional environment config, if present.
 # shellcheck source=src/dev/null
 if [ -f $HOME/.local_bash_profile ]; then
