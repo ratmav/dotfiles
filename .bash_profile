@@ -16,7 +16,11 @@ fi
 export CLICOLOR=1
 
 # Decent prompt.
-export PS1="\[\033[38;5;11m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\h:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]:\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]"
+USER="\[\033[38;5;43m\]\u\[$(tput sgr0)\]"
+HOST="\[\033[38;5;35m\]@\h\[$(tput sgr0)\]"
+DIR="\[\033[38;5;65m\][\w]:\[$(tput sgr0)\]"
+SPACE="\[\033[38;5;15m\] \[$(tput sgr0)\]"
+export PS1="$USER$HOST$DIR$SPACE"
 
 # macOS.
 if [[ $(uname) == "Darwin" ]]; then
