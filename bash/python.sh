@@ -12,7 +12,9 @@ install_python() {
 }
 
 install_pypi() {
-  for package in pip setuptools virtualenv pep8 ansible; do
+  packages=(pip setuptools virtualenv flake8 pytest jedi json-rpc
+            service_factory ansible)
+  for package in ${packages[@]}; do
     echo "...checking $package install..."
     if type "$package" > /dev/null 2>&1; then
       echo "......$package already installed"

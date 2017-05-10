@@ -51,7 +51,8 @@ values."
      syntax-checking
      version-control
      ansible
-     python
+     (python :variables
+            python-test-runner 'pytest)
      javascript
      )
    ;; List of additional packages that will be installed without being
