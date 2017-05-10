@@ -1,11 +1,10 @@
 #!/bin/bash
 
-source ./bootstrap/mac_os.sh
-source ./bootstrap/linux.sh
+source ./bash/mac_os.sh
+source ./bash/linux.sh
 
 
-declare -a FILES=(".tmux.conf" ".vimrc" ".gitignore_global" ".ansible.cfg"
-                  "Scripts")
+declare -a FILES=(".gitignore_global" ".ansible.cfg" ".spacemacs")
 
 configure_git_editor() {
   echo "configuring git editor..."
@@ -17,15 +16,6 @@ configure_gitignore() {
   echo "configuring global gitignore..."
   git config --global core.excludesfile "$HOME/.gitignore_global"
   echo "...configured"
-}
-
-# NOTE: Can't link because nesting is too deep via Git submodules.
-copy_vim_submodules() {
-  echo "copying vim submodules..."
-  rm -rf ~/.vim
-  mkdir ~/.vim
-  cp -r vim_submodules/* ~/.vim/
-  echo "...copied submodules"
 }
 
 check_symlinks() {
@@ -72,7 +62,6 @@ system_specific_tasks() {
 main() {
   local_bash_profile
   check_symlinks
-  copy_vim_submodules
   configure_gitignore
   configure_git_editor
   system_specific_tasks
