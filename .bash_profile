@@ -31,6 +31,3 @@ if [[ $(uname) == "Darwin" ]]; then
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 fi
-
-# Link to personal scripts.
-export PATH="$PATH:$HOME/Scripts/"

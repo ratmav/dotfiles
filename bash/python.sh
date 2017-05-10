@@ -12,7 +12,7 @@ install_python() {
 }
 
 install_pypi() {
-  for package in virtualenv pep8; do
+  for package in pip setuptools virtualenv pep8 ansible; do
     echo "...checking $package install..."
     if type "$package" > /dev/null 2>&1; then
       echo "......$package already installed"
