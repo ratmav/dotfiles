@@ -22,18 +22,18 @@ install_node() {
   fi
 }
 
-install_livedown() {
-  echo "...checking livedown install..."
-  if type livedown > /dev/null 2>&1; then
-    echo "......livedown already installed"
+install_tern() {
+  echo "...checking tern install..."
+  if type tern > /dev/null 2>&1; then
+    echo "......tern already installed"
   else
-    source "$HOME/.bash_profile" && npm install -g livedown
-    echo "...installed livedown..."
+    source "$HOME/.bash_profile" && npm install -g tern
+    echo "...installed tern..."
   fi
 }
 
 bootstrap_node() {
   install_nvm
   install_node
-  install_livedown
+  install_tern
 }
