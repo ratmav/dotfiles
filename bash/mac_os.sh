@@ -40,7 +40,18 @@ install_ispell() {
   fi
 }
 
+install_shellcheck() {
+    echo "...checking shellcheck install..."
+    if type shellcheck > /dev/null 2>&1; then
+        echo "......shellcheck already installed"
+    else
+        brew install shellcheck
+        echo "......installed shellcheck"
+    fi
+}
 
+# NOTE: There may be a system Emacs install, so verify one is installed
+#       with Brew.
 install_spacemacs() {
   echo "...checking spacemacs install..."
   if brew list | grep emacs > /dev/null 2>&1; then
@@ -61,6 +72,7 @@ bootstrap_mac_os() {
   install_homebrew
   install_git
   install_ispell
+  install_shellcheck
   install_spacemacs
   bootstrap_node
   bootstrap_python
