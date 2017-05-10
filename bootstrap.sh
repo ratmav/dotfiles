@@ -4,8 +4,6 @@ source ./bash/mac_os.sh
 source ./bash/linux.sh
 
 
-declare -a FILES=(".gitignore_global" ".ansible.cfg" ".spacemacs")
-
 configure_git_editor() {
   echo "configuring git editor..."
   git config --global core.editor "$(which vim)"
@@ -20,12 +18,14 @@ configure_gitignore() {
 
 check_symlinks() {
   echo "checking symlinks..."
-  for FILE in "${FILES[@]}"; do
-    if [[ -h ~/$FILE ]]; then
-      echo "...link present for $FILE"
+  files=(".gitignore_global" ".ansible.cfg" ".spacemacs"
+         "intel_asm_reference.pdf")
+  for file in "${files[@]}"; do
+    if [[ -h ~/$file ]]; then
+      echo "...link present for $file"
     else
-      ln -s "$PWD/$FILE" "$HOME/$FILE"
-      echo "...linked $FILE"
+      ln -s "$PWD/$file" "$HOME/$file"
+      echo "...linked $file"
     fi
   done
 }
