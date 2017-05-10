@@ -1,7 +1,3 @@
-# Vim buffers.
-*.swp
-*.swo
-
 # Mac directory metadata.
 .DS_Store
 
