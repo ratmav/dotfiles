@@ -19,7 +19,7 @@ install_pypi() {
     if type "$package" > /dev/null 2>&1; then
       echo "......$package already installed"
     else
-      source "$HOME/.bash_profile" && pip install -U "$package"
+      source "$HOME/.bashrc" && pip install -U "$package"
       echo "...installed $1..."
     fi
   done
