@@ -18,8 +18,8 @@ configure_gitignore() {
 
 check_symlinks() {
   echo "checking symlinks..."
-  files=(".gitignore_global" ".ansible.cfg" ".spacemacs"
-         "intel_asm_reference.pdf")
+  files=(".bashrc" ".bash_profile" ".gitignore_global" ".ansible.cfg"
+         ".spacemacs" "intel_asm_reference.pdf")
   for file in "${files[@]}"; do
     if [[ -h ~/$file ]]; then
       echo "...link present for $file"
@@ -28,25 +28,6 @@ check_symlinks() {
       echo "...linked $file"
     fi
   done
-}
-
-local_bash_profile() {
-  echo "checking bash profile"
-  if [[ -h $HOME/.bash_profile ]]; then
-    echo "...bash profile link exists"
-  elif [[ -f $HOME/.bash_profile ]]; then
-    echo "...bash profile is file"
-    cp "$HOME/.bash_profile" "$HOME/.local_bash_profile"
-    echo "...moved current bash profile to local bash profile"
-    rm -f "$HOME/.bash_profile"
-    echo "...removed old bash profile."
-    ln -s "$PWD/.bash_profile" "$HOME/.bash_profile"
-    echo "...linked bash_profile"
-  else
-    echo "......bash profile missing?"
-    ln -s "$PWD/.bash_profile" "$HOME/.bash_profile"
-    echo "......linked bash_profile"
-  fi
 }
 
 system_specific_tasks() {
@@ -60,7 +41,6 @@ system_specific_tasks() {
 }
 
 main() {
-  local_bash_profile
   check_symlinks
   configure_gitignore
   configure_git_editor

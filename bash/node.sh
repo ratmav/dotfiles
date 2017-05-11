@@ -17,7 +17,7 @@ install_node() {
   if type node > /dev/null 2>&1; then
     echo "......node already installed"
   else
-    source "$HOME/.bash_profile" && nvm install stable
+    source "$HOME/.bashrc" && nvm install stable
     echo "......installed node"
   fi
 }
@@ -27,7 +27,7 @@ install_tern() {
   if type tern > /dev/null 2>&1; then
     echo "......tern already installed"
   else
-    source "$HOME/.bash_profile" && npm install -g tern
+    source "$HOME/.bashrc" && npm install -g tern
     echo "...installed tern..."
   fi
 }

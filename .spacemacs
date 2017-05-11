@@ -45,8 +45,7 @@ values."
      org
      (shell :variables
             shell-default-height 30
-            shell-default-position 'bottom
-            shell-default-term-args "-l")
+            shell-default-position 'bottom)
      spell-checking
      syntax-checking
      version-control
