@@ -1,14 +1,11 @@
 #!/bin/bash
 
-# Colored terminal output.
-export CLICOLOR=1
 
 # Decent prompt.
-USER="\[\033[38;5;254m\]\u\[$(tput sgr0)\]"
-HOST="\[\033[38;5;170m\]@\h\[$(tput sgr0)\]"
-DIR="\[\033[38;5;249m\][\w]:\[$(tput sgr0)\]"
-SPACE="\[\033[38;5;15m\] \[$(tput sgr0)\]"
-export PS1="$USER$HOST$DIR$SPACE"
+export PS1="\u@\h[\w]\\$ "
+
+# Force dircolors, etc.
+export CLICOLOR=1
 
 # macOS.
 if [[ $(uname) == "Darwin" ]]; then
