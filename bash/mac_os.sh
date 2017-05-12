@@ -30,16 +30,6 @@ install_homebrew() {
   fi
 }
 
-install_ispell() {
-  echo "...checking ispell install..."
-  if type ispell > /dev/null 2>&1; then
-    echo "......ispell already installed"
-  else
-    brew install ispell
-    echo "......installed ispell"
-  fi
-}
-
 install_poppler() {
     echo "...checking poppler install..."
     if brew list | grep poppler > /dev/null 2>&1; then
@@ -79,7 +69,6 @@ bootstrap_mac_os() {
   copy_fonts_mac
   install_homebrew
   install_git
-  install_ispell
   install_shellcheck
   install_poppler
   install_spacemacs
