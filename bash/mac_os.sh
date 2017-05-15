@@ -30,26 +30,6 @@ install_homebrew() {
   fi
 }
 
-install_poppler() {
-    echo "...checking poppler install..."
-    if brew list | grep poppler > /dev/null 2>&1; then
-        echo "......poppler already installed"
-    else
-        brew install poppler
-        echo "......installed poppler"
-    fi
-}
-
-install_shellcheck() {
-    echo "...checking shellcheck install..."
-    if type shellcheck > /dev/null 2>&1; then
-        echo "......shellcheck already installed"
-    else
-        brew install shellcheck
-        echo "......installed shellcheck"
-    fi
-}
-
 install_spacemacs() {
   echo "...checking spacemacs install..."
   if brew list | grep emacs > /dev/null 2>&1; then
@@ -69,9 +49,6 @@ bootstrap_mac_os() {
   copy_fonts_mac
   install_homebrew
   install_git
-  install_shellcheck
-  install_poppler
   install_spacemacs
-  bootstrap_node
   bootstrap_python
 }

@@ -38,15 +38,12 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-     version-control
-     git
      ;; Languages.
      ansible
      asm
      c-c++
      emacs-lisp
      markdown
-     javascript
      (python :variables
             python-test-runner 'pytest)
      shell-scripts
