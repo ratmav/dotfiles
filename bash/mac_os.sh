@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ./bash/python.sh
-source ./bash/node.sh
 
 copy_fonts_mac() {
   echo "...copying fonts on mac..."
@@ -30,25 +29,20 @@ install_homebrew() {
   fi
 }
 
-install_spacemacs() {
-  echo "...checking spacemacs install..."
-  if brew list | grep emacs > /dev/null 2>&1; then
-    echo "......spacemacs already installed"
+install_python() {
+  echo "...checking python install..."
+  if brew list | grep python > /dev/null 2>&1; then
+    echo "......python already installed"
   else
-    brew tap d12frosted/emacs-plus
-    brew install emacs-plus --HEAD --with-natural-title-bars
-    brew linkapps emacs-plus
-    rm -rf $HOME/.emacs.d
-    git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
-    echo "......installed spacemacs"
+    brew install python
+    echo "...installed python via homebrew..."
   fi
 }
-
 
 bootstrap_mac_os() {
   copy_fonts_mac
   install_homebrew
   install_git
-  install_spacemacs
-  bootstrap_python
+  install_python
+  pypi_packages
 }

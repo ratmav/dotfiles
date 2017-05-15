@@ -18,8 +18,7 @@ configure_gitignore() {
 
 check_symlinks() {
   echo "checking symlinks..."
-  files=(".bashrc" ".bash_profile" ".gitignore_global" ".ansible.cfg"
-         ".spacemacs" "intel_asm_reference.pdf")
+  files=(".bashrc" ".bash_profile" ".gitignore_global" ".ansible.cfg")
   for file in "${files[@]}"; do
     if [[ -h ~/$file ]]; then
       echo "...link present for $file"
