@@ -17,7 +17,3 @@ if [[ $(uname) == "Darwin" ]]; then
     source "$(brew --prefix)/etc/bash_completion"
   fi
 fi
-
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
