@@ -44,7 +44,7 @@ install_neovim() {
   if brew list | grep neovim > /dev/null 2>&1; then
     echo "......neovim already installed"
   else
-    brew install neovim
+    brew install neovim/neovim/neovim
     echo "...installed neovim via homebrew..."
   fi
 }
