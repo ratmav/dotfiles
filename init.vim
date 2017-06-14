@@ -95,11 +95,9 @@ let mapleader=" "
 " Remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
-" Move tab LEFT:
-nnoremap <Leader>h :tabmove -1<CR>
-
-" Move tab RIGHT:
-nnoremap <Leader>l :tabmove +1<CR>
+" Buffer navigation:
+nnoremap <Leader>h :bp<CR>
+nnoremap <Leader>l :bn<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
