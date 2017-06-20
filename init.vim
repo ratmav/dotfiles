@@ -10,6 +10,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'mbbill/undotree'
   Plug 'majutsushi/tagbar'
   Plug 'kien/ctrlp.vim'
+  Plug 'bling/vim-bufferline'
 call plug#end()
 
 " vim-airline:
