@@ -9,6 +9,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'mbbill/undotree'
   Plug 'majutsushi/tagbar'
   Plug 'kien/ctrlp.vim'
+  Plug 'ap/vim-buftabline'
 call plug#end()
 
 python from powerline.vim import setup as powerline_setup
