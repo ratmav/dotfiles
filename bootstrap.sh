@@ -3,12 +3,8 @@
 source ./bash/mac_os.sh
 source ./bash/linux.sh
 
-
-configure_git_editor() {
-  echo "configuring git editor..."
-  git config --global core.editor "$(which nvim)"
-  echo "...configured"
-}
+LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".ansible.cfg"
+  ".vimrc" ".tmux.conf")
 
 configure_gitignore() {
   echo "configuring global gitignore..."
@@ -16,33 +12,13 @@ configure_gitignore() {
   echo "...configured"
 }
 
-home_symlinks() {
-  echo "checking home folder symlinks..."
-  files=(".bashrc" ".bash_profile" ".gitignore_global" ".ansible.cfg")
-  for file in "${files[@]}"; do
-    if [[ -h ~/$file ]]; then
-      echo "...link present for $file"
-    else
-      ln -s "$PWD/$file" "$HOME/$file"
-      echo "...linked $file"
-    fi
-  done
+configure_git_editor() {
+  echo "configuring git editor..."
+  git config --global core.editor "$(which nvim)"
+  echo "...configured"
 }
 
-# First parameter is the directory; second parameter is the file.
-neovim_symlink() {
-  echo "checking neovim $2 symlink..."
-  plug="$HOME/.local/share/nvim/site/autoload/plug.vim"
-  if [[ -h $1$2 ]]; then
-    echo "...link present for $1$2"
-  else
-    mkdir -p $1
-    ln -s "$PWD/$2" $1$2
-    echo "...linked $2"
-  fi
-}
-
-system_specific_tasks() {
+operating_system() {
   if [[ $(uname) == "Darwin" ]]; then
     echo "Running Mac-specific checks..."
     bootstrap_mac_os
@@ -52,13 +28,38 @@ system_specific_tasks() {
   fi
 }
 
+symlinks_build() {
+  echo "building new symlinks..."
+  for link in "${LINKS[@]}"; do
+    ln -s $PWD/$link $HOME/$link
+    echo "...linked $link"
+  done
+}
+
+symlinks_clean() {
+  echo "cleaning old symlinks/files..."
+  for link in "${LINKS[@]}"; do
+    rm -rf $HOME/$link
+    echo "...cleaned $link"
+  done
+}
+
+vim-plug() {
+  echo "checking vim-plug install..."
+  rm -rf "$HOME/.vim"
+  echo "...cleaned old vim-plug install"
+  mkdir -p "$HOME/.vim/autoload"
+  ln -s "$PWD/plug.vim" "$HOME/.vim/autoload/plug.vim"
+  echo "...installed vim-plug"
+}
+
 main() {
-  home_symlinks
-  neovim_symlink "$HOME/.config/nvim/" "init.vim"
-  neovim_symlink "$HOME/.local/share/nvim/site/autoload/" "plug.vim"
+  symlinks_clean
+  symlinks_build
+  vim-plug
   configure_gitignore
   configure_git_editor
-  system_specific_tasks
+  operating_system
 }
 
 main "$@"

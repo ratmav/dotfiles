@@ -8,26 +8,6 @@ copy_fonts_mac() {
   echo "......copied fonts"
 }
 
-install_ctags() {
-  echo "...checking ctags install..."
-  if brew list | grep ctags > /dev/null 2>&1; then
-    echo "......ctags already installed"
-  else
-    brew install ctags
-    echo "...installed ctags via homebrew..."
-  fi
-}
-
-install_git() {
-  echo "...checking git install..."
-  if type git > /dev/null 2>&1; then
-    echo "......git already installed"
-  else
-    brew install git
-    echo "......installed git"
-  fi
-}
-
 install_homebrew() {
   echo "...checking homebrew install..."
   if type brew > /dev/null 2>&1; then
@@ -39,32 +19,22 @@ install_homebrew() {
   fi
 }
 
-install_neovim() {
-  echo "...checking neovim install..."
-  if brew list | grep neovim > /dev/null 2>&1; then
-    echo "......neovim already installed"
-  else
-    brew install neovim/neovim/neovim
-    echo "...installed neovim via homebrew..."
-  fi
-}
-
-install_python() {
-  echo "...checking python install..."
-  if brew list | grep python > /dev/null 2>&1; then
-    echo "......python already installed"
-  else
-    brew install python
-    echo "...installed python via homebrew..."
-  fi
+homebrew() {
+  PACKAGES=("ctags" "git" "tmux" "vim" "python")
+  for package in "${PACKAGES[@]}"; do
+    echo "...checking $package install..."
+    if brew list | grep $package > /dev/null 2>&1; then
+      echo "......$package already installed"
+    else
+      brew install $package
+      echo "...installed $package via homebrew..."
+    fi
+  done
 }
 
 bootstrap_mac_os() {
   copy_fonts_mac
   install_homebrew
-  install_git
-  install_ctags
-  install_python
-  install_neovim
+  homebrew
   pypi_packages
 }

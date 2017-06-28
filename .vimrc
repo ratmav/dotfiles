@@ -3,20 +3,17 @@
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'chriskempson/base16-vim'
   Plug 'tpope/vim-fugitive'
-  Plug 'vim-airline/vim-airline'
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'scrooloose/nerdtree'
   Plug 'roman/golden-ratio'
   Plug 'mbbill/undotree'
   Plug 'majutsushi/tagbar'
   Plug 'kien/ctrlp.vim'
-  Plug 'bling/vim-bufferline'
 call plug#end()
 
-" vim-airline:
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
@@ -102,10 +99,6 @@ nnoremap <Leader>l :bn<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
-
-" Terminal:
-nnoremap <Leader>t :terminal<CR>
-tnoremap <Esc> <C-\><C-n>
 
 " Toggle Undotree:
 nnoremap <Leader>u :UndotreeToggle<CR>
