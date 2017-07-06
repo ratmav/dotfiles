@@ -94,9 +94,10 @@ let mapleader=" "
 " Remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
-" Buffer navigation:
+" Buffer management:
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
+nnoremap <Leader>c :bd<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
@@ -105,7 +106,7 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 nnoremap <Leader>u :UndotreeToggle<CR>
 
 " Toggle Tagbar:
-nnoremap <Leader>c :TagbarToggle<CR>
+nnoremap <Leader>t :TagbarToggle<CR>
 
 " Fuzzy file search with CtrlP:
 nnoremap <Leader>f :CtrlP<CR>
