@@ -280,9 +280,9 @@
 	<key>Hotkey</key>
 	<true/>
 	<key>HotkeyChar</key>
-	<integer>46</integer>
-	<key>HotkeyCode</key>
 	<integer>47</integer>
+	<key>HotkeyCode</key>
+	<integer>44</integer>
 	<key>HotkeyModifiers</key>
 	<integer>262401</integer>
 	<key>JobName</key>
@@ -340,7 +340,7 @@
 	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
 	<string>654 663 616 174 0 0 1920 1058 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>338 245 796 473 0 0 1440 900 </string>
+	<string>458 365 796 473 0 0 1440 900 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>155 473 592 584 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
@@ -1112,7 +1112,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-05-16T02:58:08Z</date>
+	<date>2017-08-25T05:52:29Z</date>
 	<key>ShowFullScreenTabBar</key>
 	<false/>
 	<key>TabViewType</key>
