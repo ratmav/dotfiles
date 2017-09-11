@@ -3,8 +3,7 @@
 source ./bash/mac_os.sh
 source ./bash/linux.sh
 
-LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".ansible.cfg"
-  ".vimrc" ".tmux.conf")
+LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
 
 configure_gitignore() {
   echo "configuring global gitignore..."
@@ -14,8 +13,25 @@ configure_gitignore() {
 
 configure_git_editor() {
   echo "configuring git editor..."
-  git config --global core.editor "$(which vim)"
+  git config --global core.editor "$(which nvim)"
   echo "...configured"
+}
+
+home_symlinks() {
+  echo "(re)building new symlinks..."
+  for link in "${LINKS[@]}"; do
+    rm -rf $HOME/$link
+    ln -s $PWD/$link $HOME/$link
+    echo "...(re)built $link link"
+  done
+}
+
+nvim_init_symlink() {
+  echo "(re)building nvim init symlink..."
+  rm -rf $HOME/.config/nvim
+  mkdir -p $HOME/.config/nvim
+  ln -s $PWD/init.vim $HOME/.config/nvim/init.vim
+  echo "...(re)built nvim init link"
 }
 
 operating_system() {
@@ -28,35 +44,19 @@ operating_system() {
   fi
 }
 
-symlinks_build() {
-  echo "building new symlinks..."
-  for link in "${LINKS[@]}"; do
-    ln -s $PWD/$link $HOME/$link
-    echo "...linked $link"
-  done
-}
-
-symlinks_clean() {
-  echo "cleaning old symlinks/files..."
-  for link in "${LINKS[@]}"; do
-    rm -rf $HOME/$link
-    echo "...cleaned $link"
-  done
-}
-
 vim-plug() {
   echo "checking vim-plug install..."
-  rm -rf "$HOME/.vim"
+  rm -rf "$HOME/.local/share/nvim"
   echo "...cleaned old vim-plug install"
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   echo "...installed vim-plug"
 }
 
 main() {
-  symlinks_clean
-  symlinks_build
   vim-plug
+  nvim_init_symlink
+  home_symlinks
   configure_gitignore
   configure_git_editor
   operating_system
