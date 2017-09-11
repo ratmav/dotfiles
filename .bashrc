@@ -13,6 +13,9 @@ if [[ $(uname) == "Darwin" ]]; then
     source "$(brew --prefix)/etc/bash_completion"
   fi
 
+  # Modify the path so that Homebrew still finds pip.
+  export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
   # Powerline.
   powerline-daemon -q
   POWERLINE_BASH_CONTINUATION=1
