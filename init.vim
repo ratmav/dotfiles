@@ -6,24 +6,17 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'scrooloose/nerdtree'
   Plug 'roman/golden-ratio'
-  Plug 'mbbill/undotree'
-  Plug 'majutsushi/tagbar'
-  Plug 'kien/ctrlp.vim'
-  Plug 'ap/vim-buftabline'
+  Plug 'vim-airline/vim-airline'
+  Plug 'qpkorr/vim-bufkill'
 call plug#end()
 
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+" TODO: Remove powerline/python setup from dotfiles.
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
 
-" undotree:
-if has("persistent_undo")
-  set undodir=~/.undodir/
-  set undofile
-endif
+" vim-airline:
+let g:airline#extensions#tabline#enabled = 1
 
 " =============== BEHAVIOR
 
@@ -94,19 +87,28 @@ let mapleader=" "
 " Remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
-" Buffer management:
+" Buffer navigation:
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
-nnoremap <Leader>c :bd<CR>
+
+" Buffer management (vim-bufkill):
+nnoremap <Leader>c :BD<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
-" Toggle Undotree:
-nnoremap <Leader>u :UndotreeToggle<CR>
-
-" Toggle Tagbar:
-nnoremap <Leader>t :TagbarToggle<CR>
-
-" Fuzzy file search with CtrlP:
-nnoremap <Leader>f :CtrlP<CR>
+" Terminal:
+nnoremap <Leader>t :terminal<CR>
+:tnoremap <Esc> <C-\><C-n>
+:tnoremap <A-h> <C-\><C-N><C-w>h
+:tnoremap <A-j> <C-\><C-N><C-w>j
+:tnoremap <A-k> <C-\><C-N><C-w>k
+:tnoremap <A-l> <C-\><C-N><C-w>l
+:inoremap <A-h> <C-\><C-N><C-w>h
+:inoremap <A-j> <C-\><C-N><C-w>j
+:inoremap <A-k> <C-\><C-N><C-w>k
+:inoremap <A-l> <C-\><C-N><C-w>l
+:nnoremap <A-h> <C-w>h
+:nnoremap <A-j> <C-w>j
+:nnoremap <A-k> <C-w>k
+:nnoremap <A-l> <C-w>l

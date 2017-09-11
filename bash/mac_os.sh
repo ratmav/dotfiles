@@ -20,7 +20,7 @@ install_homebrew() {
 }
 
 homebrew() {
-  PACKAGES=("ctags" "git" "tmux" "vim" "python")
+  PACKAGES=("git" "neovim" "python")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
