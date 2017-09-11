@@ -48,8 +48,8 @@ vim-plug() {
   echo "checking vim-plug install..."
   rm -rf "$HOME/.vim"
   echo "...cleaned old vim-plug install"
-  mkdir -p "$HOME/.vim/autoload"
-  ln -s "$PWD/plug.vim" "$HOME/.vim/autoload/plug.vim"
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   echo "...installed vim-plug"
 }
 
