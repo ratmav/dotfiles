@@ -46,6 +46,9 @@ set backspace=2
 " Disable SQL Omnicomplete, which is tied to <C-c> for some reason.
 let g:omni_sql_no_default_maps = 1
 
+" Terminal
+autocmd TermOpen * set bufhidden=hide
+
 " Makefile
 autocmd FileType make setlocal noexpandtab
 autocmd FileType make setlocal shiftwidth=8
@@ -92,7 +95,7 @@ nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
 
 " Buffer management (vim-bufkill):
-nnoremap <Leader>c :BD<CR>
+nnoremap <Leader>k :BD<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
