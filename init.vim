@@ -90,12 +90,10 @@ let mapleader=" "
 " Remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
-" Buffer navigation:
+" Buffer management:
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
-
-" Buffer management (vim-bufkill):
-nnoremap <Leader>k :BD<CR>
+nnoremap <Leader>k :BD!<CR> " Bang to avoid warnings on terminal buffers.
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
