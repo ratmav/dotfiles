@@ -54,12 +54,12 @@ vim-plug() {
 }
 
 main() {
+  operating_system
   vim-plug
   nvim_init_symlink
   home_symlinks
   configure_gitignore
   configure_git_editor
-  operating_system
 }
 
 main "$@"
