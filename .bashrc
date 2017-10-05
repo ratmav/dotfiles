@@ -23,5 +23,11 @@ if [[ $(uname) == "Darwin" ]]; then
   source /usr/local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
 fi
 
+# pyenv
+eval "$(pyenv init -)"
+if which pyenv-virtualenv-init > /dev/null; then
+  eval "$(pyenv virtualenv-init -)";
+fi
+
 # rbenv
 eval "$(rbenv init -)"
