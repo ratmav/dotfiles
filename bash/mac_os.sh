@@ -20,7 +20,7 @@ install_homebrew() {
 }
 
 homebrew() {
-  PACKAGES=("git" "neovim" "python")
+  PACKAGES=("git" "neovim" "python" "rbenv")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
