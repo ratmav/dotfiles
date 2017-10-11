@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ./bash/python.sh
+source ./bash/node.sh
 
 copy_fonts_mac() {
   echo "...copying fonts on mac..."
@@ -37,4 +38,5 @@ bootstrap_mac_os() {
   install_homebrew
   homebrew
   pypi_packages
+  nvm
 }
