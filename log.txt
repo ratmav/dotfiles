@@ -1,0 +1,4 @@
+$ brew cask install atom
+(Packages: vim-mode-plus, ex-mode, termination, golden-ratio)
+(          termination: doesn't support powerline fonts
+           golden-ratio: how to turn on by default at startup?)
