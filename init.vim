@@ -7,10 +7,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'scrooloose/nerdtree'
   Plug 'roman/golden-ratio'
   Plug 'vim-airline/vim-airline'
-  Plug 'qpkorr/vim-bufkill'
 call plug#end()
-
-" TODO: Remove powerline/python setup from dotfiles.
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
@@ -93,7 +90,7 @@ nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 " Buffer management:
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
-nnoremap <Leader>d :BD!<CR> " Bang to avoid warnings on terminal buffers.
+nnoremap <Leader>d :bd!<CR> " Bang to avoid warnings on terminal buffers.
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
