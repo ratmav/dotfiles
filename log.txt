@@ -1,6 +1,5 @@
 $ brew cask install atom
-(Packages: vim-mode-plus, ex-mode, termination, golden-ratio)
-(          termination: doesn't support powerline fonts
-           golden-ratio: how to turn on by default at startup?)
+(Packages: vim-mode-plus, ex-mode, termination, parinfer)
+(          termination: doesn't support powerline fonts)
 
 TODO: How do I automate the config? What dotfiles need to go in the repo?
