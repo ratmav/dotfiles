@@ -29,7 +29,7 @@ homebrew_packages() {
 }
 
 brew_cask(){
-  PACKAGES=("atom")
+  PACKAGES=("atom" "spectacle")
   for package in "${PACKAGES[@]}"; do
     brew cask install $package
     echo "...(re)installed $package via homebrew..."
