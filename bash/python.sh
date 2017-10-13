@@ -2,7 +2,7 @@
 
 
 pypi_packages() {
-  packages=(pip setuptools powerline-status)
+  packages=(pip setuptools ansible)
   for package in ${packages[@]}; do
     pip install -U "$package"
   done
