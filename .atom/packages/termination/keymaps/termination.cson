@@ -1,0 +1,37 @@
+'.platform-darwin atom-workspace':
+  'alt-shift-t': 'termination:new'
+  'alt-shift-j': 'termination:prev'
+  'alt-shift-k': 'termination:next'
+  'alt-!': 'termination:active-1'
+  'alt-@': 'termination:active-2'
+  'alt-#': 'termination:active-3'
+  'alt-$': 'termination:active-4'
+  'alt-shift-x': 'termination:close'
+  'alt-shift-r': 'termination:insert-selected-text'
+  'ctrl-`': 'termination:toggle'
+  'cmd-alt-f': 'termination:focus'
+  'alt-shift-F': 'termination:fullscreen'
+
+'.platform-linux atom-workspace, .platform-win32 atom-workspace':
+  'alt-shift-t': 'termination:new'
+  'alt-shift-j': 'termination:prev'
+  'alt-shift-k': 'termination:next'
+  'alt-!': 'termination:active-1'
+  'alt-@': 'termination:active-2'
+  'alt-#': 'termination:active-3'
+  'alt-$': 'termination:active-4'
+  'alt-shift-x': 'termination:close'
+  'alt-r': 'termination:insert-selected-text'
+  'ctrl-`': 'termination:toggle'
+  'ctrl-alt-f': 'termination:focus'
+  'alt-shift-F': 'termination:fullscreen'
+
+'.platform-darwin .termination .terminal':
+  'cmd-c': 'termination:copy'
+  'cmd-v': 'termination:paste'
+  'alt-cmd-c': 'termination:copy-all-to-new-file'
+
+'.platform-linux .termination .terminal, .platform-win32 .termination .terminal':
+  'ctrl-shift-v': 'termination:paste'
+  'ctrl-shift-c': 'termination:copy'
+  'alt-ctrl-c': 'termination:copy-all-to-new-file'

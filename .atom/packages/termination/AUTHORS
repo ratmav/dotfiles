@@ -1,0 +1,38 @@
+# List of authors who have contributed to termination (in chronological order of first commit):
+
+Fred Barclay (BugsAteFred@gmail.com)
+ * Termination maintainer
+
+Ben Pritchard (https://github.com/benpritchard)
+ * Added Copy All to New File functionality
+
+Peter Benjamin (https://github.com/pmbenjamin)
+ * Added One Dark theme
+
+David Klanac (https://github.com/dklanac)
+ * Underline the active terminal icon
+
+Ben Phelps (https://github.com/benphelps)
+ * Fixed deprecation warning
+ * Fixed pane.addItem deprecation
+
+Yiannin Kostantinidis (https://github.com/Naki21)
+ * Found fix for termination failing to run `atom`, `electron`, and `node` commands properly
+
+Guten Ye (https://github.com/gutenye)
+ * Added keyboard shortcut to open/switch between up to four open terminals
+
+Hani Sharabash (https://github.com/hanibash)
+ * Themes now set ANSI colours
+
+Pietro De Nicolao (https://github.com/pietrodn)
+ * Fix termination:focus when a terminal is not opened.
+
+Ivan Kravets (https://github.com/ivankravets)
+ * Fix issue when running `electron` command
+
+ Miguel Palau (https://github.com/mike3run)
+ * Add gruvbox theme
+
+ Takumi Abe(https://github.com/takumiabe)
+  * Fix terminal corruption on fullscreen
