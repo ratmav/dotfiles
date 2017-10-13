@@ -1,8 +1,13 @@
 "*":
   core:
+    projectHome: "/Users/chriscuming/Projects"
     telemetryConsent: "no"
+    titleBar: "custom-inset"
   "exception-reporting":
     userId: "e1f05df4-4cde-4956-87ff-58e3f0ddaddc"
+  termination:
+    style:
+      theme: "one-dark"
   "vim-mode-plus":
     notifiedCoffeeScriptNoLongerSupportedToExtendVMP: true
   welcome:
