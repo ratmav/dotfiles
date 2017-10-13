@@ -1,0 +1,12 @@
+.DS_Store
+npm-debug.log
+
+# ignore CLJS compiler target folder
+target
+
+# ignore diff files
+*.diff
+
+# I don't want to accidentally commit my test files
+example1.cljs
+example2.cljs

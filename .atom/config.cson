@@ -3,5 +3,7 @@
     telemetryConsent: "no"
   "exception-reporting":
     userId: "e1f05df4-4cde-4956-87ff-58e3f0ddaddc"
+  "vim-mode-plus":
+    notifiedCoffeeScriptNoLongerSupportedToExtendVMP: true
   welcome:
     showOnStartup: false
