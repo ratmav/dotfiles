@@ -38,9 +38,9 @@ operating_system() {
 
 main() {
   home_symlinks
-  #operating_system
-  #configure_gitignore
-  #configure_git_editor
+  operating_system
+  configure_gitignore
+  configure_git_editor
 }
 
 main "$@"
