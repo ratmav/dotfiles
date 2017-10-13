@@ -3,11 +3,6 @@
 source ./bash/python.sh
 source ./bash/node.sh
 
-copy_fonts_mac() {
-  echo "...copying fonts on mac..."
-  cp fonts/* ~/Library/Fonts/
-  echo "......copied fonts"
-}
 
 install_homebrew() {
   echo "...checking homebrew install..."
@@ -20,8 +15,8 @@ install_homebrew() {
   fi
 }
 
-homebrew() {
-  PACKAGES=("git" "neovim" "python" "pyenv" "pyenv-virtualenv" "rbenv")
+homebrew_packages() {
+  PACKAGES=("git" "python" "pyenv" "pyenv-virtualenv" "rbenv")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
@@ -33,10 +28,18 @@ homebrew() {
   done
 }
 
+brew_cask(){
+  PACKAGES=("atom")
+  for package in "${PACKAGES[@]}"; do
+    brew cask install $package
+    echo "...(re)installed $package via homebrew..."
+  done
+}
+
 bootstrap_mac_os() {
-  copy_fonts_mac
   install_homebrew
-  homebrew
+  homebrew_packages
+  brew_cask
   pypi_packages
   nvm
 }
