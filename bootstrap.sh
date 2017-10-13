@@ -3,7 +3,7 @@
 source ./bash/mac_os.sh
 source ./bash/linux.sh
 
-LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
+LINKS=(".atom" ".bashrc" ".bash_profile" ".gitignore_global")
 
 configure_gitignore() {
   echo "configuring global gitignore..."
@@ -37,10 +37,10 @@ operating_system() {
 }
 
 main() {
-  operating_system
   home_symlinks
-  configure_gitignore
-  configure_git_editor
+  #operating_system
+  #configure_gitignore
+  #configure_git_editor
 }
 
 main "$@"
