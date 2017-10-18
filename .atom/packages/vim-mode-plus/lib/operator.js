@@ -1,17 +1,6 @@
 "use babel"
 
 const _ = require("underscore-plus")
-const {
-  isEmptyRow,
-  getWordPatternAtBufferPosition,
-  getSubwordPatternAtBufferPosition,
-  insertTextAtBufferPosition,
-  setBufferRow,
-  moveCursorToFirstCharacterAtRow,
-  ensureEndsWithNewLineForBufferRow,
-  adjustIndentWithKeepingLayout,
-  isSingleLineText,
-} = require("./utils")
 const Base = require("./base")
 
 class Operator extends Base {
@@ -130,7 +119,6 @@ class Operator extends Base {
 
   initialize() {
     this.subscribeResetOccurrencePatternIfNeeded()
-    this.onDidSetOperatorModifier(options => this.setModifier(options))
 
     // When preset-occurrence was exists, operate on occurrence-wise
     if (this.acceptPresetOccurrence && this.occurrenceManager.hasMarkers()) {
@@ -140,7 +128,7 @@ class Operator extends Base {
     // [FIXME] ORDER-MATTER
     // To pick cursor-word to find occurrence base pattern.
     // This has to be done BEFORE converting persistent-selection into real-selection.
-    // Since when persistent-selection is actuall selected, it change cursor position.
+    // Since when persistent-selection is actually selected, it change cursor position.
     if (this.occurrence && !this.occurrenceManager.hasMarkers()) {
       const regex = this.patternForOccurrence || this.getPatternForOccurrenceType(this.occurrenceType)
       this.occurrenceManager.addPattern(regex)
@@ -161,7 +149,7 @@ class Operator extends Base {
       this.setTarget(this.getInstance(this.target))
     }
 
-    return super.initialize()
+    super.initialize()
   }
 
   subscribeResetOccurrencePatternIfNeeded() {
@@ -197,9 +185,7 @@ class Operator extends Base {
     ) {
       this.persistentSelection.select()
       this.editor.mergeIntersectingSelections()
-      for (const $selection of this.swrap.getSelections(this.editor)) {
-        if (!$selection.hasProperties()) $selection.saveProperties()
-      }
+      this.swrap.saveProperties(this.editor)
 
       return true
     } else {
@@ -209,9 +195,9 @@ class Operator extends Base {
 
   getPatternForOccurrenceType(occurrenceType) {
     if (occurrenceType === "base") {
-      return getWordPatternAtBufferPosition(this.editor, this.getCursorBufferPosition())
+      return this.utils.getWordPatternAtBufferPosition(this.editor, this.getCursorBufferPosition())
     } else if (occurrenceType === "subword") {
-      return getSubwordPatternAtBufferPosition(this.editor, this.getCursorBufferPosition())
+      return this.utils.getSubwordPatternAtBufferPosition(this.editor, this.getCursorBufferPosition())
     }
   }
 
@@ -226,7 +212,6 @@ class Operator extends Base {
       this.createBufferCheckpoint("undo")
       this.selectTarget()
     }
-    return this
   }
 
   setTextToRegisterForSelection(selection) {
@@ -247,7 +232,7 @@ class Operator extends Base {
 
       if (this.vimState.register.isUnnamed()) {
         if (this.instanceof("Delete") || this.instanceof("Change")) {
-          if (!this.needSaveToNumberedRegister(this.target) && isSingleLineText(text)) {
+          if (!this.needSaveToNumberedRegister(this.target) && this.utils.isSingleLineText(text)) {
             this.vimState.register.set("-", {text, selection}) // small-change
           } else {
             this.vimState.register.set("1", {text, selection})
@@ -282,7 +267,7 @@ class Operator extends Base {
   }
 
   normalizeSelectionsIfNecessary() {
-    if (this.target && this.target.isMotion() && this.mode === "visual") {
+    if (this.mode === "visual" && this.target && this.target.isMotion()) {
       this.swrap.normalize(this.editor)
     }
   }
@@ -342,10 +327,7 @@ class Operator extends Base {
     // so checkpoint comes AFTER @emitWillSelectTarget()
     this.mutationManager.setCheckpoint("will-select")
 
-    // NOTE
-    // Since MoveToNextOccurrence, MoveToPreviousOccurrence motion move by
-    //  occurrence-marker, occurrence-marker has to be created BEFORE `@target.execute()`
-    // And when repeated, occurrence pattern is already cached at @patternForOccurrence
+    // NOTE: When repeated, set occurrence-marker from pattern stored as state.
     if (this.repeated && this.occurrence && !this.occurrenceManager.hasMarkers()) {
       this.occurrenceManager.addPattern(this.patternForOccurrence, {occurrenceType: this.occurrenceType})
     }
@@ -354,9 +336,8 @@ class Operator extends Base {
 
     this.mutationManager.setCheckpoint("did-select")
     if (this.occurrence) {
-      // To repoeat(`.`) operation where multiple occurrence patterns was set.
-      // Here we save patterns which represent unioned regex which @occurrenceManager knows.
       if (!this.patternForOccurrence) {
+        // Preserve occurrencePattern for . repeat.
         this.patternForOccurrence = this.occurrenceManager.buildPattern()
       }
 
@@ -415,9 +396,7 @@ SelectBase.register(false)
 
 class Select extends SelectBase {
   execute() {
-    for (const $selection of this.swrap.getSelections(this.editor)) {
-      if (!$selection.hasProperties()) $selection.saveProperties()
-    }
+    this.swrap.saveProperties(this.editor)
     super.execute()
   }
 }
@@ -732,7 +711,7 @@ class PutBefore extends Operator {
 
   initialize() {
     this.vimState.sequentialPasteManager.onInitialize(this)
-    return super.initialize()
+    super.initialize()
   }
 
   execute() {
@@ -767,7 +746,7 @@ class PutBefore extends Operator {
       const {cursor} = selection
       const newRange = this.mutationsBySelection.get(selection)
       if (this.linewisePaste) {
-        moveCursorToFirstCharacterAtRow(cursor, newRange.start.row)
+        this.utils.moveCursorToFirstCharacterAtRow(cursor, newRange.start.row)
       } else {
         if (newRange.isSingleLine()) {
           cursor.setBufferPosition(newRange.end.translate([0, -1]))
@@ -805,7 +784,11 @@ class PutBefore extends Operator {
 
   pasteCharacterwise(selection, text) {
     const {cursor} = selection
-    if (selection.isEmpty() && this.location === "after" && !isEmptyRow(this.editor, cursor.getBufferRow())) {
+    if (
+      selection.isEmpty() &&
+      this.location === "after" &&
+      !this.utils.isEmptyRow(this.editor, cursor.getBufferRow())
+    ) {
       cursor.moveRight()
     }
     return selection.insertText(text)
@@ -820,11 +803,11 @@ class PutBefore extends Operator {
     }
     if (selection.isEmpty()) {
       if (this.location === "before") {
-        return insertTextAtBufferPosition(this.editor, [cursorRow, 0], text)
+        return this.utils.insertTextAtBufferPosition(this.editor, [cursorRow, 0], text)
       } else if (this.location === "after") {
         const targetRow = this.getFoldEndRowForRow(cursorRow)
-        ensureEndsWithNewLineForBufferRow(this.editor, targetRow)
-        return insertTextAtBufferPosition(this.editor, [targetRow + 1, 0], text)
+        this.utils.ensureEndsWithNewLineForBufferRow(this.editor, targetRow)
+        return this.utils.insertTextAtBufferPosition(this.editor, [targetRow + 1, 0], text)
       }
     } else {
       if (!this.isMode("visual", "linewise")) {
@@ -844,7 +827,7 @@ PutAfter.register()
 class PutBeforeWithAutoIndent extends PutBefore {
   pasteLinewise(selection, text) {
     const newRange = super.pasteLinewise(selection, text)
-    adjustIndentWithKeepingLayout(this.editor, newRange)
+    this.utils.adjustIndentWithKeepingLayout(this.editor, newRange)
     return newRange
   }
 }

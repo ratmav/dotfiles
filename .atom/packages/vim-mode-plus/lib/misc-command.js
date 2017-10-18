@@ -2,20 +2,6 @@
 
 const {Range} = require("atom")
 const Base = require("./base")
-const {
-  moveCursorRight,
-  isLinewiseRange,
-  setBufferRow,
-  sortRanges,
-  findRangeContainsPoint,
-  isSingleLineRange,
-  isLeadingWhiteSpaceRange,
-  humanizeBufferRange,
-  getFoldInfoByKind,
-  limitNumber,
-  getFoldRowRangesContainedByFoldStartsAtRow,
-  getList,
-} = require("./utils")
 
 class MiscCommand extends Base {
   static operationKind = "misc-command"
@@ -26,7 +12,7 @@ class Mark extends MiscCommand {
   requireInput = true
   initialize() {
     this.readChar()
-    return super.initialize()
+    super.initialize()
   }
 
   execute() {
@@ -62,11 +48,11 @@ class Undo extends MiscCommand {
 
     const changedRange =
       strategy === "smart"
-        ? findRangeContainsPoint(newRanges, lastCursor.getBufferPosition())
-        : sortRanges(newRanges.concat(oldRanges))[0]
+        ? this.utils.findRangeContainsPoint(newRanges, lastCursor.getBufferPosition())
+        : this.utils.sortRanges(newRanges.concat(oldRanges))[0]
 
     if (changedRange) {
-      if (isLinewiseRange(changedRange)) setBufferRow(lastCursor, changedRange.start.row)
+      if (this.utils.isLinewiseRange(changedRange)) this.utils.setBufferRow(lastCursor, changedRange.start.row)
       else lastCursor.setBufferPosition(changedRange.start)
     }
   }
@@ -90,12 +76,12 @@ class Undo extends MiscCommand {
   }
 
   flashChanges({newRanges, oldRanges}) {
-    const isMultipleSingleLineRanges = ranges => ranges.length > 1 && ranges.every(isSingleLineRange)
+    const isMultipleSingleLineRanges = ranges => ranges.length > 1 && ranges.every(this.utils.isSingleLineRange)
 
     if (newRanges.length > 0) {
       if (this.isMultipleAndAllRangeHaveSameColumnAndConsecutiveRows(newRanges)) return
 
-      newRanges = newRanges.map(range => humanizeBufferRange(this.editor, range))
+      newRanges = newRanges.map(range => this.utils.humanizeBufferRange(this.editor, range))
       newRanges = this.filterNonLeadingWhiteSpaceRange(newRanges)
 
       const type = isMultipleSingleLineRanges(newRanges) ? "undo-redo-multiple-changes" : "undo-redo"
@@ -111,7 +97,7 @@ class Undo extends MiscCommand {
   }
 
   filterNonLeadingWhiteSpaceRange(ranges) {
-    return ranges.filter(range => !isLeadingWhiteSpaceRange(this.editor, range))
+    return ranges.filter(range => !this.utils.isLeadingWhiteSpaceRange(this.editor, range))
   }
 
   // [TODO] Improve further by checking oldText, newText?
@@ -174,8 +160,8 @@ Redo.register()
 // zc
 class FoldCurrentRow extends MiscCommand {
   execute() {
-    for (const selection of this.editor.getSelections()) {
-      this.editor.foldBufferRow(this.getCursorPositionForSelection(selection).row)
+    for (const point of this.getCursorBufferPositions()) {
+      this.editor.foldBufferRow(point.row)
     }
   }
 }
@@ -184,8 +170,8 @@ FoldCurrentRow.register()
 // zo
 class UnfoldCurrentRow extends MiscCommand {
   execute() {
-    for (const selection of this.editor.getSelections()) {
-      this.editor.unfoldBufferRow(this.getCursorPositionForSelection(selection).row)
+    for (const point of this.getCursorBufferPositions()) {
+      this.editor.unfoldBufferRow(point.row)
     }
   }
 }
@@ -194,45 +180,39 @@ UnfoldCurrentRow.register()
 // za
 class ToggleFold extends MiscCommand {
   execute() {
-    this.editor.toggleFoldAtBufferRow(this.editor.getCursorBufferPosition().row)
+    for (const point of this.getCursorBufferPositions()) {
+      this.editor.toggleFoldAtBufferRow(point.row)
+    }
   }
 }
 ToggleFold.register()
 
 // Base of zC, zO, zA
 class FoldCurrentRowRecursivelyBase extends MiscCommand {
-  foldRecursively(row) {
-    const rowRanges = getFoldRowRangesContainedByFoldStartsAtRow(this.editor, row)
-    if (!rowRanges) return
-    const startRows = rowRanges.map(rowRange => rowRange[0])
-    for (const row of startRows.reverse()) {
-      if (!this.editor.isFoldedAtBufferRow(row)) {
-        this.editor.foldBufferRow(row)
-      }
-    }
-  }
-
-  unfoldRecursively(row) {
-    const rowRanges = getFoldRowRangesContainedByFoldStartsAtRow(this.editor, row)
-    if (!rowRanges) return
-    const startRows = rowRanges.map(rowRange => rowRange[0])
-    for (row of startRows) {
-      if (this.editor.isFoldedAtBufferRow(row)) {
-        this.editor.unfoldBufferRow(row)
-      }
-    }
-  }
-
-  foldRecursivelyForAllSelections() {
+  eachFoldStartRow(fn) {
     for (const selection of this.editor.getSelectionsOrderedByBufferPosition().reverse()) {
-      this.foldRecursively(this.getCursorPositionForSelection(selection).row)
+      const {row} = this.getCursorPositionForSelection(selection)
+      if (!this.editor.isFoldableAtBufferRow(row)) continue
+
+      const foldStartRows = this.utils
+        .getFoldRowRangesContainedByFoldStartsAtRow(this.editor, row)
+        .map(rowRange => rowRange[0])
+      for (const row of foldStartRows.reverse()) {
+        fn(row)
+      }
     }
   }
 
-  unfoldRecursivelyForAllSelections() {
-    for (const selection of this.editor.getSelectionsOrderedByBufferPosition()) {
-      this.unfoldRecursively(this.getCursorPositionForSelection(selection).row)
-    }
+  foldRecursively() {
+    this.eachFoldStartRow(row => {
+      if (!this.editor.isFoldedAtBufferRow(row)) this.editor.foldBufferRow(row)
+    })
+  }
+
+  unfoldRecursively() {
+    this.eachFoldStartRow(row => {
+      if (this.editor.isFoldedAtBufferRow(row)) this.editor.unfoldBufferRow(row)
+    })
   }
 }
 FoldCurrentRowRecursivelyBase.register(false)
@@ -240,7 +220,7 @@ FoldCurrentRowRecursivelyBase.register(false)
 // zC
 class FoldCurrentRowRecursively extends FoldCurrentRowRecursivelyBase {
   execute() {
-    this.foldRecursivelyForAllSelections()
+    this.foldRecursively()
   }
 }
 FoldCurrentRowRecursively.register()
@@ -248,7 +228,7 @@ FoldCurrentRowRecursively.register()
 // zO
 class UnfoldCurrentRowRecursively extends FoldCurrentRowRecursivelyBase {
   execute() {
-    this.unfoldRecursivelyForAllSelections()
+    this.unfoldRecursively()
   }
 }
 UnfoldCurrentRowRecursively.register()
@@ -258,9 +238,9 @@ class ToggleFoldRecursively extends FoldCurrentRowRecursivelyBase {
   execute() {
     const {row} = this.getCursorPositionForSelection(this.editor.getLastSelection())
     if (this.editor.isFoldedAtBufferRow(row)) {
-      this.unfoldRecursivelyForAllSelections()
+      this.unfoldRecursively()
     } else {
-      this.foldRecursivelyForAllSelections()
+      this.foldRecursively()
     }
   }
 }
@@ -277,7 +257,7 @@ UnfoldAll.register()
 // zM
 class FoldAll extends MiscCommand {
   execute() {
-    const {allFold} = getFoldInfoByKind(this.editor)
+    const {allFold} = this.utils.getFoldInfoByKind(this.editor)
     if (!allFold) return
 
     this.editor.unfoldAll()
@@ -286,6 +266,7 @@ class FoldAll extends MiscCommand {
         this.editor.foldBufferRowRange(startRow, endRow)
       }
     }
+    this.editor.scrollToCursorPosition({center: true})
   }
 }
 FoldAll.register()
@@ -293,11 +274,11 @@ FoldAll.register()
 // zr
 class UnfoldNextIndentLevel extends MiscCommand {
   execute() {
-    const {folded} = getFoldInfoByKind(this.editor)
+    const {folded} = this.utils.getFoldInfoByKind(this.editor)
     if (!folded) return
     const {minIndent, rowRangesWithIndent} = folded
-    const count = limitNumber(this.getCount() - 1, {min: 0})
-    const targetIndents = getList(minIndent, minIndent + count)
+    const count = this.utils.limitNumber(this.getCount() - 1, {min: 0})
+    const targetIndents = this.utils.getList(minIndent, minIndent + count)
     for (const {indent, startRow} of rowRangesWithIndent) {
       if (targetIndents.includes(indent)) {
         this.editor.unfoldBufferRow(startRow)
@@ -310,7 +291,7 @@ UnfoldNextIndentLevel.register()
 // zm
 class FoldNextIndentLevel extends MiscCommand {
   execute() {
-    const {unfolded, allFold} = getFoldInfoByKind(this.editor)
+    const {unfolded, allFold} = this.utils.getFoldInfoByKind(this.editor)
     if (!unfolded) return
     // FIXME: Why I need unfoldAll()? Why can't I just fold non-folded-fold only?
     // Unless unfoldAll() here, @editor.unfoldAll() delete foldMarker but fail
@@ -321,9 +302,9 @@ class FoldNextIndentLevel extends MiscCommand {
 
     const maxFoldable = this.getConfig("maxFoldableIndentLevel")
     let fromLevel = Math.min(unfolded.maxIndent, maxFoldable)
-    const count = limitNumber(this.getCount() - 1, {min: 0})
-    fromLevel = limitNumber(fromLevel - count, {min: 0})
-    const targetIndents = getList(fromLevel, maxFoldable)
+    const count = this.utils.limitNumber(this.getCount() - 1, {min: 0})
+    fromLevel = this.utils.limitNumber(fromLevel - count, {min: 0})
+    const targetIndents = this.utils.getList(fromLevel, maxFoldable)
     for (const {indent, startRow, endRow} of allFold.rowRangesWithIndent) {
       if (targetIndents.includes(indent)) {
         this.editor.foldBufferRowRange(startRow, endRow)
@@ -349,31 +330,8 @@ class ReplaceModeBackspace extends MiscCommand {
 }
 ReplaceModeBackspace.register()
 
-class ScrollWithoutChangingCursorPosition extends MiscCommand {
-  scrolloff = 2 // atom default. Better to use editor.getVerticalScrollMargin()?
-  cursorPixel = null
-
-  getFirstVisibleScreenRow() {
-    return this.editorElement.getFirstVisibleScreenRow()
-  }
-
-  getLastVisibleScreenRow() {
-    return this.editorElement.getLastVisibleScreenRow()
-  }
-
-  getLastScreenRow() {
-    return this.editor.getLastScreenRow()
-  }
-
-  getCursorPixel() {
-    const point = this.editor.getCursorScreenPosition()
-    return this.editorElement.pixelPositionForScreenPosition(point)
-  }
-}
-ScrollWithoutChangingCursorPosition.register(false)
-
 // ctrl-e scroll lines downwards
-class ScrollDown extends ScrollWithoutChangingCursorPosition {
+class ScrollDown extends MiscCommand {
   execute() {
     const count = this.getCount()
     const oldFirstRow = this.editor.getFirstVisibleScreenRow()
@@ -391,7 +349,7 @@ class ScrollDown extends ScrollWithoutChangingCursorPosition {
 ScrollDown.register()
 
 // ctrl-y scroll lines upwards
-class ScrollUp extends ScrollWithoutChangingCursorPosition {
+class ScrollUp extends MiscCommand {
   execute() {
     const count = this.getCount()
     const oldFirstRow = this.editor.getFirstVisibleScreenRow()
@@ -408,91 +366,133 @@ class ScrollUp extends ScrollWithoutChangingCursorPosition {
 }
 ScrollUp.register()
 
-// ScrollWithoutChangingCursorPosition without Cursor Position change.
-// -------------------------
-class ScrollCursor extends ScrollWithoutChangingCursorPosition {
-  moveToFirstCharacterOfLine = true
+// Adjust scrollTop to change where curos is shown in viewport.
+// +--------+------------------+---------+
+// | where  | move to 1st char | no move |
+// +--------+------------------+---------+
+// | top    | `z enter`        | `z t`   |
+// | middle | `z .`            | `z z`   |
+// | bottom | `z -`            | `z b`   |
+// +--------+------------------+---------+
+class ScrollCursor extends MiscCommand {
+  moveToFirstCharacterOfLine = false
+  where = null
 
   execute() {
+    this.editorElement.setScrollTop(this.getScrollTop())
     if (this.moveToFirstCharacterOfLine) this.editor.moveToFirstCharacterOfLine()
-    if (this.isScrollable()) this.editorElement.setScrollTop(this.getScrollTop())
+  }
+
+  getScrollTop() {
+    const screenPosition = this.editor.getCursorScreenPosition()
+    const {top} = this.editorElement.pixelPositionForScreenPosition(screenPosition)
+    switch (this.where) {
+      case "top":
+        this.recommendToEnableScrollPastEndIfNecessary()
+        return top - this.getOffSetPixelHeight()
+      case "middle":
+        return top - this.editorElement.getHeight() / 2
+      case "bottom":
+        return top - (this.editorElement.getHeight() - this.getOffSetPixelHeight(1))
+    }
   }
 
   getOffSetPixelHeight(lineDelta = 0) {
-    return this.editor.getLineHeightInPixels() * (this.scrolloff + lineDelta)
+    const scrolloff = 2 // atom default. Better to use editor.getVerticalScrollMargin()?
+    return this.editor.getLineHeightInPixels() * (scrolloff + lineDelta)
+  }
+
+  recommendToEnableScrollPastEndIfNecessary() {
+    if (this.editor.getLastVisibleScreenRow() === this.editor.getLastScreenRow() && !this.editor.getScrollPastEnd()) {
+      const message = [
+        "vim-mode-plus",
+        "- For `z t` and `z enter` works properly in every situation, `editor.scrollPastEnd` setting need to be `true`.",
+        '- You can enable it from `"Settings" > "Editor" > "Scroll Past End"`.',
+        "- Or **do you allow vmp enable it for you now?**",
+      ].join("\n")
+
+      const notification = atom.notifications.addInfo(message, {
+        dismissable: true,
+        buttons: [
+          {
+            text: "No thanks.",
+            onDidClick: () => notification.dismiss(),
+          },
+          {
+            text: "OK. Enable it now!!",
+            onDidClick: () => {
+              atom.config.set(`editor.scrollPastEnd`, true)
+              notification.dismiss()
+            },
+          },
+        ],
+      })
+    }
   }
 }
 ScrollCursor.register(false)
 
-// z enter
+// top: z enter
 class ScrollCursorToTop extends ScrollCursor {
-  isScrollable() {
-    return this.getLastVisibleScreenRow() !== this.getLastScreenRow()
-  }
-
-  getScrollTop() {
-    return this.getCursorPixel().top - this.getOffSetPixelHeight()
-  }
+  where = "top"
+  moveToFirstCharacterOfLine = true
 }
 ScrollCursorToTop.register()
 
-// zt
-class ScrollCursorToTopLeave extends ScrollCursorToTop {
-  moveToFirstCharacterOfLine = false
+// top: zt
+class ScrollCursorToTopLeave extends ScrollCursor {
+  where = "top"
 }
 ScrollCursorToTopLeave.register()
 
-// z-
-class ScrollCursorToBottom extends ScrollCursor {
-  isScrollable() {
-    return this.getFirstVisibleScreenRow() !== 0
-  }
-
-  getScrollTop() {
-    return this.getCursorPixel().top - (this.editorElement.getHeight() - this.getOffSetPixelHeight(1))
-  }
-}
-ScrollCursorToBottom.register()
-
-// zb
-class ScrollCursorToBottomLeave extends ScrollCursorToBottom {
-  moveToFirstCharacterOfLine = false
-}
-ScrollCursorToBottomLeave.register()
-
-// z.
+// middle: z.
 class ScrollCursorToMiddle extends ScrollCursor {
-  isScrollable() {
-    return true
-  }
-
-  getScrollTop() {
-    return this.getCursorPixel().top - this.editorElement.getHeight() / 2
-  }
+  where = "middle"
+  moveToFirstCharacterOfLine = true
 }
 ScrollCursorToMiddle.register()
 
-// zz
-class ScrollCursorToMiddleLeave extends ScrollCursorToMiddle {
-  moveToFirstCharacterOfLine = false
+// middle: zz
+class ScrollCursorToMiddleLeave extends ScrollCursor {
+  where = "middle"
 }
 ScrollCursorToMiddleLeave.register()
 
-// Horizontal ScrollWithoutChangingCursorPosition
+// bottom: z-
+class ScrollCursorToBottom extends ScrollCursor {
+  where = "bottom"
+  moveToFirstCharacterOfLine = true
+}
+ScrollCursorToBottom.register()
+
+// bottom: zb
+class ScrollCursorToBottomLeave extends ScrollCursor {
+  where = "bottom"
+}
+ScrollCursorToBottomLeave.register()
+
+// Horizontal Scroll without changing cursor position
 // -------------------------
 // zs
-class ScrollCursorToLeft extends ScrollWithoutChangingCursorPosition {
+class ScrollCursorToLeft extends MiscCommand {
+  which = "left"
   execute() {
-    this.editorElement.setScrollLeft(this.getCursorPixel().left)
+    const translation = this.which === "left" ? [0, 0] : [0, 1]
+    const screenPosition = this.editor.getCursorScreenPosition().translate(translation)
+    const pixel = this.editorElement.pixelPositionForScreenPosition(screenPosition)
+    if (this.which === "left") {
+      this.editorElement.setScrollLeft(pixel.left)
+    } else {
+      this.editorElement.setScrollRight(pixel.left)
+      this.editor.component.updateSync() // FIXME: This is necessary maybe because of bug of atom-core.
+    }
   }
 }
 ScrollCursorToLeft.register()
 
 // ze
 class ScrollCursorToRight extends ScrollCursorToLeft {
-  execute() {
-    this.editorElement.setScrollRight(this.getCursorPixel().left)
-  }
+  which = "right"
 }
 ScrollCursorToRight.register()
 
@@ -506,7 +506,7 @@ class ActivateNormalModeOnce extends InsertMode {
     const cursorsToMoveRight = this.editor.getCursors().filter(cursor => !cursor.isAtBeginningOfLine())
     this.vimState.activate("normal")
     for (const cursor of cursorsToMoveRight) {
-      moveCursorRight(cursor)
+      this.utils.moveCursorRight(cursor)
     }
 
     let disposable = atom.commands.onDidDispatch(event => {
@@ -524,7 +524,7 @@ class InsertRegister extends InsertMode {
   requireInput = true
   initialize() {
     this.readChar()
-    return super.initialize()
+    super.initialize()
   }
 
   execute() {

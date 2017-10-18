@@ -1,7 +1,51 @@
+# 1.11.2:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.11.1...v1.11.2)
+- Fix: No longer throw exception when `demo-mode` pkg was activated, regression from v1.11.0.
+- Fix `remove-leading-white-spaces` operator work properly again regression from v1.11.0.
+- Improve: #701, When `wrapLeftRightMotion` is enabled and `l` in `vC` now can select new-line(can stop at column 0 of next-line).
+- Internal: No longer expect `Operator.protoype.setTarget` return instance.
+  - This eliminate unessential contract between caller/callee.
+
+# 1.11.1:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.11.0...v1.11.1)
+- Fix: `z c` no longer throw exception, this is regression from v1.11.0.
+- Fix: `highlightSearch`, fix minor not-highlighted issue where it should be.
+  - Fix: Highlight newly opened editor is not highlighted when `mainMoudle.globalState` was not populated.
+    - E.g. `pane:split-right`, `pane:split-down` on fuzzy-finder's `select-list`
+  - Fix: Now highlight newly opened editor even when it's not initially **activated**.(e.g. open on next pane without activating it).
+
+# 1.11.0:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.10.0...v1.11.0)
+- Fix: `toggle-highlight-search` command now correctly clear/re-highlight when value changed #918
+  - This is regression introduced in v1.10.0 sorry!
+- Improve: `toggle-fold` now work with multiple cursors.
+- Improve, Breaking: How text-object function detect function scopes
+  - Improve: function scope detection for `type-script`.
+  - Improve, Breaking: `source.js` and `source.jsx`.
+    - Ignore arrow function. Use `a-fold`(e.g. `y z`) for arrow-function.
+    - Now no longer detect instantiation (`new Class`) call as function text-object.
+- Breaking: Rename following align operator since it was confusing.
+  - Old: `align-start-of-occurrence`, New: `align-occurrence-by-pad-start`
+  - Old: `align-end-of-occurrence`, New: `align-occurrence-by-pad-end`
+- Internal: Convention change, return value of `Base.prototype.initialize()` is not used, so no need to return `this`.
+
+# 1.10.0:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.9.1...v1.10.0)
+- New: `numbering-lines` operator, which adds line number to each line.
+  - No default keymap, accessible via `transform-string-by-select-list`(`ctrl-s` for macOS user) command.
+- Improve: `z t`, `z enter` works properly when last screen row was visible. @dcalhoun #915.
+  - `editor.scrollPastEnd` need to be `true` to work these command properly, so show notification if not enabled.
+- Fix: `z e` did not scroll until next cursor move is happens, but now scroll immediately.
+- Improve, Performance: Lazy load further
+- Improve: Improve integration with demo-mode package by making hover and flash highlight fadeout more in-sync.
+- Internal: Remove intermediate class `ScrollWithoutChangingCursorPosition` used for misc-scroll commands.
+
 # 1.9.1:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.9.0...v1.9.1)
 - Fix: [CRITICAL] No longer throw exception by lack of `semver` dependency. Sorry!
 
 # 1.9.0: Converted to JS, as a result, CoffeeScript based customization is no longer supported.
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.8.2...v1.9.0)
 - Maintenance: Convert from CoffeeScript to JavaScript for operator, motion, text-object codes.
   - Now all running code is written in JavaScript.
   - Still test-spec is written in CoffeScript.
@@ -29,10 +73,12 @@
   - `change*`, `substitute*`, `delete*` is special value available to specify ALL same family operators.
 
 # 1.8.2:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.8.1...v1.8.2)
 - Fix: `TransformStringByExternalCommand` operator now correctly shift to `normal-mode` after operation finished.
   - This operator is specifically used by `vim-mode-plus-replace-with-execution` pkg(was broken, but recover now).
 
 # 1.8.1:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.8.0...v1.8.1)
 - Maintenance: Add `Base.initClass` as alias of `Base.extend` for upcoming vmp changes.
 
 # 1.8.0: Expose select operator as normal command
@@ -1918,13 +1964,13 @@ When disabled, changes are not bundled and user can undo more granular level(sma
 - FIX: debug feature was broken
 - FIX:#4 select area when TextObject is executed via command-pallate(was throw err).
 
-# 0.1.1
+# 0.1.1 first public release of vim-mode-plus.
 - 1st public release
 
 # 0.1.0
 - 2015.9.21 rename vim-mode to vim-mode-plus
 
-# 0.0.0
+# 0.0.0 vim-mode-plus started as fork of vim-mode
 - 2015.8.1 forked from vim-mode.
 
 ---

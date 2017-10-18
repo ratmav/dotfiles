@@ -2,7 +2,6 @@
 
 const _ = require("underscore-plus")
 
-const {saveEditorState, getNonWordCharactersForCursor, searchByProjectFind} = require("./utils")
 const SearchModel = require("./search-model")
 const Motion = require("./base").getClass("Motion")
 
@@ -31,7 +30,7 @@ class SearchBase extends Motion {
 
   initialize() {
     this.onDidFinishOperation(() => this.finish())
-    return super.initialize()
+    super.initialize()
   }
 
   getCount(...args) {
@@ -112,7 +111,7 @@ class Search extends SearchBase {
   initialize() {
     if (!this.isComplete()) {
       if (this.isIncrementalSearch()) {
-        this.restoreEditorState = saveEditorState(this.editor)
+        this.restoreEditorState = this.utils.saveEditorState(this.editor)
         this.onDidCommandSearch(this.handleCommandEvent.bind(this))
       }
 
@@ -123,7 +122,7 @@ class Search extends SearchBase {
       this.focusSearchInputEditor()
     }
 
-    return super.initialize()
+    super.initialize()
   }
 
   focusSearchInputEditor() {
@@ -151,7 +150,7 @@ class Search extends SearchBase {
     } else if (event.name === "project-find") {
       this.vimState.searchHistory.save(event.input)
       this.vimState.searchInput.cancel()
-      searchByProjectFind(this.editor, event.input)
+      this.utils.searchByProjectFind(this.editor, event.input)
     }
   }
 
@@ -244,7 +243,7 @@ class SearchCurrentWord extends SearchBase {
     const cursor = this.editor.getLastCursor()
     const point = cursor.getBufferPosition()
 
-    const nonWordCharacters = getNonWordCharactersForCursor(cursor)
+    const nonWordCharacters = this.utils.getNonWordCharactersForCursor(cursor)
     const wordRegex = new RegExp(`[^\\s${_.escapeRegExp(nonWordCharacters)}]+`, "g")
 
     let foundRange

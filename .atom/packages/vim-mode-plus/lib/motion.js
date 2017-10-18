@@ -3,40 +3,6 @@
 const _ = require("underscore-plus")
 const {Point, Range} = require("atom")
 
-const {
-  moveCursorLeft,
-  moveCursorRight,
-  moveCursorUpScreen,
-  moveCursorDownScreen,
-  pointIsAtVimEndOfFile,
-  getFirstVisibleScreenRow,
-  getLastVisibleScreenRow,
-  getValidVimScreenRow,
-  getValidVimBufferRow,
-  moveCursorToFirstCharacterAtRow,
-  sortRanges,
-  pointIsOnWhiteSpace,
-  moveCursorToNextNonWhitespace,
-  isEmptyRow,
-  getCodeFoldRowRanges,
-  getLargestFoldRangeContainsBufferRow,
-  isIncludeFunctionScopeForRow,
-  detectScopeStartPositionForScope,
-  getBufferRows,
-  getTextInScreenRange,
-  setBufferRow,
-  setBufferColumn,
-  limitNumber,
-  getIndex,
-  smartScrollToBufferPosition,
-  pointIsAtEndOfLineAtNonEmptyRow,
-  getEndOfLineForBufferRow,
-  findRangeInBufferRow,
-  saveEditorState,
-  getList,
-  getScreenPositionForScreenRow,
-} = require("./utils")
-
 const Base = require("./base")
 
 class Motion extends Base {
@@ -77,16 +43,13 @@ class Motion extends Base {
   }
 
   moveWithSaveJump(cursor) {
-    let cursorPosition
-    if (cursor.isLastCursor() && this.jump) {
-      cursorPosition = cursor.getBufferPosition()
-    }
+    const originalPosition = this.jump && cursor.isLastCursor() ? cursor.getBufferPosition() : undefined
 
     this.moveCursor(cursor)
 
-    if (cursorPosition && !cursorPosition.isEqual(cursor.getBufferPosition())) {
-      this.vimState.mark.set("`", cursorPosition)
-      this.vimState.mark.set("'", cursorPosition)
+    if (originalPosition && !cursor.getBufferPosition().isEqual(originalPosition)) {
+      this.vimState.mark.set("`", originalPosition)
+      this.vimState.mark.set("'", originalPosition)
     }
   }
 
@@ -102,10 +65,10 @@ class Motion extends Base {
     this.editor.mergeIntersectingSelections()
   }
 
-  // NOTE: Modify selection by modtion, selection is already "normalized" before this function is called.
+  // NOTE: selection is already "normalized" before this function is called.
   select() {
     // need to care was visual for `.` repeated.
-    const isOrWasVisual = (this.operator && this.operator.instanceof("SelectBase")) || this.is("CurrentSelection")
+    const isOrWasVisual = this.operator.instanceof("SelectBase") || this.is("CurrentSelection")
 
     for (const selection of this.editor.getSelections()) {
       selection.modifySelection(() => this.moveWithSaveJump(selection.cursor))
@@ -132,7 +95,7 @@ class Motion extends Base {
     if (this.verticalMotion && !this.getConfig("stayOnVerticalMotion")) {
       cursor.setBufferPosition(this.getFirstCharacterPositionForBufferRow(row), options)
     } else {
-      setBufferRow(cursor, row, options)
+      this.utils.setBufferRow(cursor, row, options)
     }
   }
 
@@ -164,11 +127,7 @@ class CurrentSelection extends Motion {
   selectionExtent = null
   blockwiseSelectionExtent = null
   inclusive = true
-
-  initialize() {
-    this.pointInfoByCursor = new Map()
-    return super.initialize()
-  }
+  pointInfoByCursor = new Map()
 
   moveCursor(cursor) {
     if (this.mode === "visual") {
@@ -217,28 +176,28 @@ CurrentSelection.register(false)
 class MoveLeft extends Motion {
   moveCursor(cursor) {
     const allowWrap = this.getConfig("wrapLeftRightMotion")
-    this.moveCursorCountTimes(cursor, () => moveCursorLeft(cursor, {allowWrap}))
+    this.moveCursorCountTimes(cursor, () => this.utils.moveCursorLeft(cursor, {allowWrap}))
   }
 }
 MoveLeft.register()
 
 class MoveRight extends Motion {
-  canWrapToNextLine(cursor) {
-    if (this.isAsTargetExceptSelectInVisualMode() && !cursor.isAtEndOfLine()) {
-      return false
-    } else {
-      return this.getConfig("wrapLeftRightMotion")
-    }
-  }
-
   moveCursor(cursor) {
+    const allowWrap = this.getConfig("wrapLeftRightMotion")
+
     this.moveCursorCountTimes(cursor, () => {
-      const cursorPosition = cursor.getBufferPosition()
-      this.editor.unfoldBufferRow(cursorPosition.row)
-      const allowWrap = this.canWrapToNextLine(cursor)
-      moveCursorRight(cursor)
-      if (cursor.isAtEndOfLine() && allowWrap && !pointIsAtVimEndOfFile(this.editor, cursorPosition)) {
-        moveCursorRight(cursor, {allowWrap})
+      this.editor.unfoldBufferRow(cursor.getBufferRow())
+
+      // - When `wrapLeftRightMotion` enabled and executed as pure-motion in `normal-mode`,
+      //   we need to move **again** to wrap to next-line if it rached to EOL.
+      // - Expression `!this.operator` means normal-mode motion.
+      // - Expression `this.mode === "normal"` is not appropreate since it matches `x` operator's target case.
+      const needMoveAgain = allowWrap && !this.operator && !cursor.isAtEndOfLine()
+
+      this.utils.moveCursorRight(cursor, {allowWrap})
+
+      if (needMoveAgain && cursor.isAtEndOfLine()) {
+        this.utils.moveCursorRight(cursor, {allowWrap})
       }
     })
   }
@@ -247,7 +206,7 @@ MoveRight.register()
 
 class MoveRightBufferColumn extends Motion {
   moveCursor(cursor) {
-    setBufferColumn(cursor, cursor.getBufferColumn() + this.getCount())
+    this.utils.setBufferColumn(cursor, cursor.getBufferColumn() + this.getCount())
   }
 }
 MoveRightBufferColumn.register(false)
@@ -258,12 +217,12 @@ class MoveUp extends Motion {
 
   getBufferRow(row) {
     const min = 0
-    row = this.wrap && row === min ? this.getVimLastBufferRow() : limitNumber(row - 1, {min})
+    row = this.wrap && row === min ? this.getVimLastBufferRow() : this.utils.limitNumber(row - 1, {min})
     return this.getFoldStartRowForRow(row)
   }
 
   moveCursor(cursor) {
-    this.moveCursorCountTimes(cursor, () => setBufferRow(cursor, this.getBufferRow(cursor.getBufferRow())))
+    this.moveCursorCountTimes(cursor, () => this.utils.setBufferRow(cursor, this.getBufferRow(cursor.getBufferRow())))
   }
 }
 MoveUp.register()
@@ -279,10 +238,10 @@ class MoveDown extends MoveUp {
 
   getBufferRow(row) {
     if (this.editor.isFoldedAtBufferRow(row)) {
-      row = getLargestFoldRangeContainsBufferRow(this.editor, row).end.row
+      row = this.utils.getLargestFoldRangeContainsBufferRow(this.editor, row).end.row
     }
     const max = this.getVimLastBufferRow()
-    return this.wrap && row >= max ? 0 : limitNumber(row + 1, {max})
+    return this.wrap && row >= max ? 0 : this.utils.limitNumber(row + 1, {max})
   }
 }
 MoveDown.register()
@@ -296,7 +255,7 @@ class MoveUpScreen extends Motion {
   wise = "linewise"
   direction = "up"
   moveCursor(cursor) {
-    this.moveCursorCountTimes(cursor, () => moveCursorUpScreen(cursor))
+    this.moveCursorCountTimes(cursor, () => this.utils.moveCursorUpScreen(cursor))
   }
 }
 MoveUpScreen.register()
@@ -305,7 +264,7 @@ class MoveDownScreen extends MoveUpScreen {
   wise = "linewise"
   direction = "down"
   moveCursor(cursor) {
-    this.moveCursorCountTimes(cursor, () => moveCursorDownScreen(cursor))
+    this.moveCursorCountTimes(cursor, () => this.utils.moveCursorDownScreen(cursor))
   }
 }
 MoveDownScreen.register()
@@ -335,8 +294,8 @@ class MoveUpToEdge extends Motion {
 
   getScanRows({row}) {
     return this.direction === "up"
-      ? getList(getValidVimScreenRow(this.editor, row - 1), 0, true)
-      : getList(getValidVimScreenRow(this.editor, row + 1), this.getVimLastScreenRow(), true)
+      ? this.utils.getList(this.utils.getValidVimScreenRow(this.editor, row - 1), 0, true)
+      : this.utils.getList(this.utils.getValidVimScreenRow(this.editor, row + 1), this.getVimLastScreenRow(), true)
   }
 
   isEdge(point) {
@@ -361,14 +320,14 @@ class MoveUpToEdge extends Motion {
   }
 
   isNonWhiteSpacePoint(point) {
-    const char = getTextInScreenRange(this.editor, Range.fromPointWithDelta(point, 0, 1))
+    const char = this.utils.getTextInScreenRange(this.editor, Range.fromPointWithDelta(point, 0, 1))
     return char != null && /\S/.test(char)
   }
 
   isFirstRowOrLastRowAndStoppable(point) {
     // In normal-mode we adjust cursor by moving-left if cursor at EOL of non-blank row.
     // So explicitly guard to not answer it stoppable.
-    if (this.isMode("normal") && pointIsAtEndOfLineAtNonEmptyRow(this.editor, point)) {
+    if (this.isMode("normal") && this.utils.pointIsAtEndOfLineAtNonEmptyRow(this.editor, point)) {
       return false
     } else {
       return (
@@ -394,7 +353,7 @@ class MoveToNextWord extends Motion {
     let wordRange
     let found = false
 
-    this.scanForward(regex, {from}, function({range, matchText, stop}) {
+    this.scanForward(regex, {from}, ({range, matchText, stop}) => {
       wordRange = range
       // Ignore 'empty line' matches between '\r' and '\n'
       if (matchText === "" && range.start.column !== 0) return
@@ -406,7 +365,8 @@ class MoveToNextWord extends Motion {
 
     if (found) {
       const point = wordRange.start
-      return pointIsAtEndOfLineAtNonEmptyRow(this.editor, point) && !point.isEqual(this.getVimEofBufferPosition())
+      return this.utils.pointIsAtEndOfLineAtNonEmptyRow(this.editor, point) &&
+        !point.isEqual(this.getVimEofBufferPosition())
         ? point.traverse([1, 0])
         : point
     } else {
@@ -426,14 +386,14 @@ class MoveToNextWord extends Motion {
   // next line.
   moveCursor(cursor) {
     const cursorPosition = cursor.getBufferPosition()
-    if (pointIsAtVimEndOfFile(this.editor, cursorPosition)) return
+    if (this.utils.pointIsAtVimEndOfFile(this.editor, cursorPosition)) return
 
-    const wasOnWhiteSpace = pointIsOnWhiteSpace(this.editor, cursorPosition)
+    const wasOnWhiteSpace = this.utils.pointIsOnWhiteSpace(this.editor, cursorPosition)
     const isAsTargetExceptSelectInVisualMode = this.isAsTargetExceptSelectInVisualMode()
 
     this.moveCursorCountTimes(cursor, ({isFinal}) => {
       const cursorPosition = cursor.getBufferPosition()
-      if (isEmptyRow(this.editor, cursorPosition.row) && isAsTargetExceptSelectInVisualMode) {
+      if (this.utils.isEmptyRow(this.editor, cursorPosition.row) && isAsTargetExceptSelectInVisualMode) {
         cursor.setBufferPosition(cursorPosition.traverse([1, 0]))
       } else {
         const regex = this.wordRegex || cursor.wordRegExp()
@@ -442,7 +402,7 @@ class MoveToNextWord extends Motion {
           if (this.operator.is("Change") && !wasOnWhiteSpace) {
             point = cursor.getEndOfCurrentWordBufferPosition({wordRegex: this.wordRegex})
           } else {
-            point = Point.min(point, getEndOfLineForBufferRow(this.editor, cursorPosition.row))
+            point = Point.min(point, this.utils.getEndOfLineForBufferRow(this.editor, cursorPosition.row))
           }
         }
         cursor.setBufferPosition(point)
@@ -470,7 +430,7 @@ class MoveToEndOfWord extends Motion {
   inclusive = true
 
   moveToNextEndOfWord(cursor) {
-    moveCursorToNextNonWhitespace(cursor)
+    this.utils.moveCursorToNextNonWhitespace(cursor)
     const point = cursor.getEndOfCurrentWordBufferPosition({wordRegex: this.wordRegex}).translate([0, -1])
     cursor.setBufferPosition(Point.min(point, this.getVimEofBufferPosition()))
   }
@@ -503,7 +463,7 @@ class MoveToPreviousEndOfWord extends MoveToPreviousWord {
       times += 1
     }
 
-    for (const i in getList(1, times)) {
+    for (const i in this.utils.getList(1, times)) {
       const point = cursor.getBeginningOfCurrentWordBufferPosition({wordRegex: this.wordRegex})
       cursor.setBufferPosition(point)
     }
@@ -624,11 +584,9 @@ class MoveToNextSentence extends Motion {
   }
 
   getPoint(fromPoint) {
-    if (this.direction === "next") {
-      return this.getNextStartOfSentence(fromPoint)
-    } else if (this.direction === "previous") {
-      return this.getPreviousStartOfSentence(fromPoint)
-    }
+    return this.direction === "next"
+      ? this.getNextStartOfSentence(fromPoint)
+      : this.getPreviousStartOfSentence(fromPoint)
   }
 
   isBlankRow(row) {
@@ -639,7 +597,7 @@ class MoveToNextSentence extends Motion {
     let foundPoint
     this.scanForward(this.sentenceRegex, {from}, ({range, matchText, match, stop}) => {
       if (match[1] != null) {
-        const [startRow, endRow] = Array.from([range.start.row, range.end.row])
+        const [startRow, endRow] = [range.start.row, range.end.row]
         if (this.skipBlankRow && this.isBlankRow(endRow)) return
         if (this.isBlankRow(startRow) !== this.isBlankRow(endRow)) {
           foundPoint = this.getFirstCharacterPositionForBufferRow(endRow)
@@ -654,9 +612,9 @@ class MoveToNextSentence extends Motion {
 
   getPreviousStartOfSentence(from) {
     let foundPoint
-    this.scanBackward(this.sentenceRegex, {from}, ({range, match, stop, matchText}) => {
+    this.scanBackward(this.sentenceRegex, {from}, ({range, matchText, match, stop}) => {
       if (match[1] != null) {
-        const [startRow, endRow] = Array.from([range.start.row, range.end.row])
+        const [startRow, endRow] = [range.start.row, range.end.row]
         if (!this.isBlankRow(endRow) && this.isBlankRow(startRow)) {
           const point = this.getFirstCharacterPositionForBufferRow(endRow)
           if (point.isLessThan(from)) {
@@ -705,13 +663,13 @@ class MoveToNextParagraph extends Motion {
 
   getPoint(fromPoint) {
     const startRow = fromPoint.row
-    let wasAtNonBlankRow = !this.editor.isBufferRowBlank(startRow)
-    for (let row of getBufferRows(this.editor, {startRow, direction: this.direction})) {
-      if (this.editor.isBufferRowBlank(row)) {
-        if (wasAtNonBlankRow) return new Point(row, 0)
-      } else {
-        wasAtNonBlankRow = true
+    let wasBlankRow = this.editor.isBufferRowBlank(startRow)
+    for (const row of this.utils.getBufferRows(this.editor, {startRow, direction: this.direction})) {
+      const isBlankRow = this.editor.isBufferRowBlank(row)
+      if (!wasBlankRow && isBlankRow) {
+        return new Point(row, 0)
       }
+      wasBlankRow = isBlankRow
     }
 
     // fallback
@@ -729,21 +687,21 @@ MoveToPreviousParagraph.register()
 // keymap: 0
 class MoveToBeginningOfLine extends Motion {
   moveCursor(cursor) {
-    setBufferColumn(cursor, 0)
+    this.utils.setBufferColumn(cursor, 0)
   }
 }
 MoveToBeginningOfLine.register()
 
 class MoveToColumn extends Motion {
   moveCursor(cursor) {
-    setBufferColumn(cursor, this.getCount(-1))
+    this.utils.setBufferColumn(cursor, this.getCount(-1))
   }
 }
 MoveToColumn.register()
 
 class MoveToLastCharacterOfLine extends Motion {
   moveCursor(cursor) {
-    const row = getValidVimBufferRow(this.editor, cursor.getBufferRow() + this.getCount(-1))
+    const row = this.getValidVimBufferRow(cursor.getBufferRow() + this.getCount(-1))
     cursor.setBufferPosition([row, Infinity])
     cursor.goalColumn = Infinity
   }
@@ -758,8 +716,8 @@ class MoveToLastNonblankCharacterOfLineAndDown extends Motion {
   }
 
   getPoint({row}) {
-    row = limitNumber(row + this.getCount(-1), {max: this.getVimLastBufferRow()})
-    const range = findRangeInBufferRow(this.editor, /\S|^/, row, {direction: "backward"})
+    row = this.utils.limitNumber(row + this.getCount(-1), {max: this.getVimLastBufferRow()})
+    const range = this.utils.findRangeInBufferRow(this.editor, /\S|^/, row, {direction: "backward"})
     return range ? range.start : new Point(row, 0)
   }
 }
@@ -779,11 +737,9 @@ MoveToFirstCharacterOfLine.register()
 class MoveToFirstCharacterOfLineUp extends MoveToFirstCharacterOfLine {
   wise = "linewise"
   moveCursor(cursor) {
-    this.moveCursorCountTimes(cursor, function() {
-      const point = cursor.getBufferPosition()
-      if (point.row > 0) {
-        cursor.setBufferPosition(point.translate([-1, 0]))
-      }
+    this.moveCursorCountTimes(cursor, () => {
+      const row = this.getValidVimBufferRow(cursor.getBufferRow() - 1)
+      cursor.setBufferPosition([row, 0])
     })
     super.moveCursor(cursor)
   }
@@ -811,28 +767,10 @@ class MoveToFirstCharacterOfLineAndDown extends MoveToFirstCharacterOfLineDown {
 }
 MoveToFirstCharacterOfLineAndDown.register()
 
-// keymap: g g
-class MoveToFirstLine extends Motion {
-  wise = "linewise"
-  jump = true
-  verticalMotion = true
-  moveSuccessOnLinewise = true
-
-  moveCursor(cursor) {
-    this.setCursorBufferRow(cursor, getValidVimBufferRow(this.editor, this.getRow()))
-    cursor.autoscroll({center: true})
-  }
-
-  getRow() {
-    return this.getCount(-1)
-  }
-}
-MoveToFirstLine.register()
-
 class MoveToScreenColumn extends Motion {
   moveCursor(cursor) {
     const allowOffScreenPosition = this.getConfig("allowMoveToOffScreenColumnOnScreenLineMotion")
-    const point = getScreenPositionForScreenRow(this.editor, cursor.getScreenRow(), this.which, {
+    const point = this.utils.getScreenPositionForScreenRow(this.editor, cursor.getScreenRow(), this.which, {
       allowOffScreenPosition,
     })
     this.setScreenPositionSafely(cursor, point)
@@ -858,6 +796,24 @@ class MoveToLastCharacterOfScreenLine extends MoveToScreenColumn {
 }
 MoveToLastCharacterOfScreenLine.register()
 
+// keymap: g g
+class MoveToFirstLine extends Motion {
+  wise = "linewise"
+  jump = true
+  verticalMotion = true
+  moveSuccessOnLinewise = true
+
+  moveCursor(cursor) {
+    this.setCursorBufferRow(cursor, this.getValidVimBufferRow(this.getRow()))
+    cursor.autoscroll({center: true})
+  }
+
+  getRow() {
+    return this.getCount(-1)
+  }
+}
+MoveToFirstLine.register()
+
 // keymap: G
 class MoveToLastLine extends MoveToFirstLine {
   defaultCount = Infinity
@@ -867,7 +823,7 @@ MoveToLastLine.register()
 // keymap: N% e.g. 10%
 class MoveToLineByPercent extends MoveToFirstLine {
   getRow() {
-    const percent = limitNumber(this.getCount(), {max: 100})
+    const percent = this.utils.limitNumber(this.getCount(), {max: 100})
     return Math.floor((this.editor.getLineCount() - 1) * (percent / 100))
   }
 }
@@ -892,14 +848,14 @@ class MoveToRelativeLine extends Motion {
       row = this.getFoldEndRowForRow(cursor.getBufferRow())
       while (count-- > 0) row = this.getFoldEndRowForRow(row + 1)
     }
-    setBufferRow(cursor, row)
+    this.utils.setBufferRow(cursor, row)
   }
 }
 MoveToRelativeLine.register(false)
 
 class MoveToRelativeLineMinimumTwo extends MoveToRelativeLine {
   getCount(...args) {
-    return limitNumber(super.getCount(...args), {min: 2})
+    return this.utils.limitNumber(super.getCount(...args), {min: 2})
   }
 }
 MoveToRelativeLineMinimumTwo.register(false)
@@ -924,12 +880,12 @@ class MoveToTopOfScreen extends Motion {
   }
 
   getScreenRow() {
-    const firstRow = getFirstVisibleScreenRow(this.editor)
+    const firstRow = this.editor.getFirstVisibleScreenRow()
     let offset = this.getScrolloff()
     if (firstRow === 0) {
       offset = 0
     }
-    offset = limitNumber(this.getCount(-1), {min: offset})
+    offset = this.utils.limitNumber(this.getCount(-1), {min: offset})
     return firstRow + offset
   }
 }
@@ -938,8 +894,8 @@ MoveToTopOfScreen.register()
 // keymap: M
 class MoveToMiddleOfScreen extends MoveToTopOfScreen {
   getScreenRow() {
-    const startRow = getFirstVisibleScreenRow(this.editor)
-    const endRow = limitNumber(this.editor.getLastVisibleScreenRow(), {max: this.getVimLastScreenRow()})
+    const startRow = this.editor.getFirstVisibleScreenRow()
+    const endRow = this.utils.limitNumber(this.editor.getLastVisibleScreenRow(), {max: this.getVimLastScreenRow()})
     return startRow + Math.floor((endRow - startRow) / 2)
   }
 }
@@ -948,18 +904,13 @@ MoveToMiddleOfScreen.register()
 // keymap: L
 class MoveToBottomOfScreen extends MoveToTopOfScreen {
   getScreenRow() {
-    // [FIXME]
-    // At least Atom v1.6.0, there are two implementation of getLastVisibleScreenRow()
-    // editor.getLastVisibleScreenRow() and editorElement.getLastVisibleScreenRow()
-    // Those two methods return different value, editor's one is corrent.
-    // So I intentionally use editor.getLastScreenRow here.
     const vimLastScreenRow = this.getVimLastScreenRow()
-    const row = limitNumber(this.editor.getLastVisibleScreenRow(), {max: vimLastScreenRow})
+    const row = this.utils.limitNumber(this.editor.getLastVisibleScreenRow(), {max: vimLastScreenRow})
     let offset = this.getScrolloff() + 1
     if (row === vimLastScreenRow) {
       offset = 0
     }
-    offset = limitNumber(this.getCount(-1), {min: offset})
+    offset = this.utils.limitNumber(this.getCount(-1), {min: offset})
     return row - offset
   }
 }
@@ -1012,7 +963,7 @@ class Scroll extends Motion {
   }
 
   getBufferRow(cursor) {
-    const screenRow = getValidVimScreenRow(this.editor, cursor.getScreenRow() + this.getAmountOfRows())
+    const screenRow = this.utils.getValidVimScreenRow(this.editor, cursor.getScreenRow() + this.getAmountOfRows())
     return this.editor.bufferRowForScreenRow(screenRow)
   }
 
@@ -1095,7 +1046,7 @@ class Find extends Motion {
       if (charsMax === 1) {
         this.focusInput(optionsBase)
       } else {
-        this._restoreEditorState = saveEditorState(this.editor)
+        this._restoreEditorState = this.utils.saveEditorState(this.editor)
         const options = {
           autoConfirmTimeout: this.getConfig("findConfirmByTimeout"),
           onConfirm: input => {
@@ -1313,7 +1264,7 @@ class MoveToPreviousFoldStart extends Motion {
 
   getFoldRows(which) {
     const index = which === "start" ? 0 : 1
-    const rows = getCodeFoldRowRanges(this.editor).map(rowRange => rowRange[index])
+    const rows = this.utils.getCodeFoldRowRanges(this.editor).map(rowRange => rowRange[index])
     return _.sortBy(_.uniq(rows), row => row)
   }
 
@@ -1330,7 +1281,7 @@ class MoveToPreviousFoldStart extends Motion {
   moveCursor(cursor) {
     this.moveCursorCountTimes(cursor, () => {
       const row = this.detectRow(cursor)
-      if (row != null) moveCursorToFirstCharacterAtRow(cursor, row)
+      if (row != null) this.utils.moveCursorToFirstCharacterAtRow(cursor, row)
     })
   }
 }
@@ -1368,7 +1319,7 @@ MoveToNextFoldEnd.register()
 class MoveToPreviousFunction extends MoveToPreviousFoldStart {
   direction = "prev"
   detectRow(cursor) {
-    return this.getScanRows(cursor).find(row => isIncludeFunctionScopeForRow(this.editor, row))
+    return this.getScanRows(cursor).find(row => this.utils.isIncludeFunctionScopeForRow(this.editor, row))
   }
 }
 MoveToPreviousFunction.register()
@@ -1385,7 +1336,7 @@ class MoveToPositionByScope extends Motion {
   scope = "."
 
   getPoint(fromPoint) {
-    return detectScopeStartPositionForScope(this.editor, fromPoint, this.direction, this.scope)
+    return this.utils.detectScopeStartPositionForScope(this.editor, fromPoint, this.direction, this.scope)
   }
 
   moveCursor(cursor) {
@@ -1425,18 +1376,18 @@ class MoveToNextOccurrence extends Motion {
   direction = "next"
 
   execute() {
-    this.ranges = sortRanges(this.occurrenceManager.getMarkers().map(marker => marker.getBufferRange()))
+    this.ranges = this.utils.sortRanges(this.occurrenceManager.getMarkers().map(marker => marker.getBufferRange()))
     super.execute()
   }
 
   moveCursor(cursor) {
-    const range = this.ranges[getIndex(this.getIndex(cursor.getBufferPosition()), this.ranges)]
+    const range = this.ranges[this.utils.getIndex(this.getIndex(cursor.getBufferPosition()), this.ranges)]
     const point = range.start
     cursor.setBufferPosition(point, {autoscroll: false})
 
     if (cursor.isLastCursor()) {
       this.editor.unfoldBufferRow(point.row)
-      smartScrollToBufferPosition(this.editor, point)
+      this.utils.smartScrollToBufferPosition(this.editor, point)
     }
 
     if (this.getConfig("flashOnMoveToOccurrence")) {

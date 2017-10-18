@@ -479,7 +479,7 @@ describe "Operator TransformString", ->
           'g |': 'vim-mode-plus:align-occurrence'
 
     describe "AlignOccurrence", ->
-      it "[c1] align by =", ->
+      it "align by =", ->
         set
           textC: """
 
@@ -496,7 +496,7 @@ describe "Operator TransformString", ->
           ijklm = 1000
 
           """
-      it "[c1] align by comma", ->
+      it "align by comma", ->
         set
           textC: """
 
@@ -513,8 +513,7 @@ describe "Operator TransformString", ->
           200000, 1
 
           """
-
-      it "[c1] align by non-word-char-ending", ->
+      it "align by non-word-char-ending", ->
         set
           textC: """
 
@@ -531,7 +530,7 @@ describe "Operator TransformString", ->
           ij:    30
 
           """
-      it "[c1] align by normal word", ->
+      it "align by normal word", ->
         set
           textC: """
 
@@ -546,6 +545,33 @@ describe "Operator TransformString", ->
           yyyyyyyy firstName: "Good Bye", lastName: "World"
 
           """
+      it "align by `|` table-like text", ->
+        set
+          text: """
+
+          +--------+------------------+---------+
+          | where | move to 1st char | no move |
+          +--------+------------------+---------+
+          | top | `z enter` | `z t` |
+          | middle | `z .` | `z z` |
+          | bottom | `z -` | `z b` |
+          +--------+------------------+---------+
+
+          """
+          cursor: [2, 0]
+        ensure "g | p",
+          text: """
+
+          +--------+------------------+---------+
+          | where  | move to 1st char | no move |
+          +--------+------------------+---------+
+          | top    | `z enter`        | `z t`   |
+          | middle | `z .`            | `z z`   |
+          | bottom | `z -`            | `z b`   |
+          +--------+------------------+---------+
+
+          """
+          cursor: [2, 0]
 
   describe 'TrimString', ->
     beforeEach ->
@@ -762,7 +788,7 @@ describe "Operator TransformString", ->
           runs ->
             set
               textC: """
-                hello = () => {
+                function hello() {
                   if true {
                   |  console.log('hello');
                   }
@@ -773,7 +799,7 @@ describe "Operator TransformString", ->
         it "adjustIndentation surrounded text ", ->
           ensure 'y s i f {',
             textC: """
-              hello = () => {
+              function hello() {
               |  {
                   if true {
                     console.log('hello');
@@ -1775,3 +1801,12 @@ describe "Operator TransformString", ->
             Dog
             DOG\n
             """
+
+  describe "NumberingLines", ->
+    ensureNumbering = (args...) ->
+      dispatch(editor.element, 'vim-mode-plus:numbering-lines')
+      ensure args...
+
+    beforeEach -> set textC: "|a\nb\nc\n\n"
+    it "numbering by motion", ->     ensureNumbering "j", textC: "|1: a\n2: b\nc\n\n"
+    it "numbering by text-object", -> ensureNumbering "p", textC: "|1: a\n2: b\n3: c\n\n"
