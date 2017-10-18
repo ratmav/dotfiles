@@ -207,14 +207,6 @@ function getVimLastScreenRow(editor) {
   return getVimEofScreenPosition(editor).row
 }
 
-function getFirstVisibleScreenRow(editor) {
-  return editor.element.getFirstVisibleScreenRow()
-}
-
-function getLastVisibleScreenRow(editor) {
-  return editor.element.getLastVisibleScreenRow()
-}
-
 function getFirstCharacterPositionForBufferRow(editor, row) {
   const range = findRangeInBufferRow(editor, /\S/, row)
   return range ? range.start : new Point(row, 0)
@@ -264,64 +256,43 @@ function setBufferColumn(cursor, column) {
   return cursor.setBufferPosition([cursor.getBufferRow(), column])
 }
 
-function moveCursor(cursor, {preserveGoalColumn}, fn) {
-  const {goalColumn} = cursor
+function moveCursor(cursor, keepGoalColumn, fn) {
+  const goalColumn = keepGoalColumn ? cursor.goalColumn : undefined
   fn(cursor)
-  if (preserveGoalColumn && goalColumn != null) {
+  if (goalColumn != null) {
     cursor.goalColumn = goalColumn
   }
 }
 
-// Workaround issue for t9md/vim-mode-plus#226 and atom/atom#3174
-// I cannot depend cursor's column since its claim 0 and clipping emmulation don't
-// return wrapped line, but It actually wrap, so I need to do very dirty work to
-// predict wrap huristically.
-function shouldPreventWrapLine(cursor) {
-  const {row, column} = cursor.getBufferPosition()
-  if (atom.config.get("editor.softTabs")) {
-    const tabLength = atom.config.get("editor.tabLength")
-    if (0 < column && column < tabLength) {
-      const text = cursor.editor.getTextInBufferRange([[row, 0], [row, tabLength]])
-      return /^\s+$/.test(text)
-    }
-  }
-
-  return false
-}
-
-// options:
-//   allowWrap: to controll allow wrap
-//   preserveGoalColumn: preserve original goalColumn
-function moveCursorLeft(cursor, options = {}) {
-  const {allowWrap, needSpecialCareToPreventWrapLine} = options
-  delete options.allowWrap
-  delete options.needSpecialCareToPreventWrapLine
-  if (needSpecialCareToPreventWrapLine && shouldPreventWrapLine(cursor)) {
+function moveCursorLeft(cursor, {allowWrap, preventIncorrectWrap, keepGoalColumn} = {}) {
+  // See t9md/vim-mode-plus#226
+  // On atomicSoftTabs enabled editor, there is situation where
+  // (bufferColumn >  0 && screenColumn === 0) become true.
+  // So we cannot believe bufferColumn, check screenColumn to prevent wrap.
+  if (preventIncorrectWrap && cursor.getScreenColumn() === 0) {
     return
   }
 
   if (!cursor.isAtBeginningOfLine() || allowWrap) {
-    moveCursor(cursor, options, cursor => cursor.moveLeft())
+    moveCursor(cursor, keepGoalColumn, cursor => cursor.moveLeft())
   }
 }
 
-function moveCursorRight(cursor, options = {}) {
-  const {allowWrap} = options
-  delete options.allowWrap
+function moveCursorRight(cursor, {allowWrap, keepGoalColumn} = {}) {
   if (!cursor.isAtEndOfLine() || allowWrap) {
-    moveCursor(cursor, options, cursor => cursor.moveRight())
+    moveCursor(cursor, keepGoalColumn, cursor => cursor.moveRight())
   }
 }
 
-function moveCursorUpScreen(cursor, options = {}) {
+function moveCursorUpScreen(cursor, {keepGoalColumn} = {}) {
   if (cursor.getScreenRow() > 0) {
-    moveCursor(cursor, options, cursor => cursor.moveUp())
+    moveCursor(cursor, keepGoalColumn, cursor => cursor.moveUp())
   }
 }
 
-function moveCursorDownScreen(cursor, options = {}) {
+function moveCursorDownScreen(cursor, {keepGoalColumn} = {}) {
   if (cursor.getScreenRow() < getVimLastScreenRow(cursor.editor)) {
-    moveCursor(cursor, options, cursor => cursor.moveDown())
+    moveCursor(cursor, keepGoalColumn, cursor => cursor.moveDown())
   }
 }
 
@@ -502,6 +473,12 @@ function isFunctionScope(editor, scope) {
       return match(scope, "entity.name.function")
     case "source.ruby":
       return match(scope, "meta.function.", "meta.class.", "meta.module.")
+    case "source.ts":
+      return match(scope, "meta.function.ts", "meta.method.declaration.ts", "meta.interface.ts", "meta.class.ts")
+    case "source.js":
+    case "source.js.jsx":
+      // excluding "meta.function.arrow.js"
+      return match(scope, "meta.function.js", "meta.function.method.", "meta.class.js")
     default:
       return match(scope, "meta.function.", "meta.class.")
   }
@@ -1193,8 +1170,6 @@ module.exports = {
   moveCursorUpScreen,
   moveCursorDownScreen,
   getEndOfLineForBufferRow,
-  getFirstVisibleScreenRow,
-  getLastVisibleScreenRow,
   getValidVimBufferRow,
   getValidVimScreenRow,
   moveCursorToFirstCharacterAtRow,

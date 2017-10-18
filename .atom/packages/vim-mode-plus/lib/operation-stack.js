@@ -25,7 +25,6 @@ module.exports = class OperationStack {
     this.editor = vimState.editor
     this.editorElement = vimState.editorElement
     this.modeManager = vimState.modeManager
-    this.swrap = this.vimState.swrap // intentionally access prop to populate.
 
     this.vimState.onDidDestroy(() => this.destroy())
 
@@ -73,9 +72,7 @@ module.exports = class OperationStack {
     this.running = true
 
     if (this.mode === "visual") {
-      for (const $selection of this.swrap.getSelections(this.editor)) {
-        if (!$selection.hasProperties()) $selection.saveProperties()
-      }
+      this.vimState.swrap.saveProperties(this.editor)
     }
 
     try {
@@ -98,7 +95,9 @@ module.exports = class OperationStack {
 
       if (this.isEmpty()) {
         if ((this.mode === "visual" && operation.isMotion()) || operation.isTextObject()) {
-          operation = Base.getInstance(this.vimState, "SelectInVisualMode").setTarget(operation)
+          const target = operation
+          operation = Base.getInstance(this.vimState, "SelectInVisualMode")
+          operation.setTarget(target)
         }
         this.stack.push(operation)
         this.process()
@@ -224,7 +223,7 @@ module.exports = class OperationStack {
 
       // Move cursor left if cursor was at EOL
       const eolCursors = this.editor.getCursors().filter(cursor => cursor.isAtEndOfLine())
-      eolCursors.forEach(cursor => this.vimState.utils.moveCursorLeft(cursor, {preserveGoalColumn: true}))
+      eolCursors.forEach(cursor => this.vimState.utils.moveCursorLeft(cursor, {keepGoalColumn: true}))
     } else if (this.mode === "visual") {
       this.modeManager.updateNarrowedState()
       this.vimState.updatePreviousSelection()
@@ -252,6 +251,13 @@ module.exports = class OperationStack {
   addToClassList(className) {
     this.editorElement.classList.add(className)
     this.subscribe(new Disposable(() => this.editorElement.classList.remove(className)))
+  }
+
+  setOperatorModifier(...args) {
+    const top = this.peekTop()
+    if (top && top.isOperator()) {
+      top.setModifier(...args)
+    }
   }
 
   // Count

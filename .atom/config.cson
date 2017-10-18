@@ -3,6 +3,12 @@
     projectHome: "/Users/chriscuming/Projects"
     telemetryConsent: "no"
     titleBar: "custom-inset"
+  editor:
+    atomicSoftTabs: false
+    autoIndent: false
+    autoIndentOnPaste: false
+    showIndentGuide: true
+    showInvisibles: true
   "exception-reporting":
     userId: "e1f05df4-4cde-4956-87ff-58e3f0ddaddc"
   termination:

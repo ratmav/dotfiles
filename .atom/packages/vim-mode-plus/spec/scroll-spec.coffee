@@ -12,19 +12,10 @@ describe "Scrolling", ->
 
   describe "scrolling keybindings", ->
     beforeEach ->
-      if editorElement.measureDimensions?
-        # For Atom-v1.19
-        {component} = editor
-        component.element.style.height = component.getLineHeight() * 5 + 'px'
-        editorElement.measureDimensions()
-        initialRowRange = [0, 5]
-
-      else # For Atom-v1.18
-        # [TODO] Remove when v.1.19 become stable
-        editor.setLineHeightInPixels(10)
-        editorElement.setHeight(10 * 5)
-        atom.views.performDocumentPoll()
-        initialRowRange = [0, 4]
+      {component} = editor
+      component.element.style.height = component.getLineHeight() * 5 + 'px'
+      editorElement.measureDimensions()
+      initialRowRange = [0, 5]
 
       set
         cursor: [1, 2]
@@ -62,18 +53,12 @@ describe "Scrolling", ->
       editorElement.style.lineHeight = "20px"
 
       editorElement.setHeight(20 * 10)
-
-      if editorElement.measureDimensions?
-        # For Atom-v1.19
-        editorElement.measureDimensions()
-      else # For Atom-v1.18
-        # [TODO] Remove when v.1.19 become stable
-        editorElement.component.sampleFontStyling()
+      editorElement.measureDimensions()
 
       spyOn(editor, 'moveToFirstCharacterOfLine')
       spyOn(editorElement, 'setScrollTop')
-      spyOn(editorElement, 'getFirstVisibleScreenRow').andReturn(90)
-      spyOn(editorElement, 'getLastVisibleScreenRow').andReturn(110)
+      spyOn(editor, 'getFirstVisibleScreenRow').andReturn(90)
+      spyOn(editor, 'getLastVisibleScreenRow').andReturn(110)
       spyOn(editorElement, 'pixelPositionForScreenPosition').andReturn({top: 1000, left: 0})
 
     describe "the z<CR> keybinding", ->
@@ -118,13 +103,7 @@ describe "Scrolling", ->
       editorElement.setHeight(600)
       editorElement.style.lineHeight = "10px"
       editorElement.style.font = "16px monospace"
-
-      if editorElement.measureDimensions?
-        # For Atom-v1.19
-        editorElement.measureDimensions()
-      else # For Atom-v1.18
-        # [TODO] Remove when v.1.19 become stable
-        atom.views.performDocumentPoll()
+      editorElement.measureDimensions()
 
       text = ""
       for i in [100..199]
@@ -133,12 +112,13 @@ describe "Scrolling", ->
       editor.setCursorBufferPosition([0, 0])
 
     describe "the zs keybinding", ->
+      startPosition = null
+
       zsPos = (pos) ->
         editor.setCursorBufferPosition([0, pos])
         keystroke 'z s'
         editorElement.getScrollLeft()
 
-      startPosition = NaN
       beforeEach ->
         startPosition = editorElement.getScrollLeft()
 
@@ -198,7 +178,7 @@ describe "Scrolling", ->
         expect(pos110).toBeGreaterThan(startPosition)
 
         pos109 = zePos(109)
-        expect(pos110 - pos109).toEqual(9)
+        expect(pos110 - pos109).toEqual(10)
 
       # FIXME description is no longer appropriate
       it "does nothing when very near the end of the line", ->
