@@ -13,6 +13,7 @@
     userId: "e1f05df4-4cde-4956-87ff-58e3f0ddaddc"
   "git-diff":
     showIconsInEditorGutter: true
+  github: {}
   termination:
     style:
       theme: "one-dark"
