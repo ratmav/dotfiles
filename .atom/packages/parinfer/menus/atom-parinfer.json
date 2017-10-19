@@ -1,0 +1,22 @@
+{
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "Parinfer",
+          "submenu": [
+            {
+              "label": "Toggle Mode",
+              "command": "parinfer:toggle-mode"
+            },
+            {
+              "label": "Disable",
+              "command": "parinfer:disable"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
