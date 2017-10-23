@@ -13,7 +13,7 @@ configure_gitignore() {
 
 configure_git_editor() {
   echo "configuring git editor..."
-  git config --global core.editor "$(which nvim)"
+  git config --global core.editor "$(which vim)"
   echo "...configured"
 }
 
