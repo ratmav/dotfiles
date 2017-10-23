@@ -269,15 +269,10 @@ class MoveDownScreen extends MoveUpScreen {
 }
 MoveDownScreen.register()
 
-// Move down/up to Edge
-// -------------------------
-// See t9md/atom-vim-mode-plus#236
-// At least v1.7.0. bufferPosition and screenPosition cannot convert accurately
-// when row is folded.
 class MoveUpToEdge extends Motion {
   wise = "linewise"
   jump = true
-  direction = "up"
+  direction = "previous"
   moveCursor(cursor) {
     this.moveCursorCountTimes(cursor, () => {
       this.setScreenPositionSafely(cursor, this.getPoint(cursor.getScreenPosition()))
@@ -285,62 +280,52 @@ class MoveUpToEdge extends Motion {
   }
 
   getPoint(fromPoint) {
-    const {column} = fromPoint
-    for (const row of this.getScanRows(fromPoint)) {
+    const {column, row: startRow} = fromPoint
+    for (const row of this.getScreenRows({startRow, direction: this.direction})) {
       const point = new Point(row, column)
       if (this.isEdge(point)) return point
     }
   }
 
-  getScanRows({row}) {
-    return this.direction === "up"
-      ? this.utils.getList(this.utils.getValidVimScreenRow(this.editor, row - 1), 0, true)
-      : this.utils.getList(this.utils.getValidVimScreenRow(this.editor, row + 1), this.getVimLastScreenRow(), true)
-  }
-
   isEdge(point) {
-    if (this.isStoppablePoint(point)) {
-      // If one of above/below point was not stoppable, it's Edge!
-      const above = point.translate([-1, 0])
-      const below = point.translate([+1, 0])
-      return !this.isStoppablePoint(above) || !this.isStoppablePoint(below)
-    } else {
-      return false
-    }
+    // If point is stoppable and above or below point is not stoppable, it's Edge!
+    return (
+      this.isStoppable(point) &&
+      (!this.isStoppable(point.translate([-1, 0])) || !this.isStoppable(point.translate([+1, 0])))
+    )
   }
 
-  isStoppablePoint(point) {
-    if (this.isNonWhiteSpacePoint(point) || this.isFirstRowOrLastRowAndStoppable(point)) {
-      return true
-    } else {
-      const leftPoint = point.translate([0, -1])
-      const rightPoint = point.translate([0, +1])
-      return this.isNonWhiteSpacePoint(leftPoint) && this.isNonWhiteSpacePoint(rightPoint)
-    }
+  isStoppable(point) {
+    return (
+      this.isNonWhiteSpace(point) ||
+      this.isFirstRowOrLastRowAndEqualAfterClipped(point) ||
+      // If right or left column is non-white-space char, it's stoppable.
+      (this.isNonWhiteSpace(point.translate([0, -1])) && this.isNonWhiteSpace(point.translate([0, +1])))
+    )
   }
 
-  isNonWhiteSpacePoint(point) {
+  isNonWhiteSpace(point) {
     const char = this.utils.getTextInScreenRange(this.editor, Range.fromPointWithDelta(point, 0, 1))
     return char != null && /\S/.test(char)
   }
 
-  isFirstRowOrLastRowAndStoppable(point) {
-    // In normal-mode we adjust cursor by moving-left if cursor at EOL of non-blank row.
+  isFirstRowOrLastRowAndEqualAfterClipped(point) {
+    // In notmal-mode, cursor is NOT stoppable to EOL of non-blank row.
     // So explicitly guard to not answer it stoppable.
     if (this.isMode("normal") && this.utils.pointIsAtEndOfLineAtNonEmptyRow(this.editor, point)) {
       return false
-    } else {
-      return (
-        point.isEqual(this.editor.clipScreenPosition(point)) &&
-        (point.row === 0 || point.row === this.getVimLastScreenRow())
-      )
     }
+
+    return (
+      (point.row === 0 || point.row === this.getVimLastScreenRow()) &&
+      point.isEqual(this.editor.clipScreenPosition(point))
+    )
   }
 }
 MoveUpToEdge.register()
 
 class MoveDownToEdge extends MoveUpToEdge {
-  direction = "down"
+  direction = "next"
 }
 MoveDownToEdge.register()
 
@@ -664,7 +649,7 @@ class MoveToNextParagraph extends Motion {
   getPoint(fromPoint) {
     const startRow = fromPoint.row
     let wasBlankRow = this.editor.isBufferRowBlank(startRow)
-    for (const row of this.utils.getBufferRows(this.editor, {startRow, direction: this.direction})) {
+    for (const row of this.getBufferRows({startRow, direction: this.direction})) {
       const isBlankRow = this.editor.isBufferRowBlank(row)
       if (!wasBlankRow && isBlankRow) {
         return new Point(row, 0)
@@ -1070,7 +1055,7 @@ class Find extends Motion {
         this.focusInput(Object.assign(options, optionsBase))
       }
     }
-    return super.initialize()
+    super.initialize()
   }
 
   findPreConfirmed(delta) {
@@ -1215,14 +1200,18 @@ class MoveToMark extends Motion {
   jump = true
   requireInput = true
   input = null
+  moveToFirstCharacterOfLine = false
 
   initialize() {
     if (!this.isComplete()) this.readChar()
-    return super.initialize()
+    super.initialize()
   }
 
   getPoint() {
-    return this.vimState.mark.get(this.input)
+    const point = this.vimState.mark.get(this.input)
+    if (point) {
+      return this.moveToFirstCharacterOfLine ? this.getFirstCharacterPositionForBufferRow(point.row) : point
+    }
   }
 
   moveCursor(cursor) {
@@ -1238,13 +1227,7 @@ MoveToMark.register()
 // keymap: '
 class MoveToMarkLine extends MoveToMark {
   wise = "linewise"
-
-  getPoint() {
-    const point = super.getPoint()
-    if (point) {
-      return this.getFirstCharacterPositionForBufferRow(point.row)
-    }
-  }
+  moveToFirstCharacterOfLine = true
 }
 MoveToMarkLine.register()
 
@@ -1253,24 +1236,23 @@ MoveToMarkLine.register()
 class MoveToPreviousFoldStart extends Motion {
   wise = "characterwise"
   which = "start"
-  direction = "prev"
+  direction = "previous"
 
   execute() {
     this.rows = this.getFoldRows(this.which)
-    if (this.direction === "prev") this.rows.reverse()
-
+    if (this.direction === "previous") this.rows.reverse()
     super.execute()
   }
 
   getFoldRows(which) {
-    const index = which === "start" ? 0 : 1
-    const rows = this.utils.getCodeFoldRowRanges(this.editor).map(rowRange => rowRange[index])
+    const toRow = ([startRow, endRow]) => (which === "start" ? startRow : endRow)
+    const rows = this.utils.getCodeFoldRowRanges(this.editor).map(toRow)
     return _.sortBy(_.uniq(rows), row => row)
   }
 
   getScanRows(cursor) {
     const cursorRow = cursor.getBufferRow()
-    const isVald = this.direction === "prev" ? row => row < cursorRow : row => row > cursorRow
+    const isVald = this.direction === "previous" ? row => row < cursorRow : row => row > cursorRow
     return this.rows.filter(isVald)
   }
 
@@ -1317,7 +1299,7 @@ MoveToNextFoldEnd.register()
 
 // -------------------------
 class MoveToPreviousFunction extends MoveToPreviousFoldStart {
-  direction = "prev"
+  direction = "previous"
   detectRow(cursor) {
     return this.getScanRows(cursor).find(row => this.utils.isIncludeFunctionScopeForRow(this.editor, row))
   }

@@ -76,13 +76,12 @@ function isEndsWithNewLineForBufferRow(editor, row) {
   return start.row !== end.row
 }
 
-function sortRanges(ranges) {
-  return ranges.sort((a, b) => a.compare(b))
+function sortComparables(comparables) {
+  return comparables.sort((a, b) => a.compare(b))
 }
 
-function sortCursors(cursors) {
-  return cursors.sort((a, b) => a.compare(b))
-}
+// This is just clarify intention, adds no value in fucntionalities.
+const [sortRanges, sortCursors, sortPoints] = [sortComparables, sortComparables, sortComparables]
 
 // Return adjusted index fit whitin given list's length
 // return -1 if list is empty.
@@ -174,12 +173,12 @@ function moveCursorToNextNonWhitespace(cursor) {
   return !originalPoint.isEqual(cursor.getBufferPosition())
 }
 
-function getBufferRows(editor, {startRow, direction}) {
+function getRows(editor, bufferOrScreen, {startRow, direction}) {
   switch (direction) {
     case "previous":
       return startRow <= 0 ? [] : getList(startRow - 1, 0)
     case "next":
-      const endRow = getVimLastBufferRow(editor)
+      const endRow = bufferOrScreen === "buffer" ? getVimLastBufferRow(editor) : getVimLastScreenRow(editor)
       return startRow >= endRow ? [] : getList(startRow + 1, endRow)
   }
 }
@@ -1152,6 +1151,7 @@ module.exports = {
   isLinewiseRange,
   sortRanges,
   sortCursors,
+  sortPoints,
   getIndex,
   getVisibleBufferRange,
   getVisibleEditors,
@@ -1188,7 +1188,7 @@ module.exports = {
   getScreenPositionForScreenRow,
   isIncludeFunctionScopeForRow,
   detectScopeStartPositionForScope,
-  getBufferRows,
+  getRows,
   smartScrollToBufferPosition,
   matchScopes,
   isSingleLineText,
