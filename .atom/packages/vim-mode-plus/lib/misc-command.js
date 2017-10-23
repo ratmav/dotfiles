@@ -16,8 +16,7 @@ class Mark extends MiscCommand {
   }
 
   execute() {
-    this.vimState.mark.set(this.input, this.editor.getCursorBufferPosition())
-    this.activateMode("normal")
+    this.vimState.mark.set(this.input, this.getCursorBufferPosition())
   }
 }
 Mark.register()
@@ -190,16 +189,14 @@ ToggleFold.register()
 // Base of zC, zO, zA
 class FoldCurrentRowRecursivelyBase extends MiscCommand {
   eachFoldStartRow(fn) {
-    for (const selection of this.editor.getSelectionsOrderedByBufferPosition().reverse()) {
-      const {row} = this.getCursorPositionForSelection(selection)
+    for (const {row} of this.getCursorBufferPositionsOrdered().reverse()) {
       if (!this.editor.isFoldableAtBufferRow(row)) continue
 
-      const foldStartRows = this.utils
+      this.utils
         .getFoldRowRangesContainedByFoldStartsAtRow(this.editor, row)
-        .map(rowRange => rowRange[0])
-      for (const row of foldStartRows.reverse()) {
-        fn(row)
-      }
+        .map(rowRange => rowRange[0]) // mapt to startRow of fold
+        .reverse() // reverse to process encolosed(nested) fold first than encolosing fold.
+        .forEach(fn)
     }
   }
 
@@ -236,8 +233,7 @@ UnfoldCurrentRowRecursively.register()
 // zA
 class ToggleFoldRecursively extends FoldCurrentRowRecursivelyBase {
   execute() {
-    const {row} = this.getCursorPositionForSelection(this.editor.getLastSelection())
-    if (this.editor.isFoldedAtBufferRow(row)) {
+    if (this.editor.isFoldedAtBufferRow(this.getCursorBufferPosition().row)) {
       this.unfoldRecursively()
     } else {
       this.foldRecursively()

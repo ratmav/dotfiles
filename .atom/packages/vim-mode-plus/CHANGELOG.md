@@ -1,3 +1,21 @@
+# 1.11.6:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.11.5...v1.11.6)
+- Fix: `move-up-to-edge`, `move-down-to-edge` motion did not work correctly in soft-wrapped editor.
+  - Regression from v1.11.0.
+
+# 1.11.5:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.11.4...v1.11.5)
+- Fix: No `r` with `'` or `"` input properly work on some international keyboard which require TWO keystroke to input these quotes.
+  - Fix provided 1.11.4 was just fix issue partially, not perfect.
+
+# 1.11.4:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.11.3...v1.11.4)
+- Fix: No `r` with `'` or `"` input properly work on some international keyboard which require TWO keystroke to input these quotes.
+
+# 1.11.3:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.11.2...v1.11.3)
+- Fix: No longer throw exception when `change-surround-any-pair` cannot find surround pair.
+
 # 1.11.2:
 - Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.11.1...v1.11.2)
 - Fix: No longer throw exception when `demo-mode` pkg was activated, regression from v1.11.0.

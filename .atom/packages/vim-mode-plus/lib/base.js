@@ -134,12 +134,9 @@ class Base {
         this.processOperation()
       }
     }
-    if (!options.onCancel) {
-      options.onCancel = () => this.cancelOperation()
-    }
-    if (!options.onChange) {
-      options.onChange = input => this.vimState.hover.set(input)
-    }
+    if (!options.onCancel) options.onCancel = () => this.cancelOperation()
+    if (!options.onChange) options.onChange = input => this.vimState.hover.set(input)
+
     this.vimState.focusInput(options)
   }
 
@@ -153,6 +150,7 @@ class Base {
     })
   }
 
+  // Wrapper for this.utils == start
   getVimEofBufferPosition() {
     return this.utils.getVimEofBufferPosition(this.editor)
   }
@@ -169,8 +167,8 @@ class Base {
     return this.utils.getValidVimBufferRow(this.editor, row)
   }
 
-  getWordBufferRangeAndKindAtBufferPosition(point, options) {
-    return this.utils.getWordBufferRangeAndKindAtBufferPosition(this.editor, point, options)
+  getWordBufferRangeAndKindAtBufferPosition(...args) {
+    return this.utils.getWordBufferRangeAndKindAtBufferPosition(this.editor, ...args)
   }
 
   getFirstCharacterPositionForBufferRow(row) {
@@ -196,6 +194,15 @@ class Base {
   getFoldEndRowForRow(...args) {
     return this.utils.getFoldEndRowForRow(this.editor, ...args)
   }
+
+  getBufferRows(...args) {
+    return this.utils.getRows(this.editor, "buffer", ...args)
+  }
+
+  getScreenRows(...args) {
+    return this.utils.getRows(this.editor, "screen", ...args)
+  }
+  // Wrapper for this.utils == end
 
   instanceof(klassName) {
     return this instanceof Base.getClass(klassName)
@@ -230,6 +237,10 @@ class Base {
     return this.mode === "visual"
       ? this.editor.getSelections().map(selection => this.getCursorPositionForSelection(selection))
       : this.editor.getCursorBufferPositions()
+  }
+
+  getCursorBufferPositionsOrdered() {
+    return this.utils.sortPoints(this.getCursorBufferPositions())
   }
 
   getBufferPositionForCursor(cursor) {
@@ -304,8 +315,8 @@ class Base {
     const commandTable = {}
     for (const file of filesToLoad) {
       for (const klass of klassesGroupedByFile[file]) {
-        commandTable[klass.name] = klass.isCommand()
-          ? {file: klass.file, commandName: klass.getCommandName(), commandScope: klass.getCommandScope()}
+        commandTable[klass.name] = klass.command
+          ? {file: klass.file, commandName: klass.getCommandName(), commandScope: klass.commandScope}
           : {file: klass.file}
       }
     }
@@ -365,10 +376,6 @@ class Base {
     return CLASS_REGISTRY
   }
 
-  static isCommand() {
-    return this.command
-  }
-
   static getCommandName() {
     return this.commandPrefix + ":" + _plus().dasherize(this.name)
   }
@@ -377,13 +384,9 @@ class Base {
     return _plus().dasherize(this.name)
   }
 
-  static getCommandScope() {
-    return this.commandScope
-  }
-
   static registerCommand() {
     return this.registerCommandFromSpec(this.name, {
-      commandScope: this.getCommandScope(),
+      commandScope: this.commandScope,
       commandName: this.getCommandName(),
       getClass: () => this,
     })
