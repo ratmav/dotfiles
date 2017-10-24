@@ -16,7 +16,7 @@ install_homebrew() {
 }
 
 homebrew_packages() {
-  PACKAGES=("git" "python" "pyenv" "pyenv-virtualenv" "rbenv")
+  PACKAGES=("git" "bash-completion" "python" "pyenv" "pyenv-virtualenv" "rbenv")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
