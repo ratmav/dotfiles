@@ -2,7 +2,7 @@
 
 
 pypi_packages() {
-  packages=(pip setuptools ansible)
+  packages=(pip setuptools)
   for package in ${packages[@]}; do
     pip install -U "$package"
   done
