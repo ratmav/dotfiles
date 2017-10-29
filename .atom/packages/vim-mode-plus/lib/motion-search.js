@@ -71,7 +71,13 @@ class SearchBase extends Motion {
     if (!this.input) return
     const point = this.getPoint(cursor)
 
-    if (point) cursor.setBufferPosition(point, {autoscroll: false})
+    if (point) {
+      if (this.restoreEditorState) {
+        this.restoreEditorState({anchorPosition: point, skipRow: point.row})
+        this.restoreEditorState = null // HACK: dont refold on `n`, `N` repeat
+      }
+      cursor.setBufferPosition(point, {autoscroll: false})
+    }
 
     if (!this.repeated) {
       this.globalState.set("currentSearch", this)
@@ -109,18 +115,16 @@ class Search extends SearchBase {
   requireInput = true
 
   initialize() {
-    if (!this.isComplete()) {
-      if (this.isIncrementalSearch()) {
-        this.restoreEditorState = this.utils.saveEditorState(this.editor)
-        this.onDidCommandSearch(this.handleCommandEvent.bind(this))
-      }
-
-      this.onDidConfirmSearch(this.handleConfirmSearch.bind(this))
-      this.onDidCancelSearch(this.handleCancelSearch.bind(this))
-      this.onDidChangeSearch(this.handleChangeSearch.bind(this))
-
-      this.focusSearchInputEditor()
+    if (this.isIncrementalSearch()) {
+      this.restoreEditorState = this.utils.saveEditorState(this.editor)
+      this.onDidCommandSearch(this.handleCommandEvent.bind(this))
     }
+
+    this.onDidConfirmSearch(this.handleConfirmSearch.bind(this))
+    this.onDidCancelSearch(this.handleCancelSearch.bind(this))
+    this.onDidChangeSearch(this.handleChangeSearch.bind(this))
+
+    this.focusSearchInputEditor()
 
     super.initialize()
   }

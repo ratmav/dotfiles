@@ -343,45 +343,46 @@ class TransformStringByExternalCommand extends TransformString {
   autoIndent = true
   command = "" // e.g. command: 'sort'
   args = [] // e.g args: ['-rn']
-  stdoutBySelection = null
 
-  execute() {
-    this.normalizeSelectionsIfNecessary()
-    if (this.selectTarget()) {
-      return new Promise(resolve => this.collect(resolve)).then(() => {
-        for (const selection of this.editor.getSelections()) {
-          const text = this.getNewText(selection.getText(), selection)
-          selection.insertText(text, {autoIndent: this.autoIndent})
-        }
-        this.restoreCursorPositionsIfNecessary()
-        this.activateMode("normal")
-      })
-    }
+  // NOTE: Unlike other class, first arg is `stdout` of external commands.
+  getNewText(text, selection) {
+    return text || selection.getText()
+  }
+  getCommand(selection) {
+    return {command: this.command, args: this.args}
+  }
+  getStdin(selection) {
+    return selection.getText()
   }
 
-  collect(resolve) {
-    this.stdoutBySelection = new Map()
-    let processFinished = 0,
-      processRunning = 0
-    for (const selection of this.editor.getSelections()) {
-      const {command, args} = this.getCommand(selection) || {}
-      if (command == null || args == null) return
+  async execute() {
+    this.normalizeSelectionsIfNecessary()
+    this.createBufferCheckpoint("undo")
 
-      processRunning++
-      this.runExternalCommand({
-        command: command,
-        args: args,
-        stdin: this.getStdin(selection),
-        stdout: output => this.stdoutBySelection.set(selection, output),
-        exit: code => {
-          processFinished++
-          if (processRunning === processFinished) resolve()
-        },
-      })
+    if (this.selectTarget()) {
+      for (const selection of this.editor.getSelections()) {
+        const {command, args} = this.getCommand(selection) || {}
+        if (command == null || args == null) continue
+
+        const stdout = await this.runExternalCommand({command, args, stdin: this.getStdin(selection)})
+        selection.insertText(this.getNewText(stdout, selection), {autoIndent: this.autoIndent})
+      }
+      this.mutationManager.setCheckpoint("did-finish")
+      this.restoreCursorPositionsIfNecessary()
+      this.groupChangesSinceBufferCheckpoint("undo")
     }
+    this.emitDidFinishMutation()
+    this.activateMode("normal")
   }
 
   runExternalCommand(options) {
+    let output = ""
+    options.stdout = data => (output += data)
+
+    let resolveOutput
+    const exitPromise = new Promise(resolve => (resolveOutput = resolve))
+    options.exit = () => resolveOutput(output)
+
     const {stdin} = options
     delete options.stdin
     const bufferedProcess = new BufferedProcess(options)
@@ -398,29 +399,26 @@ class TransformStringByExternalCommand extends TransformString {
       bufferedProcess.process.stdin.write(stdin)
       bufferedProcess.process.stdin.end()
     }
-  }
-
-  getNewText(text, selection) {
-    return this.getStdout(selection) || text
-  }
-
-  // For easily extend by vmp plugin.
-  getCommand(selection) {
-    return {command: this.command, args: this.args}
-  }
-  getStdin(selection) {
-    return selection.getText()
-  }
-  getStdout(selection) {
-    return this.stdoutBySelection.get(selection)
+    return exitPromise
   }
 }
 TransformStringByExternalCommand.register(false)
 
 // -------------------------
 class TransformStringBySelectList extends TransformString {
-  static electListItems = null
-  requireInput = true
+  isReady() {
+    return false
+  }
+
+  initialize() {
+    const items = this.constructor.getSelectListItems()
+    this.focusSelectList({items})
+
+    this.vimState.onDidConfirmSelectList(item => {
+      this.vimState.reset()
+      this.vimState.operationStack.run(item.klass, {target: this.target})
+    })
+  }
 
   static getSelectListItems() {
     if (!this.selectListItems) {
@@ -432,29 +430,6 @@ class TransformStringBySelectList extends TransformString {
       }))
     }
     return this.selectListItems
-  }
-
-  getItems() {
-    return this.constructor.getSelectListItems()
-  }
-
-  initialize() {
-    this.vimState.onDidConfirmSelectList(item => {
-      const transformer = item.klass
-      if (transformer.prototype.target) {
-        this.target = transformer.prototype.target
-      }
-      this.vimState.reset()
-      if (this.target) {
-        this.vimState.operationStack.run(transformer, {target: this.target})
-      } else {
-        this.vimState.operationStack.run(transformer)
-      }
-    })
-
-    this.focusSelectList({items: this.getItems()})
-
-    super.initialize()
   }
 
   execute() {
@@ -500,6 +475,11 @@ class ReplaceWithRegister extends TransformString {
   }
 }
 ReplaceWithRegister.register()
+
+class ReplaceOccurrenceWithRegister extends ReplaceWithRegister {
+  occurrence = true
+}
+ReplaceOccurrenceWithRegister.register()
 
 // Save text to register before replace
 class SwapWithRegister extends TransformString {
@@ -710,8 +690,7 @@ ChangeSurroundAnyPairAllowForwarding.register()
 // FIXME
 // Currently native editor.joinLines() is better for cursor position setting
 // So I use native methods for a meanwhile.
-class Join extends TransformString {
-  target = "MoveToRelativeLine"
+class JoinTarget extends TransformString {
   flashTarget = false
   restorePositions = false
 
@@ -731,19 +710,17 @@ class Join extends TransformString {
     return selection.cursor.setBufferPosition(point)
   }
 }
+JoinTarget.register()
+
+class Join extends JoinTarget {
+  target = "MoveToRelativeLine"
+}
 Join.register()
 
 class JoinBase extends TransformString {
   wise = "linewise"
   trim = false
   target = "MoveToRelativeLineMinimumTwo"
-
-  initialize() {
-    if (this.requireInput) {
-      this.focusInput({charsMax: 10})
-    }
-    super.initialize()
-  }
 
   getNewText(text) {
     const regex = this.trim ? /\r?\n[ \t]*/g : /\r?\n/g
@@ -758,7 +735,8 @@ class JoinWithKeepingSpace extends JoinBase {
 JoinWithKeepingSpace.register()
 
 class JoinByInput extends JoinBase {
-  requireInput = true
+  readInputAfterExecute = true
+  focusInputOptions = {charsMax: 10}
   trim = true
 }
 JoinByInput.register()
@@ -771,17 +749,10 @@ JoinByInputWithKeepingSpace.register()
 // -------------------------
 // String suffix in name is to avoid confusion with 'split' window.
 class SplitString extends TransformString {
-  requireInput = true
-  input = null
   target = "MoveToRelativeLine"
   keepSplitter = false
-
-  initialize() {
-    this.onDidSetTarget(() => {
-      this.focusInput({charsMax: 10})
-    })
-    super.initialize()
-  }
+  readInputAfterExecute = true
+  focusInputOptions = {charsMax: 10}
 
   getNewText(text) {
     const regex = new RegExp(_.escapeRegExp(this.input || "\\n"), "g")
@@ -945,13 +916,14 @@ const classesToRegisterToSelectList = [
   TrimString, CompactSpaces, RemoveLeadingWhiteSpaces,
   AlignOccurrence, AlignOccurrenceByPadLeft, AlignOccurrenceByPadRight,
   ConvertToSoftTab, ConvertToHardTab,
-  JoinWithKeepingSpace, JoinByInput, JoinByInputWithKeepingSpace,
+  JoinTarget, Join, JoinWithKeepingSpace, JoinByInput, JoinByInputWithKeepingSpace,
   SplitString, SplitStringWithKeepingSplitter,
   SplitArguments, SplitArgumentsWithRemoveSeparator, SplitArgumentsOfInnerAnyPair,
   Reverse, Rotate, RotateBackwards, Sort, SortCaseInsensitively, SortByNumber,
   NumberingLines,
   DuplicateWithCommentOutOriginal,
 ]
+
 for (const klass of classesToRegisterToSelectList) {
   klass.registerToSelectList()
 }

@@ -5,10 +5,10 @@ const Base = require("./base")
 
 class Operator extends Base {
   static operationKind = "operator"
-  requireTarget = true
   recordable = true
 
   wise = null
+  target = null
   occurrence = false
   occurrenceType = "base"
 
@@ -31,7 +31,12 @@ class Operator extends Base {
   bufferCheckpointByPurpose = null
 
   targetSelected = null
+  input = null
   readInputAfterExecute = false
+
+  isReady() {
+    return this.target && this.target.isReady()
+  }
 
   // Called when operation finished
   // This is essentially to reset state for `.` repeat.
@@ -134,7 +139,7 @@ class Operator extends Base {
       }
     }
 
-    if (this.mode === "visual" && this.requireTarget) {
+    if (this.mode === "visual") {
       this.target = "CurrentSelection"
     }
     if (_.isString(this.target)) {
@@ -294,7 +299,7 @@ class Operator extends Base {
 
     if (this.selectTarget()) {
       try {
-        this.input = await this.focusInputPromisified({hideCursor: true})
+        this.input = await this.focusInputPromisified(this.focusInputOptions)
       } catch (e) {
         if (this.mode !== "visual") {
           this.editor.revertToCheckpoint(this.getBufferCheckpoint("undo"))
@@ -454,17 +459,22 @@ class CreatePersistentSelection extends Operator {
 CreatePersistentSelection.register()
 
 class TogglePersistentSelection extends CreatePersistentSelection {
-  isComplete() {
-    const point = this.editor.getCursorBufferPosition()
-    this.markerToRemove = this.persistentSelection.getMarkerAtPoint(point)
-    return this.markerToRemove || super.isComplete()
+  initialize() {
+    if (this.isMode("normal")) {
+      const point = this.editor.getCursorBufferPosition()
+      const marker = this.persistentSelection.getMarkerAtPoint(point)
+      if (marker) this.target = "Empty"
+    }
+    super.initialize()
   }
 
-  execute() {
-    if (this.markerToRemove) {
-      this.markerToRemove.destroy()
+  mutateSelection(selection) {
+    const point = this.getCursorPositionForSelection(selection)
+    const marker = this.persistentSelection.getMarkerAtPoint(point)
+    if (marker) {
+      marker.destroy()
     } else {
-      super.execute()
+      super.mutateSelection(selection)
     }
   }
 }
