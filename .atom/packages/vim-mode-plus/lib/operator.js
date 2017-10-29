@@ -29,17 +29,9 @@ class Operator extends Base {
   acceptPersistentSelection = true
 
   bufferCheckpointByPurpose = null
-  mutateSelectionOrderd = false
 
-  // Experimentaly allow selectTarget before input Complete
-  // -------------------------
-  supportEarlySelect = false
   targetSelected = null
-
-  canEarlySelect() {
-    return this.supportEarlySelect && !this.repeated
-  }
-  // -------------------------
+  readInputAfterExecute = false
 
   // Called when operation finished
   // This is essentially to reset state for `.` repeat.
@@ -206,12 +198,6 @@ class Operator extends Base {
     this.target = target
     this.target.operator = this
     this.emitDidSetTarget(this)
-
-    if (this.canEarlySelect()) {
-      this.normalizeSelectionsIfNecessary()
-      this.createBufferCheckpoint("undo")
-      this.selectTarget()
-    }
   }
 
   setTextToRegisterForSelection(selection) {
@@ -223,7 +209,8 @@ class Operator extends Base {
       return
     }
 
-    if (this.target.isLinewise() && !text.endsWith("\n")) {
+    const wise = this.occurrenceSelected ? this.occurrenceWise : this.target.wise
+    if (wise === "linewise" && !text.endsWith("\n")) {
       text += "\n"
     }
 
@@ -273,41 +260,53 @@ class Operator extends Base {
   }
 
   startMutation(fn) {
-    if (this.canEarlySelect()) {
-      // - Skip selection normalization: already normalized before @selectTarget()
-      // - Manual checkpoint grouping: to create checkpoint before @selectTarget()
-      fn()
-      this.emitWillFinishMutation()
-      this.groupChangesSinceBufferCheckpoint("undo")
-    } else {
-      this.normalizeSelectionsIfNecessary()
-      this.editor.transact(() => {
-        fn()
-        this.emitWillFinishMutation()
-      })
-    }
-
+    this.normalizeSelectionsIfNecessary()
+    this.editor.transact(fn)
     this.emitDidFinishMutation()
+  }
+
+  mutateSelections() {
+    for (const selection of this.editor.getSelectionsOrderedByBufferPosition()) {
+      this.mutateSelection(selection)
+    }
+    this.mutationManager.setCheckpoint("did-finish")
+    this.restoreCursorPositionsIfNecessary()
   }
 
   // Main
   execute() {
-    this.startMutation(() => {
-      if (this.selectTarget()) {
-        const selections = this.mutateSelectionOrderd
-          ? this.editor.getSelectionsOrderedByBufferPosition()
-          : this.editor.getSelections()
+    if (this.readInputAfterExecute && !this.repeated) {
+      return this.executeAsyncToReadInputAfterExecute()
+    }
 
-        for (const selection of selections) {
-          this.mutateSelection(selection)
-        }
-        this.mutationManager.setCheckpoint("did-finish")
-        this.restoreCursorPositionsIfNecessary()
-      }
+    this.startMutation(() => {
+      if (this.selectTarget()) this.mutateSelections()
     })
 
     // Even though we fail to select target and fail to mutate,
     // we have to return to normal-mode from operator-pending or visual
+    this.activateMode("normal")
+  }
+
+  async executeAsyncToReadInputAfterExecute() {
+    this.normalizeSelectionsIfNecessary()
+    this.createBufferCheckpoint("undo")
+
+    if (this.selectTarget()) {
+      try {
+        this.input = await this.focusInputPromisified({hideCursor: true})
+      } catch (e) {
+        if (this.mode !== "visual") {
+          this.editor.revertToCheckpoint(this.getBufferCheckpoint("undo"))
+          this.activateMode("normal")
+        }
+        return
+      }
+      this.mutateSelections()
+      this.groupChangesSinceBufferCheckpoint("undo")
+    }
+
+    this.emitDidFinishMutation()
     this.activateMode("normal")
   }
 
@@ -677,7 +676,6 @@ Decrease.register()
 class IncrementNumber extends Increase {
   baseNumber = null
   target = null
-  mutateSelectionOrderd = true
 
   getNextNumber(numberString) {
     if (this.baseNumber != null) {
