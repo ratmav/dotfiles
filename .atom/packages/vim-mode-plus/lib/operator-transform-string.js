@@ -83,15 +83,8 @@ LowerCase.register()
 // -------------------------
 class Replace extends TransformString {
   flashCheckpoint = "did-select-occurrence"
-  input = null
-  requireInput = true
   autoIndentNewline = true
-  supportEarlySelect = true
-
-  initialize() {
-    this.onDidSelectTarget(() => this.focusInput({hideCursor: true}))
-    super.initialize()
-  }
+  readInputAfterExecute = true
 
   getNewText(text) {
     if (this.target.is("MoveRightBufferColumn") && text.length !== this.getCount()) {
@@ -288,7 +281,8 @@ class RemoveLeadingWhiteSpaces extends TransformString {
   getNewText(text, selection) {
     const trimLeft = text => text.trimLeft()
     return (
-      this.utils.splitTextByNewLine(text)
+      this.utils
+        .splitTextByNewLine(text)
         .map(trimLeft)
         .join("\n") + "\n"
     )
@@ -563,6 +557,7 @@ AutoIndent.register()
 class ToggleLineComments extends TransformString {
   flashTarget = false
   stayByMarker = true
+  stayAtSamePosition = true
   wise = "linewise"
 
   mutateSelection(selection) {
@@ -586,6 +581,7 @@ ReflowWithStay.register()
 // Surround < TransformString
 // -------------------------
 class SurroundBase extends TransformString {
+  surroundAction = null
   pairs = [["(", ")"], ["{", "}"], ["[", "]"], ["<", ">"]]
   pairsByAlias = {
     b: ["(", ")"],
@@ -594,21 +590,7 @@ class SurroundBase extends TransformString {
     a: ["<", ">"],
   }
 
-  pairCharsAllowForwarding = "[](){}"
-  input = null
-  requireInput = true
-  supportEarlySelect = true // Experimental
-
-  focusInputForSurroundChar() {
-    this.focusInput({hideCursor: true})
-  }
-
-  focusInputForTargetPairChar() {
-    this.focusInput({onConfirm: char => this.onConfirmTargetPairChar(char)})
-  }
-
   getPair(char) {
-    let pair
     return char in this.pairsByAlias
       ? this.pairsByAlias[char]
       : [...this.pairs, [char, char]].find(pair => pair.includes(char))
@@ -637,21 +619,21 @@ class SurroundBase extends TransformString {
     return this.utils.isSingleLineText(text) && open !== close ? innerText.trim() : innerText
   }
 
-  onConfirmTargetPairChar(char) {
-    this.setTarget(this.getInstance("APair", {pair: this.getPair(char)}))
+  getNewText(text) {
+    if (this.surroundAction === "surround") {
+      return this.surround(text, this.input)
+    } else if (this.surroundAction === "delete-surround") {
+      return this.deleteSurround(text)
+    } else if (this.surroundAction === "change-surround") {
+      return this.surround(this.deleteSurround(text), this.input, {keepLayout: true})
+    }
   }
 }
 SurroundBase.register(false)
 
 class Surround extends SurroundBase {
-  initialize() {
-    this.onDidSelectTarget(() => this.focusInputForSurroundChar())
-    super.initialize()
-  }
-
-  getNewText(text) {
-    return this.surround(text, this.input)
-  }
+  surroundAction = "surround"
+  readInputAfterExecute = true
 }
 Surround.register()
 
@@ -674,28 +656,23 @@ MapSurround.register()
 // Delete Surround
 // -------------------------
 class DeleteSurround extends SurroundBase {
+  surroundAction = "delete-surround"
   initialize() {
     if (!this.target) {
-      this.focusInputForTargetPairChar()
+      this.focusInput({
+        onConfirm: char => {
+          this.setTarget(this.getInstance("APair", {pair: this.getPair(char)}))
+          this.processOperation()
+        },
+      })
     }
     super.initialize()
-  }
-
-  onConfirmTargetPairChar(char) {
-    super.onConfirmTargetPairChar(char)
-    this.input = char
-    this.processOperation()
-  }
-
-  getNewText(text) {
-    return this.deleteSurround(text)
   }
 }
 DeleteSurround.register()
 
 class DeleteSurroundAnyPair extends DeleteSurround {
   target = "AAnyPair"
-  requireInput = false
 }
 DeleteSurroundAnyPair.register()
 
@@ -706,31 +683,15 @@ DeleteSurroundAnyPairAllowForwarding.register()
 
 // Change Surround
 // -------------------------
-class ChangeSurround extends SurroundBase {
-  showDeleteCharOnHover() {
+class ChangeSurround extends DeleteSurround {
+  surroundAction = "change-surround"
+  readInputAfterExecute = true
+
+  // Override to show changing char on hover
+  async focusInputPromisified(...args) {
     const hoverPoint = this.mutationManager.getInitialPointForSelection(this.editor.getLastSelection())
-    const char = this.editor.getSelectedText()[0]
-    this.vimState.hover.set(char, hoverPoint)
-  }
-
-  initialize() {
-    if (this.target) {
-      this.onDidFailSelectTarget(() => this.abort())
-    } else {
-      this.onDidFailSelectTarget(() => this.cancelOperation())
-      this.focusInputForTargetPairChar()
-    }
-
-    this.onDidSelectTarget(() => {
-      this.showDeleteCharOnHover()
-      this.focusInputForSurroundChar()
-    })
-    super.initialize()
-  }
-
-  getNewText(text) {
-    const innerText = this.deleteSurround(text)
-    return this.surround(innerText, this.input, {keepLayout: true})
+    this.vimState.hover.set(this.editor.getSelectedText()[0], hoverPoint)
+    return super.focusInputPromisified(...args)
   }
 }
 ChangeSurround.register()
@@ -963,6 +924,18 @@ class NumberingLines extends TransformString {
 }
 NumberingLines.register()
 
+class DuplicateWithCommentOutOriginal extends TransformString {
+  wise = "linewise"
+  stayByMarker = true
+  stayAtSamePosition = true
+  mutateSelection(selection) {
+    const [startRow, endRow] = selection.getBufferRowRange()
+    selection.setBufferRange(this.utils.insertTextAtBufferPosition(this.editor, [startRow, 0], selection.getText()))
+    this.editor.toggleLineCommentsForBufferRows(startRow, endRow)
+  }
+}
+DuplicateWithCommentOutOriginal.register()
+
 // prettier-ignore
 const classesToRegisterToSelectList = [
   ToggleCase, UpperCase, LowerCase,
@@ -977,6 +950,7 @@ const classesToRegisterToSelectList = [
   SplitArguments, SplitArgumentsWithRemoveSeparator, SplitArgumentsOfInnerAnyPair,
   Reverse, Rotate, RotateBackwards, Sort, SortCaseInsensitively, SortByNumber,
   NumberingLines,
+  DuplicateWithCommentOutOriginal,
 ]
 for (const klass of classesToRegisterToSelectList) {
   klass.registerToSelectList()
