@@ -2,7 +2,7 @@
 
 const settings = require("./settings")
 
-let CSON, path, selectList, OperationAbortedError, __plus
+let CSON, path, selectList, __plus
 const CLASS_REGISTRY = {}
 
 function _plus() {
@@ -28,15 +28,10 @@ class Base {
   static operationKind = null
   static getEditorState = null // set through init()
 
-  requireTarget = false
-  requireInput = false
   recordable = false
   repeated = false
-  target = null
-  operator = null
   count = null
   defaultCount = 1
-  input = null
 
   get name() {
     return this.constructor.name
@@ -51,28 +46,14 @@ class Base {
   // Called both on cancel and success
   resetState() {}
 
-  // Operation processor execute only when isComplete() return true.
-  // If false, operation processor postpone its execution.
-  isComplete() {
-    if (this.requireInput && this.input == null) {
-      return false
-    } else if (this.requireTarget) {
-      // When this function is called in Base::constructor
-      // tagert is still string like `MoveToRight`, in this case isComplete
-      // is not available.
-      return !!this.target && this.target.isComplete()
-    } else {
-      return true // Set in operator's target( Motion or TextObject )
-    }
+  // OperationStack postpone execution untill isReady() get true
+  // Override if necessary.
+  isReady() {
+    return true
   }
 
   isAsTargetExceptSelectInVisualMode() {
     return this.operator && !this.operator.instanceof("SelectInVisualMode")
-  }
-
-  abort() {
-    if (!OperationAbortedError) OperationAbortedError = require("./errors")
-    throw new OperationAbortedError("aborted")
   }
 
   getCount(offset = 0) {
@@ -140,9 +121,13 @@ class Base {
     this.vimState.focusInput(options)
   }
 
-  focusInputPromisified({hideCursor}) {
+  focusInputPromisified(options = {}) {
     return new Promise((onConfirm, onCancel) => {
-      this.vimState.focusInput({onConfirm, onCancel, hideCursor})
+      const defaultOptions = {
+        hideCursor: true,
+        onChange: input => this.vimState.hover.set(input),
+      }
+      this.vimState.focusInput(Object.assign(defaultOptions, options, {onConfirm, onCancel}))
     })
   }
 
@@ -156,59 +141,12 @@ class Base {
     })
   }
 
-  // Wrapper for this.utils == start
-  getVimEofBufferPosition() {
-    return this.utils.getVimEofBufferPosition(this.editor)
+  // Return promise which resolve with read char or `undefined` when cancelled.
+  readCharPromised() {
+    return new Promise(resolve => {
+      this.vimState.readChar({onConfirm: resolve, onCancel: resolve})
+    })
   }
-
-  getVimLastBufferRow() {
-    return this.utils.getVimLastBufferRow(this.editor)
-  }
-
-  getVimLastScreenRow() {
-    return this.utils.getVimLastScreenRow(this.editor)
-  }
-
-  getValidVimBufferRow(row) {
-    return this.utils.getValidVimBufferRow(this.editor, row)
-  }
-
-  getWordBufferRangeAndKindAtBufferPosition(...args) {
-    return this.utils.getWordBufferRangeAndKindAtBufferPosition(this.editor, ...args)
-  }
-
-  getFirstCharacterPositionForBufferRow(row) {
-    return this.utils.getFirstCharacterPositionForBufferRow(this.editor, row)
-  }
-
-  getBufferRangeForRowRange(rowRange) {
-    return this.utils.getBufferRangeForRowRange(this.editor, rowRange)
-  }
-
-  scanForward(...args) {
-    return this.utils.scanEditorInDirection(this.editor, "forward", ...args)
-  }
-
-  scanBackward(...args) {
-    return this.utils.scanEditorInDirection(this.editor, "backward", ...args)
-  }
-
-  getFoldStartRowForRow(...args) {
-    return this.utils.getFoldStartRowForRow(this.editor, ...args)
-  }
-
-  getFoldEndRowForRow(...args) {
-    return this.utils.getFoldEndRowForRow(this.editor, ...args)
-  }
-
-  getBufferRows(...args) {
-    return this.utils.getRows(this.editor, "buffer", ...args)
-  }
-
-  getScreenRows(...args) {
-    return this.utils.getRows(this.editor, "screen", ...args)
-  }
-  // Wrapper for this.utils == end
 
   instanceof(klassName) {
     return this instanceof Base.getClass(klassName)
@@ -257,16 +195,12 @@ class Base {
     return this.swrap(selection).getBufferPositionFor("head", {from: ["property", "selection"]})
   }
 
-  getTypeOperationTypeChar() {
-    const {operationKind} = this.constructor
-    if (operationKind === "operator") return "O"
-    else if (operationKind === "text-object") return "T"
-    else if (operationKind === "motion") return "M"
-    else if (operationKind === "misc-command") return "X"
+  getOperationTypeChar() {
+    return {operator: "O", "text-object": "T", motion: "M", "misc-command": "X"}[this.constructor.operationKind]
   }
 
   toString() {
-    const base = `${this.name}<${this.getTypeOperationTypeChar()}>`
+    const base = `${this.name}<${this.getOperationTypeChar()}>`
     return this.target ? `${base}{target = ${this.target.toString()}}` : base
   }
 
@@ -278,7 +212,7 @@ class Base {
     return this.constructor.getCommandNameWithoutPrefix()
   }
 
-  static writeCommandTableOnDisk() {
+  static async writeCommandTableOnDisk() {
     const commandTable = this.generateCommandTableByEagerLoad()
     const _ = _plus()
     if (_.isEqual(this.commandTable, commandTable)) {
@@ -289,18 +223,19 @@ class Base {
     if (!CSON) CSON = require("season")
     if (!path) path = require("path")
 
-    let loadableCSONText = "# This file is auto generated by `vim-mode-plus:write-command-table-on-disk` command.\n"
-    loadableCSONText += "# DONT edit manually.\n"
-    loadableCSONText += "module.exports =\n"
-    loadableCSONText += CSON.stringify(commandTable) + "\n"
+    const loadableCSONText =
+      [
+        "# This file is auto generated by `vim-mode-plus:write-command-table-on-disk` command.",
+        "# DONT edit manually.",
+        "module.exports =",
+        CSON.stringify(commandTable),
+      ].join("\n") + "\n"
 
     const commandTablePath = path.join(__dirname, "command-table.coffee")
-    const openOption = {activatePane: false, activateItem: false}
-    atom.workspace.open(commandTablePath, openOption).then(editor => {
-      editor.setText(loadableCSONText)
-      editor.save()
-      atom.notifications.addInfo("Updated commandTable", {dismissable: true})
-    })
+    const editor = await atom.workspace.open(commandTablePath, {activatePane: false, activateItem: false})
+    editor.setText(loadableCSONText)
+    await editor.save()
+    atom.notifications.addInfo("Updated commandTable", {dismissable: true})
   }
 
   static generateCommandTableByEagerLoad() {
@@ -329,18 +264,14 @@ class Base {
     return commandTable
   }
 
+  // Return disposables for vmp commands.
   static init(getEditorState) {
     this.getEditorState = getEditorState
-
     this.commandTable = require("./command-table")
-    const subscriptions = []
-    for (const name in this.commandTable) {
-      const spec = this.commandTable[name]
-      if (spec.commandName) {
-        subscriptions.push(this.registerCommandFromSpec(name, spec))
-      }
-    }
-    return subscriptions
+
+    return Object.keys(this.commandTable)
+      .filter(name => this.commandTable[name].commandName)
+      .map(name => this.registerCommandFromSpec(name, this.commandTable[name]))
   }
 
   static register(command = true) {
@@ -350,11 +281,6 @@ class Base {
       console.warn(`Duplicate constructor ${this.name}`)
     }
     CLASS_REGISTRY[this.name] = this
-  }
-
-  static extend(...args) {
-    console.error("calling deprecated Base.extend(), use Base.register instead!")
-    this.register(...args)
   }
 
   static getClass(name) {
@@ -463,6 +389,22 @@ class Base {
   getLastBlockwiseSelection(...args) { return this.vimState.getLastBlockwiseSelection(...args) } // prettier-ignore
   addToClassList(...args) { return this.vimState.addToClassList(...args) } // prettier-ignore
   getConfig(...args) { return this.vimState.getConfig(...args) } // prettier-ignore
+
+  // Wrapper for this.utils
+  //===========================================================================
+  getVimEofBufferPosition() { return this.utils.getVimEofBufferPosition(this.editor) } // prettier-ignore
+  getVimLastBufferRow() { return this.utils.getVimLastBufferRow(this.editor) } // prettier-ignore
+  getVimLastScreenRow() { return this.utils.getVimLastScreenRow(this.editor) } // prettier-ignore
+  getValidVimBufferRow(row) { return this.utils.getValidVimBufferRow(this.editor, row) } // prettier-ignore
+  getWordBufferRangeAndKindAtBufferPosition(...args) { return this.utils.getWordBufferRangeAndKindAtBufferPosition(this.editor, ...args) } // prettier-ignore
+  getFirstCharacterPositionForBufferRow(row) { return this.utils.getFirstCharacterPositionForBufferRow(this.editor, row) } // prettier-ignore
+  getBufferRangeForRowRange(rowRange) { return this.utils.getBufferRangeForRowRange(this.editor, rowRange) } // prettier-ignore
+  scanForward(...args) { return this.utils.scanEditor(this.editor, "forward", ...args) } // prettier-ignore
+  scanBackward(...args) { return this.utils.scanEditor(this.editor, "backward", ...args) } // prettier-ignore
+  getFoldStartRowForRow(...args) { return this.utils.getFoldStartRowForRow(this.editor, ...args) } // prettier-ignore
+  getFoldEndRowForRow(...args) { return this.utils.getFoldEndRowForRow(this.editor, ...args) } // prettier-ignore
+  getBufferRows(...args) { return this.utils.getRows(this.editor, "buffer", ...args) } // prettier-ignore
+  getScreenRows(...args) { return this.utils.getRows(this.editor, "screen", ...args) } // prettier-ignore
 }
 Base.register(false)
 

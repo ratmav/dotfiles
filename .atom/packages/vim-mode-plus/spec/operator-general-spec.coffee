@@ -638,8 +638,7 @@ describe "Operator general", ->
 
     describe "with a register", ->
       it "saves the line to the a register", ->
-        ensure '" a y y',
-          register: a: text: "012 345\n"
+        ensure '" a y y', register: a: text: "012 345\n"
 
     describe "with A register", ->
       it "append to existing value of lowercase-named register", ->
@@ -1220,7 +1219,7 @@ describe "Operator general", ->
 
   describe 'the m keybinding', ->
     ensureMarkByMode = (mode) ->
-      _ensure = bindEnsureOption({mode})
+      _ensure = bindEnsureWaitOption({mode})
       _ensure "m a", mark: "a": [0, 2]
       _ensure "l m a", mark: "a": [0, 3]
       _ensure "j m a", mark: "a": [1, 3]

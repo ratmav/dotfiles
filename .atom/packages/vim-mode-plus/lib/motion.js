@@ -7,6 +7,7 @@ const Base = require("./base")
 
 class Motion extends Base {
   static operationKind = "motion"
+  operator = null
   inclusive = false
   wise = "characterwise"
   jump = false
@@ -14,6 +15,11 @@ class Motion extends Base {
   moveSucceeded = null
   moveSuccessOnLinewise = false
   selectSucceeded = false
+  requireInput = false
+
+  isReady() {
+    return !this.requireInput || this.input != null
+  }
 
   isLinewise() {
     return this.wise === "linewise"
@@ -1024,7 +1030,8 @@ class Find extends Motion {
 
   initialize() {
     if (this.getConfig("reuseFindForRepeatFind")) this.repeatIfNecessary()
-    if (!this.isComplete()) {
+
+    if (!this.repeated) {
       const charsMax = this.getConfig("findCharsMax")
       const optionsBase = {purpose: "find", charsMax}
 
@@ -1203,7 +1210,7 @@ class MoveToMark extends Motion {
   moveToFirstCharacterOfLine = false
 
   initialize() {
-    if (!this.isComplete()) this.readChar()
+    this.readChar()
     super.initialize()
   }
 

@@ -53,17 +53,33 @@ function debug(...messages) {
 
 // Return function to restore editor's scrollTop and fold state.
 function saveEditorState(editor) {
-  const editorElement = editor.element
-  const scrollTop = editorElement.getScrollTop()
+  const store = {scrollTop: editor.element.getScrollTop()}
 
-  const foldStartRows = editor.displayLayer.foldsMarkerLayer.findMarkers({}).map(m => m.getStartPosition().row)
-  return function restoreEditorState() {
-    for (const row of foldStartRows.reverse()) {
-      if (!editor.isFoldedAtBufferRow(row)) {
-        editor.foldBufferRow(row)
+  const foldRowRanges = editor.displayLayer.foldsMarkerLayer.findMarkers({}).map(marker => {
+    const {start, end} = marker.getRange()
+    return [start.row, end.row]
+  })
+
+  return function restoreEditorState({anchorPosition, skipRow = null} = {}) {
+    if (anchorPosition) {
+      store.anchorScreenRow = this.editor.screenPositionForBufferPosition(anchorPosition).row
+      store.anchorFirstVisibileScreenRow = editor.getFirstVisibleScreenRow()
+    }
+
+    for (const [startRow, endRow] of foldRowRanges.reverse()) {
+      if (skipRow >= startRow && skipRow <= endRow) continue
+      if (!editor.isFoldedAtBufferRow(startRow)) {
+        editor.foldBufferRow(startRow)
       }
     }
-    editorElement.setScrollTop(scrollTop)
+
+    if (anchorPosition) {
+      const {anchorScreenRow, anchorFirstVisibileScreenRow} = store
+      const shrinkedRows = anchorScreenRow - this.editor.screenPositionForBufferPosition(anchorPosition).row
+      this.editor.setFirstVisibleScreenRow(anchorFirstVisibileScreenRow - shrinkedRows)
+    } else {
+      editor.element.setScrollTop(store.scrollTop)
+    }
   }
 }
 
@@ -945,7 +961,7 @@ function splitArguments(text, joinSpaceSeparatedToken = true) {
   return allTokens
 }
 
-function scanEditorInDirection(editor, direction, regex, {allowNextLine, from, scanRange}, fn) {
+function scanEditor(editor, direction, regex, {allowNextLine, from, scanRange}, fn) {
   if (!from && !scanRange) throw new Error("You must 'from' or 'scanRange' options")
   if (scanRange || allowNextLine == null) allowNextLine = true
 
@@ -1226,7 +1242,7 @@ module.exports = {
   expandRangeToWhiteSpaces,
   splitAndJoinBy,
   splitArguments,
-  scanEditorInDirection,
+  scanEditor,
   adjustIndentWithKeepingLayout,
   rangeContainsPointWithEndExclusive,
   traverseTextFromPoint,

@@ -1,3 +1,50 @@
+# 1.14.1:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.14.0...v1.14.1)
+- Fix: Remove spec for now removed feature.
+
+# 1.14.0:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.13.0...v1.14.0)
+- Fix: `transform-string-by-select-list` throw exception when executed in `visual-mode`.
+  - Regression by operator execution model redesign from v1.13.0.
+- Internal:
+  - Improve how `transform-string-by-external-command` is executed.
+  - Remove `OperationAbortedError` which is vmp specific error used to `abort()` operation, but now no longer used.
+- New, Experimental: `JoinTarget` operator(wanted to name just `Join` but it's already taken by `J`)
+
+# 1.13.0:
+- Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.12.1...v1.13.0)
+- Improve: Better multi cursors support for `toggle-persist-selection`.
+- Improve: Refold temporarily opened fold by `/` and `?` when confirmed #931
+- New: `z X` family to redraw cursor line at `upper-middle`. #932
+  - Keymap and Command
+    - `z u`: `redraw-cursor-line-at-upper-middle`
+    - `z space`: `redraw-cursor-line-at-upper-middle-and-move-to-first-character-of-line`
+  - Conflict: `z u` with pureVim's `spellfile` related command. But OK, vmp have no plan for this feat.
+  - Here is summary table of keymap and where to draw
+    ```
+    | where        | no move | move to 1st char |
+    |--------------|---------|------------------|
+    | top          | z t     | z enter          |
+    | upper-middle | z u     | z space          |
+    | middle       | z z     | z .              |
+    | bottom       | z b     | z -              |
+    ```
+- Breaking: rename confusing `ScrollCursorToTop` commands. #932
+  - `z enter`: `ScrollCursorToTop` to `RedrawCursorLineAtTopAndMoveToFirstCharacterOfLine`
+  - `z t`: `ScrollCursorToTopLeave` to `RedrawCursorLineAtTop`
+  - `z .`: `ScrollCursorToMiddle` to `RedrawCursorLineAtMiddleAndMoveToFirstCharacterOfLine`
+  - `z z`: `ScrollCursorToMiddleLeave` to `RedrawCursorLineAtMiddle`
+  - `z -`: `ScrollCursorToBottom` to `RedrawCursorLineAtBottomAndMoveToFirstCharacterOfLine`
+  - `z b`: `ScrollCursorToBottomLeave` to `RedrawCursorLineAtBottom`
+- Internal: Remove `Operator.prototype.requireTarget`, now all operator have **target**.
+  - Use `target = "Empty"` for old `requireTarget = false` equivalent.
+- Internal: Remove casual use of `isComplete` and renamed to `isReady` as prep for upcoming refactoring. #933
+  - Now `isReady`(was `isComplete`) is used only in `operationStack`.
+  - For input taking `MiscCommand` family command such as `mark`, `insert-register` now executed in async.
+  - All operators which take extra input now executed in async(no longer user `requireInput` mechanism).
+  - At this point, `requireInput` is used only by Motion, which I cannot make it simply transform to use `async` execution.
+  - Since motion is used as Operator's target and Operator has not yet support target executed in async scenario.
+
 # 1.12.1:
 - Diff: [here](https://github.com/t9md/atom-vim-mode-plus/compare/v1.12.0...v1.12.1)
 - Improve: `duplicate-with-comment-out-original` flashes correct range(only changed range).
