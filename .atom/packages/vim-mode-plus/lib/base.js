@@ -52,8 +52,10 @@ class Base {
     return true
   }
 
-  isAsTargetExceptSelectInVisualMode() {
-    return this.operator && !this.operator.instanceof("SelectInVisualMode")
+  // VisualModeSelect is anormal, since it auto complemented in visial mode.
+  // In other word, normal-operator is explicit whereas anormal-operator is inplicit.
+  isTargetOfNormalOperator() {
+    return this.operator && !this.operator.is("VisualModeSelect")
   }
 
   getCount(offset = 0) {
@@ -172,15 +174,11 @@ class Base {
   }
 
   getCursorBufferPosition() {
-    return this.mode === "visual"
-      ? this.getCursorPositionForSelection(this.editor.getLastSelection())
-      : this.editor.getCursorBufferPosition()
+    return this.getBufferPositionForCursor(this.editor.getLastCursor())
   }
 
   getCursorBufferPositions() {
-    return this.mode === "visual"
-      ? this.editor.getSelections().map(selection => this.getCursorPositionForSelection(selection))
-      : this.editor.getCursorBufferPositions()
+    return this.editor.getCursors().map(cursor => this.getBufferPositionForCursor(cursor))
   }
 
   getCursorBufferPositionsOrdered() {
