@@ -18,6 +18,7 @@
     style:
       theme: "one-dark"
   "vim-mode-plus":
+    clearMultipleCursorsOnEscapeInsertMode: true
     notifiedCoffeeScriptNoLongerSupportedToExtendVMP: true
   welcome:
     showOnStartup: false
