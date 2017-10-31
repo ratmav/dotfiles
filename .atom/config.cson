@@ -13,6 +13,9 @@
     userId: "e1f05df4-4cde-4956-87ff-58e3f0ddaddc"
   "git-diff":
     showIconsInEditorGutter: true
+  "git-plus":
+    experimental:
+      stageFilesBeta: false
   github: {}
   termination:
     style:
