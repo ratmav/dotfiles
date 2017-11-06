@@ -67,7 +67,7 @@ class Motion extends Base {
   // NOTE: selection is already "normalized" before this function is called.
   select() {
     // need to care was visual for `.` repeated.
-    const isOrWasVisual = this.operator.instanceof("SelectBase") || this.is("CurrentSelection")
+    const isOrWasVisual = this.operator.instanceof("SelectBase") || this.name === "CurrentSelection"
 
     for (const selection of this.editor.getSelections()) {
       selection.modifySelection(() => this.moveWithSaveJump(selection.cursor))
@@ -213,10 +213,19 @@ MoveRightBufferColumn.register(false)
 class MoveUp extends Motion {
   wise = "linewise"
   wrap = false
+  direction = "up"
 
   getBufferRow(row) {
     const min = 0
-    row = this.wrap && row === min ? this.getVimLastBufferRow() : this.utils.limitNumber(row - 1, {min})
+    const max = this.getVimLastBufferRow()
+
+    if (this.direction === "up") {
+      row = this.getFoldStartRowForRow(row) - 1
+      row = this.wrap && row < min ? max : this.utils.limitNumber(row, {min})
+    } else {
+      row = this.getFoldEndRowForRow(row) + 1
+      row = this.wrap && row > max ? min : this.utils.limitNumber(row, {max})
+    }
     return this.getFoldStartRowForRow(row)
   }
 
@@ -232,16 +241,7 @@ class MoveUpWrap extends MoveUp {
 MoveUpWrap.register()
 
 class MoveDown extends MoveUp {
-  wise = "linewise"
-  wrap = false
-
-  getBufferRow(row) {
-    if (this.editor.isFoldedAtBufferRow(row)) {
-      row = this.utils.getLargestFoldRangeContainsBufferRow(this.editor, row).end.row
-    }
-    const max = this.getVimLastBufferRow()
-    return this.wrap && row >= max ? 0 : this.utils.limitNumber(row + 1, {max})
-  }
+  direction = "down"
 }
 MoveDown.register()
 
@@ -384,7 +384,7 @@ class MoveToNextWord extends Motion {
         const regex = this.wordRegex || cursor.wordRegExp()
         let point = this.getPoint(regex, cursorPosition)
         if (isFinal && isTargetOfNormalOperator) {
-          if (this.operator.is("Change") && !wasOnWhiteSpace) {
+          if (this.operator.name === "Change" && !wasOnWhiteSpace) {
             point = cursor.getEndOfCurrentWordBufferPosition({wordRegex: this.wordRegex})
           } else {
             point = Point.min(point, this.utils.getEndOfLineForBufferRow(this.editor, cursorPosition.row))
@@ -564,14 +564,15 @@ class MoveToNextSentence extends Motion {
 
   moveCursor(cursor) {
     this.moveCursorCountTimes(cursor, () => {
-      cursor.setBufferPosition(this.getPoint(cursor.getBufferPosition()))
-    })
-  }
+      const cursorPosition = cursor.getBufferPosition()
 
-  getPoint(fromPoint) {
-    return this.direction === "next"
-      ? this.getNextStartOfSentence(fromPoint)
-      : this.getPreviousStartOfSentence(fromPoint)
+      const point =
+        this.direction === "next"
+          ? this.getNextStartOfSentence(cursorPosition)
+          : this.getPreviousStartOfSentence(cursorPosition)
+
+      cursor.setBufferPosition(point)
+    })
   }
 
   isBlankRow(row) {
@@ -697,13 +698,9 @@ class MoveToLastNonblankCharacterOfLineAndDown extends Motion {
   inclusive = true
 
   moveCursor(cursor) {
-    cursor.setBufferPosition(this.getPoint(cursor.getBufferPosition()))
-  }
-
-  getPoint({row}) {
-    row = this.utils.limitNumber(row + this.getCount(-1), {max: this.getVimLastBufferRow()})
+    const row = this.utils.limitNumber(cursor.getBufferRow() + this.getCount(-1), {max: this.getVimLastBufferRow()})
     const range = this.utils.findRangeInBufferRow(this.editor, /\S|^/, row, {direction: "backward"})
-    return range ? range.start : new Point(row, 0)
+    cursor.setBufferPosition(range ? range.start : new Point(row, 0))
   }
 }
 MoveToLastNonblankCharacterOfLineAndDown.register()
@@ -809,7 +806,7 @@ MoveToLastLine.register()
 class MoveToLineByPercent extends MoveToFirstLine {
   getRow() {
     const percent = this.utils.limitNumber(this.getCount(), {max: 100})
-    return Math.floor((this.editor.getLineCount() - 1) * (percent / 100))
+    return Math.floor(this.editor.getLastBufferRow() * (percent / 100))
   }
 }
 MoveToLineByPercent.register()
@@ -900,28 +897,20 @@ class Scroll extends Motion {
   static scrollTask = null
   verticalMotion = true
 
-  isSmoothScrollEnabled() {
-    return Math.abs(this.amountOfPage) === 1
-      ? this.getConfig("smoothScrollOnFullScrollMotion")
-      : this.getConfig("smoothScrollOnHalfScrollMotion")
-  }
+  execute() {
+    this.amountOfRowsToScroll = Math.trunc(this.amountOfPage * this.editor.getRowsPerPage() * this.getCount())
 
-  getSmoothScrollDuation() {
-    return Math.abs(this.amountOfPage) === 1
-      ? this.getConfig("smoothScrollOnFullScrollMotionDuration")
-      : this.getConfig("smoothScrollOnHalfScrollMotionDuration")
+    super.execute()
+
+    this.vimState.requestScroll({
+      amountOfScreenRows: this.amountOfRowsToScroll,
+      duration: this.getSmoothScrollDuation((Math.abs(this.amountOfPage) === 1 ? "Full" : "Half") + "ScrollMotion"),
+    })
   }
 
   moveCursor(cursor) {
-    const screenRow = this.utils.getValidVimScreenRow(this.editor, cursor.getScreenRow() + this.amountOfRowsToScroll)
+    const screenRow = this.getValidVimScreenRow(cursor.getScreenRow() + this.amountOfRowsToScroll)
     this.setCursorBufferRow(cursor, this.editor.bufferRowForScreenRow(screenRow), {autoscroll: false})
-  }
-
-  execute() {
-    this.amountOfRowsToScroll = Math.ceil(this.amountOfPage * this.editor.getRowsPerPage() * this.getCount())
-    super.execute()
-    const duration = this.isSmoothScrollEnabled() ? this.getSmoothScrollDuation() : 0
-    this.vimState.requestScroll({amountOfScreenRows: this.amountOfRowsToScroll, duration})
   }
 }
 Scroll.register(false)
@@ -940,25 +929,25 @@ ScrollFullScreenUp.register()
 
 // keymap: ctrl-d
 class ScrollHalfScreenDown extends Scroll {
-  amountOfPage = +1 / 2
+  amountOfPage = 0.5
 }
 ScrollHalfScreenDown.register()
 
 // keymap: ctrl-u
 class ScrollHalfScreenUp extends Scroll {
-  amountOfPage = -1 / 2
+  amountOfPage = -0.5
 }
 ScrollHalfScreenUp.register()
 
 // keymap: g ctrl-d
 class ScrollQuarterScreenDown extends Scroll {
-  amountOfPage = +1 / 4
+  amountOfPage = 0.25
 }
 ScrollQuarterScreenDown.register()
 
 // keymap: g ctrl-u
 class ScrollQuarterScreenUp extends Scroll {
-  amountOfPage = -1 / 4
+  amountOfPage = -0.25
 }
 ScrollQuarterScreenUp.register()
 
@@ -1168,16 +1157,12 @@ class MoveToMark extends Motion {
     super.initialize()
   }
 
-  getPoint() {
-    const point = this.vimState.mark.get(this.input)
-    if (point) {
-      return this.moveToFirstCharacterOfLine ? this.getFirstCharacterPositionForBufferRow(point.row) : point
-    }
-  }
-
   moveCursor(cursor) {
-    const point = this.getPoint()
+    let point = this.vimState.mark.get(this.input)
     if (point) {
+      if (this.moveToFirstCharacterOfLine) {
+        point = this.getFirstCharacterPositionForBufferRow(point.row)
+      }
       cursor.setBufferPosition(point)
       cursor.autoscroll({center: true})
     }
@@ -1272,19 +1257,29 @@ class MoveToNextFunction extends MoveToPreviousFunction {
 }
 MoveToNextFunction.register()
 
+class MoveToPreviousFunctionAndRedrawCursorLineAtUpperMiddle extends MoveToPreviousFunction {
+  execute() {
+    super.execute()
+    this.getInstance("RedrawCursorLineAtUpperMiddle").execute()
+  }
+}
+MoveToPreviousFunctionAndRedrawCursorLineAtUpperMiddle.register()
+
+class MoveToNextFunctionAndRedrawCursorLineAtUpperMiddle extends MoveToPreviousFunctionAndRedrawCursorLineAtUpperMiddle {
+  direction = "next"
+}
+MoveToNextFunctionAndRedrawCursorLineAtUpperMiddle.register()
+
 // Scope based
 // -------------------------
 class MoveToPositionByScope extends Motion {
   direction = "backward"
   scope = "."
 
-  getPoint(fromPoint) {
-    return this.utils.detectScopeStartPositionForScope(this.editor, fromPoint, this.direction, this.scope)
-  }
-
   moveCursor(cursor) {
     this.moveCursorCountTimes(cursor, () => {
-      const point = this.getPoint(cursor.getBufferPosition())
+      const cursorPosition = cursor.getBufferPosition()
+      const point = this.utils.detectScopeStartPositionForScope(this.editor, cursorPosition, this.direction, this.scope)
       if (point) cursor.setBufferPosition(point)
     })
   }

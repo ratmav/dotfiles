@@ -39,6 +39,48 @@ class BlockwiseOtherEnd extends ReverseSelections {
 BlockwiseOtherEnd.register()
 
 class Undo extends MiscCommand {
+  execute() {
+    const newRanges = []
+    const oldRanges = []
+
+    const disposable = this.editor.getBuffer().onDidChangeText(event => {
+      for (const {newRange, oldRange} of event.changes) {
+        if (newRange.isEmpty()) {
+          oldRanges.push(oldRange) // Remove only
+        } else {
+          newRanges.push(newRange)
+        }
+      }
+    })
+
+    if (this.name === "Undo") {
+      this.editor.undo()
+    } else {
+      this.editor.redo()
+    }
+
+    disposable.dispose()
+
+    for (const selection of this.editor.getSelections()) {
+      selection.clear()
+    }
+
+    if (this.getConfig("setCursorToStartOfChangeOnUndoRedo")) {
+      const strategy = this.getConfig("setCursorToStartOfChangeOnUndoRedoStrategy")
+      this.setCursorPosition({newRanges, oldRanges, strategy})
+      this.vimState.clearSelections()
+    }
+
+    if (this.getConfig("flashOnUndoRedo")) {
+      if (newRanges.length) {
+        this.flashChanges(newRanges, "changes")
+      } else {
+        this.flashChanges(oldRanges, "deletes")
+      }
+    }
+    this.activateMode("normal")
+  }
+
   setCursorPosition({newRanges, oldRanges, strategy}) {
     const lastCursor = this.editor.getLastCursor() // This is restored cursor
 
@@ -53,104 +95,22 @@ class Undo extends MiscCommand {
     }
   }
 
-  mutateWithTrackChanges() {
-    const newRanges = []
-    const oldRanges = []
-
-    // Collect changed range while mutating text-state by fn callback.
-    const disposable = this.editor.getBuffer().onDidChange(({newRange, oldRange}) => {
-      if (newRange.isEmpty()) {
-        oldRanges.push(oldRange) // Remove only
-      } else {
-        newRanges.push(newRange)
-      }
-    })
-
-    this.mutate()
-    disposable.dispose()
-    return {newRanges, oldRanges}
-  }
-
-  flashChanges({newRanges, oldRanges}) {
+  flashChanges(ranges, mutationType) {
     const isMultipleSingleLineRanges = ranges => ranges.length > 1 && ranges.every(this.utils.isSingleLineRange)
-
-    if (newRanges.length > 0) {
-      if (this.isMultipleAndAllRangeHaveSameColumnAndConsecutiveRows(newRanges)) return
-
-      newRanges = newRanges.map(range => this.utils.humanizeBufferRange(this.editor, range))
-      newRanges = this.filterNonLeadingWhiteSpaceRange(newRanges)
-
-      const type = isMultipleSingleLineRanges(newRanges) ? "undo-redo-multiple-changes" : "undo-redo"
-      this.flash(newRanges, {type})
-    } else {
-      if (this.isMultipleAndAllRangeHaveSameColumnAndConsecutiveRows(oldRanges)) return
-
-      if (isMultipleSingleLineRanges(oldRanges)) {
-        oldRanges = this.filterNonLeadingWhiteSpaceRange(oldRanges)
-        this.flash(oldRanges, {type: "undo-redo-multiple-delete"})
+    const humanizeNewLineForBufferRange = this.utils.humanizeNewLineForBufferRange.bind(null, this.editor)
+    const isNotLeadingWhiteSpaceRange = this.utils.isNotLeadingWhiteSpaceRange.bind(null, this.editor)
+    if (!this.utils.isMultipleAndAllRangeHaveSameColumnAndConsecutiveRows(ranges)) {
+      ranges = ranges.map(humanizeNewLineForBufferRange)
+      const type = isMultipleSingleLineRanges(ranges) ? `undo-redo-multiple-${mutationType}` : "undo-redo"
+      if (!(type === "undo-redo" && mutationType === "deletes")) {
+        this.vimState.flash(ranges.filter(isNotLeadingWhiteSpaceRange), {type})
       }
     }
-  }
-
-  filterNonLeadingWhiteSpaceRange(ranges) {
-    return ranges.filter(range => !this.utils.isLeadingWhiteSpaceRange(this.editor, range))
-  }
-
-  // [TODO] Improve further by checking oldText, newText?
-  // [Purpose of this function]
-  // Suppress flash when undo/redoing toggle-comment while flashing undo/redo of occurrence operation.
-  // This huristic approach never be perfect.
-  // Ultimately cannnot distinguish occurrence operation.
-  isMultipleAndAllRangeHaveSameColumnAndConsecutiveRows(ranges) {
-    if (ranges.length <= 1) {
-      return false
-    }
-
-    const {start: {column: startColumn}, end: {column: endColumn}} = ranges[0]
-    let previousRow
-
-    for (const range of ranges) {
-      const {start, end} = range
-      if (start.column !== startColumn || end.column !== endColumn) return false
-      if (previousRow != null && previousRow + 1 !== start.row) return false
-      previousRow = start.row
-    }
-    return true
-  }
-
-  flash(ranges, options) {
-    if (options.timeout == null) options.timeout = 500
-    this.onDidFinishOperation(() => this.vimState.flash(ranges, options))
-  }
-
-  execute() {
-    const {newRanges, oldRanges} = this.mutateWithTrackChanges()
-
-    for (const selection of this.editor.getSelections()) {
-      selection.clear()
-    }
-
-    if (this.getConfig("setCursorToStartOfChangeOnUndoRedo")) {
-      const strategy = this.getConfig("setCursorToStartOfChangeOnUndoRedoStrategy")
-      this.setCursorPosition({newRanges, oldRanges, strategy})
-      this.vimState.clearSelections()
-    }
-
-    if (this.getConfig("flashOnUndoRedo")) this.flashChanges({newRanges, oldRanges})
-    this.activateMode("normal")
-  }
-
-  mutate() {
-    this.editor.undo()
   }
 }
 Undo.register()
 
-class Redo extends Undo {
-  mutate() {
-    this.editor.redo()
-  }
-}
+class Redo extends Undo {}
 Redo.register()
 
 // zc
@@ -328,23 +288,25 @@ class MiniScrollDown extends MiscCommand {
   defaultCount = this.getConfig("defaultScrollRowsOnMiniScroll")
   direction = "down"
 
-  keepCursorOnScreen(scrollRows) {
+  keepCursorOnScreen() {
     const cursor = this.editor.getLastCursor()
     const row = cursor.getScreenRow()
     const offset = 2
-    const validScreenRow =
+    const validRow =
       this.direction === "down"
         ? this.utils.limitNumber(row, {min: this.editor.getFirstVisibleScreenRow() + offset})
         : this.utils.limitNumber(row, {max: this.editor.getLastVisibleScreenRow() - offset})
-    if (row !== validScreenRow) {
-      this.utils.setBufferRow(cursor, this.editor.bufferRowForScreenRow(validScreenRow), {autoscroll: false})
+    if (row !== validRow) {
+      this.utils.setBufferRow(cursor, this.editor.bufferRowForScreenRow(validRow), {autoscroll: false})
     }
   }
 
   execute() {
-    const amountOfScreenRows = this.direction === "down" ? this.getCount() : -this.getCount()
-    const duration = this.getConfig("smoothScrollOnMiniScroll") ? this.getConfig("smoothScrollOnMiniScrollDuration") : 0
-    this.vimState.requestScroll({amountOfScreenRows, duration, onFinish: this.keepCursorOnScreen.bind(this)})
+    this.vimState.requestScroll({
+      amountOfScreenRows: this.direction === "down" ? this.getCount() : -this.getCount(),
+      duration: this.getSmoothScrollDuation("MiniScroll"),
+      onFinish: () => this.keepCursorOnScreen(),
+    })
   }
 }
 MiniScrollDown.register()
@@ -374,9 +336,7 @@ class RedrawCursorLine extends MiscCommand {
         this.recommendToEnableScrollPastEnd()
       }
     }
-    const duration = this.getConfig("smoothScrollOnRedrawCursorLine")
-      ? this.getConfig("smoothScrollOnRedrawCursorLineDuration")
-      : 0
+    const duration = this.getSmoothScrollDuation("RedrawCursorLine")
     this.vimState.requestScroll({scrollTop, duration, onFinish})
     if (this.moveToFirstCharacterOfLine) this.editor.moveToFirstCharacterOfLine()
   }
@@ -498,8 +458,9 @@ ScrollCursorToRight.register()
 
 // insert-mode specific commands
 // -------------------------
-class InsertMode extends MiscCommand {}
-InsertMode.commandScope = "atom-text-editor.vim-mode-plus.insert-mode"
+class InsertMode extends MiscCommand {
+  static commandScope = "atom-text-editor.vim-mode-plus.insert-mode"
+}
 
 class ActivateNormalModeOnce extends InsertMode {
   execute() {
@@ -509,12 +470,11 @@ class ActivateNormalModeOnce extends InsertMode {
       this.utils.moveCursorRight(cursor)
     }
 
-    let disposable = atom.commands.onDidDispatch(event => {
-      if (event.type === this.getCommandName()) return
-
-      disposable.dispose()
-      disposable = null
-      this.vimState.activate("insert")
+    const disposable = atom.commands.onDidDispatch(event => {
+      if (event.type !== this.getCommandName()) {
+        disposable.dispose()
+        this.vimState.activate("insert")
+      }
     })
   }
 }
@@ -526,8 +486,7 @@ class InsertRegister extends InsertMode {
     if (input) {
       this.editor.transact(() => {
         for (const selection of this.editor.getSelections()) {
-          const text = this.vimState.register.getText(input, selection)
-          selection.insertText(text)
+          selection.insertText(this.vimState.register.getText(input, selection))
         }
       })
     }
@@ -537,8 +496,7 @@ InsertRegister.register()
 
 class InsertLastInserted extends InsertMode {
   execute() {
-    const text = this.vimState.register.getText(".")
-    this.editor.insertText(text)
+    this.editor.insertText(this.vimState.register.getText("."))
   }
 }
 InsertLastInserted.register()
@@ -549,13 +507,13 @@ class CopyFromLineAbove extends InsertMode {
   execute() {
     const translation = [this.rowDelta, 0]
     this.editor.transact(() => {
-      for (let selection of this.editor.getSelections()) {
+      for (const selection of this.editor.getSelections()) {
         const point = selection.cursor.getBufferPosition().translate(translation)
-        if (point.row < 0) continue
-
-        const range = Range.fromPointWithDelta(point, 0, 1)
-        const text = this.editor.getTextInBufferRange(range)
-        if (text) selection.insertText(text)
+        if (point.row >= 0) {
+          const range = Range.fromPointWithDelta(point, 0, 1)
+          const text = this.editor.getTextInBufferRange(range)
+          if (text) selection.insertText(text)
+        }
       }
     })
   }

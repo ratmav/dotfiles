@@ -55,7 +55,7 @@ class Base {
   // VisualModeSelect is anormal, since it auto complemented in visial mode.
   // In other word, normal-operator is explicit whereas anormal-operator is inplicit.
   isTargetOfNormalOperator() {
-    return this.operator && !this.operator.is("VisualModeSelect")
+    return this.operator && this.operator.name !== "VisualModeSelect"
   }
 
   getCount(offset = 0) {
@@ -152,10 +152,6 @@ class Base {
 
   instanceof(klassName) {
     return this instanceof Base.getClass(klassName)
-  }
-
-  is(klassName) {
-    return this.constructor === Base.getClass(klassName)
   }
 
   isOperator() {
@@ -344,6 +340,11 @@ class Base {
     }
   }
 
+  getSmoothScrollDuation(kind) {
+    const base = "smoothScrollOn" + kind
+    return this.getConfig(base) ? this.getConfig(base + "Duration") : 0
+  }
+
   // Proxy propperties and methods
   //===========================================================================
   get mode() { return this.vimState.mode } // prettier-ignore
@@ -394,6 +395,7 @@ class Base {
   getVimLastBufferRow() { return this.utils.getVimLastBufferRow(this.editor) } // prettier-ignore
   getVimLastScreenRow() { return this.utils.getVimLastScreenRow(this.editor) } // prettier-ignore
   getValidVimBufferRow(row) { return this.utils.getValidVimBufferRow(this.editor, row) } // prettier-ignore
+  getValidVimScreenRow(row) { return this.utils.getValidVimScreenRow(this.editor, row) } // prettier-ignore
   getWordBufferRangeAndKindAtBufferPosition(...args) { return this.utils.getWordBufferRangeAndKindAtBufferPosition(this.editor, ...args) } // prettier-ignore
   getFirstCharacterPositionForBufferRow(row) { return this.utils.getFirstCharacterPositionForBufferRow(this.editor, row) } // prettier-ignore
   getBufferRangeForRowRange(rowRange) { return this.utils.getBufferRangeForRowRange(this.editor, rowRange) } // prettier-ignore

@@ -25,15 +25,11 @@ module.exports = class PersistentSelectionManager {
     for (const range of this.getMarkerBufferRanges()) {
       this.vimState.editor.addSelectionForBufferRange(range)
     }
-    this.clear()
+    this.clearMarkers()
   }
 
   setSelectedBufferRanges() {
     this.vimState.editor.setSelectedBufferRanges(this.getMarkerBufferRanges())
-    this.clear()
-  }
-
-  clear() {
     this.clearMarkers()
   }
 
@@ -48,7 +44,7 @@ module.exports = class PersistentSelectionManager {
   }
 
   hasMarkers() {
-    return this.getMarkerCount() > 0
+    return this.markerLayer.getMarkerCount() > 0
   }
 
   getMarkers() {
