@@ -123,13 +123,11 @@ class Base {
     this.vimState.focusInput(options)
   }
 
-  focusInputPromisified(options = {}) {
-    return new Promise((onConfirm, onCancel) => {
-      const defaultOptions = {
-        hideCursor: true,
-        onChange: input => this.vimState.hover.set(input),
-      }
-      this.vimState.focusInput(Object.assign(defaultOptions, options, {onConfirm, onCancel}))
+  // Return promise which resolve with input char or `undefined` when cancelled.
+  focusInputPromised(options = {}) {
+    return new Promise(resolve => {
+      const defaultOptions = {hideCursor: true, onChange: input => this.vimState.hover.set(input)}
+      this.vimState.focusInput(Object.assign(defaultOptions, options, {onConfirm: resolve, onCancel: resolve}))
     })
   }
 
@@ -376,11 +374,6 @@ class Base {
   emitDidFinishMutation(...args) { return this.vimState.emitDidFinishMutation(...args) } // prettier-ignore
   onDidFinishOperation(...args) { return this.vimState.onDidFinishOperation(...args) } // prettier-ignore
   onDidResetOperationStack(...args) { return this.vimState.onDidResetOperationStack(...args) } // prettier-ignore
-  onWillActivateMode(...args) { return this.vimState.onWillActivateMode(...args) } // prettier-ignore
-  onDidActivateMode(...args) { return this.vimState.onDidActivateMode(...args) } // prettier-ignore
-  preemptWillDeactivateMode(...args) { return this.vimState.preemptWillDeactivateMode(...args) } // prettier-ignore
-  onWillDeactivateMode(...args) { return this.vimState.onWillDeactivateMode(...args) } // prettier-ignore
-  onDidDeactivateMode(...args) { return this.vimState.onDidDeactivateMode(...args) } // prettier-ignore
   onDidCancelSelectList(...args) { return this.vimState.onDidCancelSelectList(...args) } // prettier-ignore
   subscribe(...args) { return this.vimState.subscribe(...args) } // prettier-ignore
   isMode(...args) { return this.vimState.isMode(...args) } // prettier-ignore

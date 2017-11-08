@@ -32,7 +32,7 @@ class Operator extends Base {
 
   targetSelected = null
   input = null
-  readInputAfterExecute = false
+  readInputAfterSelect = false
   bufferCheckpointByPurpose = {}
 
   isReady() {
@@ -47,7 +47,7 @@ class Operator extends Base {
   }
 
   // Two checkpoint for different purpose
-  // - one for undo(handled by modeManager)
+  // - one for undo
   // - one for preserve last inserted text
   createBufferCheckpoint(purpose) {
     this.bufferCheckpointByPurpose[purpose] = this.editor.createCheckpoint()
@@ -127,7 +127,7 @@ class Operator extends Base {
     if (this.selectPersistentSelectionIfNecessary()) {
       // [FIXME] selection-wise is not synched if it already visual-mode
       if (this.mode !== "visual") {
-        this.vimState.modeManager.activate("visual", this.swrap.detectWise(this.editor))
+        this.vimState.activate("visual", this.swrap.detectWise(this.editor))
       }
     }
 
@@ -256,12 +256,6 @@ class Operator extends Base {
     }
   }
 
-  startMutation(fn) {
-    this.normalizeSelectionsIfNecessary()
-    this.editor.transact(fn)
-    this.emitDidFinishMutation()
-  }
-
   mutateSelections() {
     for (const selection of this.editor.getSelectionsOrderedByBufferPosition()) {
       this.mutateSelection(selection)
@@ -270,29 +264,36 @@ class Operator extends Base {
     this.restoreCursorPositionsIfNecessary()
   }
 
-  // Main
-  execute() {
-    if (this.readInputAfterExecute && !this.repeated) {
-      return this.executeAsyncToReadInputAfterExecute()
-    }
+  preSelect() {
+    this.normalizeSelectionsIfNecessary()
+    this.createBufferCheckpoint("undo")
+  }
 
-    this.startMutation(() => {
-      if (this.selectTarget()) this.mutateSelections()
-    })
+  postMutate() {
+    this.groupChangesSinceBufferCheckpoint("undo")
+    this.emitDidFinishMutation()
 
     // Even though we fail to select target and fail to mutate,
     // we have to return to normal-mode from operator-pending or visual
     this.activateMode("normal")
   }
 
-  async executeAsyncToReadInputAfterExecute() {
-    this.normalizeSelectionsIfNecessary()
-    this.createBufferCheckpoint("undo")
+  // Main
+  execute() {
+    this.preSelect()
 
+    if (this.readInputAfterSelect && !this.repeated) {
+      return this.executeAsyncToReadInputAfterSelect()
+    }
+
+    if (this.selectTarget()) this.mutateSelections()
+    this.postMutate()
+  }
+
+  async executeAsyncToReadInputAfterSelect() {
     if (this.selectTarget()) {
-      try {
-        this.input = await this.focusInputPromisified(this.focusInputOptions)
-      } catch (e) {
+      this.input = await this.focusInputPromised(this.focusInputOptions)
+      if (this.input == null) {
         if (this.mode !== "visual") {
           this.editor.revertToCheckpoint(this.getBufferCheckpoint("undo"))
           this.activateMode("normal")
@@ -300,11 +301,8 @@ class Operator extends Base {
         return
       }
       this.mutateSelections()
-      this.groupChangesSinceBufferCheckpoint("undo")
     }
-
-    this.emitDidFinishMutation()
-    this.activateMode("normal")
+    this.postMutate()
   }
 
   // Return true unless all selection is empty.
@@ -375,7 +373,8 @@ class SelectBase extends Operator {
   recordable = false
 
   execute() {
-    this.startMutation(() => this.selectTarget())
+    this.normalizeSelectionsIfNecessary()
+    this.selectTarget()
 
     if (this.target.selectSucceeded) {
       if (this.target.isTextObject()) {
@@ -452,7 +451,7 @@ CreatePersistentSelection.register()
 
 class TogglePersistentSelection extends CreatePersistentSelection {
   initialize() {
-    if (this.isMode("normal")) {
+    if (this.mode === "normal") {
       const point = this.editor.getCursorBufferPosition()
       const marker = this.persistentSelection.getMarkerAtPoint(point)
       if (marker) this.target = "Empty"
@@ -486,7 +485,7 @@ class TogglePresetOccurrence extends Operator {
     if (marker) {
       this.occurrenceManager.destroyMarkers([marker])
     } else {
-      const isNarrowed = this.vimState.modeManager.isNarrowed()
+      const isNarrowed = this.vimState.isNarrowed()
 
       let regex
       if (this.mode === "visual" && !isNarrowed) {
