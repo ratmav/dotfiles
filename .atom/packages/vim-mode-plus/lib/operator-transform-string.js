@@ -84,7 +84,7 @@ LowerCase.register()
 class Replace extends TransformString {
   flashCheckpoint = "did-select-occurrence"
   autoIndentNewline = true
-  readInputAfterExecute = true
+  readInputAfterSelect = true
 
   getNewText(text) {
     if (this.target.name === "MoveRightBufferColumn" && text.length !== this.getCount()) {
@@ -356,8 +356,7 @@ class TransformStringByExternalCommand extends TransformString {
   }
 
   async execute() {
-    this.normalizeSelectionsIfNecessary()
-    this.createBufferCheckpoint("undo")
+    this.preSelect()
 
     if (this.selectTarget()) {
       for (const selection of this.editor.getSelections()) {
@@ -369,10 +368,8 @@ class TransformStringByExternalCommand extends TransformString {
       }
       this.mutationManager.setCheckpoint("did-finish")
       this.restoreCursorPositionsIfNecessary()
-      this.groupChangesSinceBufferCheckpoint("undo")
     }
-    this.emitDidFinishMutation()
-    this.activateMode("normal")
+    this.postMutate()
   }
 
   runExternalCommand(options) {
@@ -610,7 +607,7 @@ SurroundBase.register(false)
 
 class Surround extends SurroundBase {
   surroundAction = "surround"
-  readInputAfterExecute = true
+  readInputAfterSelect = true
 }
 Surround.register()
 
@@ -662,13 +659,13 @@ DeleteSurroundAnyPairAllowForwarding.register()
 // -------------------------
 class ChangeSurround extends DeleteSurround {
   surroundAction = "change-surround"
-  readInputAfterExecute = true
+  readInputAfterSelect = true
 
   // Override to show changing char on hover
-  async focusInputPromisified(...args) {
+  async focusInputPromised(...args) {
     const hoverPoint = this.mutationManager.getInitialPointForSelection(this.editor.getLastSelection())
     this.vimState.hover.set(this.editor.getSelectedText()[0], hoverPoint)
-    return super.focusInputPromisified(...args)
+    return super.focusInputPromised(...args)
   }
 }
 ChangeSurround.register()
@@ -732,7 +729,7 @@ class JoinWithKeepingSpace extends JoinBase {
 JoinWithKeepingSpace.register()
 
 class JoinByInput extends JoinBase {
-  readInputAfterExecute = true
+  readInputAfterSelect = true
   focusInputOptions = {charsMax: 10}
   trim = true
 }
@@ -748,7 +745,7 @@ JoinByInputWithKeepingSpace.register()
 class SplitString extends TransformString {
   target = "MoveToRelativeLine"
   keepSplitter = false
-  readInputAfterExecute = true
+  readInputAfterSelect = true
   focusInputOptions = {charsMax: 10}
 
   getNewText(text) {

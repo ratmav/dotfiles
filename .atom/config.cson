@@ -20,6 +20,8 @@
   termination:
     style:
       theme: "one-dark"
+    toggles:
+      cloneTerminalPlus: false
   "vim-mode-plus":
     clearMultipleCursorsOnEscapeInsertMode: true
     notifiedCoffeeScriptNoLongerSupportedToExtendVMP: true
