@@ -412,39 +412,44 @@ module.exports = class VimState {
     if (this.__persistentSelection) this.persistentSelection.clearMarkers()
   }
 
-  requestScroll({amountOfScreenRows, scrollTop, duration, onFinish}) {
-    // Finalize previous scroll request first
+  // It's possible that multiple scroll request comes in sequentially.
+  //
+  // When you pass `amountOfPixels`, it calculate final scrollTop based on
+  // prevoiusly requested scrollTop. In other word. animation is concatnated to
+  // scroll smoothly in sequential request.
+  //
+  // When you pass `scrollTop`, it's absolute value, just use passed scrollTop.
+  // So passed scrollTop should not be based on **relative** scrollTop, because it's might not finalized.
+  // - OK: {scrollTop: cursor.pixelPositionForScreenPosition(point) + pixels}
+  // - NG: {scrollTop: editorElement.getScrollTop() + pixels}
+  // - Hacky but should be OK: {scrollTop: vimState.scrollRequest.scrollTop + pixels}
+  requestScroll({amountOfPixels, scrollTop, duration, onFinish}) {
+    const currentScrollTop = this.editorElement.getScrollTop()
+    let baseScrollTop = currentScrollTop
+
     if (this.scrollRequest) {
-      this.scrollRequest.finish()
+      this.scrollRequest.request.stop()
+      baseScrollTop = this.scrollRequest.scrollTop
       this.scrollRequest = null
     }
 
-    let scrollFrom, scrollTo
-    if (amountOfScreenRows != null) {
-      const fromRow = this.editor.getFirstVisibleScreenRow()
-      const toRow = fromRow + amountOfScreenRows
-
-      if (!duration) {
-        this.editor.setFirstVisibleScreenRow(toRow)
-        if (onFinish) onFinish()
-        return
-      }
-
-      const getPixelRectTopForRow = row => this.editorElement.pixelRectForScreenRange([[row, 0], [row, 0]]).top
-      scrollFrom = {top: getPixelRectTopForRow(fromRow)}
-      scrollTo = {top: getPixelRectTopForRow(toRow)}
-    } else {
-      if (!duration) {
-        this.editorElement.setScrollTop(scrollTop)
-        if (onFinish) onFinish()
-        return
-      }
-      scrollFrom = {top: this.editorElement.getScrollTop()}
-      scrollTo = {top: scrollTop}
+    if (amountOfPixels) {
+      scrollTop = baseScrollTop + amountOfPixels
     }
 
+    if (!duration) {
+      this.editorElement.setScrollTop(scrollTop)
+      if (onFinish) onFinish()
+      return
+    }
+
+    const scrollFrom = {top: currentScrollTop}
+    const scrollTo = {top: scrollTop}
+
     if (!jQuery) jQuery = require("atom-space-pen-views").jQuery
-    this.scrollRequest = jQuery(scrollFrom).animate(scrollTo, {
+
+    this.scrollRequest = {scrollTop}
+    this.scrollRequest.request = jQuery(scrollFrom).animate(scrollTo, {
       duration: duration,
       step: newTop => {
         // [NOTE]

@@ -2,39 +2,39 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
+        "raw": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
-        "spec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
+        "rawSpec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
+        "spec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/apm-install-dir-1171013-2145-k9izd1.su65iv0a4i"
+      "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/apm-install-dir-1171013-3514-1c0rg08.jbnugwg66r"
     ]
   ],
-  "_from": "../d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
-  "_id": "vim-mode-plus@1.18.2",
+  "_from": "../d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
+  "_id": "vim-mode-plus@1.19.0",
   "_inCache": true,
   "_location": "/vim-mode-plus",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
+    "raw": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
-    "spec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
+    "rawSpec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
+    "spec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
-  "_shasum": "c24e20f31c35f879df8f5ee024ed3a193c83620d",
+  "_resolved": "file:../d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
+  "_shasum": "d6a187e0ce15fec9c36208e4c0ea95f1bf4068bb",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-2145-14e0lcq.podsspds4i/package.tgz",
-  "_where": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/apm-install-dir-1171013-2145-k9izd1.su65iv0a4i",
+  "_spec": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/d-1171013-3514-qoczzb.v68zmh1tt9/package.tgz",
+  "_where": "/private/var/folders/zr/zksnsj_14r17wdgf0sh1fn7c0000gn/T/apm-install-dir-1171013-3514-1c0rg08.jbnugwg66r",
   "bugs": {
     "url": "https://github.com/t9md/atom-vim-mode-plus/issues"
   },
@@ -91,5 +91,5 @@
     "test": "apm test",
     "watch": "fswatch -0 spec lib | xargs -0 -n1 -I{} apm test"
   },
-  "version": "1.18.2"
+  "version": "1.19.0"
 }
