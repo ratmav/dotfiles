@@ -11,28 +11,37 @@ const PairFinder = require("./pair-finder")
 
 class TextObject extends Base {
   static operationKind = "text-object"
+  static command = false
+
   operator = null
   wise = "characterwise"
   supportCount = false // FIXME #472, #66
   selectOnce = false
   selectSucceeded = false
 
-  static register(isCommand, deriveInnerAndA, deriveInnerAndAForAllowForwarding) {
-    super.register(isCommand)
-
-    if (deriveInnerAndA) {
-      this.generateClass(`A${this.name}`, false)
-      this.generateClass(`Inner${this.name}`, true)
+  static deriveClass(innerAndA, innerAndAForAllowForwarding) {
+    this.command = false
+    const store = {}
+    const generateClass = (...args) => {
+      const klass = this.generateClass(...args)
+      store[klass.name] = klass
     }
 
-    if (deriveInnerAndAForAllowForwarding) {
-      this.generateClass(`A${this.name}AllowForwarding`, false, true)
-      this.generateClass(`Inner${this.name}AllowForwarding`, true, true)
+    if (innerAndA) {
+      generateClass(false)
+      generateClass(true)
     }
+    if (innerAndAForAllowForwarding) {
+      generateClass(false, true)
+      generateClass(true, true)
+    }
+    return store
   }
 
-  static generateClass(klassName, inner, allowForwarding) {
-    const klass = class extends this {
+  static generateClass(inner, allowForwarding) {
+    const klassName = (inner ? "Inner" : "A") + this.name + (allowForwarding ? "AllowForwarding" : "")
+
+    return class extends this {
       static get name() {
         return klassName
       }
@@ -42,7 +51,6 @@ class TextObject extends Base {
         if (allowForwarding != null) this.allowForwarding = allowForwarding
       }
     }
-    klass.register()
   }
 
   isInner() {
@@ -102,7 +110,6 @@ class TextObject extends Base {
       if (this.selectSucceeded) {
         if (this.wise === "characterwise") {
           this.swrap.saveProperties(this.editor, {force: true})
-
         } else if (this.wise === "linewise") {
           // When target is persistent-selection, new selection is added after selectTextObject.
           // So we have to assure all selection have selction property.
@@ -141,7 +148,6 @@ class TextObject extends Base {
   // to override
   getRange(selection) {}
 }
-TextObject.register(false)
 
 // Section: Word
 // =========================
@@ -152,18 +158,15 @@ class Word extends TextObject {
     return this.isA() ? this.utils.expandRangeToWhiteSpaces(this.editor, range) : range
   }
 }
-Word.register(false, true)
 
 class WholeWord extends Word {
   wordRegex = /\S+/
 }
-WholeWord.register(false, true)
 
 // Just include _, -
 class SmartWord extends Word {
   wordRegex = /[\w-]+/
 }
-SmartWord.register(false, true)
 
 // Just include _, -
 class Subword extends Word {
@@ -172,11 +175,11 @@ class Subword extends Word {
     return super.getRange(selection)
   }
 }
-Subword.register(false, true)
 
 // Section: Pair
 // =========================
 class Pair extends TextObject {
+  static command = false
   supportCount = true
   allowNextLine = null
   adjustInnerRange = true
@@ -244,11 +247,11 @@ class Pair extends TextObject {
     if (pairInfo) return pairInfo.targetRange
   }
 }
-Pair.register(false)
 
 // Used by DeleteSurround
-class APair extends Pair {}
-APair.register(false)
+class APair extends Pair {
+  static command = false
+}
 
 class AnyPair extends Pair {
   allowForwarding = false
@@ -263,7 +266,6 @@ class AnyPair extends Pair {
     return _.last(this.utils.sortRanges(this.getRanges(selection)))
   }
 }
-AnyPair.register(false, true)
 
 class AnyPairAllowForwarding extends AnyPair {
   allowForwarding = true
@@ -285,7 +287,6 @@ class AnyPairAllowForwarding extends AnyPair {
     return forwardingRanges[0] || enclosingRange
   }
 }
-AnyPairAllowForwarding.register(false, true)
 
 class AnyQuote extends AnyPair {
   allowForwarding = true
@@ -297,47 +298,39 @@ class AnyQuote extends AnyPair {
     if (ranges.length) return _.first(_.sortBy(ranges, r => r.end.column))
   }
 }
-AnyQuote.register(false, true)
 
 class Quote extends Pair {
+  static command = false
   allowForwarding = true
 }
-Quote.register(false)
 
 class DoubleQuote extends Quote {
   pair = ['"', '"']
 }
-DoubleQuote.register(false, true)
 
 class SingleQuote extends Quote {
   pair = ["'", "'"]
 }
-SingleQuote.register(false, true)
 
 class BackTick extends Quote {
   pair = ["`", "`"]
 }
-BackTick.register(false, true)
 
 class CurlyBracket extends Pair {
   pair = ["{", "}"]
 }
-CurlyBracket.register(false, true, true)
 
 class SquareBracket extends Pair {
   pair = ["[", "]"]
 }
-SquareBracket.register(false, true, true)
 
 class Parenthesis extends Pair {
   pair = ["(", ")"]
 }
-Parenthesis.register(false, true, true)
 
 class AngleBracket extends Pair {
   pair = ["<", ">"]
 }
-AngleBracket.register(false, true, true)
 
 class Tag extends Pair {
   allowNextLine = true
@@ -345,15 +338,9 @@ class Tag extends Pair {
   adjustInnerRange = false
 
   getTagStartPoint(from) {
-    let tagRange
-    const {pattern} = PairFinder.TagFinder
-    this.scanForward(pattern, {from: [from.row, 0]}, ({range, stop}) => {
-      if (range.containsPoint(from, true)) {
-        tagRange = range
-        stop()
-      }
-    })
-    if (tagRange) return tagRange.start
+    const regex = PairFinder.TagFinder.pattern
+    const options = {from: [from.row, 0]}
+    return this.findInEditor("forward", regex, options, ({range}) => range.containsPoint(from, true) && range.start)
   }
 
   getFinder() {
@@ -368,7 +355,6 @@ class Tag extends Pair {
     return super.getPairInfo(this.getTagStartPoint(from) || from)
   }
 }
-Tag.register(false, true)
 
 // Section: Paragraph
 // =========================
@@ -430,7 +416,6 @@ class Paragraph extends TextObject {
     return selection.getBufferRange().union(this.getBufferRangeForRowRange(rowRange))
   }
 }
-Paragraph.register(false, true)
 
 class Indentation extends Paragraph {
   getRange(selection) {
@@ -444,11 +429,11 @@ class Indentation extends Paragraph {
     return this.getBufferRangeForRowRange(rowRange)
   }
 }
-Indentation.register(false, true)
 
 // Section: Comment
 // =========================
 class Comment extends TextObject {
+  Comment
   wise = "linewise"
 
   getRange(selection) {
@@ -459,7 +444,6 @@ class Comment extends TextObject {
     }
   }
 }
-Comment.register(false, true)
 
 class CommentOrParagraph extends TextObject {
   wise = "linewise"
@@ -472,7 +456,6 @@ class CommentOrParagraph extends TextObject {
     }
   }
 }
-CommentOrParagraph.register(false, true)
 
 // Section: Fold
 // =========================
@@ -506,7 +489,6 @@ class Fold extends TextObject {
     }
   }
 }
-Fold.register(false, true)
 
 // NOTE: Function range determination is depending on fold.
 class Function extends Fold {
@@ -537,7 +519,6 @@ class Function extends Fold {
     return [startRow, endRow]
   }
 }
-Function.register(false, true)
 
 // Section: Other
 // =========================
@@ -569,7 +550,7 @@ class Arguments extends TextObject {
     range = range || this.getInstance("InnerCurrentLine").getRange(selection) // fallback
     if (!range) return
 
-    range = this.utils.trimRange(this.editor, range)
+    range = this.trimBufferRange(range)
 
     const text = this.editor.getTextInBufferRange(range)
     const allTokens = this.utils.splitArguments(text, pairRangeFound)
@@ -609,16 +590,14 @@ class Arguments extends TextObject {
     }
   }
 }
-Arguments.register(false, true)
 
 class CurrentLine extends TextObject {
   getRange(selection) {
     const {row} = this.getCursorPositionForSelection(selection)
     const range = this.editor.bufferRangeForBufferRow(row)
-    return this.isA() ? range : this.utils.trimRange(this.editor, range)
+    return this.isA() ? range : this.trimBufferRange(range)
   }
 }
-CurrentLine.register(false, true)
 
 class Entire extends TextObject {
   wise = "linewise"
@@ -628,12 +607,11 @@ class Entire extends TextObject {
     return this.editor.buffer.getRange()
   }
 }
-Entire.register(false, true)
 
 class Empty extends TextObject {
+  static command = false
   selectOnce = true
 }
-Empty.register(false)
 
 class LatestChange extends TextObject {
   wise = null
@@ -646,23 +624,32 @@ class LatestChange extends TextObject {
     }
   }
 }
-LatestChange.register(false, true)
 
 class SearchMatchForward extends TextObject {
   backward = false
 
-  findMatch(fromPoint, pattern) {
-    if (this.mode === "visual") {
-      fromPoint = this.utils.translatePointAndClip(this.editor, fromPoint, "forward")
-    }
-    let foundRange
-    this.scanForward(pattern, {from: [fromPoint.row, 0]}, ({range, stop}) => {
-      if (range.end.isGreaterThan(fromPoint)) {
-        foundRange = range
-        stop()
+  findMatch(from, regex) {
+    if (this.backward) {
+      if (this.mode === "visual") {
+        from = this.utils.translatePointAndClip(this.editor, from, "backward")
       }
-    })
-    return {range: foundRange, whichIsHead: "end"}
+
+      const options = {from: [from.row, Infinity]}
+      return {
+        range: this.findInEditor("backward", regex, options, ({range}) => range.start.isLessThan(from) && range),
+        whichIsHead: "start",
+      }
+    } else {
+      if (this.mode === "visual") {
+        from = this.utils.translatePointAndClip(this.editor, from, "forward")
+      }
+
+      const options = {from: [from.row, 0]}
+      return {
+        range: this.findInEditor("forward", regex, options, ({range}) => range.end.isGreaterThan(from) && range),
+        whichIsHead: "end",
+      }
+    }
   }
 
   getRange(selection) {
@@ -700,26 +687,10 @@ class SearchMatchForward extends TextObject {
     }
   }
 }
-SearchMatchForward.register()
 
 class SearchMatchBackward extends SearchMatchForward {
   backward = true
-
-  findMatch(fromPoint, pattern) {
-    if (this.mode === "visual") {
-      fromPoint = this.utils.translatePointAndClip(this.editor, fromPoint, "backward")
-    }
-    let foundRange
-    this.scanBackward(pattern, {from: [fromPoint.row, Infinity]}, ({range, stop}) => {
-      if (range.start.isLessThan(fromPoint)) {
-        foundRange = range
-        stop()
-      }
-    })
-    return {range: foundRange, whichIsHead: "start"}
-  }
 }
-SearchMatchBackward.register()
 
 // [Limitation: won't fix]: Selected range is not submode aware. always characterwise.
 // So even if original selection was vL or vB, selected range by this text-object
@@ -737,7 +708,6 @@ class PreviousSelection extends TextObject {
     }
   }
 }
-PreviousSelection.register()
 
 class PersistentSelection extends TextObject {
   wise = null
@@ -750,10 +720,10 @@ class PersistentSelection extends TextObject {
     }
   }
 }
-PersistentSelection.register(false, true)
 
 // Used only by ReplaceWithRegister and PutBefore and its' children.
 class LastPastedRange extends TextObject {
+  static command = false
   wise = null
   selectOnce = true
 
@@ -765,7 +735,6 @@ class LastPastedRange extends TextObject {
     return true
   }
 }
-LastPastedRange.register(false)
 
 class VisibleArea extends TextObject {
   selectOnce = true
@@ -775,4 +744,71 @@ class VisibleArea extends TextObject {
     return this.editor.bufferRangeForScreenRange([[startRow, 0], [endRow, Infinity]])
   }
 }
-VisibleArea.register(false, true)
+
+module.exports = Object.assign(
+  {
+    TextObject,
+    Word,
+    WholeWord,
+    SmartWord,
+    Subword,
+    Pair,
+    APair,
+    AnyPair,
+    AnyPairAllowForwarding,
+    AnyQuote,
+    Quote,
+    DoubleQuote,
+    SingleQuote,
+    BackTick,
+    CurlyBracket,
+    SquareBracket,
+    Parenthesis,
+    AngleBracket,
+    Tag,
+    Paragraph,
+    Indentation,
+    Comment,
+    CommentOrParagraph,
+    Fold,
+    Function,
+    Arguments,
+    CurrentLine,
+    Entire,
+    Empty,
+    LatestChange,
+    SearchMatchForward,
+    SearchMatchBackward,
+    PreviousSelection,
+    PersistentSelection,
+    LastPastedRange,
+    VisibleArea,
+  },
+  Word.deriveClass(true),
+  WholeWord.deriveClass(true),
+  SmartWord.deriveClass(true),
+  Subword.deriveClass(true),
+  AnyPair.deriveClass(true),
+  AnyPairAllowForwarding.deriveClass(true),
+  AnyQuote.deriveClass(true),
+  DoubleQuote.deriveClass(true),
+  SingleQuote.deriveClass(true),
+  BackTick.deriveClass(true),
+  CurlyBracket.deriveClass(true, true),
+  SquareBracket.deriveClass(true, true),
+  Parenthesis.deriveClass(true, true),
+  AngleBracket.deriveClass(true, true),
+  Tag.deriveClass(true),
+  Paragraph.deriveClass(true),
+  Indentation.deriveClass(true),
+  Comment.deriveClass(true),
+  CommentOrParagraph.deriveClass(true),
+  Fold.deriveClass(true),
+  Function.deriveClass(true),
+  Arguments.deriveClass(true),
+  CurrentLine.deriveClass(true),
+  Entire.deriveClass(true),
+  LatestChange.deriveClass(true),
+  PersistentSelection.deriveClass(true),
+  VisibleArea.deriveClass(true)
+)
