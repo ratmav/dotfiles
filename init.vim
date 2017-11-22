@@ -5,12 +5,11 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'scrooloose/nerdtree'
-  Plug 'roman/golden-ratio'
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
+  Plug 'simeji/winresizer'
+  Plug 'bhurlow/vim-parinfer'
 call plug#end()
-
-" TODO: Remove powerline/python setup from dotfiles.
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
