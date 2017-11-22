@@ -6,51 +6,44 @@ source ./bash/linux.sh
 LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
 
 configure_gitignore() {
-  echo "configuring global gitignore..."
+  echo "...(re)configuring global gitignore"
   git config --global core.excludesfile "$HOME/.gitignore_global"
-  echo "...configured"
 }
 
 configure_git_editor() {
-  echo "configuring git editor..."
+  echo "...(re)configuring git editor"
   git config --global core.editor "$(which nvim)"
-  echo "...configured"
 }
 
 home_symlinks() {
-  echo "(re)building new symlinks..."
+  echo "...(re)building symlinks"
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
     ln -s $PWD/$link $HOME/$link
-    echo "...(re)built $link link"
+    echo "......(re)built $link"
   done
 }
 
 nvim_init_symlink() {
-  echo "(re)building nvim init symlink..."
+  echo "...(re)building nvim init symlink"
   rm -rf $HOME/.config/nvim
   mkdir -p $HOME/.config/nvim
   ln -s $PWD/init.vim $HOME/.config/nvim/init.vim
-  echo "...(re)built nvim init link"
 }
 
 operating_system() {
   if [[ $(uname) == "Darwin" ]]; then
-    echo "Running Mac-specific checks..."
     bootstrap_mac_os
   elif [[ $(uname) == "Linux" ]]; then
-    echo "Running Linux-specific checks..."
     bootstrap_linux
   fi
 }
 
 vim-plug() {
-  echo "checking vim-plug install..."
+echo "...(re)installing vim-plug"
   rm -rf "$HOME/.local/share/nvim"
-  echo "...cleaned old vim-plug install"
-  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  echo "...installed vim-plug"
+  URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
 }
 
 main() {
