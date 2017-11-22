@@ -2,7 +2,7 @@
 
 
 pypi_packages() {
-  packages=(pip setuptools)
+  packages=(pip setuptools flake8 ansible)
   for package in ${packages[@]}; do
     pip install -U "$package"
   done
