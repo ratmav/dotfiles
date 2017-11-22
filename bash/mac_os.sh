@@ -29,7 +29,6 @@ homebrew() {
 }
 
 bootstrap_mac_os() {
-  copy_fonts_mac
   install_homebrew
   homebrew
   pypi_packages
