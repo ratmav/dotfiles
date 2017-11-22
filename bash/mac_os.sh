@@ -3,11 +3,6 @@
 source ./bash/python.sh
 source ./bash/node.sh
 
-copy_fonts_mac() {
-  echo "...copying fonts on mac..."
-  cp fonts/* ~/Library/Fonts/
-  echo "......copied fonts"
-}
 
 install_homebrew() {
   echo "...checking homebrew install..."
