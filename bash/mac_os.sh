@@ -31,7 +31,7 @@ homebrew() {
 casks() {
   echo "...(re)installing homebrew cask"
   brew tap caskroom/cask 1>/dev/null
-  PACKAGES=("iterm2")
+  PACKAGES=("iterm2" "spectacle")
   for package in "${PACKAGES[@]}"; do
     echo "......(re)installing $package cask"
     brew cask reinstall $package 1>/dev/null
