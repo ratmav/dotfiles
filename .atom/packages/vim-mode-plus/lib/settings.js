@@ -7,7 +7,8 @@ function inferType(value) {
   if (typeof value === "string") return "string"
 }
 
-const DEPRECATED_PARAMS = ["showCursorInVisualMode"]
+const DEPRECATED_PARAMS = []
+const FORCE_DELETE_PARAMS = ["showCursorInVisualMode", "notifiedCoffeeScriptNoLongerSupportedToExtendVMP"]
 
 function invertValue(value) {
   return !value
@@ -51,17 +52,9 @@ class Settings {
     })
   }
 
-  notifyCoffeeScriptNoLongerSupportedToExtendVMP() {
-    if (!this.get("notifiedCoffeeScriptNoLongerSupportedToExtendVMP")) {
-      this.set("notifiedCoffeeScriptNoLongerSupportedToExtendVMP", true)
-      const message = [
-        this.scope,
-        "- From vmp-v.1.9.0 all operations are defined as ES6 class which is NOT extend-able by CoffeeScript.",
-        "- If you have vmp custom operations in your `init.coffee`. Those are no longer work(You might saw error already).",
-        "- Sorry for not providing gradual migration path, I couldn't find the way and also I'm lazy.",
-        "- See [CHANGELOG](https://github.com/t9md/atom-vim-mode-plus/blob/master/CHANGELOG.md) and [Wiki](https://github.com/t9md/atom-vim-mode-plus/wiki/ExtendVimModePlusInInitFile) for detail.",
-      ].join("\n")
-      atom.notifications.addInfo(message, {dismissable: true})
+  silentlyRemoveUnusedParams() {
+    for (const param of FORCE_DELETE_PARAMS) {
+      this.delete(param)
     }
   }
 
@@ -115,7 +108,7 @@ class Settings {
   }
 
   delete(param) {
-    return this.set(param, undefined)
+    return atom.config.unset(`${this.scope}.${param}`)
   }
 
   get(param) {

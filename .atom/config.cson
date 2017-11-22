@@ -17,12 +17,12 @@
     experimental:
       stageFilesBeta: false
   github: {}
+  "line-ending-selector": {}
   termination:
     style:
       theme: "one-dark"
     toggles: {}
   "vim-mode-plus":
     clearMultipleCursorsOnEscapeInsertMode: true
-    notifiedCoffeeScriptNoLongerSupportedToExtendVMP: true
   welcome:
     showOnStartup: false
