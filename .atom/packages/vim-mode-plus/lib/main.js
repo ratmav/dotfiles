@@ -9,8 +9,7 @@ module.exports = {
 
   activate() {
     this.emitter = new Emitter()
-    settings.notifyDeprecatedParams()
-    settings.notifyCoffeeScriptNoLongerSupportedToExtendVMP()
+    settings.silentlyRemoveUnusedParams()
     settings.migrateRenamedParams()
 
     if (atom.inSpecMode()) settings.set("strictAssertion", true)
@@ -63,10 +62,10 @@ module.exports = {
     )
 
     if (atom.inDevMode()) {
-      this.developer = new (require("./developer"))()
-      this.subscriptions.add(this.developer.init(this.getEditorState))
+      const developer = require("./developer")
+      this.subscriptions.add(developer.init())
       if (settings.get("debug")) {
-        this.developer.reportRequireCache({excludeNodModules: false})
+        developer.reportRequireCache({excludeNodModules: false})
       }
     }
   },
@@ -106,8 +105,6 @@ module.exports = {
 
   deactivate() {
     this.demaximizePane()
-    if (this.demoModeSupport) this.demoModeSupport.destroy()
-
     this.subscriptions.dispose()
     VimState.forEach(vimState => vimState.destroy())
     VimState.clear()
@@ -162,7 +159,7 @@ module.exports = {
       "operator-modifier-linewise"() { this.setOperatorModifier({wise: "linewise"}) },
       "operator-modifier-occurrence"() { this.setOperatorModifier({occurrence: true, occurrenceType: "base"}) },
       "operator-modifier-subword-occurrence"() { this.setOperatorModifier({occurrence: true, occurrenceType: "subword"}) },
-      repeat() { this.operationStack.runRecorded() },
+      "repeat"() { this.operationStack.runRecorded() },
       "repeat-find"() { this.operationStack.runCurrentFind() },
       "repeat-find-reverse"() { this.operationStack.runCurrentFind({reverse: true}) },
       "repeat-search"() { this.operationStack.runCurrentSearch() },
@@ -198,7 +195,7 @@ module.exports = {
           didDispatch(event) {
             event.stopPropagation()
             const vimState = getEditorState(this.getModel())
-            if (vimState) fn.call(vimState, event)
+            if (vimState) fn.call(vimState)
           },
         }
       }
@@ -208,14 +205,13 @@ module.exports = {
     return atom.commands.add("atom-text-editor:not([mini])", bindToVimState(commands))
   },
 
-  consumeStatusBar(statusBar) {
-    this.statusBarManager.initialize(statusBar)
-    this.statusBarManager.attach()
-    this.subscriptions.add(new Disposable(() => this.statusBarManager.detach()))
+  consumeStatusBar(service) {
+    this.subscriptions.add(this.statusBarManager.init(service))
   },
 
-  consumeDemoMode(demoModeService) {
-    this.demoModeSupport = new (require("./demo-mode-support"))(demoModeService)
+  consumeDemoMode(service) {
+    const demoModeSupport = require("./demo-mode-support")
+    this.subscriptions.add(...demoModeSupport.init(service))
   },
 
   // Computed props

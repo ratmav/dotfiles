@@ -81,10 +81,13 @@ class Undo extends MiscCommand {
   setCursorPosition({newRanges, oldRanges, strategy}) {
     const lastCursor = this.editor.getLastCursor() // This is restored cursor
 
-    const changedRange =
-      strategy === "smart"
-        ? this.utils.findRangeContainsPoint(newRanges, lastCursor.getBufferPosition())
-        : this.utils.sortRanges(newRanges.concat(oldRanges))[0]
+    let changedRange
+
+    if (strategy === "smart") {
+      changedRange = this.utils.findRangeContainsPoint(newRanges, lastCursor.getBufferPosition())
+    } else if (strategy === "simple") {
+      changedRange = this.utils.sortRanges(newRanges.concat(oldRanges))[0]
+    }
 
     if (changedRange) {
       if (this.utils.isLinewiseRange(changedRange)) this.utils.setBufferRow(lastCursor, changedRange.start.row)
@@ -395,9 +398,7 @@ class ScrollCursorToRight extends ScrollCursorToLeft {
 
 // insert-mode specific commands
 // -------------------------
-class InsertMode extends MiscCommand {
-  static commandScope = "atom-text-editor.vim-mode-plus.insert-mode"
-}
+class InsertMode extends MiscCommand {} // just namespace
 
 class ActivateNormalModeOnce extends InsertMode {
   execute() {
