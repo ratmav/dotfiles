@@ -98,7 +98,6 @@ nnoremap <Leader>d :BD!<CR> " Bang to avoid warnings on terminal buffers.
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Terminal:
-nnoremap <Leader>t :terminal<CR>
 :tnoremap <Esc> <C-\><C-n>
 :tnoremap <A-h> <C-\><C-N><C-w>h
 :tnoremap <A-j> <C-\><C-N><C-w>j
