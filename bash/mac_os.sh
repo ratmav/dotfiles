@@ -16,7 +16,8 @@ install_homebrew() {
 }
 
 homebrew() {
-  PACKAGES=("git" "neovim" "python" "pyenv" "pyenv-virtualenv" "rbenv")
+  PACKAGES=("git" "python" "tmux" "reattach-to-user-namespace" "neovim" "pyenv"
+            "pyenv-virtualenv" "rbenv")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then

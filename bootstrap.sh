@@ -3,7 +3,7 @@
 source ./bash/mac_os.sh
 source ./bash/linux.sh
 
-LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
+LINKS=(".bashrc" ".bash_profile" ".tmux.conf" ".gitignore_global")
 
 configure_gitignore() {
   echo "...(re)configuring global gitignore"
@@ -40,14 +40,22 @@ operating_system() {
 }
 
 vim-plug() {
-echo "...(re)installing vim-plug"
+  echo "...(re)installing vim-plug"
   rm -rf "$HOME/.local/share/nvim"
   URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
 }
 
+tpm() {
+  echo "...(re)installing tpm"
+  rm -rf ~/.tmux/plugins/
+  mkdir -p ~/.tmux/plugins
+  git clone -q https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+}
+
 main() {
   operating_system
+  tpm
   vim-plug
   nvim_init_symlink
   home_symlinks
