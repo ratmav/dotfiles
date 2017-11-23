@@ -9,6 +9,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
   Plug 'bhurlow/vim-parinfer'
+  Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 " rainbow_parenthesis:
