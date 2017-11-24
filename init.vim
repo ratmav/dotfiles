@@ -23,6 +23,9 @@ let g:airline#extensions#tabline#enabled = 1
 " Set encoding:
 set encoding=utf-8
 
+" Use the system clipboard by default:
+set clipboard=unnamedplus
+
 " No mouse:
 set mouse-=a
 
