@@ -15,8 +15,9 @@ install_homebrew() {
   fi
 }
 
-homebrew_packages() {
-  PACKAGES=("git" "bash-completion" "python" "pyenv" "pyenv-virtualenv" "rbenv")
+homebrew() {
+  PACKAGES=("git" "python" "tmux" "reattach-to-user-namespace" "neovim" "pyenv"
+            "pyenv-virtualenv" "rbenv")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
@@ -28,18 +29,20 @@ homebrew_packages() {
   done
 }
 
-brew_cask(){
-  PACKAGES=("atom" "spectacle")
+casks() {
+  echo "...(re)installing homebrew cask"
+  brew tap caskroom/cask 1>/dev/null
+  PACKAGES=("iterm2" "spectacle")
   for package in "${PACKAGES[@]}"; do
-    brew cask install $package
-    echo "...(re)installed $package via homebrew..."
+    echo "......(re)installing $package cask"
+    brew cask reinstall $package 1>/dev/null
   done
 }
 
 bootstrap_mac_os() {
   install_homebrew
-  homebrew_packages
-  brew_cask
+  homebrew
+  casks
   pypi_packages
   nvm
 }
