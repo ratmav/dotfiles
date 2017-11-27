@@ -23,6 +23,8 @@ $ ./bootstrap.sh && source ~/.bash_profile
 
 ## Initialize
 
+Run these commands after installation or updates.
+
 ### tmux
 
 `prefix` + I
