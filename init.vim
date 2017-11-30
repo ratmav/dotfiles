@@ -94,9 +94,9 @@ let mapleader=" "
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
 " Buffer management:
-nnoremap <Leader>h :bp<CR>
-nnoremap <Leader>l :bn<CR>
-nnoremap <Leader>d :BD!<CR> " Bang to avoid warnings on terminal buffers.
+nnoremap <Leader>h :bp!<CR>
+nnoremap <Leader>l :bn!<CR>
+nnoremap <Leader>d :BD!<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
