@@ -10,6 +10,8 @@ $ git clone  https://github.com/ratmav/dotfiles.git
 $ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 ```
 
+**NOTE**: Currently tested on macOS. See #13 for Linux status.
+
 # Use
 
 ## `tmux`
