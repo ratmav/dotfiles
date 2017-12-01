@@ -1,36 +1,60 @@
 dotfiles
 ========
 
-# Use
+# Install
 
-## Install
-
-### *nix
+## *nix
 
 ```bash
 $ git clone  https://github.com/ratmav/dotfiles.git
 $ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 ```
 
-## Update
+# Use
 
-### *nix
+## `tmux`
+
+### Prefix
+
+The tmux prefix is currently configured as Ctrl-Space.
+
+### Keybindings
+
+* [tmux-pain-control](https://github.com/tmux-plugins/tmux-pain-control#bindings)
+* [tmux-yank](https://github.com/tmux-plugins/tmux-yank#key-bindings)
+
+## `nvim`
+
+### Leader
+
+The Neovim leader key is currently configured as Space.
+
+### Keybindings
+
+* [winresizer](https://github.com/simeji/winresizer#in-default-setting)
+* [vim-parinfer](https://github.com/bhurlow/vim-parinfer#mappings)
+* [vim-bufkill](https://github.com/qpkorr/vim-bufkill#usage)
+* [nerdtree](https://github.com/scrooloose/nerdtree/blob/master/doc/NERDTree.txt#L220)
+
+# Update
+
+## *nix
 
 ```bash
 $ cd dotfiles
 $ ./bootstrap.sh && source ~/.bash_profile
 ```
 
-## Initialize
+# Initialization
 
 Run these commands after installation or updates.
 
-### tmux
+## `tmux`
 
 `prefix` + I
 
-**NOTE**: The tmux prefix is currently configured to Ctrl-Space. This means hold the Ctrl key and press Space, then release those keys and press Shift and the `i` key (capital "I").
+**NOTE**: This means hold the Ctrl key and press Space (`prefix`), then release those keys and press Shift and the `i` key (capital "I").
 
-### nvim
+## `nvim`
 
 On the `nvim` command line, run `:PlugInstall`.
