@@ -10,7 +10,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'simeji/winresizer'
   Plug 'bhurlow/vim-parinfer'
   Plug 'sheerun/vim-polyglot'
-  Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " rainbow_parenthesis:
