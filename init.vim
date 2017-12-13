@@ -10,6 +10,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'simeji/winresizer'
   Plug 'bhurlow/vim-parinfer'
   Plug 'sheerun/vim-polyglot'
+  Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -100,6 +101,10 @@ nnoremap <Leader>d :BD!<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
+
+" Search with CtrlP:
+nnoremap <Leader>f :CtrlP .<CR>
+nnoremap <Leader>b :CtrlPBuffer<CR>
 
 " Terminal:
 :tnoremap <Esc> <C-\><C-n>
