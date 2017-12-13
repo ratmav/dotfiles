@@ -38,6 +38,10 @@ The Neovim leader key is currently configured as Space.
 * [vim-bufkill](https://github.com/qpkorr/vim-bufkill#usage)
 * [nerdtree](https://github.com/scrooloose/nerdtree/blob/master/doc/NERDTree.txt#L220)
 
+#### Fugitive
+
+Most of Fugitive is driven by the (Neo)Vim command line, but the `Gstatus` commmand opens a window that has some really handy [keybindings](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt#L33).
+
 # Update
 
 ## *nix
