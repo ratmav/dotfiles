@@ -19,6 +19,9 @@ autocmd BufEnter * RainbowParentheses
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
 
+" ctrlp:
+let g:ctrlp_show_hidden = 1
+
 " =============== BEHAVIOR
 
 " Set encoding:
