@@ -27,6 +27,23 @@
       $ echo "IdentityFile ~/.ssh/firstname-lastnme" >> ~/.ssh/config
 ```
 
+## Configure Client for Multiple Keys
+
+### `~/.ssh/config`
+
+```
+Host foo.companyname.com
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/firstname-lastname_companyname
+
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/default-keyname
+  IdentitiesOnly yes
+```
+
 # Remote Keys
 
 ## Create List of Authorized Keys
