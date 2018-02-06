@@ -11,6 +11,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'bhurlow/vim-parinfer'
   Plug 'sheerun/vim-polyglot'
   Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'vim-syntastic/syntastic'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -21,6 +22,16 @@ let g:airline#extensions#tabline#enabled = 1
 
 " ctrlp:
 let g:ctrlp_show_hidden = 1
+
+" syntastic:
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " =============== BEHAVIOR
 
