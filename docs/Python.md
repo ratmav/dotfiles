@@ -50,11 +50,11 @@ execfile(activate, dict(__file__=activate))
 1. Verify the existence of `~/.ipython/profile_default/ipython_config.py`
 2. Add the following the the config file:
 
-```python
-print('         >>>>>>>> AUTORELOAD ENABLED <<<<<<<<<')
+    ```python
+    print('         >>>>>>>> AUTORELOAD ENABLED <<<<<<<<<')
 
-c = get_config()
-c.InteractiveShellApp.exec_lines = []
-c.InteractiveShellApp.exec_lines.append('%load_ext autoreload')
-c.InteractiveShellApp.exec_lines.append('%autoreload 2')
-```
+    c = get_config()
+    c.InteractiveShellApp.exec_lines = []
+    c.InteractiveShellApp.exec_lines.append('%load_ext autoreload')
+    c.InteractiveShellApp.exec_lines.append('%autoreload 2')
+    ```
