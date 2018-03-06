@@ -22,6 +22,7 @@ let g:airline#extensions#tabline#enabled = 1
 
 " ctrlp:
 let g:ctrlp_show_hidden = 1
+let g:ctrlp_max_files=0
 
 " syntastic:
 set statusline+=%#warningmsg#
