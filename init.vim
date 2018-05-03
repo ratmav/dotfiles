@@ -121,6 +121,7 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 " Search with CtrlP:
 nnoremap <Leader>f :CtrlP .<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>c :CtrlPClearCache<CR>
 
 " Terminal:
 :tnoremap <Esc> <C-\><C-n>
