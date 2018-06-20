@@ -115,6 +115,7 @@ nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 nnoremap <Leader>h :bp!<CR>
 nnoremap <Leader>l :bn!<CR>
 nnoremap <Leader>d :BD!<CR>
+nnoremap <Leader>e :edit!<CR>
 
 " Toggle NERDTree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
