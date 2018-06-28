@@ -8,7 +8,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
-  Plug 'bhurlow/vim-parinfer'
   Plug 'sheerun/vim-polyglot'
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'vim-syntastic/syntastic'
