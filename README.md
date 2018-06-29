@@ -34,7 +34,6 @@ The Neovim leader key is currently configured as Space.
 ### Keybindings
 
 * [winresizer](https://github.com/simeji/winresizer#in-default-setting)
-* [vim-parinfer](https://github.com/bhurlow/vim-parinfer#mappings)
 * [vim-bufkill](https://github.com/qpkorr/vim-bufkill#usage)
 * [nerdtree](https://github.com/scrooloose/nerdtree/blob/master/doc/NERDTree.txt#L220)
 * [ctrl-p](https://github.com/ctrlpvim/ctrlp.vim#basic-usage)
