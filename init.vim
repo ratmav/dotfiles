@@ -12,7 +12,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'vim-syntastic/syntastic'
   Plug 'airblade/vim-gitgutter'
-  Plug 'vim-scripts/paredit.vim'
 call plug#end()
 
 " rainbow_parenthesis:
