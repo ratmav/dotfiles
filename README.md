@@ -40,20 +40,12 @@ The tmux prefix is currently configured as Ctrl-Space.
     * Right: `prefix-l`
     * Up: `prefix-k`
     * Down: `prefix-j`
+* Resize
+    * Left: `prefix-H`
+    * Right: `prefix-L`
+    * Up: `prefix-K`
+    * Down: `prefix-J`
 
-## Resize
-
-unbind H
-bind-key -r H resize-pane -L "5"
-
-unbind J
-bind-key -r J resize-pane -D "5"
-
-unbind K
-bind-key -r K resize-pane -U "5"
-
-unbind L
-bind-key -r L resize-pane -R "5"
 #### Vim-like Yank and Paste
 
 * [tmux-yank](https://github.com/tmux-plugins/tmux-yank#key-bindings)
