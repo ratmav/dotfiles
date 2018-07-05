@@ -22,7 +22,40 @@ The tmux prefix is currently configured as Ctrl-Space.
 
 ### Keybindings
 
-* [tmux-pain-control](https://github.com/tmux-plugins/tmux-pain-control#bindings)
+#### Pane Management
+
+* Zoom
+    * In: `prefix-z`
+    * Out: `prefix-Z`
+* Kill: `prefix-x`
+* Create
+    * Current Pane
+        * Vertical: `prefix-v`
+        * Horizontal: `prefix-s`
+    * Full Width
+        * Vertical: `prefix-V`
+        * Horizontal: `prefix-S`
+* Navigate
+    * Left: `prefix-h`
+    * Right: `prefix-l`
+    * Up: `prefix-k`
+    * Down: `prefix-j`
+
+## Resize
+
+unbind H
+bind-key -r H resize-pane -L "5"
+
+unbind J
+bind-key -r J resize-pane -D "5"
+
+unbind K
+bind-key -r K resize-pane -U "5"
+
+unbind L
+bind-key -r L resize-pane -R "5"
+#### Vim-like Yank and Paste
+
 * [tmux-yank](https://github.com/tmux-plugins/tmux-yank#key-bindings)
 
 ## `nvim`
