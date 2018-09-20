@@ -18,7 +18,7 @@ $ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 
 ### Prefix
 
-The tmux prefix is currently configured as Ctrl-Space.
+The tmux prefix is currently configured as Ctrl-T.
 
 ### Keybindings
 
