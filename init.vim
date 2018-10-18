@@ -12,6 +12,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'vim-syntastic/syntastic'
   Plug 'airblade/vim-gitgutter'
+  Plug 'JamshedVesuna/vim-markdown-preview'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -138,3 +139,7 @@ nnoremap <Leader>c :CtrlPClearCache<CR>
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
+
+" Markdown preview:
+let vim_markdown_preview_github=1
+let vim_markdown_preview_hotkey='<Leader>m'
