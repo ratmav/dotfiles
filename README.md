@@ -56,12 +56,24 @@ The tmux prefix is currently configured as Ctrl-T.
 
 The Neovim leader key is currently configured as Space.
 
+* Leader-w clears whitespace.
+* Leader-h moves the the previous buffer.
+* Leader-l moves the the next buffer.
+* Leader-e refreshes the current buffer. Use `:checkt` to refresh *all* buffers.
+
 ### Keybindings
 
 * [winresizer](https://github.com/simeji/winresizer#in-default-setting)
 * [vim-bufkill](https://github.com/qpkorr/vim-bufkill#usage)
+  * Leader-d kills the buffer
 * [nerdtree](https://github.com/scrooloose/nerdtree/blob/master/doc/NERDTree.txt#L220)
+  * Leader-n opens the tree.
 * [ctrl-p](https://github.com/ctrlpvim/ctrlp.vim#basic-usage)
+  * Leader-f opens a file search.
+  * Leader-b opens a buffer search.
+  * Leader-c clears the cache.
+* [vim-markdown-preview](https://github.com/JamshedVesuna/vim-markdown-preview)
+  * Leader-m loads a markdown preview.
 
 #### Fugitive
 
