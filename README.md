@@ -59,7 +59,8 @@ The Neovim leader key is currently configured as Space.
 * Leader-w clears whitespace.
 * Leader-h moves the the previous buffer.
 * Leader-l moves the the next buffer.
-* Leader-e refreshes the current buffer. Use `:checkt` to refresh *all* buffers.
+* Leader-e refreshes the current buffer.
+* Leader-E refreshes *all* buffers.
 
 ### Keybindings
 
