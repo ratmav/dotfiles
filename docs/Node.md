@@ -7,8 +7,9 @@
   $ source ~/.bashrc
 ```
 
-## Install `nvm` and `npm`:
+## Install LTS `nvm` and `npm`:
 
 ```bash
-  $ nvm install stable # Also installs npm.
+  $ nvm install --lts
+  $ nvm alias default stable
 ```
