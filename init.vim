@@ -10,7 +10,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'simeji/winresizer'
   Plug 'sheerun/vim-polyglot'
   Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'vim-syntastic/syntastic'
   Plug 'airblade/vim-gitgutter'
   Plug 'JamshedVesuna/vim-markdown-preview'
 call plug#end()
@@ -25,16 +24,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_files=0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-
-" syntastic:
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " =============== BEHAVIOR
 
