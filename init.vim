@@ -11,7 +11,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'sheerun/vim-polyglot'
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'airblade/vim-gitgutter'
-  Plug 'JamshedVesuna/vim-markdown-preview'
 call plug#end()
 
 " rainbow_parenthesis:
