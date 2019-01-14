@@ -4,7 +4,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'chriskempson/base16-vim'
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
-  Plug 'scrooloose/nerdtree'
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
