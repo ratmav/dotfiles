@@ -4,6 +4,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'chriskempson/base16-vim'
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
+  Plug 'scrooloose/nerdtree'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
@@ -104,6 +106,9 @@ nnoremap <Leader>l :bn!<CR>
 nnoremap <Leader>d :BD!<CR>
 nnoremap <Leader>e :edit!<CR>
 nnoremap <Leader>E :checkt <CR>
+
+" Toggle NERDTree:
+nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Search with CtrlP:
 nnoremap <Leader>f :CtrlP .<CR>
