@@ -105,9 +105,6 @@ nnoremap <Leader>d :BD!<CR>
 nnoremap <Leader>e :edit!<CR>
 nnoremap <Leader>E :checkt <CR>
 
-" Toggle NERDTree:
-nnoremap <Leader>n :NERDTreeToggle<CR>
-
 " Search with CtrlP:
 nnoremap <Leader>f :CtrlP .<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
@@ -127,7 +124,3 @@ nnoremap <Leader>c :CtrlPClearCache<CR>
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
-
-" Markdown preview:
-let vim_markdown_preview_github=1
-let vim_markdown_preview_hotkey='<Leader>m'
