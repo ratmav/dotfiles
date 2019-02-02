@@ -1,7 +1,6 @@
 " =============== PLUGINS
 
 call plug#begin('~/.local/share/nvim/plugged')
-  Plug 'chriskempson/base16-vim'
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'scrooloose/nerdtree'
@@ -69,8 +68,6 @@ autocmd FileType python setlocal foldmethod=indent
 " =============== DISPLAY
 
 syntax on
-
-colorscheme base16-solarized-dark
 
 " Highlight current line:
 set cursorline
