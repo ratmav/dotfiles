@@ -60,13 +60,13 @@ tpm() {
 }
 
 main() {
-  # operating_system
-  # tpm
-  # vim-plug
-  # nvim_init_symlink
+  operating_system
+  tpm
+  vim-plug
+  nvim_init_symlink
   home_symlinks
-  # configure_gitignore
-  # configure_git_editor
+  configure_gitignore
+  configure_git_editor
 }
 
 main "$@"
