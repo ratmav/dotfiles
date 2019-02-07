@@ -97,8 +97,6 @@ Run these commands after installation or updates.
 
 `prefix` + I
 
-**NOTE**: This means hold the Ctrl key and press Space (`prefix`), then release those keys and press Shift and the `i` key (capital "I").
-
 ## `nvim`
 
 On the `nvim` command line, run `:PlugInstall`.
