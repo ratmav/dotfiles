@@ -147,7 +147,7 @@ module.exports = {
   //   `project#1.0.1`
   plugins: [
     'hyper-opacity',
-    'hyper-solarized',
+    'hyper-zenburn',
     'hyper-quake',
   ],
 
