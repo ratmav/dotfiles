@@ -44,6 +44,22 @@ Host *
   IdentitiesOnly yes
 ```
 
+## Configure Local SSH Agent
+
+**NOTE**: Be sure that the key is added/configured in the `~/.ssh/config` file!
+
+### Start the SSH Agent
+
+```
+$ eval "$(ssh-agent -s)"
+```
+
+### Add Key to SSH Agent
+
+```
+$ ssh-add -K ~/.ssh/whatever-key-you-want
+```
+
 # Remote Keys
 
 ## Create List of Authorized Keys
