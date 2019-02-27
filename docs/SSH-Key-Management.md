@@ -18,7 +18,7 @@
 
 ```bash
       $ cd ~/.ssh
-      $ ssh-keygen -C "your.email.address@domain.tld" -f ./firstname-lastname
+      $ ssh-keygen -b 4096 -C "your.email.address@domain.tld" -f ./firstname-lastname
 ```
 
 ## Use Private Keys with Non-Default Names
