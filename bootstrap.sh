@@ -30,7 +30,7 @@ home_symlinks() {
   done
 }
 
-nvim_init_symlink() {
+nvim_symlink() {
   echo "...(re)building nvim init symlink"
   rm -rf $HOME/.config/nvim
   mkdir -p $HOME/.config/nvim
@@ -45,25 +45,46 @@ operating_system() {
   fi
 }
 
-vim-plug() {
-  echo "...(re)installing vim-plug"
-  rm -rf "$HOME/.local/share/nvim"
-  URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
+vim_plug() {
+  if [ ! -d "$HOME/.local/share/nvim" ]; then
+    echo "...installing vim-plug"
+    URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
+  fi
 }
 
 tpm() {
-  echo "...(re)installing tpm"
-  rm -rf ~/.tmux/plugins/
-  mkdir -p ~/.tmux/plugins
-  git clone -q https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  if [ ! -d "$HOME/.tmux/plugins" ]; then
+    echo "...installing tpm"
+    mkdir -p ~/.tmux/plugins
+    git clone -q https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  fi
+}
+
+nvm() {
+  if [ ! -d "$HOME/.nvm" ]; then
+    echo "...installing nvm"
+    URL="https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
+    curl -o- -s $URL | bash 1>/dev/null
+  fi
+}
+
+gvm() {
+  if [ ! -d "$HOME/.gvm" ]; then
+    echo "...installing gvm"
+    URL="https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/"
+    URL+="gvm-installer"
+    bash < <(curl -s -S -L $URL) 1>/dev/null
+  fi
 }
 
 main() {
   operating_system
   tpm
-  vim-plug
-  nvim_init_symlink
+  nvm
+  gvm
+  vim_plug
+  nvim_symlink
   home_symlinks
   configure_gitignore
   configure_git_editor

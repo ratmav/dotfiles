@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ./bash/node.sh
-
 
 install_homebrew() {
   echo "...checking homebrew install..."
@@ -16,7 +14,7 @@ install_homebrew() {
 
 homebrew() {
   PACKAGES=("git" "tmux" "reattach-to-user-namespace" "neovim" "pyenv"
-            "pipenv")
+            "pipenv" "mercurial")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
@@ -29,12 +27,10 @@ homebrew() {
 }
 
 casks() {
-  echo "...(re)installing homebrew cask"
-  brew tap caskroom/cask 1>/dev/null
-  PACKAGES=("spectacle")
-  for package in "${PACKAGES[@]}"; do
-    echo "......(re)installing $package cask"
-    brew cask reinstall $package 1>/dev/null
+  CASKS=("spectacle" "hyper")
+  for cask in "${CASKS[@]}"; do
+    echo "...(re)installing $cask"
+    brew cask reinstall $cask --force 1>/dev/null
   done
 }
 
@@ -42,5 +38,4 @@ bootstrap_mac_os() {
   install_homebrew
   homebrew
   casks
-  nvm
 }
