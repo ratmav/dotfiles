@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source ./bash/python.sh
 source ./bash/node.sh
 
 
@@ -43,6 +42,5 @@ bootstrap_mac_os() {
   install_homebrew
   homebrew
   casks
-  pypi_packages
   nvm
 }
