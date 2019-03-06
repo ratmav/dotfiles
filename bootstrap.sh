@@ -74,6 +74,7 @@ gvm() {
     echo "...installing gvm"
     URL="https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/"
     URL+="gvm-installer"
+    export GVM_NO_UPDATE_PROFILE=true
     bash < <(curl -s -S -L $URL) 1>/dev/null
   fi
 }
