@@ -77,9 +77,6 @@ syntax on
 " Highlight current line:
 set cursorline
 
-" Mark the 80th column.
-autocmd BufEnter * set colorcolumn=79
-
 " Highlight unwanted spaces:
 autocmd BufEnter * highlight Extrawhitespace ctermbg=red guibg=red
 autocmd BufEnter * match ExtraWhitespace /\s\+$/
