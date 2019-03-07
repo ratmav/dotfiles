@@ -160,17 +160,19 @@ $ cd project-name
 $ git branch -D branch-name
 ```
 
-### Remove a File from Repo, Including History
+### Remove Files from Repo and History
+
+#### Most Recent Commit
 
 ```
-$ git rm --cached giant_file
-# Stage our giant file for removal, but leave it on disk
-
+$ git rm --cached file_or_dir
 $ git commit --amend -CHEAD
-# Amend the previous commit with your change
-# Simply making a new commit won't work, as you need
-# to remove the file from the unpushed history as well
+$ git push --force
+```
 
-git push
-# Push our rewritten, smaller commit
+#### All Commits
+
+```
+$ git filter-branch --tree-filter "rm -rf file_or_dir"
+$ git push --force
 ```
