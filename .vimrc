@@ -60,9 +60,6 @@ set backspace=2
 " Disable SQL Omnicomplete, which is tied to <C-c> for some reason.
 let g:omni_sql_no_default_maps = 1
 
-" Terminal
-autocmd TermOpen * set bufhidden=hide
-
 " Makefile
 autocmd FileType make setlocal noexpandtab
 autocmd FileType make setlocal shiftwidth=8
@@ -113,18 +110,3 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 nnoremap <Leader>f :CtrlP .<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>c :CtrlPClearCache<CR>
-
-" Terminal:
-:tnoremap <Esc> <C-\><C-n>
-:tnoremap <A-h> <C-\><C-N><C-w>h
-:tnoremap <A-j> <C-\><C-N><C-w>j
-:tnoremap <A-k> <C-\><C-N><C-w>k
-:tnoremap <A-l> <C-\><C-N><C-w>l
-:inoremap <A-h> <C-\><C-N><C-w>h
-:inoremap <A-j> <C-\><C-N><C-w>j
-:inoremap <A-k> <C-\><C-N><C-w>k
-:inoremap <A-l> <C-\><C-N><C-w>l
-:nnoremap <A-h> <C-w>h
-:nnoremap <A-j> <C-w>j
-:nnoremap <A-k> <C-w>k
-:nnoremap <A-l> <C-w>l

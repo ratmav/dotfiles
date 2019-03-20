@@ -9,6 +9,7 @@ LINKS=(
   ".tmux.conf"
   ".gitignore_global"
   ".hyper.js"
+  ".vimrc"
   )
 
 configure_gitignore() {
@@ -18,7 +19,7 @@ configure_gitignore() {
 
 configure_git_editor() {
   echo "...(re)configuring git editor"
-  git config --global core.editor "$(which nvim)"
+  git config --global core.editor "$(which vim)"
 }
 
 home_symlinks() {
@@ -30,13 +31,6 @@ home_symlinks() {
   done
 }
 
-nvim_symlink() {
-  echo "...(re)building nvim init symlink"
-  rm -rf $HOME/.config/nvim
-  mkdir -p $HOME/.config/nvim
-  ln -s $PWD/init.vim $HOME/.config/nvim/init.vim
-}
-
 operating_system() {
   if [[ $(uname) == "Darwin" ]]; then
     bootstrap_mac_os
@@ -46,10 +40,10 @@ operating_system() {
 }
 
 vim_plug() {
-  if [ ! -d "$HOME/.local/share/nvim" ]; then
+  if [ ! -d "$HOME/.vim/autoload" ]; then
     echo "...installing vim-plug"
     URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
+    curl -fLo $HOME/.vim/autoload --create-dirs -s $URL
   fi
 }
 
@@ -73,9 +67,8 @@ main() {
   operating_system
   tpm
   nvm
-  vim_plug
-  nvim_symlink
   home_symlinks
+  vim_plug
   configure_gitignore
   configure_git_editor
 }
