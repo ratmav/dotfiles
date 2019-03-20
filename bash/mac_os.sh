@@ -34,8 +34,13 @@ casks() {
   done
 }
 
+press_and_hold() {
+  defaults write co.zeit.hyper ApplePressAndHoldEnabled -bool false
+}
+
 bootstrap_mac_os() {
   install_homebrew
   homebrew
   casks
+  press_and_hold
 }
