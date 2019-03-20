@@ -32,9 +32,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# gvm
-source "$HOME/.gvm/scripts/gvm"
-
 # load miscellaneous environment variables if needed.
 if [ -f ~/.misc_envars ]; then
     . ~/.misc_envars
