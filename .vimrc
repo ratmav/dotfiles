@@ -1,6 +1,6 @@
 " =============== PLUGINS
 
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'scrooloose/nerdtree'
