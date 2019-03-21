@@ -40,10 +40,10 @@ operating_system() {
 }
 
 vim_plug() {
-  if [ ! -d "$HOME/.vim/autoload" ]; then
+  if [ ! -d "$HOME/.local/share/nvim/autoload" ]; then
     echo "...installing vim-plug"
     URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    curl -fLo $HOME/.vim/autoload --create-dirs -s $URL
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
   fi
 }
 
