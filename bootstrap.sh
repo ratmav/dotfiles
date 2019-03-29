@@ -9,7 +9,6 @@ LINKS=(
   ".tmux.conf"
   ".gitignore_global"
   ".hyper.js"
-  ".vimrc"
   )
 
 configure_gitignore() {
@@ -19,7 +18,7 @@ configure_gitignore() {
 
 configure_git_editor() {
   echo "...(re)configuring git editor"
-  git config --global core.editor "$(which vim)"
+  git config --global core.editor "$(which nvim)"
 }
 
 home_symlinks() {
