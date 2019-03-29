@@ -50,7 +50,7 @@ The tmux prefix is currently configured as Ctrl-T.
 
 * [tmux-yank](https://github.com/tmux-plugins/tmux-yank#key-bindings)
 
-## `vim`
+## `nvim`
 
 ### Leader
 
@@ -73,8 +73,6 @@ The Neovim leader key is currently configured as Space.
   * Leader-f opens a file search.
   * Leader-b opens a buffer search.
   * Leader-c clears the cache.
-* [vim-markdown-preview](https://github.com/JamshedVesuna/vim-markdown-preview)
-  * Leader-m loads a markdown preview.
 
 #### Fugitive
 
@@ -97,6 +95,6 @@ Run these commands after installation or updates.
 
 `prefix` + I
 
-## `vim`
+## `nvim`
 
-On the `vim` command line, run `:PlugInstall`.
+On the `nvim` command line, run `:PlugInstall`.
