@@ -62,10 +62,21 @@ nvm() {
   fi
 }
 
+gvm() {
+  if [ ! -d "$HOME/.gvm" ]; then
+    echo "...installing gvm"
+    URL="https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/"
+    URL+="gvm-installer"
+    export GVM_NO_UPDATE_PROFILE=true
+    bash < <(curl -s -S -L $URL) 1>/dev/null
+  fi
+}
+
 main() {
   operating_system
   tpm
   nvm
+  gvm
   home_symlinks
   vim_plug
   configure_gitignore
