@@ -70,7 +70,7 @@ autocmd FileType make setlocal softtabstop=8
 autocmd FileType python setlocal foldmethod=indent
 
 " YAML
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType yaml setlocal indentkeys-=0#
 
 " =============== DISPLAY
 
