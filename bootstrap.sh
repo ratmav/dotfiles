@@ -38,6 +38,13 @@ operating_system() {
   fi
 }
 
+nvim_init() {
+  mkdir -p $HOME/.config/nvim
+  if [ ! -d "$HOME/.config/nvim/init.vim" ]; then
+    ln -s $PWD/init.vim $HOME/.config/nvim/init.vim
+  fi
+}
+
 vim_plug() {
   if [ ! -d "$HOME/.local/share/nvim/autoload" ]; then
     echo "...installing vim-plug"
@@ -78,6 +85,7 @@ main() {
   nvm
   gvm
   home_symlinks
+  nvim_init
   vim_plug
   configure_gitignore
   configure_git_editor
