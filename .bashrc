@@ -22,6 +22,9 @@ if [[ $(uname) == "Darwin" ]]; then
 
   # Modify the path so that Homebrew still finds pip.
   export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+  # Modify the path to use GNU sed.
+  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 
 # pyenv
