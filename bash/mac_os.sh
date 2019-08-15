@@ -27,7 +27,7 @@ homebrew() {
 }
 
 casks() {
-  CASKS=("spectacle" "hyper")
+  CASKS=("spectacle" "hyper" "brave-browser")
   for cask in "${CASKS[@]}"; do
     echo "...(re)installing $cask"
     brew cask reinstall $cask --force 1>/dev/null
