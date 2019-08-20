@@ -10,6 +10,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'airblade/vim-gitgutter'
   Plug 'nightsense/snow'
+  Plug 'PProvost/vim-ps1'
 call plug#end()
 
 " snow colorscheme
