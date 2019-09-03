@@ -9,13 +9,10 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'simeji/winresizer'
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'airblade/vim-gitgutter'
-  Plug 'nightsense/snow'
   Plug 'PProvost/vim-ps1'
 call plug#end()
 
-" snow colorscheme
 set background=dark
-colorscheme snow
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
