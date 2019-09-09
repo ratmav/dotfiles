@@ -10,9 +10,11 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
+  Plug 'jnurmine/Zenburn'
 call plug#end()
 
 set background=dark
+colors zenburn
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
