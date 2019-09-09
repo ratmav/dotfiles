@@ -13,6 +13,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'jnurmine/Zenburn'
 call plug#end()
 
+" colorscheme
 set background=dark
 colors zenburn
 
