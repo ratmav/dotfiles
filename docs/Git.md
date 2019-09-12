@@ -176,3 +176,12 @@ $ git push --force
 $ git filter-branch --tree-filter "rm -rf file_or_dir"
 $ git push --force
 ```
+
+### Undo Commit
+
+#### Local and Remote
+
+```
+$ git reset --hard HEAD~1
+$ git push -f <remote> <branch>
+```
