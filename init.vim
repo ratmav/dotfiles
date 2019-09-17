@@ -11,6 +11,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
   Plug 'jnurmine/Zenburn'
+  Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 " colorscheme
@@ -22,6 +23,7 @@ autocmd BufEnter * RainbowParentheses
 
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = 'zenburn'
 
 " ctrlp:
 let g:ctrlp_show_hidden = 1
