@@ -38,11 +38,10 @@ press_and_hold() {
 }
 
 vscodium_settings() {
-  $SETTINGS_DIRECTORY="$HOME/Library/Application\ Support/VSCodium/User/"
-  mkdir -p $SETTINGS_DIRECTORY
-  if [ ! -d "$SETTINGS_DIRECTORY/settings.json" ]; then
-    ln -s $PWD/settings.json $SETTINGS_DIRECTORY/settings.json
+  if [ -e $HOME/Library/Application\ Support/VSCodium/User/settings.json ]; then
+    rm -f $HOME/Library/Application\ Support/VSCodium/User/settings.json
   fi
+  ln -s $PWD/settings.json $HOME/Library/Application\ Support/VSCodium/User/settings.json
 }
 
 bootstrap_mac_os() {
