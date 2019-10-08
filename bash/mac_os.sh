@@ -13,9 +13,7 @@ install_homebrew() {
 }
 
 homebrew() {
-  PACKAGES=("git" "tmux" "reattach-to-user-namespace" "bash-completion"
-            "neovim" "pyenv" "pipenv" "tfenv" "gnused" "packer" "pandoc"
-            "shellcheck")
+  PACKAGES=("git" "bash-completion" "shellcheck")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
@@ -28,7 +26,7 @@ homebrew() {
 }
 
 casks() {
-  CASKS=("spectacle" "hyper" "brave-browser")
+  CASKS=("spectacle" "brave-browser" "vscodium")
   for cask in "${CASKS[@]}"; do
     echo "...(re)installing $cask"
     brew cask reinstall $cask --force 1>/dev/null
@@ -36,7 +34,15 @@ casks() {
 }
 
 press_and_hold() {
-  defaults write co.zeit.hyper ApplePressAndHoldEnabled -bool false
+  defaults write com.visualstudio.code.oss ApplePressAndHoldEnabled -bool false
+}
+
+vscodium_settings() {
+  $SETTINGS_DIRECTORY="$HOME/Library/Application\ Support/VSCodium/User/"
+  mkdir -p $SETTINGS_DIRECTORY
+  if [ ! -d "$SETTINGS_DIRECTORY/settings.json" ]; then
+    ln -s $PWD/settings.json $SETTINGS_DIRECTORY/settings.json
+  fi
 }
 
 bootstrap_mac_os() {
@@ -44,4 +50,5 @@ bootstrap_mac_os() {
   homebrew
   casks
   press_and_hold
+  vscodium_settings
 }
