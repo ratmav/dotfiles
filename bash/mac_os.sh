@@ -44,10 +44,18 @@ vscodium_settings() {
   ln -s $PWD/settings.json $HOME/Library/Application\ Support/VSCodium/User/settings.json
 }
 
+vscodium_extensions() {
+  EXTENSIONS=("vscodevim.vim")
+  for extension in "${EXTENSIONS[@]}"; do
+    code --install-extension $extension
+  done
+}
+
 bootstrap_mac_os() {
   install_homebrew
   homebrew
   casks
   press_and_hold
   vscodium_settings
+  vscodium_extensions
 }
