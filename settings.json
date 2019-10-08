@@ -1,0 +1,4 @@
+{
+    "vim.useSystemClipboard": true,
+    "explorer.confirmDelete": false
+}
