@@ -45,7 +45,7 @@ vscodium_settings() {
 }
 
 vscodium_extensions() {
-  EXTENSIONS=("vscodevim.vim")
+  EXTENSIONS=("vscodevim.vim" "shd101wyy.markdown-preview-enhanced")
   for extension in "${EXTENSIONS[@]}"; do
     code --install-extension $extension
   done
