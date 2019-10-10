@@ -10,20 +10,20 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
-  Plug 'jnurmine/Zenburn'
+  Plug 'altercation/vim-colors-solarized'
   Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 " colorscheme
 set background=dark
-colors zenburn
+colorscheme solarized
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
 
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'zenburn'
+let g:airline_theme = 'solarized'
 
 " ctrlp:
 let g:ctrlp_show_hidden = 1
