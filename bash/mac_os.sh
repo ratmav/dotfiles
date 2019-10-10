@@ -26,7 +26,7 @@ homebrew() {
 }
 
 casks() {
-  CASKS=("alacritty" "spectacle")
+  CASKS=("alacritty" "firefox-developer-edition" "spectacle")
   for cask in "${CASKS[@]}"; do
     echo "...(re)installing $cask"
     brew cask reinstall $cask --force 1>/dev/null
