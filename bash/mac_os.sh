@@ -13,7 +13,7 @@ install_homebrew() {
 }
 
 homebrew() {
-  PACKAGES=("git" "bash-completion" "shellcheck")
+  PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
@@ -26,36 +26,22 @@ homebrew() {
 }
 
 casks() {
-  CASKS=("spectacle" "brave-browser" "vscodium")
+  CASKS=("alacritty" "spectacle")
   for cask in "${CASKS[@]}"; do
     echo "...(re)installing $cask"
     brew cask reinstall $cask --force 1>/dev/null
   done
 }
 
-press_and_hold() {
-  defaults write com.visualstudio.code.oss ApplePressAndHoldEnabled -bool false
-}
-
-vscodium_settings() {
-  if [ -e $HOME/Library/Application\ Support/VSCodium/User/settings.json ]; then
-    rm -f $HOME/Library/Application\ Support/VSCodium/User/settings.json
-  fi
-  ln -s $PWD/settings.json $HOME/Library/Application\ Support/VSCodium/User/settings.json
-}
-
-vscodium_extensions() {
-  EXTENSIONS=("vscodevim.vim" "shd101wyy.markdown-preview-enhanced")
-  for extension in "${EXTENSIONS[@]}"; do
-    code --install-extension $extension
-  done
+alacritty_config() {
+  mkdir -p $HOME/.config/alacritty
+  rm -f $HOME/.config/alacritty/alacritty.yml
+  ln -s $PWD/alacritty.yml $HOME/.config/alacritty/alacritty.yml
 }
 
 bootstrap_mac_os() {
   install_homebrew
   homebrew
   casks
-  press_and_hold
-  vscodium_settings
-  vscodium_extensions
+  alacritty_config
 }

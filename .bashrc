@@ -5,6 +5,11 @@ export PS1="[\u@\h \W]\\$ "
 # Force dircolors, etc.
 export CLICOLOR=1
 
+# tmux.
+if command -v tmux > /dev/null; then
+    [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && [[ $- == *i* ]] && exec tmux
+fi
+
 # macOS.
 if [[ $(uname) == "Darwin" ]]; then
   # Disable Homebrew analytics.
