@@ -93,7 +93,7 @@ Run these commands after installation or updates.
 
 ## `tmux`
 
-`prefix` + i
+`prefix` + I (capital "I", for "I"nstall)
 
 ## `nvim`
 
