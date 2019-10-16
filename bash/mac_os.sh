@@ -13,7 +13,8 @@ install_homebrew() {
 }
 
 homebrew() {
-  PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux")
+  PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux"
+    "clamav")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install..."
     if brew list | grep $package > /dev/null 2>&1; then
