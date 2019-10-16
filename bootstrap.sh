@@ -61,13 +61,13 @@ powerline_fonts() {
 }
 
 main() {
-  #operating_system
-  #tpm
-  #home_symlinks
-  #nvim_init
-  #vim_plug
-  #configure_gitignore
-  #configure_git_editor
+  operating_system
+  tpm
+  home_symlinks
+  nvim_init
+  vim_plug
+  configure_gitignore
+  configure_git_editor
   powerline_fonts
 }
 
