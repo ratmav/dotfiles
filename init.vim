@@ -12,6 +12,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'PProvost/vim-ps1'
   Plug 'altercation/vim-colors-solarized'
   Plug 'vim-airline/vim-airline-themes'
+  Plug 'roman/golden-ratio'
 call plug#end()
 
 " colorscheme
