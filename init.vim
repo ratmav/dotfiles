@@ -10,14 +10,13 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
-  Plug 'altercation/vim-colors-solarized'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'roman/golden-ratio'
+  Plug 'jnurmine/Zenburn'
 call plug#end()
 
 " colorscheme
-set background=dark
-colorscheme solarized
+colorscheme zenburn
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
