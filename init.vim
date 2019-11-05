@@ -11,7 +11,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
   Plug 'vim-airline/vim-airline-themes'
-  Plug 'roman/golden-ratio'
   Plug 'jnurmine/Zenburn'
 call plug#end()
 
