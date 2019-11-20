@@ -26,14 +26,6 @@ homebrew() {
   done
 }
 
-casks() {
-  CASKS=("alacritty" "firefox-developer-edition" "spectacle")
-  for cask in "${CASKS[@]}"; do
-    echo "...(re)installing $cask"
-    brew cask reinstall $cask --force 1>/dev/null
-  done
-}
-
 alacritty_config() {
   mkdir -p $HOME/.config/alacritty
   rm -f $HOME/.config/alacritty/alacritty.yml
@@ -43,6 +35,5 @@ alacritty_config() {
 bootstrap_mac_os() {
   install_homebrew
   homebrew
-  casks
   alacritty_config
 }
