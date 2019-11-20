@@ -22,7 +22,7 @@ autocmd BufEnter * RainbowParentheses
 
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'solarized'
+let g:airline_theme = 'zenburn'
 
 " ctrlp:
 let g:ctrlp_show_hidden = 1
