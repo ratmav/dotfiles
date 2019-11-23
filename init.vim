@@ -12,6 +12,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'PProvost/vim-ps1'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'jnurmine/Zenburn'
+  Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 " colorscheme
