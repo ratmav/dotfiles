@@ -2,7 +2,7 @@
 
 
 install_homebrew() {
-  echo "...checking homebrew install..."
+  echo "...checking homebrew install"
   if type brew > /dev/null 2>&1; then
     echo "......homebrew already installed"
   else
@@ -16,12 +16,12 @@ homebrew() {
   PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux"
     "clamav")
   for package in "${PACKAGES[@]}"; do
-    echo "...checking $package install..."
+    echo "...checking $package install"
     if brew list | grep $package > /dev/null 2>&1; then
       echo "......$package already installed"
     else
       brew install $package
-      echo "...installed $package via homebrew..."
+      echo "...installed $package via homebrew"
     fi
   done
 }
@@ -32,8 +32,18 @@ alacritty_config() {
   ln -s $PWD/alacritty.yml $HOME/.config/alacritty/alacritty.yml
 }
 
+alacritty_install() {
+  if brew cask list | grep alacritty > /dev/null 2>&1; then
+    echo "...alacritty already installed"
+  else
+    brew cask install alacritty
+    echo "...installed alacritty via homebrew"
+  fi
+}
+
 bootstrap_mac_os() {
   install_homebrew
   homebrew
+  alacritty_install
   alacritty_config
 }
