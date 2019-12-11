@@ -1,4 +1,4 @@
-" =============== PLUGINS
+" =============== plugins
 
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
@@ -13,6 +13,17 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline-themes'
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
+
+  function! BuildComposer(info)
+    if a:info.status != 'unchanged' || a:info.force
+      if has('nvim')
+        !cargo build --release --locked
+      else
+        !cargo build --release --locked --no-default-features --features json-rpc
+      endif
+    endif
+  endfunction
+  Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
 call plug#end()
 
 " colorscheme
@@ -33,95 +44,95 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standar
 " nerdtree:
 let NERDTreeShowHidden=1
 
-" =============== BEHAVIOR
+" =============== behavior
 
-" Set encoding:
+" set encoding:
 set encoding=utf-8
 
-" Use the system clipboard by default:
+" use the system clipboard by default:
 set clipboard=unnamedplus
 
-" No mouse:
+" no mouse:
 set mouse-=a
 
-" No backups:
+" no backups:
 set nobackup
 set nowritebackup
 
-" Code folding:
+" code folding:
 set foldmethod=syntax
 set foldcolumn=2
 set foldlevelstart=100
 
-" Autoindent width:
+" autoindent width:
 set expandtab
 set shiftwidth=2
 set softtabstop=2
 
-" Backspace should behave like other applications:
+" backspace should behave like other applications:
 set backspace=2
 
-" Disable SQL Omnicomplete, which is tied to <C-c> for some reason.
+" disable sql omnicomplete, which is tied to <c-c> for some reason.
 let g:omni_sql_no_default_maps = 1
 
-" Terminal
+" terminal
 autocmd TermOpen * set bufhidden=hide
 
-" Makefile
+" makefile
 autocmd FileType make setlocal noexpandtab
 autocmd FileType make setlocal shiftwidth=8
 autocmd FileType make setlocal softtabstop=8
 
-" Python
+" python
 autocmd FileType python setlocal foldmethod=indent
 
-" YAML
+" yaml
 autocmd FileType yaml setlocal indentkeys-=0#
 
-" =============== DISPLAY
+" =============== display
 
 syntax on
 
-" Highlight current line:
+" highlight current line:
 set cursorline
 
-" Highlight unwanted spaces:
+" highlight unwanted spaces:
 autocmd BufEnter * highlight Extrawhitespace ctermbg=red guibg=red
 autocmd BufEnter * match ExtraWhitespace /\s\+$/
 
-" Highlight search results:
+" highlight search results:
 set hlsearch
 
-" Display line numbers:
+" display line numbers:
 set nu
 
-" Always show the status line:
+" always show the status line:
 set laststatus=2
 
-" =============== KEY BINDINGS
+" =============== key bindings
 
-" Use space as leader:
+" use space as leader:
 let mapleader=" "
 
-" Remove whitespace:
+" remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
-" Buffer management:
+" buffer management:
 nnoremap <Leader>h :bp!<CR>
 nnoremap <Leader>l :bn!<CR>
 nnoremap <Leader>d :BD!<CR>
 nnoremap <Leader>e :edit!<CR>
 nnoremap <Leader>E :checkt <CR>
 
-" Toggle NERDTree:
+" toggle nerdtree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
-" Search with CtrlP:
+" search with ctrlp:
 nnoremap <Leader>f :CtrlP .<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>c :CtrlPClearCache<CR>
 
-" Terminal:
+" terminal:
 :tnoremap <Esc> <C-\><C-n>
 :tnoremap <A-h> <C-\><C-N><C-w>h
 :tnoremap <A-j> <C-\><C-N><C-w>j
