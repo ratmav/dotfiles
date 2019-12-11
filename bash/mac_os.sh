@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 install_homebrew() {
   echo "...checking homebrew install"
   if type brew > /dev/null 2>&1; then
@@ -14,7 +13,7 @@ install_homebrew() {
 
 homebrew() {
   PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux"
-    "clamav" "rust")
+    "clamav" "rust" "bash")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew list | grep $package > /dev/null 2>&1; then
@@ -41,9 +40,17 @@ alacritty_install() {
   fi
 }
 
+brew_bash() {
+  LINE='/usr/local/bin/bash'
+  FILE='/etc/shells'
+  grep -qF -- "$LINE" "$FILE" || echo "$LINE" | sudo tee -a "$FILE" > /dev/null
+  chsh -s /usr/local/bin/bash
+}
+
 bootstrap_mac_os() {
   install_homebrew
   homebrew
   alacritty_install
   alacritty_config
+  brew_bash
 }
