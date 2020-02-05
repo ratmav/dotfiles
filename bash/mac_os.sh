@@ -1,17 +1,18 @@
 #!/bin/bash
 
-install_homebrew() {
+homebrew() {
   echo "...checking homebrew install"
   if type brew > /dev/null 2>&1; then
     echo "......homebrew already installed"
   else
     URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
     /usr/bin/ruby -e "$(curl -fsSL $URL)"
+    brew tap homebrew/cask-versions
     echo "......installed homebrew"
   fi
 }
 
-homebrew() {
+brew_packages() {
   PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux"
     "clamav" "rust" "bash")
   for package in "${PACKAGES[@]}"; do
@@ -31,13 +32,17 @@ alacritty_config() {
   ln -s $PWD/alacritty.yml $HOME/.config/alacritty/alacritty.yml
 }
 
-alacritty_install() {
-  if brew cask list | grep alacritty > /dev/null 2>&1; then
-    echo "...alacritty already installed"
-  else
-    brew cask install alacritty
-    echo "...installed alacritty via homebrew"
-  fi
+cask_packages() {
+  PACKAGES=("alacritty" "firefox-developer-edition")
+  for package in "${PACKAGES[@]}"; do
+    echo "...checking $package install"
+    if brew cask list | grep $package > /dev/null 2>&1; then
+      echo "...$package already installed"
+    else
+      brew cask install $package
+      echo "...installed $package via homebrew cask"
+    fi
+  done
 }
 
 brew_bash() {
@@ -48,9 +53,9 @@ brew_bash() {
 }
 
 bootstrap_mac_os() {
-  install_homebrew
   homebrew
-  alacritty_install
+  brew_packages
+  cask_packages
   alacritty_config
   brew_bash
 }
