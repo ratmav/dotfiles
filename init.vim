@@ -13,6 +13,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline-themes'
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
+  Plug 'hashivim/vim-terraform'
 
   function! BuildComposer(info)
     if a:info.status != 'unchanged' || a:info.force
