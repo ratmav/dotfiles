@@ -38,7 +38,7 @@ let g:airline_theme = 'zenburn'
 
 " ctrlp:
 let g:ctrlp_show_hidden = 1
-let g:ctrlp_max_files=0
+let g:ctrlp_max_files = 0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " nerdtree:
@@ -122,7 +122,7 @@ nnoremap <Leader>h :bp!<CR>
 nnoremap <Leader>l :bn!<CR>
 nnoremap <Leader>d :BD!<CR>
 nnoremap <Leader>e :edit!<CR>
-nnoremap <Leader>E :checkt <CR>
+nnoremap <Leader>E :checkt<CR>
 
 " toggle nerdtree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
@@ -131,6 +131,9 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 nnoremap <Leader>f :CtrlP .<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>c :CtrlPClearCache<CR>
+
+" open a vim-markdown-composer browser tab:
+nnoremap <Leader>m :ComposerOpen<CR>
 
 " terminal:
 :tnoremap <Esc> <C-\><C-n>
