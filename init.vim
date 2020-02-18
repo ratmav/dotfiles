@@ -14,6 +14,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
   Plug 'hashivim/vim-terraform'
+  Plug 'fatih/vim-go'
 
   function! BuildComposer(info)
     if a:info.status != 'unchanged' || a:info.force
