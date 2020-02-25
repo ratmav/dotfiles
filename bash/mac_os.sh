@@ -33,7 +33,7 @@ alacritty_config() {
 }
 
 cask_packages() {
-  PACKAGES=("alacritty" "firefox-developer-edition")
+  PACKAGES=("alacritty" "brave-browser")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew cask list | grep $package > /dev/null 2>&1; then
