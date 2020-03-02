@@ -12,6 +12,13 @@ $ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 
 **NOTE**: Currently tested on macOS. See [#13](https://github.com/ratmav/dotfiles/issues/13) for Linux status.
 
+### macos
+
+#### iterm2
+
+`bootstrap.sh` will install iterm2, but it's manually required to open "Preferences -> General -> Preferences" and enable the "Load preferences from a custom folder or URL" boolean, then enter the path to this `iterm2` directory in this repository. you'll also likely need to import the zenburn color scheme **first**, which is stored in this repository as `Zenburn.itermcolors`.
+
+
 # Use
 
 ## `tmux`

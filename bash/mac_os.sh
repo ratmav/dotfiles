@@ -21,26 +21,20 @@ brew_packages() {
       echo "......$package already installed"
     else
       brew install $package
-      echo "...installed $package via homebrew"
+      echo "......installed $package via homebrew"
     fi
   done
 }
 
-alacritty_config() {
-  mkdir -p $HOME/.config/alacritty
-  rm -f $HOME/.config/alacritty/alacritty.yml
-  ln -s $PWD/alacritty.yml $HOME/.config/alacritty/alacritty.yml
-}
-
 cask_packages() {
-  PACKAGES=("alacritty" "brave-browser")
+  PACKAGES=("brave-browser" "iterm2" "shellcheck")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew cask list | grep $package > /dev/null 2>&1; then
-      echo "...$package already installed"
+      echo "......$package already installed"
     else
       brew cask install $package
-      echo "...installed $package via homebrew cask"
+      echo "......installed $package via homebrew cask"
     fi
   done
 }
