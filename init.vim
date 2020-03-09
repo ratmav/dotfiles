@@ -15,17 +15,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'plasticboy/vim-markdown'
   Plug 'hashivim/vim-terraform'
   Plug 'fatih/vim-go'
-
-  function! BuildComposer(info)
-    if a:info.status != 'unchanged' || a:info.force
-      if has('nvim')
-        !cargo build --release --locked
-      else
-        !cargo build --release --locked --no-default-features --features json-rpc
-      endif
-    endif
-  endfunction
-  Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
 call plug#end()
 
 " colorscheme
