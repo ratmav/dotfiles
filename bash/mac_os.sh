@@ -27,7 +27,7 @@ brew_packages() {
 }
 
 cask_packages() {
-  PACKAGES=("firefox-developer-edition")
+  PACKAGES=("firefox-developer-edition" "vscodium")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew cask list | grep $package > /dev/null 2>&1; then
