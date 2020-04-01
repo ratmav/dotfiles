@@ -14,7 +14,10 @@ $ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 
 ### macos
 
+the bootstrap script will install the `Source Code Pro for Powerline` fonts, however it's manually required to select a font and import the zenburn colorscheme. open Terminal -> Preference -> Profiles and click the gear icon in the bottom left to import zenburn (`Zenburn.itermcolors` in the repo). after zenburn is imported, the "Default" button should be available: click the button to set zenburn as the default. use the right hand pane in the profile tab of the preferences window to set the font.
+
 # Use
+
 
 ## `tmux`
 
