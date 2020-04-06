@@ -60,6 +60,11 @@ powerline_fonts() {
   rm -rf fonts
 }
 
+asdf() {
+  rm -rf $HOME/.asdf
+  git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
+}
+
 main() {
   operating_system
   tpm
@@ -69,6 +74,7 @@ main() {
   configure_gitignore
   configure_git_editor
   powerline_fonts
+  asdf
 }
 
 main "$@"
