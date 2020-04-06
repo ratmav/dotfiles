@@ -14,7 +14,7 @@ homebrew() {
 
 brew_packages() {
   PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux"
-    "clamav" "bash" "shellcheck" "tree" "grep" "pandoc")
+    "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew list | grep $package > /dev/null 2>&1; then
@@ -27,7 +27,7 @@ brew_packages() {
 }
 
 cask_packages() {
-  PACKAGES=("firefox-developer-edition")
+  PACKAGES=("firefox-developer-edition" "basictex")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew cask list | grep $package > /dev/null 2>&1; then
