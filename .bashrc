@@ -10,6 +10,10 @@ if command -v tmux > /dev/null; then
     [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && [[ $- == *i* ]] && exec tmux
 fi
 
+# asdf
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+
 # macos.
 if [[ $(uname) == "Darwin" ]]; then
   # disable homebrew analytics.
