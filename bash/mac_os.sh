@@ -14,7 +14,7 @@ homebrew() {
 
 brew_packages() {
   PACKAGES=("bash-completion" "git" "neovim" "reattach-to-user-namespace" "tmux"
-    "clamav" "bash" "shellcheck" "tree" "grep")
+    "clamav" "bash" "shellcheck" "tree" "grep" "pandoc")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew list | grep $package > /dev/null 2>&1; then
