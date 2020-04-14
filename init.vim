@@ -14,7 +14,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
   Plug 'hashivim/vim-terraform'
-  Plug 'sebdah/vim-delve'
 call plug#end()
 
 " colorscheme
