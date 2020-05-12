@@ -29,7 +29,7 @@ let g:airline_theme = 'zenburn'
 " ctrlp:
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_files = 0
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_custom_ignore = '\v\.git|node_modules'
 
 " nerdtree:
 let NERDTreeShowHidden=1
