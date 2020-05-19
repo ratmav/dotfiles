@@ -4,3 +4,6 @@
 # Vim buffers.
 *.swp
 *.swo
+
+# asdf version file.
+.tool-versions
