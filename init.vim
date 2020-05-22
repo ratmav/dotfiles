@@ -117,7 +117,6 @@ nnoremap <Leader>h :bp!<CR>
 nnoremap <Leader>l :bn!<CR>
 nnoremap <Leader>d :BD!<CR>
 nnoremap <Leader>e :edit!<CR>
-nnoremap <Leader>E :checkt<CR>
 
 " toggle nerdtree:
 nnoremap <Leader>n :NERDTreeToggle<CR>
