@@ -1,105 +1,96 @@
 dotfiles
 ========
 
-# Install
+## install
 
-## *nix
+### *nix
 
 ```bash
 $ git clone  https://github.com/ratmav/dotfiles.git
 $ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 ```
 
-**NOTE**: Currently tested on macOS. See [#13](https://github.com/ratmav/dotfiles/issues/13) for Linux status.
+_note on macos_: the bootstrap script will install the `source code pro for powerline` fonts, however it's manually required to select a font and import the zenburn colorscheme. open terminal -> preference -> profiles and click the gear icon in the bottom left to import zenburn (`zenburn.itermcolors` in the repo). after zenburn is imported, the "default" button should be available: click the button to set zenburn as the default. use the right hand pane in the profile tab of the preferences window to set the font.
 
-### macos
+## use
 
-the bootstrap script will install the `Source Code Pro for Powerline` fonts, however it's manually required to select a font and import the zenburn colorscheme. open Terminal -> Preference -> Profiles and click the gear icon in the bottom left to import zenburn (`Zenburn.itermcolors` in the repo). after zenburn is imported, the "Default" button should be available: click the button to set zenburn as the default. use the right hand pane in the profile tab of the preferences window to set the font.
+### `tmux`
 
-# Use
+#### prefix
 
+the tmux prefix is currently configured as ctrl-t.
 
-## `tmux`
+#### pane management
 
-### Prefix
+* zoom
+    * in: `prefix-z`
+    * out: `prefix-z`
+* kill: `prefix-x`
+* create
+    * current pane
+        * vertical: `prefix-v`
+        * horizontal: `prefix-s`
+    * full width
+        * vertical: `prefix-v`
+        * horizontal: `prefix-s`
+* navigate
+    * left: `prefix-h`
+    * right: `prefix-l`
+    * up: `prefix-k`
+    * down: `prefix-j`
+* resize
+    * left: `prefix-h`
+    * right: `prefix-l`
+    * up: `prefix-k`
+    * down: `prefix-j`
 
-The tmux prefix is currently configured as Ctrl-T.
-
-### Keybindings
-
-#### Pane Management
-
-* Zoom
-    * In: `prefix-z`
-    * Out: `prefix-Z`
-* Kill: `prefix-x`
-* Create
-    * Current Pane
-        * Vertical: `prefix-v`
-        * Horizontal: `prefix-s`
-    * Full Width
-        * Vertical: `prefix-V`
-        * Horizontal: `prefix-S`
-* Navigate
-    * Left: `prefix-h`
-    * Right: `prefix-l`
-    * Up: `prefix-k`
-    * Down: `prefix-j`
-* Resize
-    * Left: `prefix-H`
-    * Right: `prefix-L`
-    * Up: `prefix-K`
-    * Down: `prefix-J`
-
-#### Vim-like Yank and Paste
+#### vim-like yank and paste
 
 * [tmux-yank](https://github.com/tmux-plugins/tmux-yank#key-bindings)
 
-## `nvim`
+### `nvim`
 
-### Leader
+#### leader
 
-The Neovim leader key is currently configured as Space.
+the neovim leader key is currently configured as space.
 
-* Leader-w clears whitespace.
-* Leader-h moves the the previous buffer.
-* Leader-l moves the the next buffer.
-* Leader-e refreshes the current buffer.
-* Leader-E refreshes *all* buffers.
+* leader-w clears whitespace.
+* leader-h moves to the previous buffer.
+* leader-l moves to the next buffer.
+* leader-e refreshes the current buffer.
 
-### Keybindings
+#### plugins
 
 * [winresizer](https://github.com/simeji/winresizer#in-default-setting)
+  * ctrl-e enters window-resize mode.
 * [vim-bufkill](https://github.com/qpkorr/vim-bufkill#usage)
-  * Leader-d kills the buffer
-* [nerdtree](https://github.com/scrooloose/nerdtree/blob/master/doc/NERDTree.txt#L220)
-  * Leader-n opens the tree.
+  * leader-d kills the buffer
+* [nerdtree](https://github.com/scrooloose/nerdtree/blob/master/doc/nerdtree.txt#l220)
+  * leader-n opens the tree.
 * [ctrl-p](https://github.com/ctrlpvim/ctrlp.vim#basic-usage)
-  * Leader-f opens a file search.
-  * Leader-b opens a buffer search.
-  * Leader-c clears the cache.
+  * leader-f opens a file search.
+  * leader-b opens a buffer search.
+  * leader-c clears the cache.
+* [fugitive](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt#l33)
+  * most of fugitive is driven by the (neo)vim command line, but the `Gstatus` commmand opens a window that has some really handy keybindings of it's own.
 
-#### Fugitive
+## update
 
-Most of Fugitive is driven by the (Neo)Vim command line, but the `Gstatus` commmand opens a window that has some really handy [keybindings](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt#L33).
-
-# Update
-
-## *nix
+### *nix
 
 ```bash
 $ cd dotfiles
 $ ./bootstrap.sh && source ~/.bash_profile
 ```
 
-# Initialization
+## initialization
 
-Run these commands after installation or updates.
+run these commands after installation or updates.
 
-## `tmux`
+### `tmux`
 
-`prefix` + I (capital "I", for "I"nstall)
+`prefix` + i (capital "i", for "i"nstall)
 
-## `nvim`
+### `nvim`
 
-On the `nvim` command line, run `:PlugInstall`.
+on the `nvim` command line, run `:PlugInstall`.
