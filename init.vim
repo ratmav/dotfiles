@@ -130,6 +130,7 @@ nnoremap <Leader>c :CtrlPClearCache<CR>
 nnoremap <Leader>m :ComposerOpen<CR>
 
 " terminal:
+nnoremap <Leader>t :terminal<CR>
 :tnoremap <Esc> <C-\><C-n>
 :tnoremap <A-h> <C-\><C-N><C-w>h
 :tnoremap <A-j> <C-\><C-N><C-w>j
