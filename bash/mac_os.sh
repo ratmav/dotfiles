@@ -27,7 +27,7 @@ brew_packages() {
 }
 
 cask_packages() {
-  PACKAGES=("brave-browser" "basictex" "mark-text")
+  PACKAGES=("brave-browser" "basictex")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew cask list | grep $package > /dev/null 2>&1; then
