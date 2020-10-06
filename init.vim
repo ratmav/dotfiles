@@ -13,7 +13,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline-themes'
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
-  Plug 'hashivim/vim-terraform'
+  Plug 'jvirtanen/vim-hcl'
 call plug#end()
 
 " colorscheme
