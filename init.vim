@@ -134,9 +134,6 @@ nnoremap <Leader>f :CtrlP .<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>c :CtrlPClearCache<CR>
 
-" open a vim-markdown-composer browser tab:
-nnoremap <Leader>m :ComposerOpen<CR>
-
 " terminal:
 nnoremap <Leader>t :terminal<CR>
 :tnoremap <Esc> <C-\><C-n>
