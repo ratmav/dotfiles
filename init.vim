@@ -81,7 +81,7 @@ autocmd FileType make setlocal noexpandtab
 autocmd FileType make setlocal shiftwidth=8
 autocmd FileType make setlocal softtabstop=8
 
-" makefile
+" go
 autocmd FileType go setlocal noexpandtab
 autocmd FileType go setlocal shiftwidth=8
 autocmd FileType go setlocal softtabstop=8
