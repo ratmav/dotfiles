@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source ./bash/mac_os.sh
 source ./bash/linux.sh

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 homebrew() {
   echo "...checking homebrew install"
