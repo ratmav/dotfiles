@@ -1,3 +1,12 @@
+" =============== os detection
+if !exists("g:os")
+    if has("win64") || has("win32") || has("win16")
+        let g:os = "Windows"
+    else
+        let g:os = "*nix"
+    endif
+endif
+
 " =============== plugins
 
 call plug#begin('~/.local/share/nvim/plugged')
@@ -149,3 +158,25 @@ nnoremap <Leader>t :terminal<CR>
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
+
+" =============== custom functions
+
+" run a custom script for things like linting, testing, etc.
+function! LocalProject()
+  " set platform-specific extension
+  if g:os == "*nix"
+    let extension = "sh"
+  elseif g:os == "windows"
+    let extension = "ps1"
+  endif
+  let project_script = "./.local_project." . extension
+
+  " run the script if it exists
+  if filereadable(project_script)
+    :execute ":! " . project_script
+  else
+    echo "local project script not found"
+  endif
+endfunction
+
+nnoremap <Leader>p :call LocalProject()<CR>
