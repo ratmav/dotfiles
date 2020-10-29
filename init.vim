@@ -87,6 +87,9 @@ set mouse-=a
 set nobackup
 set nowritebackup
 
+" no swap:
+set noswapfile
+
 " code folding:
 set foldmethod=syntax
 set foldcolumn=2
