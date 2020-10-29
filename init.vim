@@ -33,6 +33,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'preservim/nerdtree'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
