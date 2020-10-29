@@ -47,8 +47,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'gcmt/taboo.vim'
 call plug#end()
 
-" colorscheme
-colorscheme zenburn
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
@@ -129,6 +127,8 @@ autocmd FileType yaml setlocal indentkeys-=0#
 
 " =============== display
 
+colorscheme zenburn
+
 syntax on
 
 " highlight current line:
@@ -151,7 +151,7 @@ autocmd TermOpen * setlocal nonumber norelativenumber
 set laststatus=2
 
 " clock display
-let g:airline#extensions#clock#format = '%c'
+let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 
 " =============== key bindings
 
