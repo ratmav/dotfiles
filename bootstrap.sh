@@ -14,7 +14,7 @@ configure_git_editor() {
 }
 
 home_symlinks() {
-  LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".tmux.conf")
+  LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
   echo "...(re)building symlinks"
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
@@ -35,13 +35,6 @@ vim_plug() {
   rm -rf $HOME/.local/share/nvim
   URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
-}
-
-tpm() {
-  echo "...installing tpm"
-  rm -f $HOME/.tmux/plugins
-  mkdir -p ~/.tmux/plugins
-  git clone -q https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 }
 
 operating_system() {
@@ -67,7 +60,6 @@ asdf() {
 
 main() {
   operating_system
-  tpm
   home_symlinks
   nvim_init
   vim_plug

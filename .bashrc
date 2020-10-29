@@ -5,11 +5,6 @@ export PS1="[\u@\h \W]\\$ "
 # force dircolors.
 export CLICOLOR=1
 
-# tmux.
-if command -v tmux > /dev/null; then
-    [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && [[ $- == *i* ]] && exec tmux
-fi
-
 # asdf
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
