@@ -32,7 +32,7 @@ endfunction
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
-  Plug 'scrooloose/nerdtree'
+  Plug 'preservim/nerdtree'
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
@@ -58,17 +58,13 @@ let g:airline_theme = 'zenburn'
 " ctrlp:
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_files = 0
-"  ignore tmp, swap, zip archives, and executables on macos, linux, and
-"  windows
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
-"  ignore git metadata and (go, node.js) dependencies
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git)|(vendor|node_modules)$',
   \ }
 
 " nerdtree:
-"   show hidden files/folders (git metadata, dependencies)
 let NERDTreeShowHidden=1
 
 " taboo:
