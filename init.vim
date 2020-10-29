@@ -40,6 +40,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
   Plug 'vim-airline/vim-airline-themes'
+  Plug 'enricobacis/vim-airline-clock'
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
@@ -144,10 +145,16 @@ autocmd TermOpen * setlocal nonumber norelativenumber
 " always show the status line:
 set laststatus=2
 
+" clock display
+let g:airline#extensions#clock#format = '%c'
+
 " =============== key bindings
 
 " use space as leader:
 let mapleader=" "
+
+" reload config:
+nnoremap <silent><Leader>r :source $MYVIMRC <bar> :echo "config reloaded"<CR>
 
 " write buffer:
 nnoremap <silent><Leader>w :w<CR>
@@ -155,7 +162,7 @@ nnoremap <silent><Leader>w :w<CR>
 " remove whitespace:
 nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
 
-" window management (resize uses winresizer plugin):
+" window management:
 let g:winresizer_start_key = '<C-W>r'
 nnoremap <silent><Leader>q :q<CR>
 
