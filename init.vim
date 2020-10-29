@@ -7,7 +7,27 @@ if !exists("g:os")
     endif
 endif
 
-" =============== plugins
+" =============== custom functions
+
+" run a custom script for things like linting, testing, etc.
+function! LocalProject()
+  " set platform-specific extension
+  if g:os == "*nix"
+    let extension = "sh"
+  elseif g:os == "windows"
+    let extension = "ps1"
+  endif
+  let project_script = "./.local_project." . extension
+
+  " run the script if it exists
+  if filereadable(project_script)
+    :execute ":! " . project_script
+  else
+    echo "local project script not found"
+  endif
+endfunction
+
+" =============== plugin configuration
 
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
@@ -132,11 +152,12 @@ let mapleader=" "
 " write buffer:
 nnoremap <silent><Leader>w :w<CR>
 
-" quit window:
-nnoremap <silent><Leader>q :q<CR>
-
 " remove whitespace:
 nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
+
+" window management (resize uses winresizer plugin):
+let g:winresizer_start_key = '<C-W>r'
+nnoremap <silent><Leader>q :q<CR>
 
 " buffer management:
 nnoremap <silent><C-b>h :bp!<CR>
@@ -151,6 +172,9 @@ nnoremap <silent><Leader>n :NERDTreeToggle<CR>
 nnoremap <silent><Leader>f :CtrlP .<CR>
 nnoremap <silent><Leader>b :CtrlPBuffer<CR>
 nnoremap <silent><Leader>c :CtrlPClearCache<CR>
+
+" run local project script:
+nnoremap <silent><Leader>p :call LocalProject()<CR>
 
 " terminal:
 nnoremap <silent><Leader>/ :terminal<CR>
@@ -167,25 +191,3 @@ nnoremap <silent><Leader>/ :terminal<CR>
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
-
-" =============== custom functions
-
-" run a custom script for things like linting, testing, etc.
-function! LocalProject()
-  " set platform-specific extension
-  if g:os == "*nix"
-    let extension = "sh"
-  elseif g:os == "windows"
-    let extension = "ps1"
-  endif
-  let project_script = "./.local_project." . extension
-
-  " run the script if it exists
-  if filereadable(project_script)
-    :execute ":! " . project_script
-  else
-    echo "local project script not found"
-  endif
-endfunction
-
-nnoremap <silent><Leader>p :call LocalProject()<CR>
