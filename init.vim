@@ -45,8 +45,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
   Plug 'gcmt/taboo.vim'
+  Plug 'vim-scripts/tcd.vim'
 call plug#end()
-
 
 " rainbow_parenthesis:
 autocmd BufEnter * RainbowParentheses
@@ -168,17 +168,22 @@ nnoremap <silent><Leader>w :w<CR>
 nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
 
 " tab/window management:
+nnoremap <silent><C-t>n :tabnew<CR>
+nnoremap <silent><C-t>h :tabprev<CR>
+"   setting the *t*ab *c*urrent *d*irectory is interactive.
+nnoremap <C-t>d :tcd<Space>
+nnoremap <silent><C-t>l :tabnext<CR>
+nnoremap <silent><C-t>q :tabclose<CR>
+
+" window management:
 let g:winresizer_start_key = '<C-W>r'
 nnoremap <silent><Leader>q :q<CR>
-nnoremap <silent><Leader>o :tabnew<CR>
-nnoremap <silent><Leader>h :tabprev<CR>
-nnoremap <silent><Leader>l :tabnext<CR>
 
 " buffer management:
 nnoremap <silent><C-b>h :bp!<CR>
 nnoremap <silent><C-b>l :bn!<CR>
 nnoremap <silent><C-b>e :edit! <bar> :echo "buffer refreshed"<CR>
-nnoremap <silent><C-b>d :BD!<CR>
+nnoremap <silent><C-b>q :BD!<CR>
 
 " toggle nerdtree:
 nnoremap <silent><Leader>n :NERDTreeToggle<CR>
@@ -192,7 +197,7 @@ nnoremap <silent><Leader>c :CtrlPClearCache<CR>
 nnoremap <silent><Leader>p :call LocalProject()<CR>
 
 " terminal:
-nnoremap <silent><Leader>/ :terminal<CR>
+nnoremap <silent><Leader>t :terminal<CR>
 :tnoremap <Esc> <C-\><C-n>
 :tnoremap <A-h> <C-\><C-N><C-w>h
 :tnoremap <A-j> <C-\><C-N><C-w>j
