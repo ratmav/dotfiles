@@ -132,8 +132,8 @@ let mapleader=" "
 " write buffer:
 nnoremap <silent><Leader>w :w<CR>
 
-" quit:
-nnoremap <silent><Leader>q :qa<CR>
+" quit window:
+nnoremap <silent><Leader>q :q<CR>
 
 " remove whitespace:
 nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
