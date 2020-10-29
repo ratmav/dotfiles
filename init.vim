@@ -118,6 +118,9 @@ set hlsearch
 " display line numbers:
 set nu
 
+" hide line numbers in terminals:
+autocmd TermOpen * setlocal nonumber norelativenumber
+
 " always show the status line:
 set laststatus=2
 
@@ -126,25 +129,31 @@ set laststatus=2
 " use space as leader:
 let mapleader=" "
 
+" write buffer:
+nnoremap <silent><Leader>w :w<CR>
+
+" quit:
+nnoremap <silent><Leader>q :qa<CR>
+
 " remove whitespace:
-nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
+nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
 
 " buffer management:
-nnoremap <Leader>h :bp!<CR>
-nnoremap <Leader>l :bn!<CR>
-nnoremap <Leader>d :BD!<CR>
-nnoremap <Leader>e :edit!<CR>
+nnoremap <silent><C-b>h :bp!<CR>
+nnoremap <silent><C-b>l :bn!<CR>
+nnoremap <silent><C-b>e :edit! <bar> :echo "buffer refreshed"<CR>
+nnoremap <silent><C-b>d :BD!<CR>
 
 " toggle nerdtree:
-nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <silent><Leader>n :NERDTreeToggle<CR>
 
 " search with ctrlp:
-nnoremap <Leader>f :CtrlP .<CR>
-nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap <Leader>c :CtrlPClearCache<CR>
+nnoremap <silent><Leader>f :CtrlP .<CR>
+nnoremap <silent><Leader>b :CtrlPBuffer<CR>
+nnoremap <silent><Leader>c :CtrlPClearCache<CR>
 
 " terminal:
-nnoremap <Leader>t :terminal<CR>
+nnoremap <silent><Leader>/ :terminal<CR>
 :tnoremap <Esc> <C-\><C-n>
 :tnoremap <A-h> <C-\><C-N><C-w>h
 :tnoremap <A-j> <C-\><C-N><C-w>j
@@ -179,4 +188,4 @@ function! LocalProject()
   endif
 endfunction
 
-nnoremap <Leader>p :call LocalProject()<CR>
+nnoremap <silent><Leader>p :call LocalProject()<CR>
