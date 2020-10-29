@@ -44,6 +44,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
+  Plug 'gcmt/taboo.vim'
 call plug#end()
 
 " colorscheme
@@ -71,6 +72,10 @@ let g:ctrlp_custom_ignore = {
 " nerdtree:
 "   show hidden files/folders (git metadata, dependencies)
 let NERDTreeShowHidden=1
+
+" taboo:
+"   name the tab as the short name of the current working directory
+let g:taboo_tab_format = "%S"
 
 " =============== behavior
 
@@ -162,9 +167,12 @@ nnoremap <silent><Leader>w :w<CR>
 " remove whitespace:
 nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
 
-" window management:
+" tab/window management:
 let g:winresizer_start_key = '<C-W>r'
 nnoremap <silent><Leader>q :q<CR>
+nnoremap <silent><Leader>o :tabnew<CR>
+nnoremap <silent><Leader>h :tabprev<CR>
+nnoremap <silent><Leader>l :tabnext<CR>
 
 " buffer management:
 nnoremap <silent><C-b>h :bp!<CR>
