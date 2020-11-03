@@ -50,6 +50,5 @@ bootstrap_mac_os() {
   homebrew
   brew_packages
   cask_packages
-  alacritty_config
   brew_bash
 }
