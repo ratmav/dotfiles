@@ -201,8 +201,3 @@ nnoremap <silent><Leader>t :terminal<CR>
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
-
-" goneovim:
-":nnoremap <silent><Leader>wn :GonvimWorkspaceNew<bar>:echo "created new workspace"<CR>
-":nnoremap <silent><Leader>wh :GonvimWorkspaceNext<CR>
-":nnoremap <silent><Leader>wl :GonvimWorkspacePrevious<CR>
