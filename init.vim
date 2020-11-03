@@ -47,6 +47,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'jvirtanen/vim-hcl'
   Plug 'gcmt/taboo.vim'
   Plug 'vim-scripts/tcd.vim'
+  Plug 'cespare/vim-toml'
 call plug#end()
 
 " rainbow_parenthesis:
