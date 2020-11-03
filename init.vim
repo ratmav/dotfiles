@@ -65,11 +65,7 @@ let g:ctrlp_custom_ignore = {
   \ }
 
 " nerdtree:
-let NERDTreeShowHidden=1
-
-" taboo:
-"   name the tab as the short name of the current working directory
-let g:taboo_tab_format = "%S"
+let g:NERDTreeShowHidden=1
 
 " =============== behavior
 
@@ -175,29 +171,29 @@ nnoremap <silent><C-b>l :bn!<CR>
 nnoremap <silent><C-b>e :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 
-" toggle nerdtree:
-nnoremap <silent><Leader>n :NERDTreeToggle<CR>
+" terminal management:
+nnoremap <silent><Leader>t :terminal<CR>
+tnoremap <Esc> <C-\><C-n>
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 
-" search with ctrlp:
+" nerdtree:
+nnoremap <silent><Leader>n :NERDTreeToggle .<CR>
+
+" ctrlp:
 nnoremap <silent><Leader>f :CtrlP .<CR>
 nnoremap <silent><Leader>b :CtrlPBuffer<CR>
 nnoremap <silent><Leader>c :CtrlPClearCache<CR>
 
 " run local project script:
 nnoremap <silent><Leader>p :call LocalProject()<CR>
-
-" terminal:
-nnoremap <silent><Leader>t :terminal<CR>
-:tnoremap <Esc> <C-\><C-n>
-:tnoremap <A-h> <C-\><C-N><C-w>h
-:tnoremap <A-j> <C-\><C-N><C-w>j
-:tnoremap <A-k> <C-\><C-N><C-w>k
-:tnoremap <A-l> <C-\><C-N><C-w>l
-:inoremap <A-h> <C-\><C-N><C-w>h
-:inoremap <A-j> <C-\><C-N><C-w>j
-:inoremap <A-k> <C-\><C-N><C-w>k
-:inoremap <A-l> <C-\><C-N><C-w>l
-:nnoremap <A-h> <C-w>h
-:nnoremap <A-j> <C-w>j
-:nnoremap <A-k> <C-w>k
-:nnoremap <A-l> <C-w>l
