@@ -27,7 +27,7 @@ function! LocalProject()
   endif
 endfunction
 
-" =============== plugin configuration
+" =============== plugins
 
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
@@ -104,20 +104,22 @@ let g:omni_sql_no_default_maps = 1
 " terminal
 autocmd TermOpen * set bufhidden=hide
 
-" makefile
+" filetypes
+
+"" makefile
 autocmd FileType make setlocal noexpandtab
 autocmd FileType make setlocal shiftwidth=8
 autocmd FileType make setlocal softtabstop=8
 
-" go
+"" go
 autocmd FileType go setlocal noexpandtab
 autocmd FileType go setlocal shiftwidth=8
 autocmd FileType go setlocal softtabstop=8
 
-" python
+"" python
 autocmd FileType python setlocal foldmethod=indent
 
-" yaml
+"" yaml
 autocmd FileType yaml setlocal indentkeys-=0#
 
 " =============== display
@@ -153,26 +155,19 @@ let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 
 " =============== key bindings
 
-" use space as leader:
-let mapleader=" "
+" builtins (windows, buffers, terminals)
 
-" reload config:
-nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
-
-" remove whitespace:
-nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
-
-" window management:
+"" window management:
 let g:winresizer_start_key = '<C-W>r'
 
-" buffer management:
+"" buffer management:
 nnoremap <silent><C-b>h :bp!<CR>
 nnoremap <silent><C-b>l :bn!<CR>
 nnoremap <silent><C-b>e :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 
-" terminal management:
-nnoremap <silent><Leader>t :terminal<CR>
+"" terminal management:
+nnoremap <silent><C-t> :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-h> <C-\><C-N><C-w>h
 tnoremap <A-j> <C-\><C-N><C-w>j
@@ -187,13 +182,24 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-" nerdtree:
+" addons (plugins, shortcuts, custom functions)
+
+"" use space as leader:
+let mapleader=" "
+
+"" nerdtree:
 nnoremap <silent><Leader>n :NERDTreeToggle .<CR>
 
-" ctrlp:
+"" ctrlp:
 nnoremap <silent><Leader>f :CtrlP .<CR>
 nnoremap <silent><Leader>b :CtrlPBuffer<CR>
 nnoremap <silent><Leader>c :CtrlPClearCache<CR>
 
-" run local project script:
+"" reload config:
+nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
+
+"" remove whitespace:
+nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
+
+"" run local project script:
 nnoremap <silent><Leader>p :call LocalProject()<CR>
