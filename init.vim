@@ -175,6 +175,9 @@ let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 
 " =============== key bindings
 
+" use space as leader:
+let mapleader=" "
+
 " builtins (windows, buffers, terminals)
 
 "" window management:
@@ -187,7 +190,7 @@ nnoremap <silent><C-b>e :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 
 "" terminal management:
-nnoremap <silent><C-t> :terminal<CR>
+nnoremap <silent><Leader>t :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-h> <C-\><C-N><C-w>h
 tnoremap <A-j> <C-\><C-N><C-w>j
@@ -203,11 +206,9 @@ nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
 " addons (plugins, shortcuts, custom functions)
+
 "" vim-ctrlspace:
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
-
-"" use space as leader:
-let mapleader=" "
 
 "" nerdtree:
 nnoremap <silent><Leader>n :NERDTreeToggle .<CR>
