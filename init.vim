@@ -27,6 +27,22 @@ function! LocalProject()
   endif
 endfunction
 
+" convert a markdown buffer to pdf
+function! MarkdownToPDF()
+  if g:os == "Windows"
+    echo "windows support not implemented yet."
+  else
+    if expand("%:e") != "md"
+      echo "buffer is not a markdown file"
+    else
+      let sourcefile = expand("%:t")
+      let targetfile = "/tmp/" . fnamemodify(sourcefile, ":r") . ".pdf"
+      :execute ":! pandoc -s -V geometry:margin=1in -o " . targetfile . " " . sourcefile 
+      :execute ":! open " . targetfile 
+    endif
+  endif
+endfunction
+
 " =============== plugins
 
 call plug#begin('~/.local/share/nvim/plugged')
@@ -203,3 +219,6 @@ nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
 
 "" run local project script:
 nnoremap <silent><Leader>p :call LocalProject()<CR>
+
+"" convert markdown buffer to pdf:
+nnoremap <silent><Leader>m :call MarkdownToPDF()<CR>
