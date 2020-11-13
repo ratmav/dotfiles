@@ -178,7 +178,7 @@ let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 " use space as leader:
 let mapleader=" "
 
-" builtins (windows, buffers, terminals)
+" builtins (windows, buffers, tabs, terminals)
 
 "" window management:
 let g:winresizer_start_key = '<C-W>r'
@@ -186,8 +186,13 @@ let g:winresizer_start_key = '<C-W>r'
 "" buffer management:
 nnoremap <silent><C-b>h :bp!<CR>
 nnoremap <silent><C-b>l :bn!<CR>
-nnoremap <silent><C-b>e :edit!<bar>:echo "refreshed buffer"<CR>
+nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
+
+"" tab managment:
+nnoremap <silent><C-t>n :tabnew<CR>
+nnoremap <silent><C-t>h :tabprevious<CR>
+nnoremap <silent><C-t>l :tabnext<CR>
 
 "" terminal management:
 nnoremap <silent><Leader>t :terminal<CR>
