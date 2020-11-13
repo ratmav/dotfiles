@@ -33,21 +33,24 @@ endfunction
 
 " convert markdown to pdf or html
 function! MarkdownConverter(extension)
-  if s:os == "windows"
-    echo "windows support not implemented yet."
-  else
+  if executable("pandoc")
     if expand("%:e") != "md"
       echo "buffer is not a markdown file"
     else
       let sourcefile = expand("%:t")
-      let targetfile = "/tmp/" . fnamemodify(sourcefile, ":r") . a:extension
-      :execute ":! pandoc -s -V geometry:margin=1in -o " . targetfile . " " . sourcefile
+      let title = fnamemodify(sourcefile, ":r")
+      let targetfile = "/tmp/" . title . a:extension
+      :execute ':! pandoc --metadata title="' . title . '" -s -V geometry:margin=1in -o ' . " " . targetfile . " " . sourcefile
       if s:os == "darwin"
         :execute ":! open " . targetfile
       elseif s:os == "linux"
         :execute ":! xdg-open " . targetfile
+      elseif s:os == "windows"
+        echo "windows support not implemented yet."
       endif
     endif
+  else
+    echo "pandoc is not installed"
   endif
 endfunction
 
@@ -68,7 +71,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'jnurmine/Zenburn'
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
-  Plug 'cespare/vim-toml'
   Plug 'vim-ctrlspace/vim-ctrlspace'
 call plug#end()
 
@@ -184,8 +186,6 @@ let mapleader=" "
 let g:winresizer_start_key = '<C-W>r'
 
 "" buffer management:
-nnoremap <silent><C-b>h :bp!<CR>
-nnoremap <silent><C-b>l :bn!<CR>
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>d :BD!<CR>
 
