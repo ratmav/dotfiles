@@ -1,9 +1,13 @@
 " =============== os detection
-if !exists("g:os")
-    if has("win64") || has("win32") || has("win16")
-        let g:os = "Windows"
+if has("win64") || has("win32") || has("win16")
+    let s:vimfiles = "~/AppData/Local/nvim"
+    let s:os = "windows"
+else
+    let s:vimfiles = "~/.config/nvim"
+    if has("mac")
+      let s:os = "darwin"
     else
-        let g:os = "*nix"
+      let s:os = "linux"
     endif
 endif
 
@@ -12,10 +16,10 @@ endif
 " run a custom script for things like linting, testing, etc.
 function! LocalProject()
   " set platform-specific extension
-  if g:os == "*nix"
-    let extension = "sh"
-  elseif g:os == "windows"
+  if s:os == "windows"
     let extension = "ps1"
+  else
+    let extension = "sh"
   endif
   let project_script = "./.local_project." . extension
 
