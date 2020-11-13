@@ -31,7 +31,7 @@ function! LocalProject()
   endif
 endfunction
 
-" convert a markdown buffer to pdf
+" convert markdown to pdf
 function! MarkdownToPDF()
   if g:os == "Windows"
     echo "windows support not implemented yet."
@@ -41,8 +41,12 @@ function! MarkdownToPDF()
     else
       let sourcefile = expand("%:t")
       let targetfile = "/tmp/" . fnamemodify(sourcefile, ":r") . ".pdf"
-      :execute ":! pandoc -s -V geometry:margin=1in -o " . targetfile . " " . sourcefile 
-      :execute ":! open " . targetfile 
+      :execute ":! pandoc -s -V geometry:margin=1in -o " . targetfile . " " . sourcefile
+      if s:os == "darwin"
+        :execute ":! open " . targetfile
+      elseif s:os == "linux"
+        :execute ":! xdg-open " . targetfile
+      endif
     endif
   endif
 endfunction
