@@ -31,6 +31,26 @@ function! LocalProject()
   endif
 endfunction
 
+" convert markdown to pdf or html
+function! MarkdownConverter(extension)
+  if s:os == "windows"
+    echo "windows support not implemented yet."
+  else
+    if expand("%:e") != "md"
+      echo "buffer is not a markdown file"
+    else
+      let sourcefile = expand("%:t")
+      let targetfile = "/tmp/" . fnamemodify(sourcefile, ":r") . a:extension
+      :execute ":! pandoc -s -V geometry:margin=1in -o " . targetfile . " " . sourcefile
+      if s:os == "darwin"
+        :execute ":! open " . targetfile
+      elseif s:os == "linux"
+        :execute ":! xdg-open " . targetfile
+      endif
+    endif
+  endif
+endfunction
+
 " =============== plugins
 
 call plug#begin('~/.local/share/nvim/plugged')
@@ -199,4 +219,10 @@ nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
 "" run local project script:
-nnoremap <silent><Leader>p :call LocalProject()<CR>
+nnoremap <silent><Leader>l :call LocalProject()<CR>
+
+"" convert markdown to pdf:
+nnoremap <silent><Leader>p :call MarkdownConverter(".pdf")<CR>
+
+"" convert markdown to html:
+nnoremap <silent><Leader>h :call MarkdownConverter(".html")<CR>
