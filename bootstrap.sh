@@ -58,16 +58,8 @@ asdf() {
   git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
 }
 
-goneovim() {
-  echo "...configuring goneovim"
-  rm -rf $HOME/.config/goneovim
-  mkdir -p $HOME/.config/goneovim
-  ln -s $PWD/setting.toml $HOME/.config/goneovim/setting.toml
-}
-
 main() {
   operating_system
-  goneovim
   home_symlinks
   nvim_init
   vim_plug
