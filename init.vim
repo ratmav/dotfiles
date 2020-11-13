@@ -187,7 +187,7 @@ let g:winresizer_start_key = '<C-W>r'
 nnoremap <silent><C-b>h :bp!<CR>
 nnoremap <silent><C-b>l :bn!<CR>
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
-nnoremap <silent><C-b>q :BD!<CR>
+nnoremap <silent><C-b>d :BD!<CR>
 
 "" tab managment:
 nnoremap <silent><C-t>n :tabnew<CR>
