@@ -66,7 +66,6 @@ let g:NERDTreeShowHidden=1
 set nocompatible
 set hidden
 set encoding=utf-8
-let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 if executable("ag")
   let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
 endif
@@ -184,6 +183,8 @@ nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
 " addons (plugins, shortcuts, custom functions)
+"" vim-ctrlspace:
+let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 
 "" use space as leader:
 let mapleader=" "
@@ -191,16 +192,11 @@ let mapleader=" "
 "" nerdtree:
 nnoremap <silent><Leader>n :NERDTreeToggle .<CR>
 
-"" ctrlp:
-nnoremap <silent><Leader>f :CtrlP .<CR>
-nnoremap <silent><Leader>b :CtrlPBuffer<CR>
-nnoremap <silent><Leader>c :CtrlPClearCache<CR>
-
 "" reload config:
 nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
 
 "" remove whitespace:
-nnoremap <silent><Leader>s :%s/\s\+$//e<CR>
+nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
 "" run local project script:
 nnoremap <silent><Leader>p :call LocalProject()<CR>
