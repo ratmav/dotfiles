@@ -16,10 +16,10 @@ endif
 " run a custom script for things like linting, testing, etc.
 function! LocalProject()
   " set platform-specific extension
-  if g:os == "*nix"
-    let extension = "sh"
-  elseif g:os == "windows"
+  if s:os == "windows"
     let extension = "ps1"
+  else
+    let extension = "sh"
   endif
   let project_script = "./.local_project." . extension
 
