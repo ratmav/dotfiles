@@ -41,7 +41,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
-  Plug 'ctrlpvim/ctrlp.vim'
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
   Plug 'vim-airline/vim-airline-themes'
@@ -50,6 +49,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
   Plug 'cespare/vim-toml'
+  Plug 'vim-ctrlspace/vim-ctrlspace'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -59,22 +59,19 @@ autocmd BufEnter * RainbowParentheses
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'zenburn'
 
-" ctrlp:
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_max_files = 0
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git)|(vendor|node_modules)$',
-  \ }
-
 " nerdtree:
 let g:NERDTreeShowHidden=1
 
-" =============== behavior
-
-" set encoding:
+" vim-ctrlspace:
+set nocompatible
+set hidden
 set encoding=utf-8
+let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+if executable("ag")
+  let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
+
+" =============== behavior
 
 " use the system clipboard by default:
 set clipboard=unnamedplus
