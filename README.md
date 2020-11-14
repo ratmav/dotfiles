@@ -8,7 +8,7 @@ leverage neovim for a cross-platform, lightweight, and mnemonic development envi
 ### *nix
 
 ```bash
-$ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
+$ chmod +x bootstrap.sh && ./bootstrap.sh && source ~/.bash_profile
 ```
 
 ## update
@@ -16,7 +16,6 @@ $ cd dotfiles && ./bootstrap.sh && source ~/.bash_profile
 ### *nix
 
 ```bash
-$ cd dotfiles
 $ ./bootstrap.sh && source ~/.bash_profile
 ```
 
