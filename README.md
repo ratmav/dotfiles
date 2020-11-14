@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-leverage neovim for a cross-platform, lightweight, and mnemonic development environment
+leverage neovim for a cross-platform, lightweight, and mnemonic editing environment
 
 ## install
 
