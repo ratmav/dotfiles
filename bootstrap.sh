@@ -14,7 +14,7 @@ configure_git_editor() {
 }
 
 home_symlinks() {
-  LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
+  LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".hyper.js")
   echo "...(re)building symlinks"
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
