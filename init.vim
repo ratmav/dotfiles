@@ -34,20 +34,30 @@ endfunction
 " convert markdown to pdf or html
 function! MarkdownConverter(extension)
   if executable("pandoc")
-    if expand("%:e") != "md"
-      echo "buffer is not a markdown file"
-    else
-      let sourcefile = expand("%:t")
-      let title = fnamemodify(sourcefile, ":r")
-      let targetfile = "/tmp/" . title . a:extension
-      :execute ':! pandoc --metadata title="' . title . '" -s -V geometry:margin=1in -o ' . " " . targetfile . " " . sourcefile
-      if s:os == "darwin"
-        :execute ":! open " . targetfile
-      elseif s:os == "linux"
-        :execute ":! xdg-open " . targetfile
-      elseif s:os == "windows"
-        echo "windows support not implemented yet."
+    if a:extension == ".pdf" || a:extension == ".html"
+      if expand("%:e") != "md"
+        echo "buffer is not a markdown file"
+      else
+        let sourcefile = expand("%:t")
+        let title = fnamemodify(sourcefile, ":r")
+        let targetfile = "/tmp/" . title . a:extension
+        if a:extension == ".pdf"
+          let prefix = ':! pandoc -s -V geometry:margin=1in -o'
+        else
+          let prefix = ':! pandoc --metadata title="' . title . '" -s -V geometry:margin=1in -o'
+        endif
+        :execute prefix . " " . targetfile . " " . sourcefile
+        " TODO: destroy existing tempfiles so stale versions aren't reopened.
+        if s:os == "darwin"
+          :execute ":! open " . targetfile
+        elseif s:os == "linux"
+          :execute ":! xdg-open " . targetfile
+        elseif s:os == "windows"
+          echo "windows support not implemented yet."
+        endif
       endif
+    else
+      echo "only conversion to pdf or html is supported."
     endif
   else
     echo "pandoc is not installed"

@@ -65,8 +65,7 @@ see `init.vim` for more information.
     * tab/buffer/file management
         * `Ctrl-Space` opens the search window
             * the buffer list (the default view) is scoped by tab, i.e. buffers are only listed in their respective tabs.
-            * the tab list is opened by pressing `l`
-                * rename a tab by pressing `m`
+            * the tab list is opened by pressing `l`; rename a tab by pressing `m`
 * [vim-fugitive](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt)
     * git wrapper used on the vim command line.
 * [nerdtree](https://github.com/preservim/nerdtree/blob/master/doc/NERDTree.txt)
