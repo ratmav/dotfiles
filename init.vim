@@ -66,9 +66,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'simeji/winresizer'
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
-  Plug 'vim-airline/vim-airline-themes'
   Plug 'enricobacis/vim-airline-clock'
-  Plug 'jnurmine/Zenburn'
+  Plug 'morhetz/gruvbox'
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
   Plug 'vim-ctrlspace/vim-ctrlspace'
@@ -79,7 +78,6 @@ autocmd BufEnter * RainbowParentheses
 
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'zenburn'
 
 " nerdtree:
 let g:NERDTreeShowHidden=1
@@ -146,7 +144,8 @@ autocmd FileType yaml setlocal indentkeys-=0#
 
 " =============== display
 
-colorscheme zenburn
+set termguicolors
+colorscheme gruvbox
 
 syntax on
 
