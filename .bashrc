@@ -23,6 +23,11 @@ if [[ $(uname) == "Darwin" ]]; then
   export PATH="/usr/local/sbin:$PATH"
 fi
 
+# hyper
+function hypertab-title() {
+  echo -e "\033]0;${1:?please specify a title}\007";
+}
+
 # load miscellaneous environment variables if needed.
 if [ -f ~/.misc_envars ]; then
     . ~/.misc_envars
