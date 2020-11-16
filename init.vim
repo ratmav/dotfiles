@@ -212,7 +212,7 @@ nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>d :BD!<CR>
 
 "" tab managment:
-nnoremap <silent><C-t>n :tabnew<CR>
+nnoremap <silent><C-t>n :tabnew<bar>:echo "new tab created"<CR>
 nnoremap <silent><C-t>h :tabprevious<CR>
 nnoremap <silent><C-t>l :tabnext<CR>
 
