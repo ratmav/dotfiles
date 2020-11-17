@@ -109,9 +109,6 @@ let g:NERDTreeShowHidden=1
 set nocompatible
 set hidden
 set encoding=utf-8
-if executable("ag")
-  let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
-endif
 
 " =============== behavior
 
@@ -127,6 +124,10 @@ set nowritebackup
 
 " no swap:
 set noswapfile
+
+" ignore tempfiles and common binary formats:
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
 
 " code folding:
 set foldmethod=syntax
