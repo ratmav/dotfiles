@@ -1,4 +1,6 @@
 " =============== os detection
+
+" TODO: simple plugin...with tests and linting?
 if has("win64") || has("win32") || has("win16")
     let s:vimfiles = "~/AppData/Local/nvim"
     let s:os = "windows"
@@ -13,6 +15,7 @@ endif
 
 " =============== custom functions
 
+" TODO: simple plugin...with tests and linting?
 " run a custom script for things like linting, testing, etc.
 function! LocalProject()
   " set platform-specific extension
@@ -31,6 +34,7 @@ function! LocalProject()
   endif
 endfunction
 
+" TODO: simple plugin...with tests and linting?
 " convert markdown to pdf or html
 function! MarkdownConverter(extension)
   " is pandoc installed?
@@ -92,6 +96,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
   Plug 'vim-ctrlspace/vim-ctrlspace'
+  Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
   Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
