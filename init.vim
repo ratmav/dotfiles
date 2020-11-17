@@ -98,6 +98,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
   Plug 'vim-ctrlspace/vim-ctrlspace'
+  Plug 'sebdah/vim-delve'
 call plug#end()
 
 " rainbow_parenthesis:
