@@ -82,8 +82,6 @@ endfunction
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/rainbow_parentheses.vim'
-  Plug 'preservim/nerdtree'
-  Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
   Plug 'simeji/winresizer'
@@ -94,6 +92,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
   Plug 'vim-ctrlspace/vim-ctrlspace'
+  Plug 'preservim/nerdtree'
+  Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -102,13 +102,23 @@ autocmd BufEnter * RainbowParentheses
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
 
-" nerdtree:
-let g:NERDTreeShowHidden=1
 
 " vim-ctrlspace:
 set nocompatible
 set hidden
 set encoding=utf-8
+
+" nerdtree:
+let g:NERDTreeShowHidden=1
+
+" ctrlp:
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_max_files = 0
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git)|(vendor|node_modules)$',
+  \ }
 
 " =============== behavior
 
@@ -124,10 +134,6 @@ set nowritebackup
 
 " no swap:
 set noswapfile
-
-" ignore tempfiles and common binary formats:
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
 
 " code folding:
 set foldmethod=syntax
@@ -213,6 +219,8 @@ nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>d :BD!<CR>
 
 "" tab managment:
+" TODO: new tab that asks for path, sets the tcd to that path, and names the
+" tab the dir at the end of the path
 nnoremap <silent><C-t>n :tabnew<bar>:echo "new tab created"<CR>
 nnoremap <silent><C-t>h :tabprevious<CR>
 nnoremap <silent><C-t>l :tabnext<CR>
@@ -239,7 +247,12 @@ nnoremap <A-l> <C-w>l
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 
 "" nerdtree:
-nnoremap <silent><Leader>n :NERDTreeToggle .<CR>
+nnoremap <silent><Leader>d :NERDTreeToggle .<CR>
+
+"" ctrlp:
+nnoremap <silent><Leader>f :CtrlP .<CR>
+nnoremap <silent><Leader>b :CtrlPBuffer<CR>
+nnoremap <silent><Leader>c :CtrlPClearCache<CR>
 
 "" reload config:
 nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
