@@ -55,8 +55,8 @@ endfunction
 
 " =============== custom functions
 
-" convert markdown to pdf or html
-function! MarkdownConverter(extension)
+" markdown html and pdf previews
+function! Marv(extension)
   " is pandoc installed?
   if executable("pandoc")
     " is the extension supported?
@@ -280,7 +280,7 @@ nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
 "" convert markdown to pdf:
-nnoremap <silent><Leader>p :call MarkdownConverter(".pdf")<CR>
+nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
 
 "" convert markdown to html:
-noremap <silent><Leader>h :call MarkdownConverter(".html")<CR>
+noremap <silent><Leader>h :call Marv(".html")<CR>
