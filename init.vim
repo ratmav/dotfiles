@@ -17,14 +17,14 @@ endif
 
 " TODO: simple plugin...with tests and linting?
 " run a custom script for things like linting, testing, etc.
-function! LocalProject()
+function! LocalDeskProject()
   " set platform-specific extension
   if s:os == "windows"
     let extension = "ps1"
   else
     let extension = "sh"
   endif
-  let project_script = "./.local_project." . extension
+  let project_script = "./.desk." . extension
 
   " run the script if it exists
   if filereadable(project_script)
@@ -98,7 +98,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-ctrlspace/vim-ctrlspace'
   Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
-  Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -107,23 +106,15 @@ autocmd BufEnter * RainbowParentheses
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
 
-
 " vim-ctrlspace:
 set nocompatible
 set hidden
 set encoding=utf-8
+" TODO: necessary?
+let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 
 " nerdtree:
 let g:NERDTreeShowHidden=1
-
-" ctrlp:
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_max_files = 0
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git)|(vendor|node_modules)$',
-  \ }
 
 " =============== behavior
 
@@ -211,27 +202,15 @@ let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 
 " =============== key bindings
 
-" use space as leader:
-let mapleader=" "
-
-" builtins (windows, buffers, tabs, terminals)
-
-"" window management:
+""" window management:
 let g:winresizer_start_key = '<C-W>r'
 
-"" buffer management:
+""" buffer management:
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>d :BD!<CR>
 
-"" tab managment:
-" TODO: new tab that asks for path, sets the tcd to that path, and names the
-" tab the dir at the end of the path
-nnoremap <silent><C-t>n :tabnew<bar>:echo "new tab created"<CR>
-nnoremap <silent><C-t>h :tabprevious<CR>
-nnoremap <silent><C-t>l :tabnext<CR>
-
 "" terminal management:
-nnoremap <silent><Leader>t :terminal<CR>
+nnoremap <silent><C-t> :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-h> <C-\><C-N><C-w>h
 tnoremap <A-j> <C-\><C-N><C-w>j
@@ -246,18 +225,36 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-" addons (plugins, shortcuts, custom functions)
+"" desk
 
-"" vim-ctrlspace:
-let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+""" tab managment:
+nnoremap <silent><C-d>c :tabnew<bar>:echo "new desk created"<CR>
+nnoremap <silent><C-d>h :tabprevious<CR>
+nnoremap <silent><C-d>l :tabnext<CR>
+""" TODO rename tab
+"nnoremap <silent><C-d>n :call ctrlspace#keys#workspace#Rename<CR>
+"maybe try taboo for a quick solution.
 
-"" nerdtree:
-nnoremap <silent><Leader>d :NERDTreeToggle .<CR>
+""" treeview toggle:
+nnoremap <silent><C-d>t :NERDTreeToggle .<CR>
 
-"" ctrlp:
-nnoremap <silent><Leader>f :CtrlP .<CR>
-nnoremap <silent><Leader>b :CtrlPBuffer<CR>
-nnoremap <silent><Leader>c :CtrlPClearCache<CR>
+""" fuzzy file search:
+nnoremap <silent><C-d>f :CtrlSpace O<CR>
+
+""" fuzzy buffer search:
+nnoremap <silent><C-d>b :CtrlSpace H<CR>
+
+""" treeview, buffer search, and file search refresh
+"""" TODO: how to chain a nerdtree reload command and vim-ctrlspace reload command, if they exist?
+"nnoremap <silent><C-d>r :CtrlPClearCache<CR>
+
+""" run local project script:
+nnoremap <silent><C-d>p :call LocalDeskProject()<CR>
+
+"" leader shortcuts:
+
+""" use space as leader:
+let mapleader=" "
 
 "" reload config:
 nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
@@ -265,11 +262,8 @@ nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
 "" remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
-"" run local project script:
-nnoremap <silent><Leader>l :call LocalProject()<CR>
-
 "" convert markdown to pdf:
 nnoremap <silent><Leader>p :call MarkdownConverter(".pdf")<CR>
 
 "" convert markdown to html:
-nnoremap <silent><Leader>h :call MarkdownConverter(".html")<CR>
+noremap <silent><Leader>h :call MarkdownConverter(".html")<CR>

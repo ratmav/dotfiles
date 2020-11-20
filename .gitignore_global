@@ -5,8 +5,8 @@
 *.swp
 *.swo
 
-# local project scripts.
-.local_project.*
+# local desk project scripts.
+.desk.*
 
 # asdf version file.
 .tool-versions
