@@ -13,9 +13,29 @@ else
     endif
 endif
 
-" =============== custom functions
 
-" run a custom script for things like linting, testing, etc.
+" =============== desk functions
+
+"" set the desk name.
+function! NameDesk()
+  " get current tabpage number.
+  let current_tab = tabpagenr()
+
+  " get tab name from user.
+  let name = ctrlspace#ui#GetInput("Name of desk: ", ctrlspace#util#Gettabvar(current_tab, "CtrlSpaceLabel"))
+  if empty(name)
+    return 0
+  end
+
+  " set the tab name.
+  call ctrlspace#tabs#SetTabLabel(current_tab, name, 0)
+
+  :redraw!
+
+  return 1
+endfunction
+
+" run a local desk script for things like linting, testing, etc.
 function! LocalDeskProject()
   " set platform-specific extension
   if s:os == "windows"
@@ -32,6 +52,8 @@ function! LocalDeskProject()
     echo "local project script not found"
   endif
 endfunction
+
+" =============== custom functions
 
 " convert markdown to pdf or html
 function! MarkdownConverter(extension)
@@ -108,7 +130,6 @@ let g:airline#extensions#tabline#enabled = 1
 set nocompatible
 set hidden
 set encoding=utf-8
-" TODO: necessary?
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 
 " nerdtree:
@@ -229,9 +250,7 @@ nnoremap <A-l> <C-w>l
 nnoremap <silent><C-d>c :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
-""" TODO rename tab
-"nnoremap <silent><C-d>n :call ctrlspace#keys#workspace#Rename<CR>
-"maybe try taboo for a quick solution.
+nnoremap <silent><C-d>n :call NameDesk()<CR>
 
 """ treeview toggle:
 nnoremap <silent><C-d>t :NERDTreeToggle .<CR>
