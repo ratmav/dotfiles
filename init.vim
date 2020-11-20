@@ -1,6 +1,6 @@
 " =============== os detection
 
-" TODO: simple plugin...with tests and linting?
+" os detection.
 if has("win64") || has("win32") || has("win16")
     let s:vimfiles = "~/AppData/Local/nvim"
     let s:os = "windows"
@@ -15,7 +15,6 @@ endif
 
 " =============== custom functions
 
-" TODO: simple plugin...with tests and linting?
 " run a custom script for things like linting, testing, etc.
 function! LocalDeskProject()
   " set platform-specific extension
@@ -34,7 +33,6 @@ function! LocalDeskProject()
   endif
 endfunction
 
-" TODO: simple plugin...with tests and linting?
 " convert markdown to pdf or html
 function! MarkdownConverter(extension)
   " is pandoc installed?
