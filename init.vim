@@ -108,7 +108,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'vim-airline/vim-airline'
   Plug 'qpkorr/vim-bufkill'
-  Plug 'simeji/winresizer'
   Plug 'airblade/vim-gitgutter'
   Plug 'PProvost/vim-ps1'
   Plug 'enricobacis/vim-airline-clock'
@@ -118,6 +117,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-ctrlspace/vim-ctrlspace'
   Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
+  Plug 'szw/vim-maximizer'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -222,7 +222,7 @@ let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 " =============== key bindings
 
 """ window management:
-let g:winresizer_start_key = '<C-W>r'
+nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
 """ buffer management:
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
