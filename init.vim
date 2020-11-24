@@ -17,7 +17,7 @@ endif
 " =============== desk functions
 
 "" set the desk name.
-function! DeskName()
+function! DeskRename()
   " get current tabpage number.
   let current_tab = tabpagenr()
 
@@ -250,7 +250,7 @@ nnoremap <A-l> <C-w>l
 nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
-nnoremap <silent><C-d>r :call DeskName()<CR>
+nnoremap <silent><C-d>r :call DeskRename()<CR>
 
 """ treeview toggle:
 nnoremap <silent><C-d>t :NERDTreeToggle .<CR>
