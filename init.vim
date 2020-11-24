@@ -16,6 +16,12 @@ endif
 
 " =============== desk functions
 
+"" start a new desk.
+function! DeskNew()
+ tabnew
+ echo "new desk created"
+endfunction
+
 "" set the desk name.
 function! DeskRename()
   " get current tabpage number.
@@ -30,7 +36,7 @@ function! DeskRename()
   " set the tab name.
   call ctrlspace#tabs#SetTabLabel(current_tab, name, 0)
 
-  :redraw!
+  redraw!
 
   return 1
 endfunction
@@ -47,7 +53,7 @@ function! DeskProject()
 
   " run the script if it exists
   if filereadable(project_script)
-    :execute ":! " . project_script
+    execute ":! " . project_script
   else
     echo "local project script not found"
   endif
@@ -80,15 +86,15 @@ function! Marv(extension)
         if s:os == "windows"
           echo "windows support not implemented yet."
         else
-          :execute ":! rm -f " . targetfile
+          execute ":! rm -f " . targetfile
         endif
-        :execute prefix . " " . targetfile . " " . sourcefile
+        execute prefix . " " . targetfile . " " . sourcefile
 
         " open the tempfile
         if s:os == "darwin"
-          :execute ":! open " . targetfile
+          execute ":! open " . targetfile
         elseif s:os == "linux"
-          :execute ":! xdg-open " . targetfile
+          execute ":! xdg-open " . targetfile
         elseif s:os == "windows"
           echo "windows support not implemented yet."
         endif
@@ -247,7 +253,7 @@ nnoremap <A-l> <C-w>l
 "" desk
 
 """ tab managment:
-nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
+nnoremap <silent><C-d>n :call DeskNew()<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
 nnoremap <silent><C-d>r :call DeskRename()<CR>
