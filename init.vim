@@ -17,7 +17,7 @@ endif
 " =============== desk functions
 
 "" set the desk name.
-function! NameDesk()
+function! DeskName()
   " get current tabpage number.
   let current_tab = tabpagenr()
 
@@ -36,7 +36,7 @@ function! NameDesk()
 endfunction
 
 " run a local desk script for things like linting, testing, etc.
-function! LocalDeskProject()
+function! DeskProject()
   " set platform-specific extension
   if s:os == "windows"
     let extension = "ps1"
@@ -250,7 +250,7 @@ nnoremap <A-l> <C-w>l
 nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
-nnoremap <silent><C-d>r :call NameDesk()<CR>
+nnoremap <silent><C-d>r :call DeskName()<CR>
 
 """ treeview toggle:
 nnoremap <silent><C-d>t :NERDTreeToggle .<CR>
@@ -266,7 +266,7 @@ nnoremap <silent><C-d>b :CtrlSpace H<CR>
 "nnoremap <silent><C-d>c :CtrlPClearCache<CR>
 
 """ run local project script:
-nnoremap <silent><C-d>p :call LocalDeskProject()<CR>
+nnoremap <silent><C-d>p :call DeskProject()<CR>
 
 "" leader shortcuts:
 
