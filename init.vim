@@ -247,10 +247,10 @@ nnoremap <A-l> <C-w>l
 "" desk
 
 """ tab managment:
-nnoremap <silent><C-d>c :tabnew<bar>:echo "new desk created"<CR>
+nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
-nnoremap <silent><C-d>n :call NameDesk()<CR>
+nnoremap <silent><C-d>r :call NameDesk()<CR>
 
 """ treeview toggle:
 nnoremap <silent><C-d>t :NERDTreeToggle .<CR>
@@ -263,7 +263,7 @@ nnoremap <silent><C-d>b :CtrlSpace H<CR>
 
 """ treeview, buffer search, and file search refresh
 """" TODO: how to chain a nerdtree reload command and vim-ctrlspace reload command, if they exist?
-"nnoremap <silent><C-d>r :CtrlPClearCache<CR>
+"nnoremap <silent><C-d>c :CtrlPClearCache<CR>
 
 """ run local project script:
 nnoremap <silent><C-d>p :call LocalDeskProject()<CR>
