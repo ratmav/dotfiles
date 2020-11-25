@@ -16,10 +16,24 @@ endif
 
 " =============== desk functions
 
+"" TODO: WIP
 "" start a new desk.
 function! DeskNew()
- tabnew
- echo "new desk created"
+  " get path from user
+  let path = "$HOME/Downloads"
+
+  " create tab and set tab current directory
+  tabnew
+  execute ":tcd " . path
+  call ctrlspace#roots#SetCurrentProjectRoot(path) " vim-ctrlspace complains w/o this.
+
+  " name the tab
+  let new_tab = tabpagenr() + 1
+  call ctrlspace#tabs#SetTabLabel(new_tab, "woo", 0)
+
+  " notify
+  echo "new desk created at " . path
+  redraw! " required to display tab label change.
 endfunction
 
 "" set the desk name.
@@ -36,9 +50,7 @@ function! DeskRename()
   " set the tab name.
   call ctrlspace#tabs#SetTabLabel(current_tab, name, 0)
 
-  redraw!
-
-  return 1
+  redraw! " required to display tab label change.
 endfunction
 
 " run a local desk script for things like linting, testing, etc.
@@ -253,6 +265,9 @@ nnoremap <A-l> <C-w>l
 "" desk
 
 """ tab managment:
+" TODO: WIP
+"nnoremap <silent><C-d>n :call DeskNew()<CR>
+nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>n :call DeskNew()<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
