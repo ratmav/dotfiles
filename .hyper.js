@@ -53,5 +53,7 @@ module.exports = {
     'hyper-gruv',
   ],
   localPlugins: [],
-  keymaps: {},
+  keymaps: {
+    "tab:new": "ctrl+h+t",
+  },
 };

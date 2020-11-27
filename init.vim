@@ -29,11 +29,11 @@ function! DeskNew()
 
   " name the tab
   let new_tab = tabpagenr() + 1
-  call ctrlspace#tabs#SetTabLabel(new_tab, "woo", 0)
+  "autocmd TabEnter * call ctrlspace#tabs#SetTabLabel(tabpagenr(), "woo", 0)
 
   " notify
   echo "new desk created at " . path
-  redraw! " required to display tab label change.
+  "redraw! " required to display tab label change.
 endfunction
 
 "" set the desk name.
@@ -266,9 +266,8 @@ nnoremap <A-l> <C-w>l
 
 """ tab managment:
 " TODO: WIP
-"nnoremap <silent><C-d>n :call DeskNew()<CR>
-nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>n :call DeskNew()<CR>
+"nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
 nnoremap <silent><C-d>r :call DeskRename()<CR>

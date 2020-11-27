@@ -27,6 +27,10 @@ on the `nvim` command line, run `:PlugInstall`.
 
 ### mnemonic keybindings
 
+* hyper
+* `Ctrl-h-t` opens a new [hyper]() tab if you need it
+* run `hypertab-title` to set a tab's name
+
 * neovim built-ins
     * Space is the neovim leader key
     * buffer management
