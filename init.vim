@@ -16,41 +16,39 @@ endif
 
 " =============== desk functions
 
-"" TODO: WIP
 "" start a new desk.
 function! DeskNew()
-  " get path from user
-  let path = "$HOME/Downloads"
+  call inputsave()
+  let path = input("New desk path: ", "", "file")
+  call inputrestore()
 
-  " create tab and set tab current directory
-  tabnew
-  execute ":tcd " . path
-  call ctrlspace#roots#SetCurrentProjectRoot(path) " vim-ctrlspace complains w/o this.
+  "if isdirectory(path)
+    " create tab and set tab current directory
+    tabnew
+    execute ":tcd " . path
 
-  " name the tab
-  let new_tab = tabpagenr() + 1
-  "autocmd TabEnter * call ctrlspace#tabs#SetTabLabel(tabpagenr(), "woo", 0)
+    " set vim-ctrlspace project root
+    call ctrlspace#roots#SetCurrentProjectRoot(path)
 
-  " notify
-  echo "new desk created at " . path
-  "redraw! " required to display tab label change.
+    " name the tab the last dir on path
+    call ctrlspace#tabs#SetTabLabel(tabpagenr(), fnamemodify(getcwd(), ':t\'), 0)
+
+    redraw!
+  "else
+  "  echo "desk path not valid"
+  "end
 endfunction
 
 "" set the desk name.
 function! DeskRename()
-  " get current tabpage number.
-  let current_tab = tabpagenr()
-
-  " get tab name from user.
-  let name = ctrlspace#ui#GetInput("Name of desk: ", ctrlspace#util#Gettabvar(current_tab, "CtrlSpaceLabel"))
-  if empty(name)
-    return 0
-  end
+  call inputsave()
+  let name = input("New desk name: ")
+  call inputrestore()
 
   " set the tab name.
-  call ctrlspace#tabs#SetTabLabel(current_tab, name, 0)
+  call ctrlspace#tabs#SetTabLabel(tabpagenr(), name, 0)
 
-  redraw! " required to display tab label change.
+  redraw!
 endfunction
 
 " run a local desk script for things like linting, testing, etc.
@@ -244,7 +242,7 @@ nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
 """ buffer management:
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
-nnoremap <silent><C-b>d :BD!<CR>
+nnoremap <silent><C-b>q :BD!<CR>
 
 "" terminal management:
 nnoremap <silent><C-t> :terminal<CR>
