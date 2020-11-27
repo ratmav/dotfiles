@@ -28,7 +28,7 @@ on the `nvim` command line, run `:PlugInstall`.
 ### mnemonic keybindings
 
 * hyper
-* `Ctrl-h-t` opens a new [hyper]() tab if you need it
+* `Ctrl-h` opens a new [hyper](https://github.com/vercel/hyper) tab if you need it
 * run `hypertab-title` to set a tab's name
 
 * neovim built-ins

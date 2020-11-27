@@ -54,6 +54,6 @@ module.exports = {
   ],
   localPlugins: [],
   keymaps: {
-    "tab:new": "ctrl+h+t",
+    "tab:new": "ctrl+h",
   },
 };
