@@ -22,13 +22,25 @@ function! DeskInit()
   call DeskName(fnamemodify(getcwd(), ':t\'))
 endfunction
 
-"" set the desk name.
+"" refresh the tree, buffer, and file search cache
+function! DeskCache()
+  echo "TODO: tree, buffer, and file search refresh"
+endfunction
+
+"" set the desk name
 function! DeskName(name)
   call ctrlspace#tabs#SetTabLabel(tabpagenr(), a:name, 0)
   redraw!
 endfunction
 
-"" start a new desk.
+"" move an existing desk to a new working directory
+function! DeskMove()
+  "" DeskNew() is probabaly a good starting point
+  "" close all buffers and windows in desk as well for a clean slate).
+  echo "TODO: move and existing desk to a new working directory"
+endfunction
+
+"" start a new desk
 function! DeskNew()
   call inputsave()
   let path = input("New desk path: ", "", "file")
@@ -51,12 +63,53 @@ function! DeskNew()
   end
 endfunction
 
-"" set the desk name.
+"" change focus to next desk on right
+function! DeskNext()
+  tabnext
+endfunction
+
+"" change focus to previous desk on left
+function! DeskPrevious()
+  tabprevious
+endfunction
+
+"" search buffers open in desk
+function! DeskSearchBuffers()
+  "" should be able to mimic vim-ctrlspace's logic here.
+  call CtrlSpace O
+endfunction
+
+"" search files in desk path
+function! DeskSearchFiles()
+  "" using pure vimscript (probably glob) for search and ignore logic
+  "" like ctrlp would be nice.
+  call CtrlSpace H
+endfunction
+
+function! DeskTree()
+  call g:NERDTreeCreator.ToggleTabTree(".")
+endfunction
+
+"" close a desk
+"" TODO: supress vim-ctrlspace popup. probably needs to have the root path
+"" set.
+function! DeskQuit()
+  if tabpagenr("$") == 1
+    echo "move, don't quit, the last desk"
+  else
+    call ctrlspace#tabs#CloseTab()
+    echo "closed " . getcwd() . " desk"
+  end
+endfunction
+
+"" rename a desk
 function! DeskRename()
   call inputsave()
   let name = input("New desk name: ")
   call inputrestore()
-  call DeskName(name)
+  if name != ""
+    call DeskName(name)
+  end
 endfunction
 
 " run a local desk script for things like linting, testing, etc.
@@ -77,7 +130,7 @@ function! DeskProject()
   endif
 endfunction
 
-" =============== custom functions
+" =============== marv
 
 " markdown html and pdf previews
 function! Marv(extension)
@@ -142,6 +195,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
   Plug 'szw/vim-maximizer'
+  Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 
 " rainbow_parenthesis:
@@ -270,24 +324,18 @@ nnoremap <A-l> <C-w>l
 
 "" desk
 
-""" tab managment:
 nnoremap <silent><C-d>n :call DeskNew()<CR>
-nnoremap <silent><C-d>h :tabprevious<CR>
-nnoremap <silent><C-d>l :tabnext<CR>
+nnoremap <silent><C-d>h :call DeskPrevious()<CR>
+nnoremap <silent><C-d>l :call DeskNext()<CR>
 nnoremap <silent><C-d>r :call DeskRename()<CR>
-
-""" treeview toggle:
-nnoremap <silent><C-d>t :NERDTreeToggle .<CR>
-
-""" fuzzy file search:
+nnoremap <silent><C-d>q :call DeskQuit()<CR>
+nnoremap <silent><C-d>c :call DeskCache()<CR>
+nnoremap <silent><C-d>m :call DeskMove()<CR>
+nnoremap <silent><C-d>t :call DeskTree()<CR>
+"" TODO: nnoremap <silent><C-d>f :call DeskSearchFiles()<CR>
 nnoremap <silent><C-d>f :CtrlSpace O<CR>
-
-""" fuzzy buffer search:
+"" TODO: nnoremap <silent><C-d>b :call DeskSearchBuffers()<CR>
 nnoremap <silent><C-d>b :CtrlSpace H<CR>
-
-""" treeview, buffer search, and file search refresh
-
-""" run local project script:
 nnoremap <silent><C-d>p :call DeskProject()<CR>
 
 "" leader shortcuts:
