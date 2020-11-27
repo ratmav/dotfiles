@@ -15,14 +15,17 @@ endif
 
 
 " =============== desk functions
-
+" TODO: auto-name first tab tcd on startup, probably factor tab naming into
+" private function (vim-ctrlspace and redraw)
+"
 "" start a new desk.
 function! DeskNew()
   call inputsave()
   let path = input("New desk path: ", "", "file")
   call inputrestore()
 
-  "if isdirectory(path)
+  " check that path exists
+  if !empty(glob(path))
     " create tab and set tab current directory
     tabnew
     execute ":tcd " . path
@@ -34,9 +37,10 @@ function! DeskNew()
     call ctrlspace#tabs#SetTabLabel(tabpagenr(), fnamemodify(getcwd(), ':t\'), 0)
 
     redraw!
-  "else
-  "  echo "desk path not valid"
-  "end
+  else
+    redraw!
+    echo "invalid desk path"
+  end
 endfunction
 
 "" set the desk name.
