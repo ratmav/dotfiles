@@ -15,9 +15,19 @@ endif
 
 
 " =============== desk functions
-" TODO: auto-name first tab tcd on startup, probably factor tab naming into
-" private function (vim-ctrlspace and redraw)
-"
+
+"" name the first desk on startup
+function! DeskInit()
+  " set the desk name to the last dir on path
+  call DeskName(fnamemodify(getcwd(), ':t\'))
+endfunction
+
+"" set the desk name.
+function! DeskName(name)
+  call ctrlspace#tabs#SetTabLabel(tabpagenr(), a:name, 0)
+  redraw!
+endfunction
+
 "" start a new desk.
 function! DeskNew()
   call inputsave()
@@ -33,10 +43,8 @@ function! DeskNew()
     " set vim-ctrlspace project root
     call ctrlspace#roots#SetCurrentProjectRoot(path)
 
-    " name the tab the last dir on path
-    call ctrlspace#tabs#SetTabLabel(tabpagenr(), fnamemodify(getcwd(), ':t\'), 0)
-
-    redraw!
+    " set the desk name to the last dir on path
+    call DeskName(fnamemodify(getcwd(), ':t\'))
   else
     redraw!
     echo "invalid desk path"
@@ -48,11 +56,7 @@ function! DeskRename()
   call inputsave()
   let name = input("New desk name: ")
   call inputrestore()
-
-  " set the tab name.
-  call ctrlspace#tabs#SetTabLabel(tabpagenr(), name, 0)
-
-  redraw!
+  call DeskName(name)
 endfunction
 
 " run a local desk script for things like linting, testing, etc.
@@ -267,9 +271,7 @@ nnoremap <A-l> <C-w>l
 "" desk
 
 """ tab managment:
-" TODO: WIP
 nnoremap <silent><C-d>n :call DeskNew()<CR>
-"nnoremap <silent><C-d>n :tabnew<bar>:echo "new desk created"<CR>
 nnoremap <silent><C-d>h :tabprevious<CR>
 nnoremap <silent><C-d>l :tabnext<CR>
 nnoremap <silent><C-d>r :call DeskRename()<CR>
@@ -284,8 +286,6 @@ nnoremap <silent><C-d>f :CtrlSpace O<CR>
 nnoremap <silent><C-d>b :CtrlSpace H<CR>
 
 """ treeview, buffer search, and file search refresh
-"""" TODO: how to chain a nerdtree reload command and vim-ctrlspace reload command, if they exist?
-"nnoremap <silent><C-d>c :CtrlPClearCache<CR>
 
 """ run local project script:
 nnoremap <silent><C-d>p :call DeskProject()<CR>
@@ -306,3 +306,6 @@ nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
 
 "" convert markdown to html:
 noremap <silent><Leader>h :call Marv(".html")<CR>
+
+"" initialize desk on startup:
+call DeskInit()
