@@ -85,6 +85,7 @@ function! DeskSearchFiles()
   execute 'CtrlSpace O'
 endfunction
 
+"" display diretory tree view
 function! DeskTree()
   call g:NERDTreeCreator.ToggleTabTree(".")
 endfunction
