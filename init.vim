@@ -18,6 +18,10 @@ endif
 
 "" name the first desk on startup
 function! DeskInit()
+  " TODO: the vim-ctrlspace file search complains about
+  " a 'project root not set'. setting it here doesn't fix
+  " it. probably best to wait until the file search leans
+  " more on glob like ctrlp anyway.
   " set the desk name to the last dir on path
   call DeskName(fnamemodify(getcwd(), ':t\'))
 endfunction
@@ -32,13 +36,6 @@ endfunction
 function! DeskName(name)
   call ctrlspace#tabs#SetTabLabel(tabpagenr(), a:name, 0)
   redraw!
-endfunction
-
-"" move an existing desk to a new working directory
-function! DeskMove()
-  "" DeskNew() is probabaly a good starting point
-  "" close all buffers and windows in desk as well for a clean slate).
-  echo "TODO: move an existing desk to a new working directory"
 endfunction
 
 "" start a new desk
@@ -77,14 +74,14 @@ endfunction
 "" search buffers open in desk
 function! DeskSearchBuffers()
   "" should be able to mimic vim-ctrlspace's logic here.
-  call CtrlSpace O
+  execute 'CtrlSpace H'
 endfunction
 
 "" search files in desk path
 function! DeskSearchFiles()
   "" using pure vimscript (probably glob) for search and ignore logic
   "" like ctrlp would be nice.
-  call CtrlSpace H
+  execute 'CtrlSpace O'
 endfunction
 
 function! DeskTree()
@@ -329,12 +326,9 @@ nnoremap <silent><C-d>l :call DeskNext()<CR>
 nnoremap <silent><C-d>r :call DeskRename()<CR>
 nnoremap <silent><C-d>q :call DeskQuit()<CR>
 nnoremap <silent><C-d>c :call DeskCache()<CR>
-nnoremap <silent><C-d>m :call DeskMove()<CR>
 nnoremap <silent><C-d>t :call DeskTree()<CR>
-"" TODO: nnoremap <silent><C-d>f :call DeskSearchFiles()<CR>
-nnoremap <silent><C-d>f :CtrlSpace O<CR>
-"" TODO: nnoremap <silent><C-d>b :call DeskSearchBuffers()<CR>
-nnoremap <silent><C-d>b :CtrlSpace H<CR>
+nnoremap <silent><C-d>f :call DeskSearchFiles()<CR>
+nnoremap <silent><C-d>b :call DeskSearchBuffers()<CR>
 nnoremap <silent><C-d>p :call DeskProject()<CR>
 
 "" leader shortcuts:
