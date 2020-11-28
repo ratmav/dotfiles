@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-leverage neovim for a cross-platform, lightweight, and mnemonic editing environment
+leverage [neovim](https://github.com/neovim/neovim) and [hyper](https://github.com/vercel/hyper) for a cross-platform, lightweight, and mnemonic editing environment
 
 ## install
 
@@ -28,52 +28,76 @@ on the `nvim` command line, run `:PlugInstall`.
 ### mnemonic keybindings
 
 * hyper
-    * `Ctrl-h` opens a new [hyper](https://github.com/vercel/hyper) tab if you need it
+    * `Ctrl-h` opens a new hyper tab if you need it (remote host?)
     * run `hypertab-title` to set a tab's name
 
-* neovim built-ins
+* neovim
     * Space is the neovim leader key
+      * Leader-r (r)eloads the nvim config
+      * Leader-w removes (w)hitespace from a buffer
+      * marv
+          * Leader-p converts the current **markdown** buffer to a pdf tempfile, then opens the tempfile with the default pdf application
+          * Leader-h converts the current **markdown** buffer to a html tempfile, then opens the tempfile with the default web browser
     * buffer management
-        * Ctrl-br (r)efreshes the current buffer
-        * Ctrl-bd (d)eletes the current buffer
-        * use standard neovim buffer motions
-        * use vim-ctrlspace (see below) to search buffers scoped by tab
+        * Ctrl-b-r (r)efreshes the current buffer
+        * Ctrl-b-q (q)uits the current buffer
+        * use standard vi buffer motions
     * window management
-        * Ctrl-wr to (r)esize windows
-        * use standard neovim window motions
-    * tab managment
-        * Ctrl-n opens a (n)ew tab
-        * use `:tcd` to set the (t)ab (c)urrent (d)irectory, which vim-ctrlspace will use to scope buffers
-        * Ctrl-h previous tab (HJKL-style movement)
-        * Ctrl-l next tav (HJKL-style movement)
+        * Ctrl-w-z to (z)oom in and out of windows
+        * use standard vi window motions
     * terminal management
-        * Leader-t open a (terminal) in the current window as a buffer
+        * Ctrl-t open a (t)erminal in the current window as a buffer
         * use `exit`, etc. to stop shell processes (pressing any key afterwards will delete the buffer)
         * terminals are also scroped to tabs via vim-ctrlspace
-* plugins and custom functions
-    * Ctrl-Space opens vim-ctrl(space)
-    * Leader-n toggles (n)erdtree in the current working directory, which is also managed by `:tcd`
-    * Leader-r (r)eloads the nvim config
-    * Leader-w removes (w)hitespace from a buffer
-    * Leader-l runs a project (l)ocal shell script (for linting, testing, etc.)
-    * Leader-p converts the current **markdown** buffer to a pdf tempfile, then opens the tempfile with the default pdf application
-    * Leader-h converts the current **markdown** buffer to a html tempfile, then opens the tempfile with the default web browser
+    * desk
+        * Ctrl-d-n creates a (n)ew desk
+        * Ctrl-d-l moves right to the next desk, hjk(l)-style
+        * Ctrl-d-h moves left to the previous desk, (h)jkl-style
+        * Ctrl-d-c refreshes the file tree and list (cache)
+        * Ctrl-d-f (f)ile search scoped by desk working directory
+        * Ctrl-d-b (b)uffer search scoped by desk working directory
+        * Ctrl-d-t opens a (t)ree view of the desk working directory
+        * Ctrl-d-r (r)enames the current desk
+        * Ctrl-d-p runs a (p)roject shell script, if present in the current working directory
+            * `.desk.sh` on *nix
+            * `.desk.ps1` on windows
+        * Ctrl-d-q (q)uits the current desk
 
 see `init.vim` for more information.
 
-### plugins and extensions
+### plugins
 
-* [tcd](https://github.com/neovim/neovim/blob/master/runtime/doc/editing.txt#L1263)
-    * like `cd`, but sets the working directory on a per tab basis.
-* [ctrl-workspace](https://github.com/vim-ctrlspace/vim-ctrlspace/blob/master/doc/ctrlspace.txt)
-    * tab/buffer/file management
-        * `Ctrl-Space` opens the search window
-            * the buffer list (the default view) is scoped by tab, i.e. buffers are only listed in their respective tabs.
-            * the tab list is opened by pressing `l`; rename a tab by pressing `m`
+#### hyper
+
+* [hyperterm-bold-tab](https://github.com/dawsbot/hyperterm-bold-tab)
+    * highlight the currently active tab.
+* [hyper-gruv](https://github.com/Tallestthomas/hyper-gruv)
+    * colorscheme
+
+#### vim
+
 * [vim-fugitive](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt)
     * git wrapper used on the vim command line.
-* [nerdtree](https://github.com/preservim/nerdtree/blob/master/doc/NERDTree.txt)
-    * feature-rich project drawer/tree view
+* [rainbow_parenthesis](https://github.com/junegunn/rainbow_parentheses.vim)
+    * color-coordinated delimiters.
+* [vim-airline](https://github.com/vim-airline/vim-airline)
+    * buffer list, tab list, git information, etc.
+* [vim-bufkill](https://github.com/qpkorr/vim-bufkill)
+    * leave a window or split open even when all buffers are unloaded, deleted, or wiped.
+* [vim-gitgutter](https://github.com/airblade/vim-gitgutter)
+    * git diff in the sign column.
+* [vim-airline-clock](https://github.com/enricobacis/vim-airline-clock)
+    * self-explanatory.
+* [gruvbox](https://github.com/morhetz/gruvbox)
+    * colorscheme
+* [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
+    * **enables desk**: scopes buffers to tabs.
+* [nerdtree](https://github.com/preservim/nerdtree)
+    * **enables desk**: directory tree view.
+* [vim-maximizer](https://github.com/szw/vim-maximizer)
+    * window zoom toggle.
+
+_plus various language-specific syntax highlighting, debugging, etc. plugins depending on need._
 
 ## bad nerd poetry
 

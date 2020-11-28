@@ -191,7 +191,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
   Plug 'szw/vim-maximizer'
-  Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 
 " rainbow_parenthesis:
