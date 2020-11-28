@@ -281,7 +281,7 @@ autocmd BufEnter * match ExtraWhitespace /\s\+$/
 set hlsearch
 
 " display line numbers:
-set nu
+set number relativenumber
 
 " hide line numbers in terminals:
 autocmd TermOpen * setlocal nonumber norelativenumber
