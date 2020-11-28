@@ -22,9 +22,10 @@ function! DeskInit()
   call DeskName(fnamemodify(getcwd(), ':t\'))
 endfunction
 
-"" refresh the tree, buffer, and file search cache
+"" refresh the tree and file search cache
 function! DeskCache()
-  echo "TODO: tree, buffer, and file search refresh"
+  call g:NERDTree.ForCurrentTab().getRoot().refresh()
+  call ctrlspace#files#RefreshFiles()
 endfunction
 
 "" set the desk name
@@ -37,7 +38,7 @@ endfunction
 function! DeskMove()
   "" DeskNew() is probabaly a good starting point
   "" close all buffers and windows in desk as well for a clean slate).
-  echo "TODO: move and existing desk to a new working directory"
+  echo "TODO: move an existing desk to a new working directory"
 endfunction
 
 "" start a new desk
@@ -91,8 +92,6 @@ function! DeskTree()
 endfunction
 
 "" close a desk
-"" TODO: supress vim-ctrlspace popup. probably needs to have the root path
-"" set.
 function! DeskQuit()
   if tabpagenr("$") == 1
     echo "move, don't quit, the last desk"
