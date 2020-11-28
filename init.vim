@@ -24,6 +24,7 @@ function! DeskInit()
   " more on glob like ctrlp anyway.
   " set the desk name to the last dir on path
   call DeskName(fnamemodify(getcwd(), ':t\'))
+  echo "(•_•) ( •_•)>⌐■-■ (⌐■_■)"
 endfunction
 
 "" refresh the tree and file search cache
