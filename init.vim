@@ -246,22 +246,25 @@ let g:omni_sql_no_default_maps = 1
 autocmd TermOpen * set bufhidden=hide
 
 " filetypes
+augroup filetypes
+  autocmd!
 
-"" makefile
-autocmd FileType make setlocal noexpandtab
-autocmd FileType make setlocal shiftwidth=8
-autocmd FileType make setlocal softtabstop=8
+  "" makefile
+  autocmd FileType make setlocal noexpandtab
+  autocmd FileType make setlocal shiftwidth=8
+  autocmd FileType make setlocal softtabstop=8
 
-"" go
-autocmd FileType go setlocal noexpandtab
-autocmd FileType go setlocal shiftwidth=8
-autocmd FileType go setlocal softtabstop=8
+  "" go
+  autocmd FileType go setlocal noexpandtab
+  autocmd FileType go setlocal shiftwidth=8
+  autocmd FileType go setlocal softtabstop=8
 
-"" python
-autocmd FileType python setlocal foldmethod=indent
+  "" python
+  autocmd FileType python setlocal foldmethod=indent
 
-"" yaml
-autocmd FileType yaml setlocal indentkeys-=0#
+  "" yaml
+  autocmd FileType yaml setlocal indentkeys-=0#
+augroup END
 
 " =============== display
 
