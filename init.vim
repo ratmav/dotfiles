@@ -227,6 +227,7 @@ set noswapfile
 set foldmethod=syntax
 set foldcolumn=2
 set foldlevelstart=100
+let g:vimsyn_folding='af'
 
 " autoindent width:
 set expandtab
