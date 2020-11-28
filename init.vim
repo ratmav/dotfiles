@@ -195,9 +195,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'szw/vim-maximizer'
 call plug#end()
 
-" rainbow_parenthesis:
-autocmd BufEnter * RainbowParentheses
-
 " vim-airline:
 let g:airline#extensions#tabline#enabled = 1
 
@@ -209,6 +206,50 @@ let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 
 " nerdtree:
 let g:NERDTreeShowHidden=1
+
+" =============== autocommands
+
+augroup rainbow_parentheses
+  autocmd!
+
+  autocmd BufEnter * RainbowParentheses
+augroup END
+
+augroup terminal_settings
+  autocmd!
+
+  autocmd TermOpen * set bufhidden=hide
+
+  " hide line numbers in terminals:
+  autocmd TermOpen * setlocal nonumber norelativenumber
+augroup END
+
+augroup filetype_tab_whitespace
+  autocmd!
+
+  "" makefile
+  autocmd FileType make setlocal noexpandtab
+  autocmd FileType make setlocal shiftwidth=8
+  autocmd FileType make setlocal softtabstop=8
+
+  "" go
+  autocmd FileType go setlocal noexpandtab
+  autocmd FileType go setlocal shiftwidth=8
+  autocmd FileType go setlocal softtabstop=8
+
+  "" python
+  autocmd FileType python setlocal foldmethod=indent
+
+  "" yaml
+  autocmd FileType yaml setlocal indentkeys-=0#
+augroup END
+
+augroup highlight_whitespace
+  autocmd!
+
+  autocmd BufEnter * highlight Extrawhitespace ctermbg=red guibg=red
+  autocmd BufEnter * match ExtraWhitespace /\s\+$/
+augroup END
 
 " =============== behavior
 
@@ -242,30 +283,6 @@ set backspace=2
 " disable sql omnicomplete, which is tied to <c-c> for some reason.
 let g:omni_sql_no_default_maps = 1
 
-" terminal
-autocmd TermOpen * set bufhidden=hide
-
-" filetypes
-augroup filetypes
-  autocmd!
-
-  "" makefile
-  autocmd FileType make setlocal noexpandtab
-  autocmd FileType make setlocal shiftwidth=8
-  autocmd FileType make setlocal softtabstop=8
-
-  "" go
-  autocmd FileType go setlocal noexpandtab
-  autocmd FileType go setlocal shiftwidth=8
-  autocmd FileType go setlocal softtabstop=8
-
-  "" python
-  autocmd FileType python setlocal foldmethod=indent
-
-  "" yaml
-  autocmd FileType yaml setlocal indentkeys-=0#
-augroup END
-
 " =============== display
 
 set termguicolors
@@ -276,18 +293,12 @@ syntax on
 " highlight current line:
 set cursorline
 
-" highlight unwanted spaces:
-autocmd BufEnter * highlight Extrawhitespace ctermbg=red guibg=red
-autocmd BufEnter * match ExtraWhitespace /\s\+$/
 
 " highlight search results:
 set hlsearch
 
 " display line numbers:
 set number relativenumber
-
-" hide line numbers in terminals:
-autocmd TermOpen * setlocal nonumber norelativenumber
 
 " always show the status line:
 set laststatus=2
