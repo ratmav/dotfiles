@@ -58,6 +58,7 @@ on the `nvim` command line, run `:PlugInstall`.
         * Ctrl-d-b (b)uffer search scoped by desk working directory
         * Ctrl-d-t opens a (t)ree view of the desk working directory
         * Ctrl-d-r (r)enames the current desk
+        * Ctrl-d-m (m)oves an existing desk
         * Ctrl-d-p runs a (p)roject shell script, if present in the current working directory
             * `.desk.sh` on *nix
             * `.desk.ps1` on windows
@@ -76,26 +77,28 @@ see `init.vim` for more information.
 
 #### vim
 
-* [vim-fugitive](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt)
-    * git wrapper used on the vim command line.
-* [rainbow_parenthesis](https://github.com/junegunn/rainbow_parentheses.vim)
-    * color-coordinated delimiters.
-* [vim-airline](https://github.com/vim-airline/vim-airline)
-    * buffer list, tab list, git information, etc.
-* [vim-bufkill](https://github.com/qpkorr/vim-bufkill)
-    * leave a window or split open even when all buffers are unloaded, deleted, or wiped.
-* [vim-gitgutter](https://github.com/airblade/vim-gitgutter)
-    * git diff in the sign column.
-* [vim-airline-clock](https://github.com/enricobacis/vim-airline-clock)
-    * self-explanatory.
-* [gruvbox](https://github.com/morhetz/gruvbox)
-    * colorscheme
-* [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
-    * **enables desk**: scopes buffers to tabs.
-* [nerdtree](https://github.com/preservim/nerdtree)
-    * **enables desk**: directory tree view.
-* [vim-maximizer](https://github.com/szw/vim-maximizer)
-    * window zoom toggle.
+* workflow
+  * [vim-ctrlspace](https://github.com/vim-ctrlspace/vim-ctrlspace)
+      * **enables desk**: scopes buffers to tabs.
+  * [nerdtree](https://github.com/preservim/nerdtree)
+      * **enables desk**: directory tree view.
+  * [vim-bufkill](https://github.com/qpkorr/vim-bufkill)
+      * **enables desk**: leave a window or split open even when all buffers are unloaded, deleted, or wiped.
+* display
+  * [vim-airline](https://github.com/vim-airline/vim-airline)
+      * **pairs well with desk**: buffer list, tab list, git information, etc.
+      * [vim-airline-clock](https://github.com/enricobacis/vim-airline-clock)
+          * strftime-formatted clock in statusline.
+      * [vim-fugitive](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt)
+          * **enables git information in vim-airline**: git wrapper used on the vim command line.
+  * [rainbow_parenthesis](https://github.com/junegunn/rainbow_parentheses.vim)
+      * color-coordinated delimiters.
+  * [vim-gitgutter](https://github.com/airblade/vim-gitgutter)
+      * git diff in the sign column.
+  * [vim-maximizer](https://github.com/szw/vim-maximizer)
+      * window zoom toggle.
+  * [gruvbox](https://github.com/morhetz/gruvbox)
+      * colorscheme
 
 _plus various language-specific syntax highlighting, debugging, etc. plugins depending on need._
 

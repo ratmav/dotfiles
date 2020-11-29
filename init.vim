@@ -39,6 +39,31 @@ function! DeskName(name)
   redraw!
 endfunction
 
+"" move an existing  desk
+function! DeskMove()
+  call inputsave()
+  let path = input("Move desk to: ", "", "file")
+  call inputrestore()
+
+  " check that path exists
+  if !empty(glob(path))
+    " close all buffers
+    silent tabdo %bd
+
+    " create tab and set tab current directory
+    execute ":tcd " . path
+
+    " set vim-ctrlspace project root
+    call ctrlspace#roots#SetCurrentProjectRoot(path)
+
+    " set the desk name to the last dir on path
+    call DeskName(fnamemodify(getcwd(), ':t\'))
+  else
+    redraw!
+    echo "invalid desk path"
+  end
+endfunction
+
 "" start a new desk
 function! DeskNew()
   call inputsave()
@@ -346,6 +371,7 @@ nnoremap <silent><C-d>t :call DeskTree()<CR>
 nnoremap <silent><C-d>f :call DeskSearchFiles()<CR>
 nnoremap <silent><C-d>b :call DeskSearchBuffers()<CR>
 nnoremap <silent><C-d>p :call DeskProject()<CR>
+nnoremap <silent><C-d>m :call DeskMove()<CR>
 
 "" leader shortcuts:
 
