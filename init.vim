@@ -308,6 +308,9 @@ set backspace=2
 " disable sql omnicomplete, which is tied to <c-c> for some reason.
 let g:omni_sql_no_default_maps = 1
 
+" use space as leader:
+let mapleader=" "
+
 " =============== display
 
 set termguicolors
@@ -336,6 +339,12 @@ let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 
 " =============== key bindings
 
+"" reload config:
+nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
+
+"" remove whitespace:
+nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
+
 """ window management:
 nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
@@ -359,8 +368,11 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-"" desk
+"" marv:
+nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
+noremap <silent><Leader>h :call Marv(".html")<CR>
 
+"" desk
 nnoremap <silent><C-d>n :call DeskNew()<CR>
 nnoremap <silent><C-d>h :call DeskPrevious()<CR>
 nnoremap <silent><C-d>l :call DeskNext()<CR>
@@ -373,22 +385,5 @@ nnoremap <silent><C-d>b :call DeskSearchBuffers()<CR>
 nnoremap <silent><C-d>p :call DeskProject()<CR>
 nnoremap <silent><C-d>m :call DeskMove()<CR>
 
-"" leader shortcuts:
-
-""" use space as leader:
-let mapleader=" "
-
-"" reload config:
-nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
-
-"" remove whitespace:
-nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
-
-"" convert markdown to pdf:
-nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
-
-"" convert markdown to html:
-noremap <silent><Leader>h :call Marv(".html")<CR>
-
-"" initialize desk on startup:
+""" initialize desk on startup:
 call DeskInit()
