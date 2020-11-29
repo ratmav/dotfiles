@@ -13,7 +13,6 @@ else
     endif
 endif
 
-
 " =============== desk functions
 
 "" name the first desk on startup
