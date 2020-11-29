@@ -1,6 +1,4 @@
-" =============== os detection
-
-" os detection.
+" os detection {{{
 if has("win64") || has("win32") || has("win16")
     let s:vimfiles = "~/AppData/Local/nvim"
     let s:os = "windows"
@@ -12,10 +10,11 @@ else
       let s:os = "linux"
     endif
 endif
+" }}}
 
-" =============== desk functions
+" desk {{{
 
-"" name the first desk on startup
+" name the first desk on startup {{{
 function! DeskInit()
   " TODO: the vim-ctrlspace file search complains about
   " a 'project root not set'. setting it here doesn't fix
@@ -25,20 +24,23 @@ function! DeskInit()
   call DeskName(fnamemodify(getcwd(), ':t\'))
   echo "(•_•) ( •_•)>⌐■-■ (⌐■_■)"
 endfunction
+" }}}
 
-"" refresh the tree and file search cache
+" refresh the tree and file search cache {{{
 function! DeskCache()
   call g:NERDTree.ForCurrentTab().getRoot().refresh()
   call ctrlspace#files#RefreshFiles()
 endfunction
+" }}}
 
-"" set the desk name
+" set the desk name {{{
 function! DeskName(name)
   call ctrlspace#tabs#SetTabLabel(tabpagenr(), a:name, 0)
   redraw!
 endfunction
+" }}}
 
-"" move an existing  desk
+" move an existing  desk {{{
 function! DeskMove()
   call inputsave()
   let path = input("Move desk to: ", "", "file")
@@ -62,8 +64,9 @@ function! DeskMove()
     echo "invalid desk path"
   end
 endfunction
+" }}}
 
-"" start a new desk
+" start a new desk {{{
 function! DeskNew()
   call inputsave()
   let path = input("New desk path: ", "", "file")
@@ -85,36 +88,42 @@ function! DeskNew()
     echo "invalid desk path"
   end
 endfunction
+" }}}
 
-"" change focus to next desk on right
+" change focus to next desk on right {{{
 function! DeskNext()
   tabnext
 endfunction
+" }}}
 
-"" change focus to previous desk on left
+" change focus to previous desk on left {{{
 function! DeskPrevious()
   tabprevious
 endfunction
+" }}}
 
-"" search buffers open in desk
+" search buffers open in desk {{{
 function! DeskSearchBuffers()
   "" should be able to mimic vim-ctrlspace's logic here.
   execute 'CtrlSpace H'
 endfunction
+" }}}
 
-"" search files in desk path
+" search files in desk path {{{
 function! DeskSearchFiles()
   "" using pure vimscript (probably glob) for search and ignore logic
   "" like ctrlp would be nice.
   execute 'CtrlSpace O'
 endfunction
+" }}}
 
-"" display diretory tree view
+" display diretory tree view {{{
 function! DeskTree()
   call g:NERDTreeCreator.ToggleTabTree(".")
 endfunction
+" }}}
 
-"" close a desk
+" close a desk {{{
 function! DeskQuit()
   if tabpagenr("$") == 1
     echo "move, don't quit, the last desk"
@@ -123,8 +132,9 @@ function! DeskQuit()
     echo "closed " . getcwd() . " desk"
   end
 endfunction
+" }}}
 
-"" rename a desk
+" rename a desk {{{
 function! DeskRename()
   call inputsave()
   let name = input("New desk name: ")
@@ -133,8 +143,9 @@ function! DeskRename()
     call DeskName(name)
   end
 endfunction
+" }}}
 
-" run a local desk script for things like linting, testing, etc.
+" run a local  script {{{
 function! DeskProject()
   " set platform-specific extension
   if s:os == "windows"
@@ -151,10 +162,11 @@ function! DeskProject()
     echo "local project script not found"
   endif
 endfunction
+" }}}
 
-" =============== marv
+" }}}
 
-" markdown html and pdf previews
+" marv {{{
 function! Marv(extension)
   " is pandoc installed?
   if executable("pandoc")
@@ -199,8 +211,9 @@ function! Marv(extension)
     echo "pandoc is not installed"
   endif
 endfunction
+" }}}
 
-" =============== plugins
+" plugins {{{
 
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
@@ -219,19 +232,32 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'szw/vim-maximizer'
 call plug#end()
 
-" vim-airline:
+" vim-airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_section_b = "%{fnamemodify(getcwd(), ':t\')} %{airline#extensions#branch#get_head()}"
 
-" vim-ctrlspace:
+" vim-airline-clock
+let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
+
+" vim-ctrlspace
 set nocompatible
 set hidden
 set encoding=utf-8
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
 
-" nerdtree:
+" nerdtree
 let g:NERDTreeShowHidden=1
 
-" =============== autocommands
+" }}}
+
+" autocommands {{{
+
+augroup vimscript_folding
+    autocmd!
+
+    " use '{{{' and '}}}' comments to set markers.
+    autocmd FileType vim setlocal foldmethod=marker
+augroup END
 
 augroup rainbow_parentheses
   autocmd!
@@ -275,7 +301,9 @@ augroup highlight_whitespace
   autocmd BufEnter * match ExtraWhitespace /\s\+$/
 augroup END
 
-" =============== behavior
+" }}}
+
+" behavior {{{
 
 " use the system clipboard by default:
 set clipboard=unnamedplus
@@ -294,7 +322,6 @@ set noswapfile
 set foldmethod=syntax
 set foldcolumn=2
 set foldlevelstart=100
-let g:vimsyn_folding='af'
 
 " autoindent width:
 set expandtab
@@ -307,10 +334,9 @@ set backspace=2
 " disable sql omnicomplete, which is tied to <c-c> for some reason.
 let g:omni_sql_no_default_maps = 1
 
-" use space as leader:
-let mapleader=" "
+" }}}
 
-" =============== display
+" display {{{
 
 set termguicolors
 colorscheme gruvbox
@@ -330,28 +356,27 @@ set number relativenumber
 " always show the status line:
 set laststatus=2
 
-" current working directory display:
-let g:airline_section_b = "%{fnamemodify(getcwd(), ':t\')} %{airline#extensions#branch#get_head()}"
+" }}}
 
-" clock display
-let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
+" bindings {{{
 
-" =============== key bindings
+" use space as leader:
+let mapleader=" "
 
-"" reload config:
+" reload config:
 nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
 
-"" remove whitespace:
+" remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
 
-""" window management:
+" window management:
 nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
-""" buffer management:
+" buffer management:
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 
-"" terminal management:
+" terminal management:
 nnoremap <silent><C-t> :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-h> <C-\><C-N><C-w>h
@@ -367,11 +392,11 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-"" marv:
+" marv:
 nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
 noremap <silent><Leader>h :call Marv(".html")<CR>
 
-"" desk
+" desk
 nnoremap <silent><C-d>n :call DeskNew()<CR>
 nnoremap <silent><C-d>h :call DeskPrevious()<CR>
 nnoremap <silent><C-d>l :call DeskNext()<CR>
@@ -384,5 +409,7 @@ nnoremap <silent><C-d>b :call DeskSearchBuffers()<CR>
 nnoremap <silent><C-d>p :call DeskProject()<CR>
 nnoremap <silent><C-d>m :call DeskMove()<CR>
 
-""" initialize desk on startup:
+" }}}
+
+" initialize desk on startup:
 call DeskInit()
