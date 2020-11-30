@@ -103,14 +103,14 @@ endfunction
 " }}}
 
 " search buffers open in desk {{{
-function! DeskSearchBuffers()
+function! DeskSearchNameBuffers()
   "" should be able to mimic vim-ctrlspace's logic here.
   execute 'CtrlSpace H'
 endfunction
 " }}}
 
 " search files in desk path {{{
-function! DeskSearchFiles()
+function! DeskSearchNameFiles()
   "" using pure vimscript (probably glob) for search and ignore logic
   "" like ctrlp would be nice.
   execute 'CtrlSpace O'
@@ -405,8 +405,8 @@ nnoremap <silent><C-d>r :call DeskRename()<CR>
 nnoremap <silent><C-d>q :call DeskQuit()<CR>
 nnoremap <silent><C-d>c :call DeskCache()<CR>
 nnoremap <silent><C-d>t :call DeskTree()<CR>
-nnoremap <silent><C-d>f :call DeskSearchFiles()<CR>
-nnoremap <silent><C-d>b :call DeskSearchBuffers()<CR>
+nnoremap <silent><C-d>f :call DeskSearchNameFiles()<CR>
+nnoremap <silent><C-d>b :call DeskSearchNameBuffers()<CR>
 nnoremap <silent><C-d>p :call DeskProject()<CR>
 nnoremap <silent><C-d>m :call DeskMove()<CR>
 
