@@ -43,7 +43,7 @@ endfunction
 " move an existing  desk {{{
 function! DeskMove()
   call inputsave()
-  let path = input("Move desk to: ", "", "file")
+  let path = input("move desk to: ", "", "file")
   call inputrestore()
 
   " check that path exists
@@ -69,7 +69,7 @@ endfunction
 " start a new desk {{{
 function! DeskNew()
   call inputsave()
-  let path = input("New desk path: ", "", "file")
+  let path = input("new desk path: ", "", "file")
   call inputrestore()
 
   " check that path exists
@@ -137,7 +137,7 @@ endfunction
 " rename a desk {{{
 function! DeskRename()
   call inputsave()
-  let name = input("New desk name: ")
+  let name = input("new desk name: ")
   call inputrestore()
   if name != ""
     call DeskName(name)
@@ -365,7 +365,7 @@ set laststatus=2
 let mapleader=" "
 
 " reload config:
-nnoremap <silent><Leader>r :source $MYVIMRC<bar>:echo "reloaded config"<CR>
+nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
 
 " remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
