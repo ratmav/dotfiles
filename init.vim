@@ -148,7 +148,7 @@ endfunction
 " run a local  script {{{
 function! DeskProject()
   " set platform-specific extension
-  if s:os == "windows"
+  if s:os ==# "windows"
     let extension = "ps1"
   else
     let extension = "sh"
@@ -188,7 +188,7 @@ function! Marv(extension)
         endif
 
         " clean up old tempfiles, then build new tempfile
-        if s:os == "windows"
+        if s:os ==# "windows"
           echo "windows support not implemented yet."
         else
           execute ":! rm -f " . targetfile
@@ -196,11 +196,11 @@ function! Marv(extension)
         execute prefix . " " . targetfile . " " . sourcefile
 
         " open the tempfile
-        if s:os == "darwin"
+        if s:os ==# "darwin"
           execute ":! open " . targetfile
-        elseif s:os == "linux"
+        elseif s:os ==# "linux"
           execute ":! xdg-open " . targetfile
-        elseif s:os == "windows"
+        elseif s:os ==# "windows"
           echo "windows support not implemented yet."
         endif
       endif
