@@ -121,6 +121,7 @@ endfunction
 function! DeskSearchDesks()
   execute 'CtrlSpace L'
 endfunction
+" }}}
 
 " display diretory tree view {{{
 function! DeskTree()
