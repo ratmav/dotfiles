@@ -17,10 +17,10 @@ endif
 " name the first desk on startup {{{
 function! DeskInit()
   " TODO: the vim-ctrlspace file search complains about
-  " a 'project root not set'. setting it here doesn't fix
-  " it. probably best to wait until the file search leans
-  " more on glob like ctrlp anyway.
-  " set the desk name to the last dir on path
+  " the project root not being set if vim is opened in a directory
+  " without a .git, etc. directory, i.e. if ctrlspace#roots#FindProjectRoot()
+  " comes back empty. need the just set it to whatever the tcd is.
+  " a 'project root not set'   " set the desk name to the last dir on path
   call DeskName(fnamemodify(getcwd(), ':t\'))
   echo "(•_•) ( •_•)>⌐■-■ (⌐■_■)"
 endfunction
