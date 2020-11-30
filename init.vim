@@ -349,6 +349,7 @@ set cursorline
 
 " highlight search results:
 set hlsearch
+set incsearch
 
 " display line numbers:
 set number relativenumber
