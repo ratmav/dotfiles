@@ -374,7 +374,7 @@ let mapleader=" "
 nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
 
 " remove whitespace:
-nnoremap <silent><Leader>w :%s/\s\+$//e<CR>
+nnoremap <silent><Leader>w :%s/\s\+$//e<bar>:noh<CR>
 
 " window management:
 nnoremap <silent><C-w>z :MaximizerToggle<CR>
