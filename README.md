@@ -101,25 +101,4 @@ see `init.vim` for more information.
   * [gruvbox](https://github.com/morhetz/gruvbox)
       * colorscheme
 
-_plus various language-specific syntax highlighting, debugging, etc. plugins depending on need._
-
-## bad nerd poetry
-
-```
-cross platform
-
-chairs
-chairs in the air
-a wild ballmer has appeared
-slash back, front?
-esr weeps
-linus laughs
-on a transatlantic flight, carmack reinvents the universe in lisp
-(on an ipad)
-this is my $HOME
-#!/usr/bin/env bash it into sedmission
-esr cheers
-i am content
-shellcheck disagrees
-life is meaningless
-```
+_plus various plugins depending on need._
