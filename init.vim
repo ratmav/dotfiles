@@ -230,12 +230,13 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'PProvost/vim-ps1'
   Plug 'enricobacis/vim-airline-clock'
   Plug 'morhetz/gruvbox'
-  Plug 'plasticboy/vim-markdown'
   Plug 'jvirtanen/vim-hcl'
   Plug 'vim-ctrlspace/vim-ctrlspace'
   Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
   Plug 'szw/vim-maximizer'
+  Plug 'ratmav/syfe'
+  Plug 'ratmav/marv'
 call plug#end()
 
 " vim-airline
