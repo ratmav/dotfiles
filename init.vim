@@ -236,7 +236,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'preservim/nerdtree'
   Plug 'szw/vim-maximizer'
   Plug 'ratmav/syfe'
-  Plug 'ratmav/marv'
 call plug#end()
 
 " vim-airline
@@ -258,13 +257,6 @@ let g:NERDTreeShowHidden=1
 " }}}
 
 " autocommands {{{
-
-augroup vimscript_folding
-    autocmd!
-
-    " use '{{{' and '}}}' comments to set markers.
-    autocmd FileType vim setlocal foldmethod=marker
-augroup END
 
 augroup rainbow_parentheses
   autocmd!
