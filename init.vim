@@ -221,22 +221,29 @@ endfunction
 
 " plugins {{{
 
+" plugin management (https://github.com/junegunn/vim-plug) {{{
 call plug#begin('~/.local/share/nvim/plugged')
-  Plug 'tpope/vim-fugitive'
-  Plug 'junegunn/rainbow_parentheses.vim'
-  Plug 'vim-airline/vim-airline'
-  Plug 'qpkorr/vim-bufkill'
-  Plug 'airblade/vim-gitgutter'
-  Plug 'PProvost/vim-ps1'
-  Plug 'enricobacis/vim-airline-clock'
-  Plug 'morhetz/gruvbox'
-  Plug 'jvirtanen/vim-hcl'
-  Plug 'vim-ctrlspace/vim-ctrlspace'
-  Plug 'sebdah/vim-delve'
+  " workflow
   Plug 'preservim/nerdtree'
-  Plug 'szw/vim-maximizer'
+  Plug 'qpkorr/vim-bufkill'
   Plug 'ratmav/syfe'
+  Plug 'szw/vim-maximizer'
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-ctrlspace/vim-ctrlspace'
+
+  " display
+  Plug 'airblade/vim-gitgutter'
+  Plug 'enricobacis/vim-airline-clock'
+  Plug 'junegunn/rainbow_parentheses.vim'
+  Plug 'morhetz/gruvbox'
+  Plug 'vim-airline/vim-airline'
+
+  " misc
+  Plug 'PProvost/vim-ps1'
+  Plug 'jvirtanen/vim-hcl'
+  Plug 'sebdah/vim-delve'
 call plug#end()
+" }}}
 
 " vim-airline {{{
 let g:airline#extensions#tabline#enabled = 1
@@ -376,10 +383,6 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-" marv:
-nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
-noremap <silent><Leader>h :call Marv(".html")<CR>
-
 " desk
 nnoremap <silent><C-d>n :call DeskNew()<CR>
 nnoremap <silent><C-d>h :call DeskPrevious()<CR>
@@ -393,6 +396,13 @@ nnoremap <silent><C-d>b :call DeskSearchNameBuffers()<CR>
 nnoremap <silent><C-d>d :call DeskSearchDesks()<CR>
 nnoremap <silent><C-d>p :call DeskProject()<CR>
 nnoremap <silent><C-d>m :call DeskMove()<CR>
+
+" marv:
+nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
+nnoremap <silent><Leader>h :call Marv(".html")<CR>
+
+" syfe:
+nnoremap <Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
 " }}}
 
