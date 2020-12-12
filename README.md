@@ -53,9 +53,8 @@ on the `nvim` command line, run `:PlugInstall`.
         * Ctrl-d-n creates a (n)ew desk
         * Ctrl-d-l moves right to the next desk, hjk(l)-style
         * Ctrl-d-h moves left to the previous desk, (h)jkl-style
-        * Ctrl-d-c refreshes the file tree and list (cache)
+        * Ctrl-d-c refreshes the (c)ache of file names in the current desk.
         * Ctrl-d-f (f)ile name search scoped by desk working directory
-        * Ctrl-d-b (b)uffer name search scoped by desk working directory
         * Ctrl-d-d (d)esk name search
         * Ctrl-d-t opens a (t)ree view of the desk working directory
         * Ctrl-d-r (r)enames the current desk
