@@ -263,16 +263,6 @@ augroup END
 
 " }}}
 
-" syfe: highlight_whitespace {{{
-augroup highlight_whitespace
-  autocmd!
-
-  autocmd BufEnter * highlight Extrawhitespace ctermbg=red guibg=red
-  autocmd BufEnter * match ExtraWhitespace /\s\+$/
-augroup END
-
-" }}}
-
 " behavior {{{
 
 " use the system clipboard by default:
@@ -351,11 +341,12 @@ nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded confi
 " window management:
 nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
-" buffer management:
+" buffer management {{{
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
+" }}}
 
-" terminal management:
+" terminal management {{{
 nnoremap <silent><C-t> :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-h> <C-\><C-N><C-w>h
@@ -370,8 +361,9 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+" }}}
 
-" desk
+" desk {{{
 nnoremap <silent><C-d>n :call DeskNew()<CR>
 nnoremap <silent><C-d>h :call DeskPrevious()<CR>
 nnoremap <silent><C-d>l :call DeskNext()<CR>
@@ -383,13 +375,15 @@ nnoremap <silent><C-d>f :call DeskSearchFileNames()<CR>
 nnoremap <silent><C-d>d :call DeskSearchDeskNames()<CR>
 nnoremap <silent><C-d>p :call DeskProject()<CR>
 nnoremap <silent><C-d>m :call DeskMove()<CR>
+" }}}
 
-" marv:
+" marv {{{
 nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
 nnoremap <silent><Leader>h :call Marv(".html")<CR>
+" }}}
 
 " syfe:
-nnoremap <Leader>w :execute 'SyfeWhitespaceClear'<CR>
+nnoremap <silent><Leader>w :execute 'SyfeWhitespaceToggle'<CR>
 
 " }}}
 
