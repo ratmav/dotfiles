@@ -273,26 +273,6 @@ augroup terminal_settings
   autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 
-augroup filetype_tab_whitespace
-  autocmd!
-
-  "" makefile
-  autocmd FileType make setlocal noexpandtab
-  autocmd FileType make setlocal shiftwidth=8
-  autocmd FileType make setlocal softtabstop=8
-
-  "" go
-  autocmd FileType go setlocal noexpandtab
-  autocmd FileType go setlocal shiftwidth=8
-  autocmd FileType go setlocal softtabstop=8
-
-  "" python
-  autocmd FileType python setlocal foldmethod=indent
-
-  "" yaml
-  autocmd FileType yaml setlocal indentkeys-=0#
-augroup END
-
 augroup highlight_whitespace
   autocmd!
 
