@@ -238,41 +238,37 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/syfe'
 call plug#end()
 
-" vim-airline
+" vim-airline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_section_b = "%{fnamemodify(getcwd(), ':t\')} %{airline#extensions#branch#get_head()}"
+" }}}
 
-" vim-airline-clock
+" vim-airline-clock {{{
 let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
+" }}}
 
-" vim-ctrlspace
+" vim-ctrlspace {{{
 set nocompatible
 set hidden
 set encoding=utf-8
 let g:CtrlSpaceDefaultMappingKey = "<C-space> "
-
-" nerdtree
-let g:NERDTreeShowHidden=1
-
 " }}}
 
-" autocommands {{{
+" nerdtree {{{
+let g:NERDTreeShowHidden=1
+" }}}
 
+" rainbow parentheses {{{
 augroup rainbow_parentheses
   autocmd!
 
   autocmd BufEnter * RainbowParentheses
 augroup END
+" }}}
 
-augroup terminal_settings
-  autocmd!
+" }}}
 
-  autocmd TermOpen * set bufhidden=hide
-
-  " hide line numbers in terminals:
-  autocmd TermOpen * setlocal nonumber norelativenumber
-augroup END
-
+" syfe: highlight_whitespace {{{
 augroup highlight_whitespace
   autocmd!
 
@@ -336,6 +332,17 @@ set number relativenumber
 " always show the status line:
 set laststatus=2
 
+" terminal_display {{{
+augroup terminal_settings
+  autocmd!
+
+  autocmd TermOpen * set bufhidden=hide
+
+  " hide line numbers in terminals:
+  autocmd TermOpen * setlocal nonumber norelativenumber
+augroup END
+" }}}
+
 " }}}
 
 " bindings {{{
@@ -346,7 +353,7 @@ let mapleader=" "
 " reload config:
 nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
 
-" remove whitespace:
+" syfe: remove whitespace:
 nnoremap <silent><Leader>w :%s/\s\+$//e<bar>:noh<CR>
 
 " window management:
