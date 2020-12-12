@@ -95,8 +95,6 @@ see `init.vim` for more information.
 * display
   * [airblade/vim-gitgutter](https://github.com/airblade/vim-gitgutter)
       * git diff in the sign column.
-  * [encricobacis/vim-airline-clock](https://github.com/enricobacis/vim-airline-clock)
-      * strftime-formatted clock in vim-airline's statusline.
   * [junegunn/rainbow_parenthesis](https://github.com/junegunn/rainbow_parentheses.vim)
       * color-coordinated delimiters.
   * [morehetz/gruvbox](https://github.com/morhetz/gruvbox)

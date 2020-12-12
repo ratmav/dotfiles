@@ -233,7 +233,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " display
   Plug 'airblade/vim-gitgutter'
-  Plug 'enricobacis/vim-airline-clock'
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'morhetz/gruvbox'
   Plug 'vim-airline/vim-airline'
@@ -248,10 +247,6 @@ call plug#end()
 " vim-airline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_section_b = "%{fnamemodify(getcwd(), ':t\')} %{airline#extensions#branch#get_head()}"
-" }}}
-
-" vim-airline-clock {{{
-let g:airline#extensions#clock#format = '%a %b %e %l:%M %p'
 " }}}
 
 " vim-ctrlspace {{{
