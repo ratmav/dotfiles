@@ -383,7 +383,7 @@ nnoremap <silent><Leader>h :call Marv(".html")<CR>
 " }}}
 
 " syfe:
-nnoremap <silent><Leader>w :execute 'SyfeWhitespaceToggle'<CR>
+nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
 " }}}
 
