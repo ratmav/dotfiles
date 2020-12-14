@@ -166,50 +166,50 @@ endfunction
 " }}}
 
 " marv {{{
-function! Marv(extension)
-  " is pandoc installed?
-  if executable("pandoc")
-    " is the extension supported?
-    if a:extension == ".pdf" || a:extension == ".html"
-      "is the buffer in markdown?
-      if expand("%:e") != "md"
-        echo "buffer is not a markdown file"
-      else
-        let sourcefile = expand("%:t")
-        let title = fnamemodify(sourcefile, ":r")
-        let targetfile = "/tmp/" . title . a:extension
-
-        " only set the title metadata attribute for html
-        if a:extension == ".pdf"
-          let prefix = ':! pandoc -s -V geometry:margin=1in -o'
-        else
-          let prefix = ':! pandoc --metadata title="' . title . '" -s -V geometry:margin=1in -o'
-        endif
-
-        " clean up old tempfiles, then build new tempfile
-        if s:os ==# "windows"
-          echo "windows support not implemented yet."
-        else
-          execute ":! rm -f " . targetfile
-        endif
-        execute prefix . " " . targetfile . " " . sourcefile
-
-        " open the tempfile
-        if s:os ==# "darwin"
-          execute ":! open " . targetfile
-        elseif s:os ==# "linux"
-          execute ":! xdg-open " . targetfile
-        elseif s:os ==# "windows"
-          echo "windows support not implemented yet."
-        endif
-      endif
-    else
-      echo "only conversion to pdf or html is supported."
-    endif
-  else
-    echo "pandoc is not installed"
-  endif
-endfunction
+"function! Marv(extension)
+"  " is pandoc installed?
+"  if executable("pandoc")
+"    " is the extension supported?
+"    if a:extension == ".pdf" || a:extension == ".html"
+"      "is the buffer in markdown?
+"      if expand("%:e") != "md"
+"        echo "buffer is not a markdown file"
+"      else
+"        let sourcefile = expand("%:t")
+"        let title = fnamemodify(sourcefile, ":r")
+"        let targetfile = "/tmp/" . title . a:extension
+"
+"        " only set the title metadata attribute for html
+"        if a:extension == ".pdf"
+"          let prefix = ':! pandoc -s -V geometry:margin=1in -o'
+"        else
+"          let prefix = ':! pandoc --metadata title="' . title . '" -s -V geometry:margin=1in -o'
+"        endif
+"
+"        " clean up old tempfiles, then build new tempfile
+"        if s:os ==# "windows"
+"          echo "windows support not implemented yet."
+"        else
+"          execute ":! rm -f " . targetfile
+"        endif
+"        execute prefix . " " . targetfile . " " . sourcefile
+"
+"        " open the tempfile
+"        if s:os ==# "darwin"
+"          execute ":! open " . targetfile
+"        elseif s:os ==# "linux"
+"          execute ":! xdg-open " . targetfile
+"        elseif s:os ==# "windows"
+"          echo "windows support not implemented yet."
+"        endif
+"      endif
+"    else
+"      echo "only conversion to pdf or html is supported."
+"    endif
+"  else
+"    echo "pandoc is not installed"
+"  endif
+"endfunction
 " }}}
 
 " plugins {{{
@@ -219,6 +219,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   " workflow
   Plug 'preservim/nerdtree'
   Plug 'qpkorr/vim-bufkill'
+  Plug 'ratmav/marv'
   Plug 'ratmav/syfe'
   Plug 'szw/vim-maximizer'
   Plug 'tpope/vim-fugitive'
@@ -378,8 +379,8 @@ nnoremap <silent><C-d>m :call DeskMove()<CR>
 " }}}
 
 " marv {{{
-nnoremap <silent><Leader>p :call Marv(".pdf")<CR>
-nnoremap <silent><Leader>h :call Marv(".html")<CR>
+nnoremap <silent><Leader>h :execute 'MarvHTML'<CR>
+nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 " }}}
 
 " syfe:

@@ -34,10 +34,11 @@ on the `nvim` command line, run `:PlugInstall`.
 * neovim
     * Space is the neovim leader key
       * Leader-r (r)eloads the nvim config
-      * Leader-w removes (w)hitespace from a buffer
-      * marv
-          * Leader-p converts the current **markdown** buffer to a pdf tempfile, then opens the tempfile with the default pdf application
-          * Leader-h converts the current **markdown** buffer to a html tempfile, then opens the tempfile with the default web browser
+        * syfe
+            * Leader-w removes (w)hitespace from a buffer
+        * marv
+            * Leader-h renders markdown and opens a html preview
+            * Leader-p renders markdown and opens a pdf preview
     * buffer management
         * Ctrl-b-r (r)efreshes the current buffer
         * Ctrl-b-q (q)uits the current buffer
@@ -82,6 +83,8 @@ see `init.vim` for more information.
       * **enables desk**: directory tree view.
   * [qpkorr/vim-bufkill](https://github.com/qpkorr/vim-bufkill)
       * **enables desk**: leave a window or split open even when all buffers are unloaded, deleted, or wiped.
+  * [ratmav/marv](https://github.com/ratmav/marv)
+      * html and pdf markdown previews.
   * [ratmav/syfe](https://github.com/ratmav/syfe)
       * syntax highlighting and folding for various languages; whitespace management.
   * [szw/vim-maximizer](https://github.com/szw/vim-maximizer)
