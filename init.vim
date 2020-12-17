@@ -183,6 +183,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'junegunn/rainbow_parentheses.vim'
   Plug 'morhetz/gruvbox'
   Plug 'vim-airline/vim-airline'
+  Plug 'ratmav/vim-airline-system'
 
   " misc
   Plug 'PProvost/vim-ps1'
