@@ -195,6 +195,8 @@ call plug#end()
 " vim-airline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_section_b = "%{fnamemodify(getcwd(), ':t\')} %{airline#extensions#branch#get_head()}"
+let g:airline_section_x = "l(%{line('.')}/%{line('$')}) c(%{virtcol('.')})"
+let g:airline_section_y = "%{&fileformat}[%{&encoding}]"
 " }}}
 
 " vim-ctrlspace {{{
