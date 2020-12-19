@@ -6,24 +6,6 @@ CHECKSUMS="SHA512SUMS"
 SIGNATURE="SHA512SUMS.sign"
 KEYSERVER="keyring.debian.org"
 
-get_iso() {
-  if [ ! -f $ISO ]; then
-    wget $URL/$ISO
-  fi
-}
-
-get_checksums() {
-  if [ ! -f $CHECKSUMS ]; then
-    wget $URL/$CHECKSUMS
-  fi
-}
-
-get_signature() {
-  if [ ! -f $SIGNATURE ]; then
-    wget $URL/$SIGNATURE
-  fi
-}
-
 get() {
   if [ ! -f "$1" ]; then
     wget "$URL/$1"
