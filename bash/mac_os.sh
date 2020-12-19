@@ -25,7 +25,7 @@ brew_packages() {
   # librsvg python are used with pandoc.
   PACKAGES=("bash-completion" "neovim" "reattach-to-user-namespace"
     "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
-    "yq" "hyper")
+    "yq" "hyper" "gpg")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew list | grep $package > /dev/null 2>&1; then
