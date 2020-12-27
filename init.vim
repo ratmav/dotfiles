@@ -1,4 +1,4 @@
-" os detection {{{
+" os detection for vim-ctrlspace {{{
 if has("win64") || has("win32") || has("win16")
     let s:vimfiles = "~/AppData/Local/nvim"
     let s:os = "windows"
@@ -14,36 +14,36 @@ endif
 
 " desk {{{
 
-" name the first desk on startup {{{
+" name the initial book on startup {{{
 function! DeskInit()
   " TODO: the vim-ctrlspace file search complains about
   " the project root not being set if vim is opened in a directory
   " without a .git, etc. directory, i.e. if ctrlspace#roots#FindProjectRoot()
   " comes back empty. need the just set it to whatever the tcd is.
   " a 'project root not set'   " set the desk name to the last dir on path
-  call DeskName(fnamemodify(getcwd(), ':t\'))
+  call DeskBookName(fnamemodify(getcwd(), ':t\'))
   echo "(•_•) ( •_•)>⌐■-■ (⌐■_■)"
 endfunction
 " }}}
 
 " refresh the tree and file search cache {{{
-function! DeskCache()
+function! DeskRefreshCache()
   call g:NERDTree.ForCurrentTab().getRoot().refresh()
   call ctrlspace#files#RefreshFiles()
 endfunction
 " }}}
 
-" set the desk name {{{
-function! DeskName(name)
+" set the book name {{{
+function! DeskBookName(name)
   call ctrlspace#tabs#SetTabLabel(tabpagenr(), a:name, 0)
   redraw!
 endfunction
 " }}}
 
-" move an existing  desk {{{
-function! DeskMove()
+" (re)bind an open book (re: move to a new working directory) {{{
+function! DeskBookBind()
   call inputsave()
-  let path = input("move desk to: ", "", "file")
+  let path = input("bind book to: ", "", "file")
   call inputrestore()
 
   " check that path exists
@@ -57,19 +57,19 @@ function! DeskMove()
     " set vim-ctrlspace project root
     call ctrlspace#roots#SetCurrentProjectRoot(path)
 
-    " set the desk name to the last dir on path
-    call DeskName(fnamemodify(getcwd(), ':t\'))
+    " set the book name to the last dir on path
+    call DeskBookName(fnamemodify(getcwd(), ':t\'))
   else
     redraw!
-    echo "invalid desk path"
+    echo "invalid book path"
   end
 endfunction
 " }}}
 
-" start a new desk {{{
-function! DeskNew()
+" start a new book {{{
+function! DeskBookNew()
   call inputsave()
-  let path = input("new desk path: ", "", "file")
+  let path = input("new book path: ", "", "file")
   call inputrestore()
 
   " check that path exists
@@ -82,84 +82,65 @@ function! DeskNew()
     call ctrlspace#roots#SetCurrentProjectRoot(path)
 
     " set the desk name to the last dir on path
-    call DeskName(fnamemodify(getcwd(), ':t\'))
+    call DeskBookName(fnamemodify(getcwd(), ':t\'))
   else
     redraw!
-    echo "invalid desk path"
+    echo "invalid book path"
   end
 endfunction
 " }}}
 
-" change focus to next desk on right {{{
-function! DeskNext()
+" change focus to next desk book on right {{{
+function! DeskBookNext()
   tabnext
 endfunction
 " }}}
 
-" change focus to previous desk on left {{{
-function! DeskPrevious()
+" change focus to previous desk book on left {{{
+function! DeskBookPrevious()
   tabprevious
 endfunction
 " }}}
 
-" search desks by name {{{
-function! DeskSearchDeskNames()
+" search desk books by name {{{
+function! DeskSearchBookNames()
   execute 'CtrlSpace L'
 endfunction
 " }}}
 
-" search files in desk path by name {{{
-function! DeskSearchFileNames()
+" search desk book pages by name {{{
+function! DeskSearchBookPageNames()
   "" using pure vimscript (probably glob) for search and ignore logic
   "" like ctrlp would be nice.
   execute 'CtrlSpace O'
 endfunction
 " }}}
 
-" display diretory tree view {{{
+" display desk tree view {{{
 function! DeskTree()
   call g:NERDTreeCreator.ToggleTabTree(".")
 endfunction
 " }}}
 
-" close a desk {{{
-function! DeskQuit()
+" close a desk book {{{
+function! DeskBookClose()
   if tabpagenr("$") == 1
-    echo "move, don't quit, the last desk"
+    echo "rebind the remaining book, or quit"
   else
     call ctrlspace#tabs#CloseTab()
-    echo "closed " . getcwd() . " desk"
+    echo "closed " . getcwd() . " book"
   end
 endfunction
 " }}}
 
-" rename a desk {{{
-function! DeskRename()
+" rename a desk book {{{
+function! DeskBookRename()
   call inputsave()
   let name = input("new desk name: ")
   call inputrestore()
   if name != ""
-    call DeskName(name)
+    call DeskBookName(name)
   end
-endfunction
-" }}}
-
-" run a local  script {{{
-function! DeskProject()
-  " set platform-specific extension
-  if s:os ==# "windows"
-    let extension = "ps1"
-  else
-    let extension = "sh"
-  endif
-  let project_script = "./.desk." . extension
-
-  " run the script if it exists
-  if filereadable(project_script)
-    execute ":! " . project_script
-  else
-    echo "local project script not found"
-  endif
 endfunction
 " }}}
 
@@ -321,17 +302,16 @@ nnoremap <A-l> <C-w>l
 " }}}
 
 " desk {{{
-nnoremap <silent><C-d>n :call DeskNew()<CR>
-nnoremap <silent><C-d>h :call DeskPrevious()<CR>
-nnoremap <silent><C-d>l :call DeskNext()<CR>
-nnoremap <silent><C-d>r :call DeskRename()<CR>
-nnoremap <silent><C-d>q :call DeskQuit()<CR>
-nnoremap <silent><C-d>c :call DeskCache()<CR>
+nnoremap <silent><C-d>n :call DeskBookNew()<CR>
+nnoremap <silent><C-d>h :call DeskBookPrevious()<CR>
+nnoremap <silent><C-d>l :call DeskBookNext()<CR>
+nnoremap <silent><C-d>r :call DeskBookRename()<CR>
+nnoremap <silent><C-d>q :call DeskBookQuit()<CR>
+nnoremap <silent><C-d>c :call DeskRefreshCache()<CR>
 nnoremap <silent><C-d>t :call DeskTree()<CR>
-nnoremap <silent><C-d>f :call DeskSearchFileNames()<CR>
-nnoremap <silent><C-d>d :call DeskSearchDeskNames()<CR>
-nnoremap <silent><C-d>p :call DeskProject()<CR>
-nnoremap <silent><C-d>m :call DeskMove()<CR>
+nnoremap <silent><C-d>s :call DeskSearchBookNames()<CR>
+nnoremap <silent><C-d>p :call DeskSearchBookPageNames()<CR>
+nnoremap <silent><C-d>b :call DeskBookBind()<CR>
 " }}}
 
 " marv {{{
