@@ -28,42 +28,39 @@ on the `nvim` command line, run `:PlugInstall`.
 ### mnemonic keybindings
 
 * hyper
-    * `Ctrl-h` opens a new hyper tab if you need it (remote host?)
+    * `Ctrl-h` opens a new [h]yper tab if you need it (remote host?)
     * run `hypertab-title` to set a tab's name
 
 * neovim
     * Space is the neovim leader key
-      * Leader-r (r)eloads the nvim config
+      * Leader-r [r]eloads the nvim config
         * syfe
-            * Leader-w removes (w)hitespace from a buffer
+            * Leader-w removes [w]hitespace from a buffer
         * marv
-            * Leader-h renders markdown and opens a html preview
-            * Leader-p renders markdown and opens a pdf preview
+            * Leader-h renders markdown and opens a [h]tml preview
+            * Leader-p renders markdown and opens a [p]df preview
     * buffer management
-        * Ctrl-b-r (r)efreshes the current buffer
-        * Ctrl-b-q (q)uits the current buffer
+        * Ctrl-b-r [r]efreshes the current buffer
+        * Ctrl-b-q [q]uits the current buffer
         * use standard vi buffer motions
     * window management
-        * Ctrl-w-z to (z)oom in and out of windows
+        * Ctrl-w-z to [z]oom in and out of windows
         * use standard vi window motions
     * terminal management
-        * Ctrl-t open a (t)erminal in the current window as a buffer
+        * Ctrl-t open a [t]erminal in the current window as a buffer
         * use `exit`, etc. to stop shell processes (pressing any key afterwards will delete the buffer)
         * terminals are also scroped to tabs via vim-ctrlspace
-    * desk
-        * Ctrl-d-n creates a (n)ew desk
-        * Ctrl-d-l moves right to the next desk, hjk(l)-style
-        * Ctrl-d-h moves left to the previous desk, (h)jkl-style
-        * Ctrl-d-c refreshes the (c)ache of file names in the current desk.
-        * Ctrl-d-f (f)ile name search scoped by desk working directory
-        * Ctrl-d-d (d)esk name search
-        * Ctrl-d-t opens a (t)ree view of the desk working directory
-        * Ctrl-d-r (r)enames the current desk
-        * Ctrl-d-m (m)oves an existing desk
-        * Ctrl-d-p runs a (p)roject shell script, if present in the current working directory
-            * `.desk.sh` on *nix
-            * `.desk.ps1` on windows
-        * Ctrl-d-q (q)uits the current desk
+    * desk (desk: single nvim instance, book: tab, page: buffer)
+        * Ctrl-d-n creates a [n]ew desk book.
+        * Ctrl-d-h moves left to the previous desk book, (h)jkl-style
+        * Ctrl-d-l moves right to the next desk book, hjk(l)-style
+        * Ctrl-d-r [r]enames the current desk book
+        * Ctrl-d-q [q]uits the current desk book
+        * Ctrl-d-c refreshes the [c]ache of file names in the current desk book
+        * Ctrl-d-t opens a [t]ree view of the desk working directory
+        * Ctrl-d-s desk book name [s]earch
+        * Ctrl-d-p desk book [p]age name search scoped by desk working directory
+        * Ctrl-d-b [b]inds an existing desk book to a working directory
 
 see `init.vim` for more information.
 
