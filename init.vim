@@ -306,7 +306,7 @@ nnoremap <silent><C-d>n :call DeskBookNew()<CR>
 nnoremap <silent><C-d>h :call DeskBookPrevious()<CR>
 nnoremap <silent><C-d>l :call DeskBookNext()<CR>
 nnoremap <silent><C-d>r :call DeskBookRename()<CR>
-nnoremap <silent><C-d>q :call DeskBookQuit()<CR>
+nnoremap <silent><C-d>q :call DeskBookClose()<CR>
 nnoremap <silent><C-d>c :call DeskRefreshCache()<CR>
 nnoremap <silent><C-d>t :call DeskTree()<CR>
 nnoremap <silent><C-d>s :call DeskSearchBookNames()<CR>
