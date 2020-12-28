@@ -155,6 +155,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'qpkorr/vim-bufkill'
   Plug 'ratmav/marv'
   Plug 'ratmav/syfe'
+  Plug 'ratmav/vim-task'
   Plug 'szw/vim-maximizer'
   Plug 'tpope/vim-fugitive'
   Plug 'vim-ctrlspace/vim-ctrlspace'
@@ -322,7 +323,8 @@ nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 " syfe:
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
-" }}}
+"" vim-task:
+nnoremap <silent><Leader>t :execute 'TaskDefault'<CR>
 
 " initialize desk on startup:
 call DeskInit()
