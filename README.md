@@ -52,7 +52,7 @@ on the `nvim` command line, run `:PlugInstall`.
         * Ctrl-t open a [t]erminal in the current window as a buffer
         * use `exit`, etc. to stop shell processes (pressing any key afterwards will delete the buffer)
         * terminals are also scroped to tabs via vim-ctrlspace
-    * desk (desk: single nvim instance. books ~= tabs; page ~= files, buffers. pages are scoped to books.)
+    * desk (desk: single nvim instance. books ~= tabs; pages ~= files, buffers. pages are scoped to books.)
         * Ctrl-d-n creates a [n]ew desk book.
         * Ctrl-d-h moves left to the previous desk book, (h)jkl-style
         * Ctrl-d-l moves right to the next desk book, hjk(l)-style
