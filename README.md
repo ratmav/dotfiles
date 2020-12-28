@@ -39,6 +39,8 @@ on the `nvim` command line, run `:PlugInstall`.
         * marv
             * Leader-h renders markdown and opens a [h]tml preview
             * Leader-p renders markdown and opens a [p]df preview
+        * vim-task
+            * Leader-t runs the default [go-task](https://taskfile.dev/#/) defined in `Taskfile.yml`
     * buffer management
         * Ctrl-b-r [r]efreshes the current buffer
         * Ctrl-b-q [q]uits the current buffer
@@ -84,6 +86,8 @@ see `init.vim` for more information.
       * html and pdf markdown previews.
   * [ratmav/syfe](https://github.com/ratmav/syfe)
       * syntax highlighting and folding for various languages; whitespace management.
+  * [ratmav/vim-task](https://github.com/ratmav/vim-task)
+      * thin wrapper around [go-task](https://taskfile.dev/#/) that can run the default task or ask for a task to run.
   * [szw/vim-maximizer](https://github.com/szw/vim-maximizer)
       * window zoom toggle.
   * [vim-fugitive](https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt)
