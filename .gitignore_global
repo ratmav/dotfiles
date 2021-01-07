@@ -7,3 +7,6 @@
 
 # asdf version file.
 .tool-versions
+
+# go-task
+Taskfile
