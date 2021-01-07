@@ -10,3 +10,4 @@
 
 # go-task
 Taskfile.yml
+.task
