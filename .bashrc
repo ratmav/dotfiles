@@ -5,6 +5,10 @@ export PS1="[\u@\h \W]\\$ "
 # force dircolors.
 export CLICOLOR=1
 
+# asdf
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+
 # macos.
 if [[ $(uname) == "Darwin" ]]; then
   # disable homebrew analytics.

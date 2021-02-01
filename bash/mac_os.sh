@@ -23,7 +23,7 @@ unshallow_clones() {
 
 brew_packages() {
   # librsvg python are used with pandoc.
-  PACKAGES=("bash-completion" "neovim" "reattach-to-user-namespace"
+  PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
     "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
     "yq" "hyper" "gpg" "go-task/tap/go-task")
   for package in "${PACKAGES[@]}"; do
