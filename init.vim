@@ -171,6 +171,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'PProvost/vim-ps1'
   Plug 'jvirtanen/vim-hcl'
   Plug 'sebdah/vim-delve'
+  Plug 'hashivim/vim-hashicorp-tools'
 call plug#end()
 " }}}
 
