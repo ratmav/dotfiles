@@ -49,7 +49,7 @@ function! DeskBookBind()
   " check that path exists
   if !empty(glob(path))
     " close all buffers
-    silent tabdo %bd
+    silent tabdo %bd!
 
     " create tab and set tab current directory
     execute ":tcd " . path
