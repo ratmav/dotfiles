@@ -3,14 +3,15 @@
 source ./bash/mac_os.sh
 source ./bash/linux.sh
 
-configure_gitignore() {
+configure_git() {
   echo "...(re)configuring global gitignore"
   git config --global core.excludesfile "$HOME/.gitignore_global"
-}
 
-configure_git_editor() {
   echo "...(re)configuring git editor"
   git config --global core.editor "$(which nvim)"
+
+  echo "...(re)configuring git to connect to gitlab over ssh"
+  git config --global url."git@gitlab.com:".insteadOf "https://gitlab.com/"
 }
 
 home_symlinks() {
@@ -23,14 +24,12 @@ home_symlinks() {
   done
 }
 
-nvim_init() {
-  echo "...configuring nvim"
+configure_nvim() {
+  echo "...(re)building nvim symlinks"
   rm -rf $HOME/.config/nvim
   mkdir -p $HOME/.config/nvim
   ln -s $PWD/init.vim $HOME/.config/nvim/init.vim
-}
 
-vim_plug() {
   echo "...installing vim-plug"
   rm -rf $HOME/.local/share/nvim
   URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -64,10 +63,9 @@ asdf() {
 main() {
   operating_system
   home_symlinks
-  nvim_init
+  configure_git
+  configure_nvim
   vim_plug
-  configure_gitignore
-  configure_git_editor
   powerline_fonts
   asdf
 }
