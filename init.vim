@@ -4,7 +4,6 @@
 call plug#begin('~/.local/share/nvim/plugged')
   " workflow
   Plug 'qpkorr/vim-bufkill'
-  " TODO: can i bolt marv into goneovim to create pdf's?
   Plug 'ratmav/marv'
   Plug 'ratmav/syfe'
   Plug 'ratmav/vim-task'
@@ -12,7 +11,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
-  Plug 'akiyosi/gonvim-fuzzy'
+  Plug 'ctrlpvim/ctrlp.vim'
 
   " display
   Plug 'airblade/vim-gitgutter'
@@ -20,15 +19,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'morhetz/gruvbox'
   Plug 'vim-airline/vim-airline'
   Plug 'ratmav/vim-airline-system'
-  " TODO: get the syntax highlighting into syfe.
   Plug 'PProvost/vim-ps1'
-  " TODO: WHY DOESN'T THIS WORK? get the syntax highlighting into syfe.
   Plug 'cespare/vim-toml'
-
-  " misc
-  " TODO: get the syntax highlighting into syfe.
   Plug 'jvirtanen/vim-hcl'
-  " TODO: get the syntax highlighting into syfe.
   Plug 'hashivim/vim-hashicorp-tools'
 call plug#end()
 " }}}
@@ -46,6 +39,19 @@ augroup rainbow_parentheses
 
   autocmd BufEnter * RainbowParentheses
 augroup END
+" }}}
+
+" nerdtree:
+let g:NERDTreeShowHidden=1
+
+" ctrlp {{{
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_max_files = 0
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git)|(vendor|node_modules)$',
+  \ }
 " }}}
 
 " }}}
@@ -172,6 +178,12 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+" }}}
+
+" ctrlp {{{
+nnoremap <silent><Leader>f :CtrlP .<CR>
+nnoremap <silent><Leader>b :CtrlPBuffer<CR>
+nnoremap <silent><Leader>c :CtrlPClearCache<CR>
 " }}}
 
 " nerdtree:
