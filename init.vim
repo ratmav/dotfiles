@@ -11,6 +11,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'szw/vim-maximizer'
   Plug 'tpope/vim-fugitive'
   Plug 'sebdah/vim-delve'
+  Plug 'preservim/nerdtree'
 
   " display
   Plug 'airblade/vim-gitgutter'
@@ -153,9 +154,10 @@ nnoremap <A-l> <C-w>l
 nnoremap <silent><C-g>n :execute 'GonvimWorkspaceNew'<CR>
 nnoremap <silent><C-g>h :execute 'GonvimWorkspacePrevious'<CR>
 nnoremap <silent><C-g>l :execute 'GonvimWorkspaceNext'<CR>
-" TODO: GonvimWorkspaceRename
-" TODO: GonvimToggleFiler
-nnoremap <silent><C-g>f :execute 'GonvimFilerOpen'<CR>
+" }}}
+
+" nerdtree {{{
+nnoremap <silent><Leader>n :execute 'NERDTreeToggle'<CR>
 " }}}
 
 " marv {{{
