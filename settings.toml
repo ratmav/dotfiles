@@ -4,6 +4,22 @@ BorderlessWindow = false
 FontFamily = "Source Code Pro for Powerline"
 FontSize = 14
 
+GinitVim = '''
+  set guifont=Source\ Code\ Pro\ for\ Powerline:h14
+
+  " goneovim {{{
+  nnoremap <silent><C-g>n :execute 'GonvimWorkspaceNew'<CR>
+  nnoremap <silent><C-g>h :execute 'GonvimWorkspacePrevious'<CR>
+  nnoremap <silent><C-g>l :execute 'GonvimWorkspaceNext'<CR>
+  nnoremap <silent><C-g>b :call GonvimWorkspaceBind()<CR>
+  " }}}
+
+  " marv {{{
+  nnoremap <silent><Leader>h :execute 'MarvHTML'<CR>
+  nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
+  " }}}
+'''
+
 [MiniMap]
 Disable = false
 

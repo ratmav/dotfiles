@@ -12,6 +12,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'sebdah/vim-delve'
   Plug 'preservim/nerdtree'
+  Plug 'akiyosi/gonvim-fuzzy'
 
   " display
   Plug 'airblade/vim-gitgutter'
@@ -20,11 +21,11 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline'
   Plug 'ratmav/vim-airline-system'
   " TODO: get the syntax highlighting into syfe.
+  Plug 'PProvost/vim-ps1'
+  " TODO: WHY DOESN'T THIS WORK? get the syntax highlighting into syfe.
   Plug 'cespare/vim-toml'
 
   " misc
-  " TODO: get the syntax highlighting into syfe.
-  Plug 'PProvost/vim-ps1'
   " TODO: get the syntax highlighting into syfe.
   Plug 'jvirtanen/vim-hcl'
   " TODO: get the syntax highlighting into syfe.
@@ -46,6 +47,31 @@ augroup rainbow_parentheses
   autocmd BufEnter * RainbowParentheses
 augroup END
 " }}}
+
+" }}}
+
+" functions {{{
+
+function! GonvimWorkspaceBind()
+  call inputsave()
+  let path = input("bind workspace to: ", "", "file")
+  call inputrestore()
+
+  " check that path exists
+  if !empty(glob(path))
+    " close all buffers
+    silent %bd!
+
+    " create tab and set tab current directory
+    execute ":cd " . path
+
+    " set the book name to the last dir on path
+    execute 'NERDTreeCWD'
+  else
+    redraw!
+    echo "invalid path"
+  end
+endfunction
 
 " }}}
 
@@ -83,8 +109,6 @@ let g:omni_sql_no_default_maps = 1
 " }}}
 
 " display {{{
-
-set guifont=Source\ Code\ Pro\ for\ Powerline:h14
 
 set termguicolors
 colorscheme gruvbox
@@ -150,23 +174,13 @@ nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 " }}}
 
-" goneovim {{{
-nnoremap <silent><C-g>n :execute 'GonvimWorkspaceNew'<CR>
-nnoremap <silent><C-g>h :execute 'GonvimWorkspacePrevious'<CR>
-nnoremap <silent><C-g>l :execute 'GonvimWorkspaceNext'<CR>
-" }}}
-
-" nerdtree {{{
+" nerdtree:
 nnoremap <silent><Leader>n :execute 'NERDTreeToggle'<CR>
-" }}}
-
-" marv {{{
-nnoremap <silent><Leader>h :execute 'MarvHTML'<CR>
-nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
-" }}}
 
 " syfe:
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
 "" vim-task:
 nnoremap <silent><Leader>t :execute 'TaskDefault'<CR>
+
+" }}}
