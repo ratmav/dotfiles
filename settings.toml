@@ -12,6 +12,8 @@ GinitVim = '''
   nnoremap <silent><C-g>h :execute 'GonvimWorkspacePrevious'<CR>
   nnoremap <silent><C-g>l :execute 'GonvimWorkspaceNext'<CR>
   nnoremap <silent><C-g>b :call GonvimWorkspaceBind()<CR>
+  nnoremap <silent><C-g>f :execute 'GonvimFuzzyFiles'<CR>
+  nnoremap <silent><Leader>q :execute 'GonvimFuzzyAg'<CR>
   " }}}
 
   " marv {{{
