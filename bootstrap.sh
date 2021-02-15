@@ -39,6 +39,13 @@ configure_nvim() {
   nvim +PlugInstall +qall
 }
 
+configure_goneovim() {
+  echo "...(re)building goneovim symlinks"
+  rm -rf $HOME/.config/goneovim
+  mkdir -p $HOME/.config/goneovim
+  ln -s $PWD/settings.toml $HOME/.config/goneovim/settings.toml
+}
+
 operating_system() {
   if [[ $(uname) == "Darwin" ]]; then
     bootstrap_mac_os
@@ -65,6 +72,7 @@ main() {
   home_symlinks
   configure_git
   configure_nvim
+  configure_goneovim
   vim_plug
   powerline_fonts
   asdf
