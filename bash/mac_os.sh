@@ -58,7 +58,7 @@ brew_bash() {
   chsh -s /usr/local/bin/bash
 }
 
-bootstrap_mac_os() {
+initialize_mac_os() {
   homebrew
   unshallow_clones
   brew_packages

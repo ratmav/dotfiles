@@ -48,9 +48,9 @@ configure_goneovim() {
 
 operating_system() {
   if [[ $(uname) == "Darwin" ]]; then
-    bootstrap_mac_os
+    initialize_mac_os
   elif [[ $(uname) == "Linux" ]]; then
-    bootstrap_linux
+    initialize_linux
   fi
 }
 

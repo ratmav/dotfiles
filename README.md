@@ -8,7 +8,7 @@ leverage [neovim](https://github.com/neovim/neovim) and [hyper](https://github.c
 ### *nix
 
 ```bash
-$ chmod +x bootstrap.sh && ./bootstrap.sh && source ~/.bash_profile
+$ chmod +x initialize.sh && ./initialize.sh && source ~/.bash_profile
 ```
 
 ## update
@@ -16,7 +16,7 @@ $ chmod +x bootstrap.sh && ./bootstrap.sh && source ~/.bash_profile
 ### *nix
 
 ```bash
-$ ./bootstrap.sh && source ~/.bash_profile
+$ ./initialize.sh && source ~/.bash_profile
 ```
 
 ## initialization
