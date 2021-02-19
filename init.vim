@@ -159,8 +159,8 @@ nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded confi
 nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
 " buffer management {{{
-nnoremap <silent><C-b>h :bn<CR>
-nnoremap <silent><C-b>l :bp<CR>
+nnoremap <silent><C-b>h :bp<CR>
+nnoremap <silent><C-b>l :bn<CR>
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 " }}}
