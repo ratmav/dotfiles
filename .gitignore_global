@@ -6,5 +6,4 @@
 *.swo
 
 # go-task
-Taskfile.yml
 .task
