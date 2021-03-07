@@ -9,5 +9,4 @@
 .tool-versions
 
 # go-task
-Taskfile.yml
 .task
