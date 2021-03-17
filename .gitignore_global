@@ -10,3 +10,6 @@
 
 # go-task
 .task
+
+# terraform
+.terraform
