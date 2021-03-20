@@ -39,7 +39,7 @@ brew_packages() {
 
 cask_packages() {
   # basictex is used with pandoc.
-  PACKAGES=("brave-browser" "basictex" "virtualbox" "vagrant" "docker")
+  PACKAGES=("brave-browser" "basictex" "virtualbox" "vagrant" "docker" "signal")
   for package in "${PACKAGES[@]}"; do
     echo "...checking $package install"
     if brew cask list | grep $package > /dev/null 2>&1; then
