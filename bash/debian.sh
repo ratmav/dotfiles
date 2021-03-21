@@ -19,6 +19,6 @@
 #   * uhk agent
 #   * oni (after getting the rest; markdown preview? probably a vscode extension)
 
-main_manjaro() {
-  msg "${WARN}manjaro: see comments in manjaro.sh."
+main_debian() {
+  msg "${WARN}debian: see comments in debian.sh."
 }

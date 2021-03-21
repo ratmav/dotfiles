@@ -1,6 +1,18 @@
 OS := $(shell uname)
 CWD := $(shell pwd)
 
+.PHONY: debian_pull
+debian_pull:
+	docker pull debian:buster
+
+
+.PHONY: debian_shell
+debian_shell:
+	@docker run -it --rm \
+		--name debian_oni_build \
+		-v "$(CWD)"/build:/build \
+		debianlinux
+
 .PHONY: macos_pull
 macos_pull:
 	docker pull sickcodes/docker-osx:auto
@@ -17,15 +29,3 @@ shell_macos:
 			-v "$(CWD)"/build:/build \
 			sickcodes/docker-osx:auto; \
 	fi
-
-.PHONY: manjaro_pull
-manjaro_pull:
-	docker pull manjarolinux/base
-
-
-.PHONY: manjaro_shell
-manjaro_shell:
-	@docker run -it --rm \
-		--name manjaro_oni_build \
-		-v "$(CWD)"/build:/build \
-		manjarolinux/base

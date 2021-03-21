@@ -20,7 +20,7 @@ $ git clone ssh://git@github.com/ratmav/dotfiles.git
 
 ```shell
 $ cd ~/Source/dotfiles && chmod +x main.sh && ./main.sh
-Usage: main.sh [--help] [--bootstrap] [--macos] [--manjaro] [--posix]
+Usage: main.sh [--help] [--bootstrap] [--debian] [--macos] [--posix]
 
 personal development environment on posix-compliant systems.
 
@@ -28,9 +28,9 @@ Available flags (choose one):
 
 --help      Print this help and exit
 --bootstrap run posix setup then os setup
+--debian    run debian setup only
 --macos     run macos setup only
---manjaro   run manjaro setup only
 --posix     run posix setup only
 
-note that the --macos and --manjaro setups are dependent on the posix steps being run at least once.
+note that the --debian and --macos setups are dependent on the posix steps being run at least once.
 ```

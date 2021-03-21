@@ -29,10 +29,21 @@ setup_colors() {
   fi
 }
 
+system_packages() {
+  PACKAGES=("coreutils")
+  for package in "${PACKAGES[@]}"; do
+    if brew list | grep $package > /dev/null 2>&1; then
+      msg "${WARN}system packages: $package already installed."
+    else
+      brew install $package
+      msg "${OK}system packages: installed $package."
+    fi
+  done
+}
+
 main() {
   setup_colors
-
-  echo "hello, manjaro."
+  system_packages
 }
 
 main "$@"
