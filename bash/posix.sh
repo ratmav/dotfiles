@@ -53,18 +53,10 @@ posix_fonts() {
 }
 
 main_posix() {
-  msg "${WARN}posix: RUN THIS IN A VIRTUAL MACHINE"
   msg "${WARN}posix: uncomment functions in main_posix"
   #posix_symlinks
   #posix_git
   #posix_nvim
   #posix_fonts
   #posix_asdf
-
-  msg "${WARN}posix: detect manjaro"
-  if [[ $(uname) == "Darwin" ]]; then
-    main_macos
-  elif [[ $(uname) == "Linux" ]]; then
-    main_manjaro
-  fi
 }
