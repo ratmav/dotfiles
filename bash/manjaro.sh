@@ -19,14 +19,6 @@
 #   * uhk agent
 #   * oni (after getting the rest; markdown preview? probably a vscode extension)
 
-detect_distro() {
-  if cat /etc/issue | grep Manjaro > /dev/2>&1; then
-      echo "......TODO: SEE COMMENTS IN manjaro.sh."
-  else
-      echo "......non-supported linux distribution."
-  fi
-}
-
-bootstrap_linux() {
-  detect_distro
+main_manjaro() {
+  msg "${WARN}manjaro: see comments in manjaro.sh."
 }
