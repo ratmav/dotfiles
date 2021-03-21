@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source ./bash/macos.sh
-source ./bash/manjaro.sh
+source ./bash/debian.sh
 
 # TODO: ignore stdout.
 posix_asdf() {

@@ -7,14 +7,15 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source ./bash/posix.sh
 source ./bash/macos.sh
-source ./bash/manjaro.sh
+source ./bash/debian.sh
 
 bootstrap() {
   main_posix
   if [[ $(uname) == "Darwin" ]]; then
     main_macos
   elif [[ $(uname) == "Linux" ]]; then
-    main_manjaro
+    msg "${WARN}main: detect debian, not just linux."
+    #main_debian
   fi
 }
 
@@ -42,8 +43,8 @@ parse_params() {
     case "${1-}" in
     --help) usage ;;
     --bootstrap) bootstrap ;;
+    --debian) main_debian ;;
     --macos) main_macos ;;
-    --manjaro) main_manjaro ;;
     --posix) main_posix;;
     -?*) die "unknown option: $1" ;;
     *)
@@ -66,7 +67,7 @@ setup_colors() {
 
 usage() {
   cat <<EOF
-Usage: $(basename "${BASH_SOURCE[0]}") [--help] [--bootstrap] [--macos] [--manjaro] [--posix]
+Usage: $(basename "${BASH_SOURCE[0]}") [--help] [--bootstrap] [--debian] [--macos] [--posix]
 
 personal development environment on posix-compliant systems.
 
@@ -74,11 +75,11 @@ Available flags (choose one):
 
 --help      Print this help and exit
 --bootstrap run posix setup then os setup
+--debian    run debian setup only
 --macos     run macos setup only
---manjaro   run manjaro setup only
 --posix     run posix setup only
 
-note that the --macos and --manjaro setups are dependent on the posix steps being run at least once.
+note that the --debian and --macos setups are dependent on the posix steps being run at least once.
 EOF
   exit
 }
