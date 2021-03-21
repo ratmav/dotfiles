@@ -10,7 +10,6 @@ source ./bash/macos.sh
 source ./bash/manjaro.sh
 
 bootstrap() {
-  msg "${WARN}bootstrap: detect manjaro"
   main_posix
   if [[ $(uname) == "Darwin" ]]; then
     main_macos
@@ -48,7 +47,7 @@ parse_params() {
     --posix) main_posix;;
     -?*) die "unknown option: $1" ;;
     *)
-      [[ ${#args[@]} -eq 0 ]] && die "use --help for available flags."
+      [[ ${#args[@]} -eq 0 ]] && usage
       ;;
     esac
     shift
@@ -69,7 +68,7 @@ usage() {
   cat <<EOF
 Usage: $(basename "${BASH_SOURCE[0]}") [--help] [--bootstrap] [--macos] [--manjaro] [--posix]
 
-bootstrap posix-compliant systems for personal development environment
+personal development environment on posix-compliant systems.
 
 Available flags (choose one):
 
@@ -86,10 +85,7 @@ EOF
 
 main() {
   setup_colors
-  msg "${OK}main: start"
-  msg "${WARN}main: RUN THIS IN A CONTAINER FOR DEV"
   parse_params "$@"
-  msg "${OK}main: done"
 }
 
 main "$@"
