@@ -3,60 +3,62 @@
 source ./bash/macos.sh
 source ./bash/manjaro.sh
 
+# TODO: ignore stdout.
 posix_asdf() {
   rm -rf $HOME/.asdf
   git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
 }
 
 posix_git() {
-  echo "...(re)configuring global gitignore"
   git config --global core.excludesfile "$HOME/.gitignore_global"
+  msg "${OK}posix: configured global gitignore."
 
-  echo "...(re)configuring git editor"
+  # TODO: maaaybe should be in a git config you can symlink to (also gpg config).
   git config --global core.editor "$(which nvim)"
+  msg "${OK}posix: configured git editor."
 
-  echo "...(re)configuring git to connect to gitlab over ssh"
   git config --global url."git@gitlab.com:".insteadOf "https://gitlab.com/"
+  msg "${OK}posix: configured git to connect to gitlab over ssh."
 }
 
 posix_nvim() {
-  echo "...(re)building nvim symlinks"
   rm -rf $HOME/.config/nvim
   mkdir -p $HOME/.config/nvim
   ln -s $PWD/init.vim $HOME/.config/nvim/init.vim
+  msg "${OK}posix: symlinked nvim config."
 
-  echo "...installing vim-plug"
   rm -rf $HOME/.local/share/nvim
   URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
+  msg "${OK}posix: installed vim-plug."
 
-  echo "...installing plugins"
   nvim +PlugInstall +qall
+  msg "${OK}posix: installed neovim plugins."
 }
 
 posix_symlinks() {
   LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".hyper.js")
-  echo "...(re)building symlinks"
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
     ln -s $PWD/$link $HOME/$link
-    echo "......(re)built $link"
+    msg "${OK}posix: symlinked $link"
   done
 }
 
+# TODO: ignore stdout.
 posix_fonts() {
   git clone https://github.com/powerline/fonts.git --depth=1
   cd fonts
   ./install.sh
   cd ..
   rm -rf fonts
+  msg "${OK}posix: installed powerline fonts."
 }
 
 main_posix() {
-  msg "${WARN}posix: uncomment functions in main_posix"
-  #posix_symlinks
-  #posix_git
-  #posix_nvim
-  #posix_fonts
-  #posix_asdf
+  posix_symlinks
+  posix_git
+  posix_nvim
+  posix_fonts
+  posix_asdf
 }
