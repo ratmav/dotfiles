@@ -11,7 +11,7 @@ debian_shell:
 	@docker run -it --rm \
 		--name debian_oni_build \
 		-v "$(CWD)"/build:/build \
-		debianlinux
+		debian:buster
 
 .PHONY: macos_pull
 macos_pull:
