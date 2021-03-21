@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-source ./bash/mac_os.sh
-source ./bash/linux.sh
+source ./bash/macos.sh
+source ./bash/manjaro.sh
 
-asdf() {
+posix_asdf() {
   rm -rf $HOME/.asdf
   git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
 }
 
-configure_git() {
+posix_git() {
   echo "...(re)configuring global gitignore"
   git config --global core.excludesfile "$HOME/.gitignore_global"
 
@@ -19,7 +19,7 @@ configure_git() {
   git config --global url."git@gitlab.com:".insteadOf "https://gitlab.com/"
 }
 
-configure_nvim() {
+posix_nvim() {
   echo "...(re)building nvim symlinks"
   rm -rf $HOME/.config/nvim
   mkdir -p $HOME/.config/nvim
@@ -34,7 +34,7 @@ configure_nvim() {
   nvim +PlugInstall +qall
 }
 
-home_symlinks() {
+posix_symlinks() {
   LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".hyper.js")
   echo "...(re)building symlinks"
   for link in "${LINKS[@]}"; do
@@ -44,18 +44,27 @@ home_symlinks() {
   done
 }
 
-kernel() {
-  if [[ $(uname) == "Darwin" ]]; then
-    bootstrap_mac_os
-  elif [[ $(uname) == "Linux" ]]; then
-    bootstrap_linux
-  fi
-}
-
-powerline_fonts() {
+posix_fonts() {
   git clone https://github.com/powerline/fonts.git --depth=1
   cd fonts
   ./install.sh
   cd ..
   rm -rf fonts
+}
+
+main_posix() {
+  msg "${WARN}posix: RUN THIS IN A VIRTUAL MACHINE"
+  msg "${WARN}posix: uncomment functions in main_posix"
+  #posix_symlinks
+  #posix_git
+  #posix_nvim
+  #posix_fonts
+  #posix_asdf
+
+  msg "${WARN}posix: detect manjaro"
+  if [[ $(uname) == "Darwin" ]]; then
+    main_macos
+  elif [[ $(uname) == "Linux" ]]; then
+    main_manjaro
+  fi
 }
