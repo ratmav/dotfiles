@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-source ./bash/macos.sh
-source ./bash/debian.sh
-
 # TODO: ignore stdout.
 posix_asdf() {
   rm -rf $HOME/.asdf
