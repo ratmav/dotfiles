@@ -34,7 +34,7 @@ debian_apt_packages() {
   done
 }
 
-# TODO: make this idempotent.
+# TODO: make this idempotent. stuff you could try - maybe a subshell? su to root?
 debian_fuse() {
   sudo apt-get install -y fuse > /dev/null 2>&1
   sudo modprobe fuse
