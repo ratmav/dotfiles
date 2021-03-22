@@ -19,18 +19,28 @@ $ git clone ssh://git@github.com/ratmav/dotfiles.git
 ## use
 
 ```shell
-$ cd ~/Source/dotfiles && chmod +x main.sh && ./main.sh
-Usage: main.sh [--help] [--bootstrap] [--debian] [--macos] [--posix]
+$ cd ~/Source/dotfiles && ./main.sh
+Usage: main.sh [--help] [--bootstrap] [--oni]
 
 personal development environment on posix-compliant systems.
 
 Available flags (choose one):
 
 --help      Print this help and exit
---bootstrap run posix setup then os setup
---debian    run debian setup only
---macos     run macos setup only
---posix     run posix setup only
+--bootstrap run os setup then generic posix setup
+--oni       builds the oni editor from source
 
-note that the --debian and --macos setups are dependent on the posix steps being run at least once.
+note that --oni requires a full bootstrapping process.
 ```
+
+## vagrant
+
+vagrant is used as convenience to develop in clean environments, with a makefile provided as a command wrapper. to use:
+
+```shell
+$ make debian_up # stands up a bare debian guest.
+$ make debian_ssh # ssh's to the debian guest for interactive use.
+$ make debian_destroy # tears down a bare debian guest.
+```
+
+**note**: vagrant _does not_ provision guests; ssh into the guest and run `cd dotfiles && ./main.sh --bootstrap`, etc. to run various tasks.

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# TODO: ignore stdout.
 posix_asdf() {
   rm -rf $HOME/.asdf
-  git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
+  git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf > /dev/null 2>&1
+  msg "${WARN}posix: asdf requires sourcing ~/.bashrc."
 }
 
 posix_git() {
@@ -42,11 +42,10 @@ posix_symlinks() {
   done
 }
 
-# TODO: ignore stdout.
 posix_fonts() {
-  git clone https://github.com/powerline/fonts.git --depth=1
+  git clone https://github.com/powerline/fonts.git --depth=1 > /dev/null 2>&1
   cd fonts
-  ./install.sh
+  ./install.sh > /dev/null 2>&1
   cd ..
   rm -rf fonts
   msg "${OK}posix: installed powerline fonts."
@@ -55,7 +54,7 @@ posix_fonts() {
 main_posix() {
   posix_symlinks
   posix_git
-  posix_nvim
+  # posix_nvim
   posix_fonts
   posix_asdf
 }
