@@ -10,12 +10,14 @@ source ./bash/macos.sh
 source ./bash/debian.sh
 
 bootstrap() {
-  main_posix
   if [[ $(uname) == "Darwin" ]]; then
     main_macos
-  elif [[ $(uname) == "Linux" ]]; then
-    msg "${WARN}main: detect debian, not just linux."
-    #main_debian
+    main_posix
+  elif cat /etc/issue | grep "Debian" > /dev/null 2>&1; then
+    main_debian
+    main_posix
+  else
+    die "unsupported operating system."
   fi
 }
 
@@ -43,9 +45,7 @@ parse_params() {
     case "${1-}" in
     --help) usage ;;
     --bootstrap) bootstrap ;;
-    --debian) main_debian ;;
-    --macos) main_macos ;;
-    --posix) main_posix;;
+    --oni) main_oni ;;
     -?*) die "unknown option: $1" ;;
     *)
       [[ ${#args[@]} -eq 0 ]] && usage
@@ -67,19 +67,17 @@ setup_colors() {
 
 usage() {
   cat <<EOF
-Usage: $(basename "${BASH_SOURCE[0]}") [--help] [--bootstrap] [--debian] [--macos] [--posix]
+Usage: $(basename "${BASH_SOURCE[0]}") [--help] [--bootstrap] [--oni]
 
 personal development environment on posix-compliant systems.
 
 Available flags (choose one):
 
 --help      Print this help and exit
---bootstrap run posix setup then os setup
---debian    run debian setup only
---macos     run macos setup only
---posix     run posix setup only
+--bootstrap run os setup then generic posix setup
+--oni       builds the oni editor from source
 
-note that the --debian and --macos setups are dependent on the posix steps being run at least once.
+note that --oni requires a full bootstrapping process.
 EOF
   exit
 }
