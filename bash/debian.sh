@@ -15,10 +15,6 @@
 #   * oni (after getting the rest; markdown preview? probably a vscode extension)
 
 debian_apt_packages() {
-  sudo apt-get update > /dev/null 2>&1
-  sudo apt-get upgrade -y > /dev/null 2>&1
-  msg "${OK}debian: system updated."
-
   PACKAGES=("apt-utils" "build-essential" "libtool" "gettext" "nasm" "libacl1-dev"
     "libncurses-dev" "libglu1-mesa-dev" "libxxf86vm-dev" "libxkbfile-dev"
     "git-core" "curl" "libpng-dev" "libbz2-dev" "m4" "xorg-dev"
@@ -34,7 +30,6 @@ debian_apt_packages() {
   done
 }
 
-# TODO: make this idempotent. stuff you could try - maybe a subshell? su to root?
 debian_fuse() {
   sudo apt-get install -y fuse > /dev/null 2>&1
   sudo modprobe fuse
@@ -45,12 +40,20 @@ debian_fuse() {
     sudo groupadd fuse > /dev/null
     user="$(whoami)"
     sudo usermod -a -G fuse $user
-    newgrp fuse
-    msg "${WARN}debian: configured fuse. relogin to see effects"
+    msg "${WARN}debian: configured fuse. shell reload may be required."
   fi
+
+  msg "${OK}debian: configured fuse."
+}
+
+debian_update() {
+  sudo apt-get update > /dev/null 2>&1
+  sudo apt-get upgrade -y > /dev/null 2>&1
+  msg "${OK}debian: system updated."
 }
 
 main_debian() {
-  debian_apt_packages
+  debian_update
+  #debian_apt_packages
   debian_fuse
 }
