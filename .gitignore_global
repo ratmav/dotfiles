@@ -5,11 +5,11 @@
 *.swp
 *.swo
 
-# asdf version file.
-.tool-versions
-
-# go-task
+# go-task metadata
 .task
 
-# terraform
+# terraform metadata
 .terraform
+
+# vagrant metadata
+.vagrant
