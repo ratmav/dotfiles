@@ -19,8 +19,8 @@ $ git clone ssh://git@github.com/ratmav/dotfiles.git
 ## use
 
 ```shell
-$ cd ~/Source/dotfiles && ./main.sh
-Usage: main.sh [--help] [--bootstrap] [--oni]
+$ cd ~/Source/dotfiles && ./i.sh
+Usage: i.sh [--help] [--bootstrap] [--oni]
 
 personal development environment on posix-compliant systems.
 

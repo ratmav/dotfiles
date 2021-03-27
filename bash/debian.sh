@@ -20,7 +20,7 @@ debian_brave() {
     if dpkg -l | grep -w $package > /dev/null 2>&1; then
       msg "${OK}debian_brave: $package already installed."
     else
-      sudo apt-get install -y $package > /dev/null
+      quiet "sudo apt-get install -y $package"
       msg "${OK}debian_brave: installed $package."
     fi
   done
