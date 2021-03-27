@@ -14,7 +14,22 @@
 #   * uhk agent
 #   * oni (after getting the rest; markdown preview? probably a vscode extension)
 
-debian_apt_packages() {
+debian_fuse() {
+  if dpkg -l | grep -w fuse > /dev/null 2>&1; then
+    msg "${OK}debian_fuse: fuse already installed."
+  else
+    sudo apt-get install -y fuse > /dev/null 2>&1
+    sudo modprobe fuse
+
+    sudo groupadd fuse > /dev/null
+    user="$(whoami)"
+    sudo usermod -a -G fuse $user
+
+    msg "${WARN}debian_fuse: installed fuse; relogin likely required."
+  fi
+}
+
+debian_oni_dependencies() {
   PACKAGES=("apt-utils" "build-essential" "libtool" "gettext" "nasm" "libacl1-dev"
     "libncurses-dev" "libglu1-mesa-dev" "libxxf86vm-dev" "libxkbfile-dev"
     "git-core" "curl" "libpng-dev" "libbz2-dev" "m4" "xorg-dev"
@@ -22,38 +37,24 @@ debian_apt_packages() {
     "software-properties-common" "dialog" "wget" "gpg")
   for package in "${PACKAGES[@]}"; do
     if dpkg -l | grep -w $package > /dev/null 2>&1; then
-      msg "${OK}debian: $package already installed."
+      msg "${OK}debian_oni_dependencies: $package already installed."
     else
       sudo apt-get install -y $package > /dev/null 2>&1
-      msg "${OK}debian: installed $package."
+      msg "${OK}debian_oni_dependencies: installed $package."
     fi
   done
-}
 
-debian_fuse() {
-  sudo apt-get install -y fuse > /dev/null 2>&1
-  sudo modprobe fuse
-
-  if groups | grep fuse > /dev/null; then
-    msg "${WARN}debian: fuse already configured."
-  else
-    sudo groupadd fuse > /dev/null
-    user="$(whoami)"
-    sudo usermod -a -G fuse $user
-    msg "${WARN}debian: configured fuse. shell reload may be required."
-  fi
-
-  msg "${OK}debian: configured fuse."
+  debian_fuse
 }
 
 debian_update() {
   sudo apt-get update > /dev/null 2>&1
   sudo apt-get upgrade -y > /dev/null 2>&1
-  msg "${OK}debian: system updated."
+  msg "${OK}debian_update: system updated."
 }
 
 main_debian() {
   debian_update
-  #debian_apt_packages
-  debian_fuse
+  debian_oni_dependencies
+  debian_brave
 }

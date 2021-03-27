@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export PS1="[\u@\h \W]\\$ "
-
 # force dircolors.
 export CLICOLOR=1
 

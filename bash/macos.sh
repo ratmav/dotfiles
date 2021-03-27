@@ -5,7 +5,7 @@ macos_brew_bash() {
   FILE='/etc/shells'
   grep -qF -- "$LINE" "$FILE" || echo "$LINE" | sudo tee -a "$FILE" > /dev/null
   chsh -s /usr/local/bin/bash
-  msg "${OK}macos: configured macos to use homebrew's bash."
+  msg "${OK}macos_brew_bash: configured macos to use homebrew's bash."
 }
 
 macos_brew_packages() {
@@ -15,10 +15,10 @@ macos_brew_packages() {
     "yq" "hyper" "gpg" "git")
   for package in "${PACKAGES[@]}"; do
     if brew list | grep $package > /dev/null 2>&1; then
-      msg "${WARN}macos: $package already installed."
+      msg "${WARN}macos_brew_packages: $package already installed."
     else
       brew install $package
-      msg "${OK}macos: installed $package via homebrew."
+      msg "${OK}macos_brew_packages: installed $package via homebrew."
     fi
   done
 }
@@ -28,22 +28,22 @@ macos_cask_packages() {
   PACKAGES=("brave-browser" "basictex" "virtualbox" "vagrant" "docker" "signal")
   for package in "${PACKAGES[@]}"; do
     if brew list --cask | grep $package > /dev/null 2>&1; then
-      msg "${WARN}macos: $package already installed."
+      msg "${WARN}macos_cask_packages: $package already installed."
     else
       brew install --cask $package
-      msg "${OK}macos: installed $package via homebrew cask."
+      msg "${OK}macos_cask_packages: installed $package via homebrew cask."
     fi
   done
 }
 
 macos_homebrew() {
   if type brew > /dev/null 2>&1; then
-    msg "${WARN}macos: homebrew already installed."
+    msg "${WARN}macos_homebrew: homebrew already installed."
   else
     URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
     /usr/bin/ruby -e "$(curl -fsSL $URL)"
     brew tap homebrew/cask-versions
-    msg "${OK}macos: installed homebrew."
+    msg "${OK}macos_homebrew: installed homebrew."
   fi
 }
 
