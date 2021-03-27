@@ -77,7 +77,9 @@ Available flags (choose one):
 --bootstrap run os setup then generic posix setup
 --oni       builds the oni editor from source
 
-note that --oni requires a full bootstrapping process.
+note:
+  * --oni requires a full bootstrapping process.
+  * a shell reload/relogin is likely required after bootstrapping.
 EOF
   exit
 }

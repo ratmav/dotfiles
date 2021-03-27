@@ -30,17 +30,21 @@ Available flags (choose one):
 --bootstrap run os setup then generic posix setup
 --oni       builds the oni editor from source
 
+note:
+  * --oni requires a full bootstrapping process.
+  * a shell reload/relogin is likely required after bootstrapping.
 note that --oni requires a full bootstrapping process.
 ```
 
-## vagrant
+## development
 
-vagrant is used as convenience to develop in clean environments, with a makefile provided as a command wrapper. to use:
+### vagrant
+
+vagrant is used to provide clean, reusable, development environments. manage debian guests with the following commands; refer to the [vagrant cli docs](https://www.vagrantup.com/docs/cli) for more information:
 
 ```shell
-$ make debian_up # stands up a bare debian guest.
-$ make debian_ssh # ssh's to the debian guest for interactive use.
-$ make debian_destroy # tears down a bare debian guest.
+$ vagrant up debian # stands up a bare debian guest.
+$ vagrant ssh debian # shells into debian guest (source is mounted at /home/vagrant/dotfiles)
+$ vagrant snapshot debian $SNAPSHOT_NAME # creates a snapshot of the vm.
+$ vagrant debian destroy # tears down a bare debian guest.
 ```
-
-**note**: vagrant _does not_ provision guests; ssh into the guest and run `cd dotfiles && ./main.sh --bootstrap`, etc. to run various tasks.
