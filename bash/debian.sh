@@ -30,12 +30,12 @@ debian_fuse() {
   if dpkg -l | grep -w fuse > /dev/null 2>&1; then
     msg "${OK}debian_fuse: fuse already installed."
   else
-    sudo apt-get install -y fuse > /dev/null 2>&1
-    sudo modprobe fuse
+    quiet "sudo apt-get install -y fuse"
+    quiet "sudo modprobe fuse"
 
-    sudo groupadd fuse > /dev/null
+    quiet "sudo groupadd fuse"
     user="$(whoami)"
-    sudo usermod -a -G fuse $user
+    quiet "sudo usermod -a -G fuse $user"
 
     msg "${WARN}debian_fuse: installed fuse; relogin likely required."
   fi
@@ -51,7 +51,7 @@ debian_oni_dependencies() {
     if dpkg -l | grep -w $package > /dev/null 2>&1; then
       msg "${OK}debian_oni_dependencies: $package already installed."
     else
-      sudo apt-get install -y $package > /dev/null 2>&1
+      quiet "sudo apt-get install -y $package"
       msg "${OK}debian_oni_dependencies: installed $package."
     fi
   done
@@ -60,8 +60,8 @@ debian_oni_dependencies() {
 }
 
 debian_update() {
-  sudo apt-get update > /dev/null 2>&1
-  sudo apt-get upgrade -y > /dev/null 2>&1
+  quiet "sudo apt-get update"
+  quiet "sudo apt-get upgrade -y"
   msg "${OK}debian_update: system updated."
 }
 
