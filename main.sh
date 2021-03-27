@@ -21,6 +21,17 @@ bootstrap() {
   fi
 }
 
+call() {
+  if compgen -A function | grep $1 > /dev/null 2>&1; then
+    $1
+  else
+    msg "${WARN}function not found. available functions:"
+    for function in $(compgen -A function); do
+      msg "${WARN}...$function"
+    done
+  fi
+}
+
 cleanup() {
   trap - SIGINT SIGTERM ERR EXIT
 }
@@ -40,11 +51,11 @@ msg() {
 parse_params() {
   args=("$@")
 
-  [[ ${#args[@]} -ge 2 ]] && die "only one flag allowed."
   while :; do
     case "${1-}" in
     --help) usage ;;
     --bootstrap) bootstrap ;;
+    --call) call $2;;
     --oni) main_oni ;;
     -?*) die "unknown option: $1" ;;
     *)
@@ -73,9 +84,10 @@ personal development environment on posix-compliant systems.
 
 Available flags (choose one):
 
---help      Print this help and exit
---bootstrap run os setup then generic posix setup
---oni       builds the oni editor from source
+--help       Print this help and exit
+--bootstrap  run os setup then generic posix setup
+--call \$NAME call a specific function by name
+--oni        builds the oni editor from source
 
 note:
   * --oni requires a full bootstrapping process.
