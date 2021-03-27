@@ -14,6 +14,17 @@
 #   * uhk agent
 #   * oni (after getting the rest; markdown preview? probably a vscode extension)
 
+#debian_brave() {
+#  PACKAGES=("apt-transport-https" "curl" "gnugpg")
+#  for package in "${PACKAGES[@]}"; do
+#    if dpkg -l | grep -w $package > /dev/null 2>&1; then
+#      msg "${OK}debian_brave: $package already installed."
+#    else
+#      sudo apt-get install -y $package > /dev/null 2>&1
+#      msg "${OK}debian_brave: installed $package."
+#    fi
+#}
+
 debian_fuse() {
   if dpkg -l | grep -w fuse > /dev/null 2>&1; then
     msg "${OK}debian_fuse: fuse already installed."
