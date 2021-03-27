@@ -21,15 +21,11 @@ bootstrap() {
   fi
 }
 
-call() {
-  if compgen -A function | grep $1 > /dev/null 2>&1; then
-    $1
-  else
-    msg "${WARN}function not found. available functions:"
-    for function in $(compgen -A function); do
-      msg "${WARN}...$function"
-    done
-  fi
+call_usage() {
+  msg "${WARN}function not found. available functions:"
+  for function in $(compgen -A function); do
+    msg "${WARN}...$function"
+  done
 }
 
 cleanup() {
@@ -55,7 +51,17 @@ parse_params() {
     case "${1-}" in
     --help) usage ;;
     --bootstrap) bootstrap ;;
-    --call) call $2;;
+    --call)
+      if [ ! -z ${2-} ]; then
+        if compgen -A function | grep $2> /dev/null 2>&1; then
+          $2
+        else
+          call_usage
+        fi
+      else
+        call_usage
+      fi
+      ;;
     --oni) main_oni ;;
     -?*) die "unknown option: $1" ;;
     *)
@@ -67,6 +73,14 @@ parse_params() {
 
   return 0
 }
+
+#run() {
+#  if eval $1 > /dev/null;
+#    # pass
+#  else
+#    die #error message
+#  fi
+#}
 
 setup_colors() {
   if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
