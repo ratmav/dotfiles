@@ -1,9 +1,5 @@
 #!/usr/bin/env/bash
 
-# TODO:
-# * install packages you need
-#   * virtualbox: https://tecadmin.net/install-virtualbox-on-debian-10-buster/
-
 debian_brave() {
   if dpkg -l | grep -w brave-browser > /dev/null 2>&1; then
     msg "${OK}debian_brave: brave-browser already installed."
@@ -103,6 +99,12 @@ debian_signal() {
   fi
 }
 
+debian_update() {
+  quiet "sudo apt-get update"
+  quiet "sudo apt-get upgrade -y"
+  msg "${OK}debian_update: system updated."
+}
+
 debian_vagrant() {
   if dpkg -l | grep -w vagrant > /dev/null 2>&1; then
     msg "${OK}debian_vagrant: vagrant already installed."
@@ -129,10 +131,30 @@ debian_vagrant() {
   fi
 }
 
-debian_update() {
-  quiet "sudo apt-get update"
-  quiet "sudo apt-get upgrade -y"
-  msg "${OK}debian_update: system updated."
+debian_virtualbox() {
+  if dpkg -l | grep -w virtualbox-6.1 > /dev/null 2>&1; then
+    msg "${OK}debian_virtualbox: virtualbox already installed."
+  else
+    packages=("curl")
+    for package in "${packages[@]}"; do
+      if dpkg -l | grep -w $package > /dev/null 2>&1; then
+        msg "${OK}debian_virtualbox: $package already installed."
+      else
+        quiet "sudo apt-get install -y $package"
+        msg "${OK}debian_virtualbox: installed $package."
+      fi
+    done
+
+    curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
+    msg "${OK}debian_virtualbox: gpg key added."
+
+    sudo apt-add-repository "deb http://download.virtualbox.org/virtualbox/debian buster contrib"
+    msg "${OK}debian_virtualbox: configured apt."
+
+    quiet "sudo apt-get update"
+    quiet "sudo apt-get install virtualbox-6.1 -y"
+    msg "${OK}debian_virtualbox: installed virtualbox."
+  fi
 }
 
 main_debian() {
@@ -140,6 +162,9 @@ main_debian() {
   debian_dependencies
   debian_brave
   debian_signal
+  debian_docker
+  debian_virtualbox
+  debian_vagrant
 
   msg "${WARN}main_debian: docker-compose needs manual installation from https://github.com/docker/compose/releases/latest"
   msg "${WARN}main_debian: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
