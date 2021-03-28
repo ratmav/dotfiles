@@ -1,10 +1,7 @@
 #!/usr/bin/env/bash
 
 # TODO:
-# set up a vargrant image and do this to keep the metal clean.
 # * install packages you need
-#   * vagrant: https://www.hashicorp.com/blog/announcing-the-hashicorp-linux-repository
-#   * docker: https://docs.docker.com/engine/install/debian/
 #   * virtualbox: https://tecadmin.net/install-virtualbox-on-debian-10-buster/
 
 debian_brave() {
@@ -46,6 +43,37 @@ debian_dependencies() {
       msg "${OK}debian_dependencies: installed $package."
     fi
   done
+}
+
+debian_docker() {
+  if dpkg -l | grep -w docker > /dev/null 2>&1; then
+    msg "${OK}debian_docker: docker already installed."
+  else
+    packages=("apt-transport-https" "ca-certificates" "curl" "gnupg" "lsb-release")
+    for package in "${packages[@]}"; do
+      if dpkg -l | grep -w $package > /dev/null 2>&1; then
+        msg "${OK}debian_docker: $package already installed."
+      else
+        quiet "sudo apt-get install -y $package"
+        msg "${OK}debian_docker: installed $package."
+      fi
+    done
+
+    rm -f docker-archive-keyring.gpg
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor > docker-archive-keyring.gpg
+    sudo mv docker-archive-keyring.gpg /usr/share/keyrings/docker-archive-keyring.gpg
+    msg "${OK}debian_docker: gpg key added."
+
+    sudo rm -f /etc/apt/sources.list.d/docker.list
+    sudo bash -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]\
+      https://download.docker.com/linux/debian buster stable"\
+      >| /etc/apt/sources.list.d/docker.list'
+    msg "${OK}debian_docker: configured apt."
+
+    quiet "sudo apt-get update"
+    quiet "sudo apt-get install docker-ce docker-ce-cli containerd.io -y"
+    msg "${OK}debian_docker: installed docker."
+  fi
 }
 
 debian_signal() {
