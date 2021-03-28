@@ -22,7 +22,7 @@ debian_brave() {
   sudo rm -f /etc/apt/sources.list.d/brave-browser-release.list
   sudo bash -c 'echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"\
     >| /etc/apt/sources.list.d/brave-browser-release.list'
-  msg "${OK}debian_brave_repo: configured apt."
+  msg "${OK}debian_brave: configured apt."
 
   curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc\
     | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
