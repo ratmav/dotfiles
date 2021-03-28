@@ -17,7 +17,7 @@ macos_brew_packages() {
     if brew list | grep $package > /dev/null 2>&1; then
       msg "${WARN}macos_brew_packages: $package already installed."
     else
-      brew install $package
+      quiet "brew install $package"
       msg "${OK}macos_brew_packages: installed $package via homebrew."
     fi
   done
@@ -30,7 +30,7 @@ macos_cask_packages() {
     if brew list --cask | grep $package > /dev/null 2>&1; then
       msg "${WARN}macos_cask_packages: $package already installed."
     else
-      brew install --cask $package
+      quiet "brew install --cask $package"
       msg "${OK}macos_cask_packages: installed $package via homebrew cask."
     fi
   done
