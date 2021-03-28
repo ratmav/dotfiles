@@ -133,4 +133,5 @@ main_debian() {
 
   msg "${WARN}main_debian: docker-compose needs manual installation from https://github.com/docker/compose/releases/latest"
   msg "${WARN}main_debian: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
+  msg "${WARN}main_debian: cutter needs manual installation from https://cutter.re/download/"
 }
