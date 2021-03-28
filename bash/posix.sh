@@ -54,7 +54,7 @@ posix_fonts() {
 main_posix() {
   posix_symlinks
   posix_git
-  # posix_nvim
+  posix_nvim
   posix_fonts
   posix_asdf
 }
