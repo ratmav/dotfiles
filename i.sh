@@ -39,7 +39,6 @@ die() {
 
 error () {
   trap - ERR
-  msg "${ERROR}failed."
 }
 
 interrupted() {
