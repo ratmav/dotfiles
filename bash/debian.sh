@@ -4,15 +4,7 @@ debian_brave() {
   if dpkg -l | grep -w brave-browser > /dev/null 2>&1; then
     msg "${OK}debian_brave: brave-browser already installed."
   else
-    packages=("apt-transport-https" "curl" "gnupg")
-    for package in "${packages[@]}"; do
-      if dpkg -l | grep -w $package > /dev/null 2>&1; then
-        msg "${OK}debian_brave: $package already installed."
-      else
-        quiet "sudo apt-get install -y $package"
-        msg "${OK}debian_brave: installed $package."
-      fi
-    done
+    debian_dependencies
 
     curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc\
       | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
@@ -32,7 +24,9 @@ debian_brave() {
 debian_dependencies() {
   debian_update
 
-  packages=("build-essential" "clamav" "curl" "dirmngr" "gawk" "git" "gpg" "neovim" "shellcheck")
+  packages=("apt-transport-https" "build-essential" "ca-certificates" "clamav"
+    "curl" "dirmngr" "gawk" "git" "gpg" "gnupg" "lsb-release" "neovim"
+    "shellcheck" "software-properties-common")
   for package in "${packages[@]}"; do
     if dpkg -l | grep -w $package > /dev/null 2>&1; then
       msg "${OK}debian_dependencies: $package already installed."
@@ -47,15 +41,7 @@ debian_docker() {
   if dpkg -l | grep -w docker > /dev/null 2>&1; then
     msg "${OK}debian_docker: docker already installed."
   else
-    packages=("apt-transport-https" "ca-certificates" "curl" "gnupg" "lsb-release")
-    for package in "${packages[@]}"; do
-      if dpkg -l | grep -w $package > /dev/null 2>&1; then
-        msg "${OK}debian_docker: $package already installed."
-      else
-        quiet "sudo apt-get install -y $package"
-        msg "${OK}debian_docker: installed $package."
-      fi
-    done
+    debian_dependencies
 
     rm -f docker-archive-keyring.gpg
     curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor > docker-archive-keyring.gpg
@@ -78,12 +64,7 @@ debian_signal() {
   if dpkg -l | grep -w signal-desktop > /dev/null 2>&1; then
     msg "${OK}debian_signal: signal-desktop already installed."
   else
-    if dpkg -l | grep -w curl > /dev/null 2>&1; then
-      msg "${OK}debian_signal: curl already installed."
-    else
-      quiet "sudo apt-get install -y curl"
-      msg "${OK}debian_signal: installed curl."
-    fi
+    debian_dependencies
 
     rm -f signal-desktop-keyring.gpg
     curl -s https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
@@ -111,15 +92,7 @@ debian_vagrant() {
   if dpkg -l | grep -w vagrant > /dev/null 2>&1; then
     msg "${OK}debian_vagrant: vagrant already installed."
   else
-    packages=("software-properties-common" "curl")
-    for package in "${packages[@]}"; do
-      if dpkg -l | grep -w $package > /dev/null 2>&1; then
-        msg "${OK}debian_vagrant: $package already installed."
-      else
-        quiet "sudo apt-get install -y $package"
-        msg "${OK}debian_vagrant: installed $package."
-      fi
-    done
+    debian_dependencies
 
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
     msg "${OK}debian_vagrant: gpg key added."
@@ -137,15 +110,7 @@ debian_virtualbox() {
   if dpkg -l | grep -w virtualbox-6.1 > /dev/null 2>&1; then
     msg "${OK}debian_virtualbox: virtualbox already installed."
   else
-    packages=("curl")
-    for package in "${packages[@]}"; do
-      if dpkg -l | grep -w $package > /dev/null 2>&1; then
-        msg "${OK}debian_virtualbox: $package already installed."
-      else
-        quiet "sudo apt-get install -y $package"
-        msg "${OK}debian_virtualbox: installed $package."
-      fi
-    done
+    debian_dependencies
 
     curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
     msg "${OK}debian_virtualbox: gpg key added."
@@ -160,8 +125,6 @@ debian_virtualbox() {
 }
 
 main_debian() {
-  debian_update
-  debian_dependencies
   debian_brave
   debian_signal
   debian_docker
