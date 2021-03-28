@@ -42,6 +42,7 @@ posix_symlinks() {
   done
 }
 
+# TODO: this breaks on debian, but oni may make it obsolete.
 posix_fonts() {
   git clone https://github.com/powerline/fonts.git --depth=1 > /dev/null 2>&1
   cd fonts
