@@ -17,7 +17,7 @@ bootstrap() {
     main_posix
   elif cat /etc/issue | grep "Debian" > /dev/null 2>&1; then
     main_debian
-    #main_posix
+    main_posix
   else
     die "unsupported operating system."
   fi
