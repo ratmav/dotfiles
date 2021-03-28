@@ -32,7 +32,7 @@ debian_brave() {
 debian_dependencies() {
   debian_update
 
-  packages=("build-essential" "clamav" "curl" "dirmngr" "gawk" "git" "gpg" "shellcheck")
+  packages=("build-essential" "clamav" "curl" "dirmngr" "gawk" "git" "gpg" "neovim" "shellcheck")
   for package in "${packages[@]}"; do
     if dpkg -l | grep -w $package > /dev/null 2>&1; then
       msg "${OK}debian_dependencies: $package already installed."
