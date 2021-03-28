@@ -75,6 +75,32 @@ debian_signal() {
   fi
 }
 
+debian_vagrant() {
+  if dpkg -l | grep -w vagrant > /dev/null 2>&1; then
+    msg "${OK}debian_vagrant: vagrant already installed."
+  else
+    packages=("software-properties-common" "curl")
+    for package in "${packages[@]}"; do
+      if dpkg -l | grep -w $package > /dev/null 2>&1; then
+        msg "${OK}debian_vagrant: $package already installed."
+      else
+        quiet "sudo apt-get install -y $package"
+        msg "${OK}debian_vagrant: installed $package."
+      fi
+    done
+
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+    msg "${OK}debian_vagrant: gpg key added."
+
+    sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    msg "${OK}debian_vagrant: configured apt."
+
+    quiet "sudo apt-get update"
+    quiet "sudo apt-get install vagrant -y"
+    msg "${OK}debian_vagrant: installed vagrant."
+  fi
+}
+
 debian_update() {
   quiet "sudo apt-get update"
   quiet "sudo apt-get upgrade -y"
