@@ -33,12 +33,6 @@ debian_brave() {
   msg "${OK}debian_brave: installed brave."
 }
 
-debian_update() {
-  quiet "sudo apt-get update"
-  quiet "sudo apt-get upgrade -y"
-  msg "${OK}debian_update: system updated."
-}
-
 debian_dependencies() {
   packages=("build-essential" "shellcheck" "gnupg" "clamav" "git")
   for package in "${packages[@]}"; do
@@ -49,6 +43,12 @@ debian_dependencies() {
       msg "${OK}debian_dependencies: installed $package."
     fi
   done
+}
+
+debian_update() {
+  quiet "sudo apt-get update"
+  quiet "sudo apt-get upgrade -y"
+  msg "${OK}debian_update: system updated."
 }
 
 main_debian() {
