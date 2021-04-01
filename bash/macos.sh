@@ -10,7 +10,7 @@ macos_brew_bash() {
 
 macos_brew_packages() {
   # librsvg python are used with pandoc.
-  PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
+  PACKAGES=("coreutils" "bash-completion" "neovim" "vv" "reattach-to-user-namespace"
     "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
     "yq" "hyper" "gpg" "git" "gawk")
   for package in "${PACKAGES[@]}"; do
