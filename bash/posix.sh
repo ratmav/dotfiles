@@ -1,9 +1,24 @@
 #!/usr/bin/env bash
 
 posix_asdf() {
-  rm -rf $HOME/.asdf
-  git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf > /dev/null 2>&1
-  msg "${WARN}posix_asdf: asdf requires sourcing ~/.bashrc."
+  if [ -f "$HOME/.asdf/asdf.sh" ]; then
+    msg "${OK}posix_asdf: asdf installed."
+  else
+    rm -rf $HOME/.asdf
+    git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf > /dev/null 2>&1
+    msg "${WARN}posix_asdf: asdf installed; sourcing ~/.bashrc may be required."
+  fi
+}
+
+posix_node() {
+  if ! [ -x "$(command -v asdf)" ]; then
+    msg "${WARN}posix_node: asdf not installed. try calling posix_asdf"
+  elif ! [ -d "$HOME/.asdf/installs/nodejs" ]; then
+    quiet "asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git"
+    quiet "asdf install nodejs latest"
+    quiet "asdf global nodejs latest"
+    msg "${OK}posix_node: installed latest nodejs version."
+  fi
 }
 
 posix_git() {
@@ -58,4 +73,5 @@ main_posix() {
   posix_nvim
   posix_fonts
   posix_asdf
+  posix_node
 }

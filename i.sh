@@ -10,6 +10,7 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 source ./bash/posix.sh
 source ./bash/macos.sh
 source ./bash/debian.sh
+source ./bash/vv_build.sh
 
 bootstrap() {
   if [[ $(uname) == "Darwin" ]]; then
