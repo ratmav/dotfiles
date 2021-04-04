@@ -238,6 +238,12 @@ let g:omni_sql_no_default_maps = 1
 
 " display {{{
 
+" gui (vv) {{{
+if exists("g:vv")
+  VVset fontsize=14
+endif
+" }}}
+
 set termguicolors
 colorscheme gruvbox
 
