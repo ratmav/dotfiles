@@ -54,7 +54,7 @@ posix_nvim() {
 }
 
 posix_symlinks() {
-  LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".hyper.js")
+  LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
     ln -s $PWD/$link $HOME/$link
