@@ -4,6 +4,7 @@ debian_brave() {
   if dpkg -l | grep -w brave-browser > /dev/null 2>&1; then
     msg "${OK}debian_brave: brave-browser already installed."
   else
+    msg "${WARN}debian_brave: installing brave-browser."
     debian_dependencies
 
     curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc\
@@ -41,6 +42,7 @@ debian_docker() {
   if dpkg -l | grep -w docker > /dev/null 2>&1; then
     msg "${OK}debian_docker: docker already installed."
   else
+    msg "${WARN}debian_docker: installing docker."
     debian_dependencies
 
     rm -f docker-archive-keyring.gpg
@@ -60,10 +62,31 @@ debian_docker() {
   fi
 }
 
+debian_etcher() {
+  if dpkg -l | grep -w balena-etcher-electron > /dev/null 2>&1; then
+    msg "${OK}debian_etcher: etcher already installed."
+  else
+    msg "${WARN}debian_etcher: installing etcher."
+    debian_dependencies
+
+    sudo rm -f /etc/apt/sources.list.d/balenda-etcher.list
+    sudo bash -c 'echo "deb https://deb.etcher.io stable etcher" >| /etc/apt/sources.list.d/balena-etcher.list'
+    msg "${OK}debian_etcher: configured apt."
+
+    quiet "sudo apt-key adv --keyserver hkps://keyserver.ubuntu.com:443 --recv-keys 379CE192D401AB61"
+    msg "${OK}debian_etcher: gpg key added."
+
+    quiet "sudo apt-get update"
+    quiet "sudo apt-get install balena-etcher-electron -y"
+    msg "${OK}debian_etcher: installed etcher."
+  fi
+}
+
 debian_signal() {
   if dpkg -l | grep -w signal-desktop > /dev/null 2>&1; then
     msg "${OK}debian_signal: signal-desktop already installed."
   else
+    msg "${WARN}debian_signal: installing signal."
     debian_dependencies
 
     rm -f signal-desktop-keyring.gpg
@@ -92,6 +115,7 @@ debian_vagrant() {
   if dpkg -l | grep -w vagrant > /dev/null 2>&1; then
     msg "${OK}debian_vagrant: vagrant already installed."
   else
+    msg "${WARN}debian_vagrant: installing vagrant."
     debian_dependencies
 
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -110,6 +134,7 @@ debian_virtualbox() {
   if dpkg -l | grep -w virtualbox-6.1 > /dev/null 2>&1; then
     msg "${OK}debian_virtualbox: virtualbox already installed."
   else
+    msg "${WARN}debian_virtualbox: installing virtualbox."
     debian_dependencies
 
     curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
@@ -125,6 +150,7 @@ debian_virtualbox() {
 }
 
 main_debian() {
+  debian_etcher
   debian_brave
   debian_signal
   debian_docker

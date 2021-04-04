@@ -47,6 +47,8 @@ posix_nvim() {
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
   msg "${OK}posix_nvim: installed vim-plug."
 
+  # this hangs on debian buster's version of neovim, pressing enter will get things moving.
+  # later neovim versions don't appear to have this issue.
   nvim +PlugInstall +qall
   msg "${OK}posix_nvim: installed neovim plugins."
 }
@@ -60,7 +62,6 @@ posix_symlinks() {
   done
 }
 
-# TODO: this breaks on debian, but oni may make it obsolete.
 posix_fonts() {
   git clone https://github.com/powerline/fonts.git --depth=1 > /dev/null 2>&1
   cd fonts
