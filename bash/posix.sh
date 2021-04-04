@@ -17,7 +17,10 @@ posix_node() {
     quiet "asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git"
     quiet "asdf install nodejs latest"
     quiet "asdf global nodejs latest"
-    msg "${OK}posix_node: installed latest nodejs version."
+    quiet "npm install --global npm@latest"
+    quiet "npm install --global yarn"
+    quiet "asdf reshim"
+    msg "${OK}posix_node: installed latest nodejs, npm, and yarn."
   fi
 }
 
