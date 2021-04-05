@@ -56,9 +56,9 @@ personal development environment on posix-compliant systems.
 
 Available flags (choose one):
 
---help       Print this help and exit
---bootstrap  run os setup then generic posix setup
---call \$NAME call a specific function by name
+--help       Print this help and exit.
+--bootstrap  run os setup then generic posix setup.
+--call $NAME call a specific function by name. leave name blank for a list of functions.
 
 note:
   * a shell reload/relogin is likely required after bootstrapping.
@@ -71,8 +71,15 @@ note:
 vagrant is used to provide clean, reusable, development environments. manage debian guests with the following commands; refer to the [vagrant cli docs](https://www.vagrantup.com/docs/cli) for more information:
 
 ```shell
-$ vagrant up debian # stands up a bare debian guest.
-$ vagrant ssh debian # shells into debian guest (source is mounted at /home/vagrant/dotfiles)
-$ vagrant snapshot debian $SNAPSHOT_NAME # creates a snapshot of the vm.
-$ vagrant debian destroy # tears down a bare debian guest.
+$ vagrant up $VAGRANT_GUEST
+$ vagrant ssh $VAGRANT_GUEST # source is mounted at /home/vagrant/dotfiles
+$ vagrant snapshot $VAGRANT_GUEST $SNAPSHOT_NAME
+$ vagrant $VAGRANT_GUEST destroy
 ```
+
+#### `$VAGRANT_GUEST`
+
+available guests:
+
+* debian buster
+* elementary os 5.1
