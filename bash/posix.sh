@@ -62,20 +62,10 @@ posix_symlinks() {
   done
 }
 
-posix_fonts() {
-  git clone https://github.com/powerline/fonts.git --depth=1 > /dev/null 2>&1
-  cd fonts
-  ./install.sh > /dev/null 2>&1
-  cd ..
-  rm -rf fonts
-  msg "${OK}posix_fonts: installed powerline fonts."
-}
-
 main_posix() {
   posix_symlinks
   posix_git
   posix_nvim
-  posix_fonts
   posix_asdf
   posix_node
 }
