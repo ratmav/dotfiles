@@ -81,17 +81,6 @@ debian_etcher() {
     msg "${OK}debian_etcher: installed etcher."
   fi
 }
-debian_shared() {
-  debian_etcher
-  debian_brave
-  debian_signal
-  debian_docker
-
-  msg "${WARN}main_debian: hyper needs manual installation from https://hyper.is/#installation"
-  msg "${WARN}main_debian: docker-compose needs manual installation from https://github.com/docker/compose/releases/latest"
-  msg "${WARN}main_debian: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
-  msg "${WARN}main_debian: cutter needs manual installation from https://cutter.re/download/"
-}
 
 debian_signal() {
   if dpkg -l | grep -w signal-desktop > /dev/null 2>&1; then
@@ -162,10 +151,16 @@ debian_virtualbox() {
 
 main_debian() {
   if grep -q "Debian" /etc/issue; then
-    debian_shared
+    debian_etcher
+    debian_brave
+    debian_signal
+    debian_docker
     debian_virtualbox
-  elif grep -q "elementary OS" /etc/issue; then
-    debian_shared
+
+    msg "${WARN}main_debian: hyper needs manual installation from https://hyper.is/#installation"
+    msg "${WARN}main_debian: docker-compose needs manual installation from https://github.com/docker/compose/releases/latest"
+    msg "${WARN}main_debian: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
+    msg "${WARN}main_debian: cutter needs manual installation from https://cutter.re/download/"
   else
     die "main_debian: unsupported operating system."
   fi
