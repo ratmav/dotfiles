@@ -146,9 +146,9 @@ personal development environment on posix-compliant systems.
 
 Available flags (choose one):
 
---help       Print this help and exit
---bootstrap  run os setup then generic posix setup
---call \$NAME call a specific function by name
+--help       Print this help and exit.
+--bootstrap  run os setup then generic posix setup.
+--call \$NAME call a specific function by name. leave name blank for a list of functions.
 
 note:
   * a shell reload/relogin is likely required after bootstrapping.
