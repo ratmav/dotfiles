@@ -49,11 +49,15 @@ macos_homebrew() {
 }
 
 main_macos() {
-  macos_homebrew
-  macos_brew_packages
-  macos_cask_packages
-  macos_brew_bash
+  if [[ $(uname) == "Darwin" ]]; then
+    macos_homebrew
+    macos_brew_packages
+    macos_cask_packages
+    macos_brew_bash
 
-  msg "${WARN}main_macos: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
-  msg "${WARN}main_macos: cutter needs manual installation from https://cutter.re/download/"
+    msg "${WARN}main_macos: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
+    msg "${WARN}main_macos: cutter needs manual installation from https://cutter.re/download/"
+  else
+    die "main_macos: unsupported operating system."
+  fi
 }
