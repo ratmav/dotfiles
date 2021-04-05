@@ -82,4 +82,3 @@ $ vagrant $VAGRANT_GUEST destroy
 available guests:
 
 * debian buster
-* elementary os 5.1

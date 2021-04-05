@@ -11,7 +11,6 @@ source ./bash/posix.sh
 source ./bash/macos.sh
 source ./bash/debian.sh
 source ./bash/vv.sh
-source ./bash/elementary.sh
 
 bootstrap() {
   if [[ $(uname) == "Darwin" ]]; then
@@ -20,10 +19,6 @@ bootstrap() {
   elif grep -q "Debian" /etc/issue; then
     main_debian
     main_posix
-  elif grep -q "elementary OS" /etc/issue; then
-    main_debian
-    main_posix
-    main_elementary
   else
     die "bootstrap: unsupported operating system."
   fi
