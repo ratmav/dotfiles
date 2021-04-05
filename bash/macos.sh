@@ -56,7 +56,6 @@ main_macos() {
     macos_brew_bash
 
     msg "${WARN}main_macos: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
-    msg "${WARN}main_macos: cutter needs manual installation from https://cutter.re/download/"
   else
     die "main_macos: unsupported operating system."
   fi
