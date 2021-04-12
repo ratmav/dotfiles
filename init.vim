@@ -335,5 +335,12 @@ nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 "" vim-task:
 nnoremap <silent><Leader>t :execute 'TaskDefault'<CR>
 
+"" vv (gui):
+if exists("g:vv")
+  VVset fontsize=14
+  " vv expects the postscript name of the font.
+  VVset fontfamily="SourceCodeProforPowerline-Regular"
+endif
+
 " initialize desk on startup:
 call DeskInit()
