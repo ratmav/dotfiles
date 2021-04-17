@@ -157,10 +157,10 @@ main_debian() {
     debian_docker
     debian_virtualbox
 
-    msg "${WARN}main_debian: hyper needs manual installation from https://hyper.is/#installation"
     msg "${WARN}main_debian: docker-compose needs manual installation from https://github.com/docker/compose/releases/latest"
     msg "${WARN}main_debian: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
     msg "${WARN}main_debian: cutter needs manual installation from https://cutter.re/download/"
+    msg "${WARN}main_debian: vv needs to be built from git@github.com:ratmav/vv.git"
   else
     die "main_debian: unsupported operating system."
   fi
