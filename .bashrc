@@ -41,11 +41,6 @@ if [[ $(uname) == "Darwin" ]]; then
   export GUILE_SYSTEM_EXTENSIONS_PATH="/usr/local/lib/guile/3.0/extensions"
 fi
 
-# hyper
-function hypertab-title() {
-  echo -e "\033]0;${1:?please specify a title}\007";
-}
-
 # load miscellaneous environment variables if needed.
 if [ -f ~/.misc_envars ]; then
     . ~/.misc_envars
