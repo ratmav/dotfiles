@@ -168,10 +168,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/vim-airline-system'
 
   " misc
-  Plug 'PProvost/vim-ps1'
-  Plug 'jvirtanen/vim-hcl'
-  Plug 'sebdah/vim-delve'
-  Plug 'hashivim/vim-hashicorp-tools'
+  Plug 'PProvost/vim-ps1' " TODO: get syntax highlighting into syfe.
+  Plug 'hashivim/vim-hashicorp-tools' " TODO: get syntax highlighting into syfe.
 call plug#end()
 " }}}
 
