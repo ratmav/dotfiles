@@ -238,29 +238,29 @@ let g:omni_sql_no_default_maps = 1
 " gui (vv) {{{
 if exists("g:vv")
   VVset fontsize=14
+  VVset fontfamily="SourceCodeProforPowerline-Regular"
 endif
-" }}}
+" }}
 
+" colors
 set termguicolors
 colorscheme gruvbox
-
 syntax on
 
 " highlight current line:
 set cursorline
-
 
 " highlight search results:
 set hlsearch
 set incsearch
 
 " display line numbers:
-set number relativenumber
+set number
 
 " always show the status line:
 set laststatus=2
 
-" terminal_display {{{
+" embedded terminal {{{
 augroup terminal_settings
   autocmd!
 
@@ -291,7 +291,7 @@ nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 " }}}
 
-" terminal management {{{
+" embedded terminal management {{{
 nnoremap <silent><C-t> :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <A-h> <C-\><C-N><C-w>h
@@ -329,15 +329,6 @@ nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 " syfe:
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
-"" vim-task:
-nnoremap <silent><Leader>t :execute 'TaskDefault'<CR>
-
-"" vv (gui):
-if exists("g:vv")
-  VVset fontsize=14
-  " vv expects the postscript name of the font.
-  VVset fontfamily="SourceCodeProforPowerline-Regular"
-endif
 
 " initialize desk on startup:
 call DeskInit()
