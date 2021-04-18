@@ -1,150 +1,3 @@
-" os detection for vim-ctrlspace {{{
-if has("win64") || has("win32") || has("win16")
-    let s:vimfiles = "~/AppData/Local/nvim"
-    let s:os = "windows"
-else
-    let s:vimfiles = "~/.config/nvim"
-    if has("mac")
-      let s:os = "darwin"
-    else
-      let s:os = "linux"
-    endif
-endif
-" }}}
-
-" desk {{{
-
-" name the initial book on startup {{{
-function! DeskInit()
-  " TODO: the vim-ctrlspace file search complains about
-  " the project root not being set if vim is opened in a directory
-  " without a .git, etc. directory, i.e. if ctrlspace#roots#FindProjectRoot()
-  " comes back empty. need the just set it to whatever the tcd is.
-  " a 'project root not set'   " set the desk name to the last dir on path
-  call DeskBookName(fnamemodify(getcwd(), ':t\'))
-endfunction
-" }}}
-
-" refresh the tree and file search cache {{{
-function! DeskRefreshCache()
-  call g:NERDTree.ForCurrentTab().getRoot().refresh()
-  call ctrlspace#files#RefreshFiles()
-endfunction
-" }}}
-
-" set the book name {{{
-function! DeskBookName(name)
-  call ctrlspace#tabs#SetTabLabel(tabpagenr(), a:name, 0)
-  redraw!
-endfunction
-" }}}
-
-" (re)bind an open book (re: move to a new working directory) {{{
-function! DeskBookBind()
-  call inputsave()
-  let path = input("bind book to: ", "", "file")
-  call inputrestore()
-
-  " check that path exists
-  if !empty(glob(path))
-    " close all buffers
-    silent tabdo %bd!
-
-    " create tab and set tab current directory
-    execute ":tcd " . path
-
-    " set vim-ctrlspace project root
-    call ctrlspace#roots#SetCurrentProjectRoot(path)
-
-    " set the book name to the last dir on path
-    call DeskBookName(fnamemodify(getcwd(), ':t\'))
-  else
-    redraw!
-    echo "invalid book path"
-  end
-endfunction
-" }}}
-
-" start a new book {{{
-function! DeskBookNew()
-  call inputsave()
-  let path = input("new book path: ", "", "file")
-  call inputrestore()
-
-  " check that path exists
-  if !empty(glob(path))
-    " create tab and set tab current directory
-    tabnew
-    execute ":tcd " . path
-
-    " set vim-ctrlspace project root
-    call ctrlspace#roots#SetCurrentProjectRoot(path)
-
-    " set the desk name to the last dir on path
-    call DeskBookName(fnamemodify(getcwd(), ':t\'))
-  else
-    redraw!
-    echo "invalid book path"
-  end
-endfunction
-" }}}
-
-" change focus to next desk book on right {{{
-function! DeskBookNext()
-  tabnext
-endfunction
-" }}}
-
-" change focus to previous desk book on left {{{
-function! DeskBookPrevious()
-  tabprevious
-endfunction
-" }}}
-
-" search desk books by name {{{
-function! DeskSearchBookNames()
-  execute 'CtrlSpace L'
-endfunction
-" }}}
-
-" search desk book pages by name {{{
-function! DeskSearchBookPageNames()
-  "" using pure vimscript (probably glob) for search and ignore logic
-  "" like ctrlp would be nice.
-  execute 'CtrlSpace O'
-endfunction
-" }}}
-
-" display desk tree view {{{
-function! DeskTree()
-  call g:NERDTreeCreator.ToggleTabTree(".")
-endfunction
-" }}}
-
-" close a desk book {{{
-function! DeskBookClose()
-  if tabpagenr("$") == 1
-    echo "rebind the remaining book, or quit"
-  else
-    call ctrlspace#tabs#CloseTab()
-    echo "closed " . getcwd() . " book"
-  end
-endfunction
-" }}}
-
-" rename a desk book {{{
-function! DeskBookRename()
-  call inputsave()
-  let name = input("new desk name: ")
-  call inputrestore()
-  if name != ""
-    call DeskBookName(name)
-  end
-endfunction
-" }}}
-
-" }}}
-
 " plugins {{{
 
 " plugin management (https://github.com/junegunn/vim-plug) {{{
@@ -179,15 +32,10 @@ let g:airline_section_x = "l(%{line('.')}/%{line('$')}) c(%{virtcol('.')})"
 let g:airline_section_y = "%{&fileformat}[%{&encoding}]"
 " }}}
 
-" vim-ctrlspace {{{
+" desk {{{
 set nocompatible
 set hidden
 set encoding=utf-8
-let g:CtrlSpaceDefaultMappingKey = "<C-space> "
-" }}}
-
-" nerdtree {{{
-let g:NERDTreeShowHidden=1
 " }}}
 
 " rainbow parentheses {{{
@@ -240,7 +88,7 @@ if exists("g:vv")
   VVset fontsize=14
   VVset fontfamily="SourceCodeProforPowerline-Regular"
 endif
-" }}
+" }}}
 
 " colors
 set termguicolors
@@ -308,19 +156,6 @@ nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 " }}}
 
-" desk {{{
-nnoremap <silent><C-d>n :call DeskBookNew()<CR>
-nnoremap <silent><C-d>h :call DeskBookPrevious()<CR>
-nnoremap <silent><C-d>l :call DeskBookNext()<CR>
-nnoremap <silent><C-d>r :call DeskBookRename()<CR>
-nnoremap <silent><C-d>q :call DeskBookClose()<CR>
-nnoremap <silent><C-d>c :call DeskRefreshCache()<CR>
-nnoremap <silent><C-d>t :call DeskTree()<CR>
-nnoremap <silent><C-d>s :call DeskSearchBookNames()<CR>
-nnoremap <silent><C-d>p :call DeskSearchBookPageNames()<CR>
-nnoremap <silent><C-d>b :call DeskBookBind()<CR>
-" }}}
-
 " marv {{{
 nnoremap <silent><Leader>h :execute 'MarvHTML'<CR>
 nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
@@ -329,6 +164,15 @@ nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 " syfe:
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
-
-" initialize desk on startup:
-call DeskInit()
+" desk {{{
+nnoremap <silent><C-d>n :execute 'DeskBookNew'<CR>
+nnoremap <silent><C-d>l :execute 'DeskBookNext'<CR>
+nnoremap <silent><C-d>h :execute 'DeskBookPrevious'<CR>
+nnoremap <silent><C-d>q :execute 'DeskBookQuit'<CR>
+nnoremap <silent><C-d>b :execute 'DeskBookRebind'<CR>
+nnoremap <silent><C-d>r :execute 'DeskBookRename'<CR>
+nnoremap <silent><C-d>t :execute 'DeskBookTreeToggle'<CR>
+nnoremap <silent><C-d>c :execute 'DeskRefreshCache'<CR>
+nnoremap <silent><C-d>s :execute 'DeskSearchBookNames'<CR>
+nnoremap <silent><C-d>p :execute 'DeskSearchBookPageNames'<CR>
+" }}}
