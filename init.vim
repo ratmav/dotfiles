@@ -150,6 +150,7 @@ endfunction
 " plugin management (https://github.com/junegunn/vim-plug) {{{
 call plug#begin('~/.local/share/nvim/plugged')
   " workflow
+  Plug 'ratmav/desk'
   Plug 'ratmav/nerdtree'
   Plug 'ratmav/vim-bufkill'
   Plug 'ratmav/marv'
