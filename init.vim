@@ -22,7 +22,6 @@ function! DeskInit()
   " comes back empty. need the just set it to whatever the tcd is.
   " a 'project root not set'   " set the desk name to the last dir on path
   call DeskBookName(fnamemodify(getcwd(), ':t\'))
-  echo "(•_•) ( •_•)>⌐■-■ (⌐■_■)"
 endfunction
 " }}}
 
@@ -151,18 +150,17 @@ endfunction
 " plugin management (https://github.com/junegunn/vim-plug) {{{
 call plug#begin('~/.local/share/nvim/plugged')
   " workflow
-  Plug 'preservim/nerdtree'
-  Plug 'qpkorr/vim-bufkill'
+  Plug 'ratmav/nerdtree'
+  Plug 'ratmav/vim-bufkill'
   Plug 'ratmav/marv'
   Plug 'ratmav/syfe'
-  Plug 'ratmav/vim-task'
-  Plug 'szw/vim-maximizer'
+  Plug 'ratmav/vim-maximizer'
   Plug 'tpope/vim-fugitive'
-  Plug 'vim-ctrlspace/vim-ctrlspace'
+  Plug 'ratmav/vim-ctrlspace'
 
   " display
   Plug 'airblade/vim-gitgutter'
-  Plug 'junegunn/rainbow_parentheses.vim'
+  Plug 'ratmav/rainbow_parentheses.vim'
   Plug 'morhetz/gruvbox'
   Plug 'vim-airline/vim-airline'
   Plug 'ratmav/vim-airline-system'
