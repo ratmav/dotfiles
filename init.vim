@@ -163,16 +163,3 @@ nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 
 " syfe:
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
-
-" desk {{{
-nnoremap <silent><C-d>n :execute 'DeskBookNew'<CR>
-nnoremap <silent><C-d>l :execute 'DeskBookNext'<CR>
-nnoremap <silent><C-d>h :execute 'DeskBookPrevious'<CR>
-nnoremap <silent><C-d>q :execute 'DeskBookQuit'<CR>
-nnoremap <silent><C-d>b :execute 'DeskBookRebind'<CR>
-nnoremap <silent><C-d>r :execute 'DeskBookRename'<CR>
-nnoremap <silent><C-d>t :execute 'DeskBookTreeToggle'<CR>
-nnoremap <silent><C-d>c :execute 'DeskRefreshCache'<CR>
-nnoremap <silent><C-d>s :execute 'DeskSearchBookNames'<CR>
-nnoremap <silent><C-d>p :execute 'DeskSearchBookPageNames'<CR>
-" }}}
