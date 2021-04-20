@@ -27,7 +27,7 @@ debian_dependencies() {
 
   packages=("apt-transport-https" "build-essential" "ca-certificates" "clamav"
     "curl" "dirmngr" "gawk" "git" "gpg" "gnupg" "lsb-release" "neovim"
-    "shellcheck" "software-properties-common")
+    "shellcheck" "software-properties-common" "htop" "pandoc")
   for package in "${packages[@]}"; do
     if dpkg -l | grep -w $package > /dev/null 2>&1; then
       msg "${OK}debian_dependencies: $package already installed."
