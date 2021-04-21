@@ -13,7 +13,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/vim-ctrlspace'
 
   " display
-  Plug 'lifepillar/vim-solarized8'
+  Plug 'morhetz/gruvbox'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'airblade/vim-gitgutter'
   Plug 'ratmav/rainbow_parentheses.vim'
@@ -93,8 +93,7 @@ endif
 
 " colors
 set termguicolors
-set background=dark
-colorscheme solarized8
+colorscheme gruvbox
 syntax on
 
 " highlight current line:
