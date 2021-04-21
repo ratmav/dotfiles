@@ -12,7 +12,7 @@ macos_brew_packages() {
   # librsvg python are used with pandoc.
   PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
     "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
-    "yq" "gpg" "git" "gawk" "htop")
+    "yq" "gpg" "git" "gawk" "htop" "hyper")
   for package in "${PACKAGES[@]}"; do
     if brew list | grep $package > /dev/null 2>&1; then
       msg "${WARN}macos_brew_packages: $package already installed."
