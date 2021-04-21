@@ -9,6 +9,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/marv'
   Plug 'ratmav/syfe'
   Plug 'ratmav/vim-maximizer'
+  Plug 'ratmav/winresizer.vim'
   Plug 'tpope/vim-fugitive'
   Plug 'ratmav/vim-ctrlspace'
 
@@ -129,9 +130,10 @@ augroup END
 let mapleader=" "
 
 " reload config:
-nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
+nnoremap <silent><Leader>c :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
 
 " window management:
+let g:winresizer_start_key = '<Leader>r'
 nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
 " buffer management {{{
