@@ -30,9 +30,8 @@ posix_node() {
     quiet "asdf install nodejs latest"
     quiet "asdf global nodejs latest"
     quiet "npm install --global npm@latest"
-    quiet "npm install --global yarn"
     quiet "asdf reshim"
-    msg "${OK}posix_node: installed latest nodejs, npm, and yarn."
+    msg "${OK}posix_node: installed latest nodejs."
   fi
 }
 
