@@ -12,7 +12,7 @@ macos_brew_packages() {
   # librsvg python are used with pandoc.
   PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
     "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
-    "yq" "gpg" "git" "gawk" "htop" "hyper")
+    "yq" "gpg" "git" "gawk" "htop")
   for package in "${PACKAGES[@]}"; do
     if brew list | grep $package > /dev/null 2>&1; then
       msg "${WARN}macos_brew_packages: $package already installed."
@@ -56,7 +56,8 @@ main_macos() {
     macos_brew_bash
 
     msg "${WARN}main_macos: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
-    msg "${WARN}main_debian: vv needs to be built from git@github.com:ratmav/vv.git"
+    msg "${WARN}main_macos: cutter needs manual installation from https://cutter.re/download/"
+    msg "${WARN}main_macos: neovide needs to be downloaded from https://github.com/Kethku/neovide/actions"
   else
     die "main_macos: unsupported operating system."
   fi

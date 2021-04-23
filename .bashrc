@@ -9,6 +9,9 @@ export CLICOLOR=1
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
 
+# rust
+source "$HOME/.cargo/env"
+
 alias asdf-go-reshim='asdf reshim golang && export GOV=$(asdf current golang | sed  '\''s/ *(set by .*)//g'\'') && export GOROOT="$ASDFINSTALLS/golang/$GOV/go/"'
 
 # macos.

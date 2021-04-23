@@ -85,13 +85,6 @@ let g:omni_sql_no_default_maps = 1
 
 " display {{{
 
-" gui (vv) {{{
-if exists("g:vv")
-  VVset fontsize=14
-  VVset fontfamily="SourceCodeProforPowerline-Regular"
-endif
-" }}}
-
 " colors
 set termguicolors
 colorscheme gruvbox
