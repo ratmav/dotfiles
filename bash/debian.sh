@@ -1,27 +1,5 @@
 #!/usr/bin/env/bash
 
-debian_brave() {
-  if dpkg -l | grep -w brave-browser > /dev/null 2>&1; then
-    msg "${OK}debian_brave: brave-browser already installed."
-  else
-    msg "${WARN}debian_brave: installing brave-browser."
-    debian_dependencies
-
-    curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc\
-      | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-    msg "${OK}debian_brave: gpg key added."
-
-    sudo rm -f /etc/apt/sources.list.d/brave-browser-release.list
-    sudo bash -c 'echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"\
-      >| /etc/apt/sources.list.d/brave-browser-release.list'
-    msg "${OK}debian_brave: configured apt."
-
-    quiet "sudo apt-get update"
-    quiet "sudo apt-get install brave-browser -y"
-    msg "${OK}debian_brave: installed brave-browser."
-  fi
-}
-
 debian_dependencies() {
   debian_update
 
@@ -152,10 +130,10 @@ debian_virtualbox() {
 main_debian() {
   if grep -q "Debian" /etc/issue; then
     debian_etcher
-    debian_brave
     debian_signal
     debian_docker
     debian_virtualbox
+    # TODO: firefox developer edition. is there an apt repo?
 
     msg "${WARN}main_debian: docker-compose needs manual installation from https://github.com/docker/compose/releases/latest"
     msg "${WARN}main_debian: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
