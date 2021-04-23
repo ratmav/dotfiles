@@ -10,15 +10,6 @@ posix_asdf() {
   fi
 }
 
-posix_fonts() {
-  git clone https://github.com/powerline/fonts.git --depth=1 > /dev/null 2>&1
-  cd fonts
-  ./install.sh > /dev/null 2>&1
-  cd ..
-  rm -rf fonts
-  msg "${OK}posix_fonts: installed powerline fonts."
-}
-
 posix_git() {
   git config --global core.excludesfile "$HOME/.gitignore_global"
   msg "${OK}posix_git: configured global gitignore."
@@ -63,12 +54,16 @@ posix_nvim() {
 }
 
 posix_symlinks() {
-  LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".hyper.js")
+  LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
     ln -s $PWD/$link $HOME/$link
     msg "${OK}posix_symlinks: symlinked $link"
   done
+}
+
+posix_rust() {
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --quiet
 }
 
 main_posix() {
@@ -77,5 +72,5 @@ main_posix() {
   posix_nvim
   posix_asdf
   posix_node
-  posix_fonts
+  posix_rust
 }
