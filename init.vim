@@ -85,6 +85,10 @@ let g:omni_sql_no_default_maps = 1
 
 " display {{{
 
+" gui (neovide)
+
+let g:neovide_cursor_vfx_mode = "railgun"
+
 " colors
 set termguicolors
 colorscheme gruvbox
