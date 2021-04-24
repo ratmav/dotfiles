@@ -14,7 +14,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/vim-ctrlspace'
 
   " display
-  Plug 'morhetz/gruvbox'
+  Plug 'lifepillar/vim-solarized8'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'airblade/vim-gitgutter'
   Plug 'ratmav/rainbow_parentheses.vim'
@@ -87,7 +87,8 @@ let g:omni_sql_no_default_maps = 1
 
 " colors
 set termguicolors
-colorscheme gruvbox
+set background=dark
+colorscheme solarized8
 syntax on
 
 " highlight current line:
