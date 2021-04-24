@@ -74,10 +74,12 @@ debian_etcher() {
 
 debian_firefox_developer_edition() {
   if grep -q "Debian" /etc/issue; then
+    quiet "sudo apt-get remove -y firefox"
     rm -rf ./firefox
     ffde_url="https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US"
     curl --location $ffde_url  | tar --extract --verbose --preserve-permissions --bzip2
-    # TODO: move to /usr/local/bin or wherever is in path and writable w/o sudo.
+    sudo mv ./firefox /opt/
+    sudo ln -s /opt/firefox/firefox /usr/bin/firefox
   else
     die "debian_firefox_developer_edition: unsupported operating system."
   fi
