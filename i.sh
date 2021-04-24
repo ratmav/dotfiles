@@ -7,6 +7,7 @@ trap terminated SIGTERM
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
+source ./bash/personal.sh
 source ./bash/posix.sh
 source ./bash/macos.sh
 source ./bash/debian.sh
