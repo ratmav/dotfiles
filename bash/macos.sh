@@ -1,50 +1,66 @@
 #!/usr/bin/env bash
 
 macos_brew_bash() {
-  LINE='/usr/local/bin/bash'
-  FILE='/etc/shells'
-  grep -qF -- "$LINE" "$FILE" || echo "$LINE" | sudo tee -a "$FILE" > /dev/null
-  chsh -s /usr/local/bin/bash
-  msg "${OK}macos_brew_bash: configured macos to use homebrew's bash."
+  if [[ $(uname) == "Darwin" ]]; then
+    LINE='/usr/local/bin/bash'
+    FILE='/etc/shells'
+    grep -qF -- "$LINE" "$FILE" || echo "$LINE" | sudo tee -a "$FILE" > /dev/null
+    chsh -s /usr/local/bin/bash
+    msg "${OK}macos_brew_bash: configured macos to use homebrew's bash."
+  else
+    die "macos_brew_bash: unsupported operating system."
+  fi
 }
 
 macos_brew_packages() {
-  # librsvg python are used with pandoc.
-  PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
-    "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
-    "yq" "gpg" "git" "gawk" "htop")
-  for package in "${PACKAGES[@]}"; do
-    if brew list | grep $package > /dev/null 2>&1; then
-      msg "${WARN}macos_brew_packages: $package already installed."
-    else
-      quiet "brew install $package"
-      msg "${OK}macos_brew_packages: installed $package via homebrew."
-    fi
-  done
+  if [[ $(uname) == "Darwin" ]]; then
+    # librsvg python are used with pandoc.
+    PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
+      "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
+      "yq" "gpg" "git" "gawk" "htop")
+    for package in "${PACKAGES[@]}"; do
+      if brew list | grep $package > /dev/null 2>&1; then
+        msg "${WARN}macos_brew_packages: $package already installed."
+      else
+        quiet "brew install $package"
+        msg "${OK}macos_brew_packages: installed $package via homebrew."
+      fi
+    done
+  else
+    die "macos_brew_packages: unsupported operating system."
+  fi
 }
 
 macos_cask_packages() {
-  # basictex is used with pandoc.
-  PACKAGES=("basictex" "virtualbox" "vagrant" "docker" "signal"
-    "balenaetcher" "firefox-developer-edition")
-  for package in "${PACKAGES[@]}"; do
-    if brew list --cask | grep $package > /dev/null 2>&1; then
-      msg "${WARN}macos_cask_packages: $package already installed."
-    else
-      quiet "brew install --cask $package"
-      msg "${OK}macos_cask_packages: installed $package via homebrew cask."
-    fi
-  done
+  if [[ $(uname) == "Darwin" ]]; then
+    # basictex is used with pandoc.
+    PACKAGES=("basictex" "virtualbox" "vagrant" "docker" "signal"
+      "balenaetcher" "firefox-developer-edition")
+    for package in "${PACKAGES[@]}"; do
+      if brew list --cask | grep $package > /dev/null 2>&1; then
+        msg "${WARN}macos_cask_packages: $package already installed."
+      else
+        quiet "brew install --cask $package"
+        msg "${OK}macos_cask_packages: installed $package via homebrew cask."
+      fi
+    done
+  else
+    die "macos_cask_packages: unsupported operating system."
+  fi
 }
 
 macos_homebrew() {
-  if type brew > /dev/null 2>&1; then
-    msg "${WARN}macos_homebrew: homebrew already installed."
+  if [[ $(uname) == "Darwin" ]]; then
+    if type brew > /dev/null 2>&1; then
+      msg "${WARN}macos_homebrew: homebrew already installed."
+    else
+      URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
+      /usr/bin/ruby -e "$(curl -fsSL $URL)"
+      brew tap homebrew/cask-versions
+      msg "${OK}macos_homebrew: installed homebrew."
+    fi
   else
-    URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
-    /usr/bin/ruby -e "$(curl -fsSL $URL)"
-    brew tap homebrew/cask-versions
-    msg "${OK}macos_homebrew: installed homebrew."
+    die "macos_homebrew: unsupported operating system."
   fi
 }
 
