@@ -9,7 +9,7 @@ debian_dependencies() {
       "shellcheck" "software-properties-common" "htop" "pandoc")
     for package in "${packages[@]}"; do
       if dpkg -l | grep -w $package > /dev/null 2>&1; then
-        msg "${OK}debian_dependencies: $package already installed."
+        msg "${WARN}debian_dependencies: $package already installed."
       else
         quiet "sudo apt-get install -y $package"
         msg "${OK}debian_dependencies: installed $package."
@@ -23,9 +23,8 @@ debian_dependencies() {
 debian_docker() {
   if grep -q "Debian" /etc/issue; then
     if dpkg -l | grep -w docker > /dev/null 2>&1; then
-      msg "${OK}debian_docker: docker already installed."
+      msg "${WARN}debian_docker: docker already installed."
     else
-      msg "${WARN}debian_docker: installing docker."
       debian_dependencies
 
       rm -f docker-archive-keyring.gpg
@@ -51,9 +50,8 @@ debian_docker() {
 debian_etcher() {
   if grep -q "Debian" /etc/issue; then
     if dpkg -l | grep -w balena-etcher-electron > /dev/null 2>&1; then
-      msg "${OK}debian_etcher: etcher already installed."
+      msg "${WARN}debian_etcher: etcher already installed."
     else
-      msg "${WARN}debian_etcher: installing etcher."
       debian_dependencies
 
       sudo rm -f /etc/apt/sources.list.d/balenda-etcher.list
@@ -72,18 +70,6 @@ debian_etcher() {
   fi
 }
 
-debian_firefox_developer_edition() {
-  if grep -q "Debian" /etc/issue; then
-    quiet "sudo apt-get remove -y firefox"
-    rm -rf ./firefox
-    ffde_url="https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US"
-    curl --location $ffde_url  | tar --extract --verbose --preserve-permissions --bzip2
-    sudo mv ./firefox /opt/
-    sudo ln -s /opt/firefox/firefox /usr/bin/firefox
-  else
-    die "debian_firefox_developer_edition: unsupported operating system."
-  fi
-}
 
 debian_update() {
   if grep -q "Debian" /etc/issue; then
@@ -98,9 +84,8 @@ debian_update() {
 debian_vagrant() {
   if grep -q "Debian" /etc/issue; then
     if dpkg -l | grep -w vagrant > /dev/null 2>&1; then
-      msg "${OK}debian_vagrant: vagrant already installed."
+      msg "${WARN}debian_vagrant: vagrant already installed."
     else
-      msg "${WARN}debian_vagrant: installing vagrant."
       debian_dependencies
 
       curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -121,9 +106,8 @@ debian_vagrant() {
 debian_virtualbox() {
   if grep -q "Debian" /etc/issue; then
     if dpkg -l | grep -w virtualbox-6.1 > /dev/null 2>&1; then
-      msg "${OK}debian_virtualbox: virtualbox already installed."
+      msg "${WARN}debian_virtualbox: virtualbox already installed."
     else
-      msg "${WARN}debian_virtualbox: installing virtualbox."
       debian_dependencies
 
       curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
