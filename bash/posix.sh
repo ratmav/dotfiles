@@ -2,11 +2,12 @@
 
 posix_asdf() {
   if [ -f "$HOME/.asdf/asdf.sh" ]; then
-    msg "${OK}posix_asdf: asdf installed."
+    msg "${WARN}posix_asdf: asdf installed."
   else
     rm -rf $HOME/.asdf
     git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf > /dev/null 2>&1
-    msg "${WARN}posix_asdf: asdf installed; sourcing ~/.bashrc may be required."
+    msg "${OK}posix_asdf: asdf installed."
+    msg "${WARN}posix_asdf: sourcing ~/.bashrc may be required."
   fi
 }
 
