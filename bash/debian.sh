@@ -47,6 +47,24 @@ debian_docker() {
   fi
 }
 
+debian_firefox_developer_edition() {
+  if grep -q "Debian" /etc/issue; then
+    if [ -f "/opt/firefox/firefox"]; then
+      msg "${WARN}debian_firefox_developer_edition: firefox developer edition already installed."
+    else
+      quiet "sudo apt-get remove -y firefox"
+      rm -rf ./firefox
+      ffde_url="https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US"
+      curl --location $ffde_url  | tar --extract --verbose --preserve-permissions --bzip2
+      sudo mv ./firefox /opt/
+      sudo ln -s /opt/firefox/firefox /usr/bin/firefox
+      msg "${OK}debian_firefox_developer_edition: firefox devloper edition installed."
+    fi
+  else
+    die "debian_firefox_developer_edition: unsupported operating system."
+  fi
+}
+
 debian_etcher() {
   if grep -q "Debian" /etc/issue; then
     if dpkg -l | grep -w balena-etcher-electron > /dev/null 2>&1; then
