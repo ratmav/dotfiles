@@ -33,7 +33,7 @@ macos_brew_packages() {
 macos_cask_packages() {
   if [[ $(uname) == "Darwin" ]]; then
     # basictex is used with pandoc.
-    PACKAGES=("basictex")
+    PACKAGES=("basictex brave-browser hyper")
     for package in "${PACKAGES[@]}"; do
       if brew list --cask | grep $package > /dev/null 2>&1; then
         msg "${WARN}macos_cask_packages: $package already installed."
