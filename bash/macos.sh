@@ -34,8 +34,7 @@ macos_brew_packages() {
 macos_cask_packages() {
   if [[ $(uname) == "Darwin" ]]; then
     # basictex is used with pandoc.
-    PACKAGES=("basictex" "virtualbox" "vagrant" "docker" "balenaetcher"
-      "firefox-developer-edition")
+    PACKAGES=("basictex" "virtualbox" "vagrant" "docker")
     for package in "${PACKAGES[@]}"; do
       if brew list --cask | grep $package > /dev/null 2>&1; then
         msg "${WARN}macos_cask_packages: $package already installed."
@@ -71,10 +70,6 @@ main_macos() {
     macos_cask_packages
     macos_brew_bash
 
-    msg "${WARN}main_macos: uhk agent needs manual installation from https://github.com/UltimateHackingKeyboard/agent/releases/latest"
-    msg "${WARN}main_macos: cutter needs manual installation from https://cutter.re/download/"
-    msg "${WARN}main_macos: neovide needs to be downloaded from https://github.com/Kethku/neovide/actions"
-  else
     die "main_macos: unsupported operating system."
   fi
 }
