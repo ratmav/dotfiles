@@ -63,22 +63,3 @@ Available flags (choose one):
 note:
   * a shell reload/relogin is likely required after bootstrapping.
 ```
-
-## development
-
-### vagrant
-
-vagrant is used to provide clean, reusable, development environments. manage debian guests with the following commands; refer to the [vagrant cli docs](https://www.vagrantup.com/docs/cli) for more information:
-
-```shell
-$ vagrant up $VAGRANT_GUEST
-$ vagrant ssh $VAGRANT_GUEST # source is mounted at /home/vagrant/dotfiles
-$ vagrant snapshot $VAGRANT_GUEST $SNAPSHOT_NAME
-$ vagrant $VAGRANT_GUEST destroy
-```
-
-#### `$VAGRANT_GUEST`
-
-available guests:
-
-* debian buster
