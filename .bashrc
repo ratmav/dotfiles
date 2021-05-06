@@ -51,3 +51,4 @@ fi
 if [ -f ~/.misc_envars ]; then
     . ~/.misc_envars
 fi
+. "$HOME/.cargo/env"

@@ -9,14 +9,14 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source ./bash/posix.sh
 source ./bash/macos.sh
-source ./bash/debian.sh
+source ./bash/fedora.sh
 
 bootstrap() {
   if [[ $(uname) == "Darwin" ]]; then
     main_macos
     main_posix
-  elif grep -q "Debian" /etc/issue; then
-    main_debian
+  elif grep -q "Fedora" /etc/system-release; then
+    main_fedora
     main_posix
   else
     die "bootstrap: unsupported operating system."
