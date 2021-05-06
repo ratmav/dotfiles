@@ -16,8 +16,7 @@ macos_brew_packages() {
   if [[ $(uname) == "Darwin" ]]; then
     # librsvg and python are used with pandoc.
     PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
-      "clamav" "bash" "shellcheck" "tree" "grep" "pandoc" "librsvg" "python" "jq"
-      "yq" "gpg" "git" "gawk" "htop")
+      "bash" "grep" "pandoc" "librsvg" "python" "gpg" "git")
     for package in "${PACKAGES[@]}"; do
       if brew list | grep $package > /dev/null 2>&1; then
         msg "${WARN}macos_brew_packages: $package already installed."
@@ -34,7 +33,7 @@ macos_brew_packages() {
 macos_cask_packages() {
   if [[ $(uname) == "Darwin" ]]; then
     # basictex is used with pandoc.
-    PACKAGES=("basictex" "virtualbox" "vagrant" "docker")
+    PACKAGES=("basictex")
     for package in "${PACKAGES[@]}"; do
       if brew list --cask | grep $package > /dev/null 2>&1; then
         msg "${WARN}macos_cask_packages: $package already installed."
