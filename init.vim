@@ -14,7 +14,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/vim-ctrlspace'
 
   " display
-  Plug 'arcticicestudio/nord-vim'
+  Plug 'morhetz/gruvbox'
   Plug 'airblade/vim-gitgutter'
   Plug 'ratmav/rainbow_parentheses.vim'
   Plug 'vim-airline/vim-airline'
@@ -85,7 +85,8 @@ let g:omni_sql_no_default_maps = 1
 " display {{{
 
 " colors
-colorscheme nord
+set termguicolors
+colorscheme gruvbox
 syntax on
 
 " highlight current line:
