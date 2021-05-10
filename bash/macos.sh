@@ -68,7 +68,5 @@ main_macos() {
     macos_brew_packages
     macos_cask_packages
     macos_brew_bash
-
-    die "main_macos: unsupported operating system."
   fi
 }
