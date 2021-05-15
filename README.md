@@ -3,19 +3,6 @@ dotfiles
 
 personal development environment on posix-compliant systems.
 
-## init
-
-```shell
-$ mkdir ~/.ssh
-$ cp ssh_key.pub ~/.ssh/ssh_key.pub
-$ cp ssh_key ~/.ssh/ssh_key
-$ chmod 600 ~/.ssh/ssh_key
-$ eval $(ssh-agent)
-$ ssh-add ~/.ssh/ssh_key
-$ mkdir ~/Source && cd ~/Source
-$ git clone ssh://git@github.com/ratmav/dotfiles.git
-```
-
 ## use
 
 ```shell
