@@ -7,4 +7,5 @@ return {
     {weight="Medium"}
   ),
   font_size = 16,
+  warn_about_missing_glyphs = false,
 }
