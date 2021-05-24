@@ -11,15 +11,6 @@ posix_asdf() {
   fi
 }
 
-posix_fonts() {
-  git clone https://github.com/powerline/fonts.git --depth=1 > /dev/null 2>&1
-  cd fonts
-  ./install.sh > /dev/null 2>&1
-  cd ..
-  rm -rf fonts
-  msg "${OK}posix_fonts: installed powerline fonts."
-}
-
 posix_git() {
   git config --global core.excludesfile "$HOME/.gitignore_global"
   msg "${OK}posix_git: configured global gitignore."
@@ -61,5 +52,4 @@ main_posix() {
   posix_git
   posix_nvim
   posix_asdf
-  posix_fonts
 }
