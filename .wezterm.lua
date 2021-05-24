@@ -16,19 +16,16 @@ return {
   keys = {
     {
       key="n",
-      --mods="CTRL|SHIFT",
       mods="LEADER",
       action=wezterm.action{SpawnTab="DefaultDomain"},
     },
     {
       key="h",
-      --mods="CTRL|SHIFT",
       mods="LEADER",
       action=wezterm.action{ActivateTabRelative=-1},
     },
     {
       key="l",
-      --mods="CTRL|SHIFT",
       mods="LEADER",
       action=wezterm.action{ActivateTabRelative=1},
     },
