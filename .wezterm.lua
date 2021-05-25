@@ -8,7 +8,7 @@ return {
 
   -- behavior
   disable_default_key_bindings = true,
-  leader = { key="Control", mods="SHIFT" },
+  leader = { key="e", mods="CTRL" },
   keys = {
     {
       key="n",
