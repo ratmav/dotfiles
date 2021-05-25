@@ -117,14 +117,8 @@ augroup END
 
 " bindings {{{
 
-" use space as leader:
-let mapleader=" "
-
-" reload config:
-nnoremap <silent><Leader>c :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
-
 " window management:
-let g:winresizer_start_key = '<Leader>r'
+let g:winresizer_start_key = '<silent><C-w>r'
 nnoremap <silent><C-w>z :MaximizerToggle<CR>
 
 " buffer management {{{
@@ -151,6 +145,14 @@ nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 " }}}
 
+" plugins (leader-driven)
+
+" use space as leader:
+let mapleader=" "
+
+" reload config:
+nnoremap <silent><Leader>c :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
+
 " marv {{{
 nnoremap <silent><Leader>h :execute 'MarvHTML'<CR>
 nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
@@ -158,3 +160,6 @@ nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 
 " syfe:
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
+
+" nerdtree:
+nnoremap <silent><Leader>n :NERDTreeToggle<CR>
