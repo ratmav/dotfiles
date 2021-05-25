@@ -127,7 +127,6 @@ nnoremap <silent><C-b>l :bp<CR>
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 " }}}
-
 " embedded terminal management {{{
 nnoremap <silent><C-t> :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
