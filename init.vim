@@ -3,40 +3,28 @@
 " plugin management (https://github.com/junegunn/vim-plug) {{{
 call plug#begin('~/.local/share/nvim/plugged')
   " workflow
-  Plug 'ratmav/desk'
-  Plug 'ratmav/nerdtree'
-  Plug 'ratmav/vim-bufkill'
+  Plug 'ratmav/ctrlp.vim'
   Plug 'ratmav/marv'
+  Plug 'ratmav/nerdtree'
   Plug 'ratmav/syfe'
+  Plug 'ratmav/vim-bufkill'
   Plug 'ratmav/vim-maximizer'
   Plug 'ratmav/winresizer.vim'
   Plug 'tpope/vim-fugitive'
-  Plug 'ratmav/vim-ctrlspace'
 
   " display
-  Plug 'morhetz/gruvbox'
   Plug 'airblade/vim-gitgutter'
+  Plug 'morhetz/gruvbox'
   Plug 'ratmav/rainbow_parentheses.vim'
-  Plug 'vim-airline/vim-airline'
   Plug 'ratmav/vim-airline-system'
-
-  " misc
-  Plug 'PProvost/vim-ps1' " TODO: get syntax highlighting into syfe.
-  Plug 'hashivim/vim-hashicorp-tools' " TODO: get syntax highlighting into syfe.
+  Plug 'vim-airline/vim-airline'
 call plug#end()
 " }}}
 
 " vim-airline {{{
-let g:airline#extensions#tabline#enabled = 1
 let g:airline_section_b = "%{fnamemodify(getcwd(), ':t\')} %{airline#extensions#branch#get_head()}"
 let g:airline_section_x = "l(%{line('.')}/%{line('$')}) c(%{virtcol('.')})"
 let g:airline_section_y = "%{&fileformat}[%{&encoding}]"
-" }}}
-
-" desk {{{
-set nocompatible
-set hidden
-set encoding=utf-8
 " }}}
 
 " rainbow parentheses {{{
@@ -46,6 +34,15 @@ augroup rainbow_parentheses
   autocmd BufEnter * RainbowParentheses
 augroup END
 " }}}
+
+" ctrl-p {{{
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_max_files = 0
+let g:ctrlp_custom_ignore = '\v\.git|node_modules'
+" }}}
+
+" nerdtree:
+let g:NERDTreeShowHidden = 1
 
 " }}}
 
@@ -127,6 +124,7 @@ nnoremap <silent><C-b>l :bp<CR>
 nnoremap <silent><C-b>r :edit!<bar>:echo "refreshed buffer"<CR>
 nnoremap <silent><C-b>q :BD!<CR>
 " }}}
+
 " embedded terminal management {{{
 nnoremap <silent><C-t> :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -144,21 +142,31 @@ nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 " }}}
 
-" plugins (leader-driven)
+" plugins (leader-driven) {{{
 
 " use space as leader:
 let mapleader=" "
 
+" ctrl-p {{{
+nnoremap <Leader>f :CtrlP .<CR>
+nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>c :CtrlPClearCache<CR>
+" }}}
+
 " reload config:
-nnoremap <silent><Leader>c :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
+nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
 
 " marv {{{
 nnoremap <silent><Leader>h :execute 'MarvHTML'<CR>
 nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 " }}}
 
+" nerdtree:
+nnoremap <silent><Leader>n :NERDTreeToggle<CR>
+
 " syfe:
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
-" nerdtree:
-nnoremap <silent><Leader>n :NERDTreeToggle<CR>
+" }}}
+
+" }}}
