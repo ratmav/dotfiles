@@ -20,10 +20,10 @@
   "moduleConfigurations": [],
   "keymaps": [
     {
-      "isDefault": true,
-      "abbreviation": "MAC",
-      "name": "QWERTY for Mac",
-      "description": "QWERTY is the mother of all layouts. This is the Mac version.",
+      "isDefault": false,
+      "abbreviation": "GDE",
+      "name": "QWERTY for GNOME",
+      "description": "QWERTY is the mother of all layouts. This is the PC version.",
       "layers": [
         {
           "modules": [
@@ -616,7 +616,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 0
+                  "macroIndex": 1
                 },
                 null,
                 null,
@@ -655,7 +655,7 @@
                 null,
                 {
                   "keyActionType": "switchKeymap",
-                  "keymapAbbreviation": "PC"
+                  "keymapAbbreviation": "MAC"
                 },
                 {
                   "keyActionType": "keystroke",
@@ -825,10 +825,10 @@
       ]
     },
     {
-      "isDefault": false,
-      "abbreviation": "PC",
-      "name": "QWERTY for PC",
-      "description": "QWERTY is the mother of all layouts. This is the PC version.",
+      "isDefault": true,
+      "abbreviation": "MAC",
+      "name": "QWERTY for Mac",
+      "description": "QWERTY is the mother of all layouts. This is the Mac version.",
       "layers": [
         {
           "modules": [
@@ -1414,14 +1414,14 @@
                 null,
                 null,
                 {
-                  "keyActionType": "playMacro",
-                  "macroIndex": 6
-                },
-                null,
-                {
                   "keyActionType": "keystroke",
                   "type": "media",
                   "scancode": 226
+                },
+                null,
+                {
+                  "keyActionType": "playMacro",
+                  "macroIndex": 0
                 },
                 null,
                 null,
@@ -1431,7 +1431,10 @@
                   "layer": "fn",
                   "switchLayerMode": "holdAndDoubleTapToggle"
                 },
-                null
+                {
+                  "keyActionType": "playMacro",
+                  "macroIndex": 6
+                }
               ]
             },
             {
@@ -1457,7 +1460,7 @@
                 null,
                 {
                   "keyActionType": "switchKeymap",
-                  "keymapAbbreviation": "MAC"
+                  "keymapAbbreviation": "GDE"
                 },
                 {
                   "keyActionType": "keystroke",
@@ -1649,6 +1652,18 @@
     {
       "isLooped": false,
       "isPrivate": true,
+      "name": "Launcher GNOME",
+      "macroActions": [
+        {
+          "macroActionType": "key",
+          "action": "tap",
+          "modifierMask": 8
+        }
+      ]
+    },
+    {
+      "isLooped": false,
+      "isPrivate": true,
       "name": "Launcher macOS",
       "macroActions": [
         {
@@ -1663,11 +1678,13 @@
     {
       "isLooped": false,
       "isPrivate": true,
-      "name": "Launcher Windows",
+      "name": "Lock GNOME",
       "macroActions": [
         {
           "macroActionType": "key",
           "action": "tap",
+          "type": "basic",
+          "scancode": 15,
           "modifierMask": 8
         }
       ]
@@ -1689,14 +1706,14 @@
     {
       "isLooped": false,
       "isPrivate": true,
-      "name": "Lock Windows",
+      "name": "Screenshot GNOME",
       "macroActions": [
         {
           "macroActionType": "key",
           "action": "tap",
           "type": "basic",
-          "scancode": 15,
-          "modifierMask": 8
+          "scancode": 70,
+          "modifierMask": 3
         }
       ]
     },
@@ -1710,20 +1727,6 @@
           "action": "tap",
           "type": "basic",
           "scancode": 33,
-          "modifierMask": 10
-        }
-      ]
-    },
-    {
-      "isLooped": false,
-      "isPrivate": true,
-      "name": "Screenshot Windows",
-      "macroActions": [
-        {
-          "macroActionType": "key",
-          "action": "tap",
-          "type": "basic",
-          "scancode": 22,
           "modifierMask": 10
         }
       ]
