@@ -6,7 +6,7 @@ posix_asdf() {
   else
     rm -rf $HOME/.asdf
     git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf > /dev/null 2>&1
-    msg "${OK}posix_asdf: asdf installed."
+    msg "${OK}${FUNCNAME[0]}: asdf installed."
     msg "${WARN}${FUNCNAME[0]}: sourcing ~/.bashrc may be required."
   fi
 }

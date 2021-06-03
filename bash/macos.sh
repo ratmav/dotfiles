@@ -6,9 +6,9 @@ macos_brew_bash() {
     FILE='/etc/shells'
     grep -qF -- "$LINE" "$FILE" || echo "$LINE" | sudo tee -a "$FILE" > /dev/null
     chsh -s /usr/local/bin/bash
-    msg "${OK}macos_brew_bash: configured macos to use homebrew's bash."
+    msg "${OK}${FUNCNAME[0]}: configured macos to use homebrew's bash."
   else
-    die "macos_brew_bash: unsupported operating system."
+    die "${FUNCNAME[0]}: unsupported operating system."
   fi
 }
 
@@ -19,28 +19,28 @@ macos_brew_packages() {
       "bash" "grep" "pandoc" "librsvg" "python" "gpg" "git")
     for package in "${PACKAGES[@]}"; do
       if brew list | grep $package > /dev/null 2>&1; then
-        msg "${WARN}macos_brew_packages: $package already installed."
+        msg "${WARN}${FUNCNAME[0]}: $package already installed."
       else
         quiet "brew install $package"
-        msg "${OK}macos_brew_packages: installed $package via homebrew."
+        msg "${OK}${FUNCNAME[0]}: installed $package via homebrew."
       fi
     done
   else
-    die "macos_brew_packages: unsupported operating system."
+    die "${FUNCNAME[0]}: unsupported operating system."
   fi
 }
 
 macos_brew_wezterm() {
   if [[ $(uname) == "Darwin" ]]; then
     if brew list | grep wezterm > /dev/null 2>&1; then
-      msg "${WARN}macos_brew_wezterm: wezterm already installed."
+      msg "${WARN}${FUNCNAME[0]}: wezterm already installed."
     else
       quiet "brew tap wez/wezterm"
       quiet "brew install wezterm"
-      msg "${OK}macos_brew_wezterm: installed wezterm via homebrew cask."
+      msg "${OK}${FUNCNAME[0]}: installed wezterm via homebrew cask."
     fi
   else
-    die "macos_brew_wezterm: unsupported operating system."
+    die "${FUNCNAME[0]}: unsupported operating system."
   fi
 }
 
@@ -50,29 +50,29 @@ macos_cask_packages() {
     PACKAGES=("basictex")
     for package in "${PACKAGES[@]}"; do
       if brew list --cask | grep $package > /dev/null 2>&1; then
-        msg "${WARN}macos_cask_packages: $package already installed."
+        msg "${WARN}${FUNCNAME[0]}: $package already installed."
       else
         quiet "brew install --cask $package"
-        msg "${OK}macos_cask_packages: installed $package via homebrew cask."
+        msg "${OK}${FUNCNAME[0]}: installed $package via homebrew cask."
       fi
     done
   else
-    die "macos_cask_packages: unsupported operating system."
+    die "${FUNCNAME[0]}: unsupported operating system."
   fi
 }
 
 macos_homebrew() {
   if [[ $(uname) == "Darwin" ]]; then
     if type brew > /dev/null 2>&1; then
-      msg "${WARN}macos_homebrew: homebrew already installed."
+      msg "${WARN}${FUNCNAME[0]}: homebrew already installed."
     else
       URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
       /usr/bin/ruby -e "$(curl -fsSL $URL)"
       brew tap homebrew/cask-versions
-      msg "${OK}macos_homebrew: installed homebrew."
+      msg "${OK}${FUNCNAME[0]}: installed homebrew."
     fi
   else
-    die "macos_homebrew: unsupported operating system."
+    die "${FUNCNAME[0]}: unsupported operating system."
   fi
 }
 
