@@ -10,16 +10,21 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 source ./bash/posix.sh
 source ./bash/macos.sh
 source ./bash/fedora.sh
+source ./bash/windows.sh
 
 bootstrap() {
   if [[ $(uname) == "Darwin" ]]; then
     main_macos
     main_posix
-  elif grep -q "Fedora" /etc/system-release; then
-    main_fedora
-    main_posix
+  elif [[ -f /etc/system-release ]]; then
+    if grep -q "Fedora" /etc/system-release; then
+      main_fedora
+      main_posix
+    fi
+  elif [[ $OSTYPE == "msys" ]]; then
+    main_windows
   else
-    die "bootstrap: unsupported operating system."
+    die "bootstrap: unsupported platform."
   fi
 }
 
@@ -136,7 +141,7 @@ usage() {
 
 Usage: $(basename "${BASH_SOURCE[0]}") [--help] [--bootstrap] [--call]
 
-personal development environment on posix-compliant systems.
+personal development environment on posix-like platforms.
 
 Available flags (choose one):
 

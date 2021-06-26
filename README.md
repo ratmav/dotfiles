@@ -1,10 +1,6 @@
 dotfiles
 ========
 
-personal development environment on posix-compliant systems.
-
-## use
-
 ```shell
 $ cd ~/Source/dotfiles && ./i.sh
 
@@ -39,7 +35,7 @@ $ cd ~/Source/dotfiles && ./i.sh
 
 Usage: i.sh [--help] [--bootstrap] [--call]
 
-personal development environment on posix-compliant systems.
+personal development environment on posix-like platforms.
 
 Available flags (choose one):
 
@@ -50,3 +46,9 @@ Available flags (choose one):
 note:
   * a shell reload/relogin is likely required after bootstrapping.
 ```
+
+## dependencies
+
+* a solid terminal emulator: take a look at [wezterm](https://wezfurlong.org/wezterm/index.html).
+* git and bash: probably already installed on *nix. use [git for windows](https://gitforwindows.org) on...windows, which provides bash emulation via `msys`.
+
