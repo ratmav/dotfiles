@@ -54,5 +54,5 @@ note:
     * some handle shell hopping tricks for windows:
         * `bash` usually launches the bash binary that ships with wsl 2 that is installed as part of the docker desktop installation.
         * `powershell` launches...powershell.
-        * `'C:\Program Files\Git\bin\bash.exe'` will launch the bash binary that ships with [Git for Windows](https://gitforwindows.org/)
+        * `'C:\Program Files\Git\bin\bash.exe'` will launch the bash binary that ships with git for windows.
 
