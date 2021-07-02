@@ -35,14 +35,18 @@ windows_git() {
   msg "${OK}${FUNCNAME[0]}: configured git to use lf, not crlf line endings."
 }
 
-windows_pandoc() {
+windows_tools() {
   msg "${WARN}${FUNCNAME[0]}: admin privileges required."
-  if command -v pandoc &> /dev/null; then
-    msg "${WARN}${FUNCNAME[0]}: pandoc already installed"
-  else
-    choco install pandoc --yes
-    msg "${OK}${FUNCNAME[0]}: installed pandoc"
-  fi
+
+  packages=("pandoc" "yq" "jq")
+  for package in "${packages[@]}"; do
+    if command -v $package &> /dev/null; then
+      msg "${WARN}${FUNCNAME[0]}: $package already installed"
+    else
+      choco install $package --yes
+      msg "${OK}${FUNCNAME[0]}: installed $package"
+    fi
+  done
 }
 
 windows_nvim() {
@@ -76,7 +80,7 @@ windows_wezterm() {
 
 main_windows() {
   windows_chocolatey
-  windows_pandoc
+  windows_tools
   windows_wezterm
   windows_git
   windows_nvim
