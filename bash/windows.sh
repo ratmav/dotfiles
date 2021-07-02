@@ -27,6 +27,12 @@ windows_git() {
 
   git config --global url."git@gitlab.com:".insteadOf "https://gitlab.com/"
   msg "${OK}${FUNCNAME[0]}: configured git to connect to gitlab over ssh."
+
+  git config core.eol lf
+  git config core.autocrlf input
+  git config --global core.eol lf
+  git config --global core.autocrlf input
+  msg "${OK}${FUNCNAME[0]}: configured git to use lf, not crlf line endings."
 }
 
 windows_pandoc() {
