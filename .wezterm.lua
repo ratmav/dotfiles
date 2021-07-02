@@ -19,9 +19,42 @@ function os_shell()
   end
 end
 
+function os_launch()
+  -- typical install local of git bash on windows.
+  local git_bash_path = "C:\\Program Files\\Git\\bin\\bash.exe"
+  local launch_menu = {}
+
+  -- package.config:sub(1,1) returns '/' for *nix and '\' for *windows.
+  if package.config:sub(1,1) ~= '/' then
+    -- if we're on windows, add powershell.
+    table.insert(launch_menu, {
+      label = "powershell",
+      args = {"powershell", "-NoLogo"},
+    })
+    -- if git bash is installed, add git bash.
+    if io.open(git_bash_path) ~= nil then
+    table.insert(launch_menu, {
+      label = "git bash",
+      args = {git_bash_path},
+    })      
+    end
+  -- on *nix, add bash.
+  else
+    table.insert(launch_menu, {
+      label = "WEZbash",
+      args = {"bash", "-l"},
+    })
+  end
+  
+  return launch_menu
+end
+
 return {
   -- set the default shell based on the os.
   default_prog = os_shell(),
+
+  -- set the launch menu based on the os.
+  launch_menu = os_launch(),
 
   -- display
   color_scheme = "Gruvbox Dark",
