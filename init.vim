@@ -10,14 +10,14 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/vim-bufkill'
   Plug 'ratmav/vim-maximizer'
   Plug 'ratmav/winresizer.vim'
-  Plug 'tpope/vim-fugitive'
+  Plug 'ratmav/vim-fugitive'
 
   " display
-  Plug 'airblade/vim-gitgutter'
-  Plug 'morhetz/gruvbox'
+  Plug 'ratmav/vim-gitgutter'
+  Plug 'ratmav/gruvbox'
   Plug 'ratmav/rainbow_parentheses.vim'
   Plug 'ratmav/vim-airline-system'
-  Plug 'vim-airline/vim-airline'
+  Plug 'ratmav/vim-airline'
 call plug#end()
 " }}}
 
