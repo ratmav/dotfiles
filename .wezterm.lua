@@ -1,6 +1,28 @@
 local wezterm = require 'wezterm';
 
+function os_shell()
+  -- typical install local of git bash on windows.
+  local git_bash_path = "C:\\Program Files\\Git\\bin\\bash.exe"
+
+  -- package.config:sub(1,1) returns '/' for *nix and '\' for *windows.
+  if package.config:sub(1,1) ~= '/' then
+    -- if git bash is present, default to it.
+    if io.open(git_bash_path) ~= nil then
+      return {git_bash_path}
+    -- if git bash is not present, fallback to powershell.
+    else
+      return {"powershell", "-NoLogo"}
+    end
+  -- on *nix, open a bash login shell.
+  else
+    return {"bash", "-l"}
+  end
+end
+
 return {
+  -- set the default shell based on the os.
+  default_prog = os_shell(),
+
   -- display
   color_scheme = "Gruvbox Dark",
   font_size = 16,
