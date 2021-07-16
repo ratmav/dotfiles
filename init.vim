@@ -129,13 +129,7 @@ nnoremap <silent><C-b>q :BD!<CR>
 
 " if windows.
 if has('win64') || has('win32')
-  " if git bash is present
-  if filereadable('C:\\Program Files\Git\bin\bash.exe')
-    nnoremap <silent><C-t> :terminal "C:\\Program Files\Git\bin\bash.exe"<CR>
-  " fallback to powershell
-  else
-    nnoremap <silent><C-t> :terminal powershell -NoLogo<CR>
-  endif
+  nnoremap <silent><C-t> :terminal powershell -NoLogo<CR>
 else
   nnoremap <silent><C-t> :terminal<CR>
 end
