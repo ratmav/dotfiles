@@ -45,23 +45,20 @@ config = {
 
 -- package.config:sub(1,1) returns '/' for *nix and '\' for *windows.
 if package.config:sub(1,1) ~= '/' then
-  -- typical install local of git bash on windows.
-  local git_bash_path = "C:\\Program Files\\Git\\bin\\bash.exe"
+  -- add powershell to the launch menu and default to it.
   local launch_menu = {{
     label = "powershell",
     args = {"powershell", "-NoLogo"},
   }}
+  config.default_prog = {"powershell", "-NoLogo"}
 
-  -- if git bash is present, default to it and add to the launch menu.
+  -- if git bash is found, add it to the launch menu.
+  local git_bash_path = "C:\\Program Files\\Git\\bin\\bash.exe"
   if io.open(git_bash_path) ~= nil then
-    config.default_prog = {git_bash_path}
     table.insert(launch_menu, {
-      label = "git bash",
+      label = "git-bash",
       args = {git_bash_path},
     })
-  -- if git bash is not present, fallback to powershell.
-  else
-    config.default_prog = {"powershell", "-NoLogo"}
   end
 
   config.launch_menu = launch_menu
