@@ -67,10 +67,12 @@ functions.
 ## dependencies
 
 * a solid terminal emulator: take a look at [wezterm](https://wezfurlong.org/wezterm/index.html).
-* git and bash: probably already installed on *nix. use [git for windows](https://gitforwindows.org) on...windows, which provides bash emulation via `msys`.
+* [neovim](https://neovim.io/)
+* git and bash:
+    * *nix: probably already installed on *nix. use your package manager otherwise.
+    * windows: use [git for windows](https://gitforwindows.org), which provides bash emulation via `msys`.
     * some handle shell hopping tricks for windows:
         * from powershell:
             * `bash` usually launches the bash binary that ships with wsl 2 that is installed as part of the docker desktop installation.
-            * `'C:\Program Files\Git\bin\bash.exe'` is the standard location of the git bash binary if git for windows is installed. it is probably useful to alias this to something like `git-bash` in the powershell profile.
+            * `'C:\Program Files\Git\bin\bash.exe'` is the standard location of the git bash binary if git for windows is installed. it is probably useful to alias this to something like `git-bash` in the powershell profile: `Set-Alias -Name git-bash -Value "C:\Program Files\Git\bin\bash.exe"`
         * from git bash: `powershell` launches...powershell.
-
