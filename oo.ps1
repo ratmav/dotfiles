@@ -1,7 +1,53 @@
-dotfiles
-========
+. .\powershell\windows.ps1
 
-```shell
+function bootstrap {
+  Write-Host "TODO"
+}
+
+function call {
+  Param(
+    [string] $FunctionName
+  )
+
+  if ($FunctionName) {
+    $availableFunctions = Get-ChildItem -Name function:\
+    if ($availableFunctions.contains($FunctionName)) {
+      Invoke-Expression $FunctionName
+    } else {
+      warn "function not found. available functions:"
+      foreach ($function in $availableFunctions) {
+        warn "...${function}"
+      }
+    }
+  } else {
+    die "no function name specified."
+  }
+}
+
+function die {
+  Param(
+    [string] $Message
+  )
+
+  Write-Host $Message -ForegroundColor Red
+  exit
+}
+
+function help {
+  Write-Host "TODO"
+}
+
+function info {
+  Param(
+    [string] $Message
+  )
+
+  Write-Host $Message
+}
+
+function usage {
+@"
+
                             .:
                             :.
                          :oo::.
@@ -30,29 +76,8 @@ dotfiles
                           .o:                 .o:.o:.
                                                .oo:
                                                  ..
-```
 
-## *nix: `$ cd ./dotfiles && ./i.sh`
-
-```shell
-Usage: i.sh [--help] [--bootstrap] [--call]
-
-personal development environment on posix-like platforms.
-
-Available flags (choose one):
-
---help       Print this help and exit.
---bootstrap  run os setup then generic posix setup.
---call $NAME call a specific function by name. leave name blank for a list of functions.
-
-note:
-  * a shell reload/relogin is likely required after bootstrapping.
-```
-
-## windows: `Set-Location .\dotfiles; .\oo.ps1`
-
-```powershell
-Usage: oo.ps1 [help] [bootstrap] [call]
+Usage: $(Split-Path -Path $PSCommandPath -Leaf) [help] [bootstrap] [call]
 
 personal development environment on windows platforms.
 
@@ -60,17 +85,21 @@ Available flags (choose one):
 
 help       Print this help and exit.
 bootstrap  run os setup then generic posix setup.
-call $NAME call a specific function by name. leave name blank for a list of
-functions.
-```
+call `$NAME call a specific function by name. leave name blank for a list of functions.
+"@ | Write-Host
+}
 
-## dependencies
+function warn {
+  Param(
+    [string] $Message
+  )
 
-* a solid terminal emulator: take a look at [wezterm](https://wezfurlong.org/wezterm/index.html).
-* git and bash: probably already installed on *nix. use [git for windows](https://gitforwindows.org) on...windows, which provides bash emulation via `msys`.
-    * some handle shell hopping tricks for windows:
-        * from powershell:
-            * `bash` usually launches the bash binary that ships with wsl 2 that is installed as part of the docker desktop installation.
-            * `'C:\Program Files\Git\bin\bash.exe'` is the standard location of the git bash binary if git for windows is installed. it is probably useful to alias this to something like `git-bash` in the powershell profile.
-        * from git bash: `powershell` launches...powershell.
+  Write-Host $Message -ForegroundColor Yellow
+}
 
+switch ($args[0]) {
+  "help" { usage }
+  "bootstrap" { bootstrap }
+  "call" { call $args[1] }
+  default { usage }
+}
