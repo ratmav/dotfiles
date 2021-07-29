@@ -77,7 +77,7 @@ git and bash are probably already installed on *nix. use your package manager ot
 
 ### windows
 
-use [git for windows](https://gitforwindows.org), which provides bash emulation via `msys`.  should be installed by default.
+use [git for windows](https://gitforwindows.org), which provides bash emulation via `msys`. powershell should be installed by default.
 
 ## shell hopping
 
