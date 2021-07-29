@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-```shell
+```
                             .:
                             :.
                          :oo::.
@@ -34,7 +34,7 @@ dotfiles
 
 ## *nix: `$ cd ./dotfiles && ./i.sh`
 
-```shell
+```
 Usage: i.sh [--help] [--bootstrap] [--call]
 
 personal development environment on posix-like platforms.
@@ -51,7 +51,7 @@ note:
 
 ## windows: `Set-Location .\dotfiles; .\oo.ps1`
 
-```powershell
+```
 Usage: oo.ps1 [help] [bootstrap] [call]
 
 personal development environment on windows platforms.
