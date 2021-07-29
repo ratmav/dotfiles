@@ -18,6 +18,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/rainbow_parentheses.vim'
   Plug 'ratmav/vim-airline-system'
   Plug 'ratmav/vim-airline'
+
+  " langs
+  Plug 'ratmav/vim-ps1'
 call plug#end()
 " }}}
 
