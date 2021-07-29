@@ -66,8 +66,8 @@ functions.
 
 ## dependencies
 
-* a solid terminal emulator: take a look at [wezterm](https://wezfurlong.org/wezterm/index.html).
-* [neovim](https://neovim.io/)
+* [wezterm](https://wezfurlong.org/wezterm/index.html) (terminal emulator)
+* [neovim](https://neovim.io/) (text editor)
 * git and bash:
     * *nix: probably already installed on *nix. use your package manager otherwise.
     * windows: use [git for windows](https://gitforwindows.org), which provides bash emulation via `msys`.
