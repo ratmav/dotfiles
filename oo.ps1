@@ -1,7 +1,10 @@
 . .\powershell\windows.ps1
 
 function bootstrap {
-  Write-Host "TODO"
+  install_chocolatey
+  install_tools
+  configure_git
+  Write-Host "TODO: nvim and wezterm config"
 }
 
 function call {
@@ -21,6 +24,24 @@ function call {
     }
   } else {
     die "no function name specified."
+  }
+}
+
+function commandExists {
+  Param(
+    [string] $Command
+  )
+
+  $oldErrorActionPreference = $ErrorActionPreference
+
+  try{
+    if (Get-Command $Command) {
+      return $true
+    }
+  } catch {
+    return $false
+  } finally {
+    $ErrorActionPreference = $oldErrorActionPreference
   }
 }
 
