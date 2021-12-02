@@ -69,21 +69,8 @@ functions.
 * [wezterm](https://wezfurlong.org/wezterm/index.html) (terminal emulator)
 * [neovim](https://neovim.io/) (text editor)
 * [git](https://git-scm.com/book/en/v2) (version control)
-* [bash](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html) on *nix; [powershell](https://docs.microsoft.com/en-us/powershell/) on windows.
-
-### *nix
-
-git and bash are probably already installed on *nix. use your package manager otherwise.
-
-### windows
-
-use [git for windows](https://gitforwindows.org), which provides bash emulation via `msys`. powershell should be installed by default.
-
-## shell hopping
-
-### windows
-
-* from powershell:
-    * `bash` usually launches the bash binary that ships with wsl 2 that is installed as part of the docker desktop installation.
-    * `'C:\Program Files\Git\bin\bash.exe'` is the standard location of the git bash binary if git for windows is installed. it is probably useful to alias this to something like `git-bash` in the powershell profile: `Set-Alias -Name git-bash -Value "C:\Program Files\Git\bin\bash.exe"`
-* from git bash: `powershell` launches...powershell.
+    * *nix: use your package manager.
+    * windows: use [git for windows](https://gitforwindows.org), which provides bash emulation via `msys`. powershell should be installed by default.
+* system shell (live off the land)
+    * *nix: [bash](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html)
+    * windows: [powershell](https://docs.microsoft.com/en-us/powershell/)

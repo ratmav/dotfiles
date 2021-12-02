@@ -21,11 +21,12 @@ function configure_git {
 }
 
 function configure_nvim {
+  if (commandExists -Command "nvim") {
     $nvimInit = "$env:USERPROFILE\AppData\Local\nvim"
     Remove-Item -Recurse -Force -ErrorAction Ignore $nvimInit
     New-Item -Path $nvimInit -ItemType "directory" | Out-Null
     Copy-Item .\init.vim $nvimInit\init.vim
-    info "wrote nvim config"
+    info "(re)wrote nvim config"
 
 
     $nvimData = "$env:USERPROFILE\AppData\Local\nvim-data"
@@ -34,11 +35,21 @@ function configure_nvim {
     New-Item -Path $nvimAutoload -ItemType "directory" | Out-Null
     $vimPlugUrl = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     Invoke-WebRequest -Uri $vimPlugUrl -OutFile "${nvimAutoload}\plug.vim"
-    info "installed vim-plug"
+    info "(re)installed vim-plug"
 
     nvim +PlugInstall +qall
-    info "installed nvim plugins"
+    info "(re)installed nvim plugins"
+  } else {
+    die "nvim not installed"
+  }
+}
 
+function configure_wez {
+    $wezConfig = "$env:USERPROFILE\.config\wezterm"
+    Remove-Item -Recurse -Force -ErrorAction Ignore $wezConfig
+    New-Item -Path $wezConfig -ItemType "directory" | Out-Null
+    Copy-Item .\.wezterm.lua $wezConfig\.wezterm.lua
+    info "wrote wez config"
 }
 
 function install_chocolatey {
@@ -61,7 +72,7 @@ function install_tools {
   warn "admin privileges required."
 
   if (commandExists -Command "choco") {
-    $tools = @('neovim', 'pandoc', 'yq', 'jq')
+    $tools = @('wezterm', 'neovim', 'pandoc', 'yq', 'jq')
     foreach ($tool in $tools) {
       if (choco list --localonly | Select-String $tool) {
         warn "${tool} already installed"
