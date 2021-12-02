@@ -7,23 +7,32 @@ function bootstrap {
   Write-Host "TODO: nvim and wezterm config"
 }
 
+function available {
+  Param(
+    [string[]] $AvailableFunctions
+  )
+
+  warn "function not found. available functions:"
+  foreach ($function in $AvailableFunctions) {
+    warn "...${function}"
+  }
+}
+
 function call {
   Param(
     [string] $FunctionName
   )
 
+  $availableFunctions = Get-ChildItem -Name function:\
+
   if ($FunctionName) {
-    $availableFunctions = Get-ChildItem -Name function:\
     if ($availableFunctions.contains($FunctionName)) {
       Invoke-Expression $FunctionName
     } else {
-      warn "function not found. available functions:"
-      foreach ($function in $availableFunctions) {
-        warn "...${function}"
-      }
+      available $availableFunctions
     }
   } else {
-    die "no function name specified."
+    available $availableFunctions
   }
 }
 
