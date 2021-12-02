@@ -20,6 +20,27 @@ function configure_git {
   }
 }
 
+function configure_nvim {
+    $nvimInit = "$env:USERPROFILE\AppData\Local\nvim"
+    Remove-Item -Recurse -Force -ErrorAction Ignore $nvimInit
+    New-Item -Path $nvimInit -ItemType "directory" | Out-Null
+    Copy-Item .\init.vim $nvimInit\init.vim
+    info "wrote nvim config"
+
+
+    $nvimData = "$env:USERPROFILE\AppData\Local\nvim-data"
+    Remove-Item -Recurse -Force -ErrorAction Ignore $nvimData
+    $nvimAutoload = "${nvimData}\site\autoload"
+    New-Item -Path $nvimAutoload -ItemType "directory" | Out-Null
+    $vimPlugUrl = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    Invoke-WebRequest -Uri $vimPlugUrl -OutFile "${nvimAutoload}\plug.vim"
+    info "installed vim-plug"
+
+    nvim +PlugInstall +qall
+    info "installed nvim plugins"
+
+}
+
 function install_chocolatey {
   warn "admin privileges required."
 
@@ -37,12 +58,19 @@ function install_chocolatey {
 }
 
 function install_tools {
-  $tools = @('pandoc', 'yq', 'jq')
-  foreach ($tool in $tools) {
-    if (commandExists -Command $tool) {
-      warn "${tool} already installed"
-    } else {
-      choco install $tool --yes
+  warn "admin privileges required."
+
+  if (commandExists -Command "choco") {
+    $tools = @('neovim', 'pandoc', 'yq', 'jq')
+    foreach ($tool in $tools) {
+      if (choco list --localonly | Select-String $tool) {
+        warn "${tool} already installed"
+      } else {
+        choco install $tool --yes
+      }
     }
+  } else {
+    die "chocolatey not installed"
   }
+
 }

@@ -3,8 +3,9 @@
 function bootstrap {
   install_chocolatey
   install_tools
+  configure_nvim
   configure_git
-  Write-Host "TODO: nvim and wezterm config"
+  Write-Host "TODO: hyper install and config"
 }
 
 function available {
@@ -61,10 +62,6 @@ function die {
 
   Write-Host $Message -ForegroundColor Red
   exit
-}
-
-function help {
-  Write-Host "TODO"
 }
 
 function info {
