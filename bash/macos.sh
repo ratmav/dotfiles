@@ -15,8 +15,9 @@ macos_brew_bash() {
 macos_brew_packages() {
   if [[ $(uname) == "Darwin" ]]; then
     # librsvg and python are used with pandoc.
-    PACKAGES=("coreutils" "bash-completion" "neovim" "reattach-to-user-namespace"
-      "bash" "grep" "pandoc" "librsvg" "python" "gpg" "git")
+    PACKAGES=("shellcheck" "coreutils" "bash-completion" "neovim"
+      "reattach-to-user-namespace" "bash" "grep" "pandoc" "librsvg" "python"
+      "gpg" "git")
     for package in "${PACKAGES[@]}"; do
       if brew list | grep $package > /dev/null 2>&1; then
         msg "${WARN}${FUNCNAME[0]}: $package already installed."

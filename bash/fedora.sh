@@ -3,7 +3,7 @@
 fedora_dependencies() {
   if grep -q "Fedora" /etc/system-release; then
     fedora_update
-    packages=("bash-completion" "neovim" "pandoc")
+    packages=("shellcheck" "bash-completion" "neovim" "pandoc")
     for package in "${packages[@]}"; do
       if dnf list --installed | grep -w $package > /dev/null 2>&1; then
         msg "${WARN}${FUNCNAME[0]}: $package already installed."
