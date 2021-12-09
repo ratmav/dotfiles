@@ -72,7 +72,9 @@ function install_tools {
   warn "admin privileges required."
 
   if (commandExists -Command "choco") {
-    $tools = @('wezterm', 'neovim', 'pandoc', 'yq', 'jq')
+    $tools = @(
+      'psscriptanalyzer', 'wezterm', 'neovim', 'pandoc', 'yq', 'jq'
+      )
     foreach ($tool in $tools) {
       if (choco list --localonly | Select-String $tool) {
         warn "${tool} already installed"
