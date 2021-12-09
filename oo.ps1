@@ -5,7 +5,7 @@ function bootstrap {
   install_tools
   configure_nvim
   configure_git
-  Write-Host "TODO: hyper install and config"
+  configure_wez
 }
 
 function available {
