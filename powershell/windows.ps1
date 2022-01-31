@@ -45,11 +45,22 @@ function configure_nvim {
 }
 
 function configure_wez {
-    $wezConfig = "$env:USERPROFILE\.config\wezterm"
-    Remove-Item -Recurse -Force -ErrorAction Ignore $wezConfig
-    New-Item -Path $wezConfig -ItemType "directory" | Out-Null
-    Copy-Item .\.wezterm.lua $wezConfig\.wezterm.lua
+  warn "admin privileges required."
+
+  if (commandExists -Command "wezterm") {
+    $wezConfig = "C:\Program Files\WezTerm\wezterm.lua"
+    Remove-Item -Force -ErrorAction Ignore $wezConfig
+    Copy-Item .\wezterm.lua $wezConfig
     info "wrote wez config"
+
+    #$wezConfig = "$env:USERPROFILE\.config\wezterm"
+    #Remove-Item -Recurse -Force -ErrorAction Ignore $wezConfig
+    #New-Item -Path $wezConfig -ItemType "directory" | Out-Null
+    #Copy-Item .\.wezterm.lua $wezConfig\.wezterm.lua
+    #info "wrote wez config"
+  } else {
+    die "wezterm not installed"
+  }
 }
 
 function install_chocolatey {
@@ -85,5 +96,4 @@ function install_tools {
   } else {
     die "chocolatey not installed"
   }
-
 }
