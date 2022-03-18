@@ -31,24 +31,10 @@ macos_brew_packages() {
   fi
 }
 
-macos_brew_wezterm() {
-  if [[ $(uname) == "Darwin" ]]; then
-    if brew list | grep wezterm > /dev/null 2>&1; then
-      msg "${WARN}${FUNCNAME[0]}: wezterm already installed."
-    else
-      quiet "brew tap wez/wezterm"
-      quiet "brew install wezterm"
-      msg "${OK}${FUNCNAME[0]}: installed wezterm via homebrew cask."
-    fi
-  else
-    die "${FUNCNAME[0]}: unsupported operating system."
-  fi
-}
-
 macos_cask_packages() {
   if [[ $(uname) == "Darwin" ]]; then
     # basictex is used with pandoc.
-    PACKAGES=("basictex")
+    PACKAGES=("basictex" "wezterm")
     for package in "${PACKAGES[@]}"; do
       if brew list --cask | grep $package > /dev/null 2>&1; then
         msg "${WARN}${FUNCNAME[0]}: $package already installed."
@@ -83,6 +69,6 @@ main_macos() {
     macos_brew_packages
     macos_cask_packages
     macos_brew_bash
-    macos_brew_wezterm
+    # macos_brew_wezterm
   fi
 }

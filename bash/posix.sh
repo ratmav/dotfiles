@@ -11,6 +11,12 @@ posix_asdf() {
   fi
 }
 
+posix_configure_wez() {
+  rm -f $HOME/.wezterm.lua
+  cp ./wezterm.lua $HOME/.wezterm.lua
+  msg "${OK}${FUNCNAME[0]}: configured wez."
+}
+
 posix_git() {
   git config --global core.excludesfile "$HOME/.gitignore_global"
   msg "${OK}${FUNCNAME[0]}: configured global gitignore."
@@ -39,7 +45,7 @@ posix_nvim() {
 }
 
 posix_symlinks() {
-  LINKS=(".bashrc" ".bash_profile" ".gitignore_global" ".wezterm.lua")
+  LINKS=(".bashrc" ".bash_profile" ".gitignore_global")
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
     ln -s $PWD/$link $HOME/$link
@@ -49,6 +55,7 @@ posix_symlinks() {
 
 main_posix() {
   posix_symlinks
+  posix_configure_wez
   posix_git
   posix_nvim
   posix_asdf

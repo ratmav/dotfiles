@@ -52,12 +52,6 @@ function configure_wez {
     Remove-Item -Force -ErrorAction Ignore $wezConfig
     Copy-Item .\wezterm.lua $wezConfig
     info "wrote wez config"
-
-    #$wezConfig = "$env:USERPROFILE\.config\wezterm"
-    #Remove-Item -Recurse -Force -ErrorAction Ignore $wezConfig
-    #New-Item -Path $wezConfig -ItemType "directory" | Out-Null
-    #Copy-Item .\.wezterm.lua $wezConfig\.wezterm.lua
-    #info "wrote wez config"
   } else {
     die "wezterm not installed"
   }
