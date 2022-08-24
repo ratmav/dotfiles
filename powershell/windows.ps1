@@ -58,37 +58,23 @@ function configure_wez {
   }
 }
 
-function install_chocolatey {
-  warn "admin privileges required."
-
-  if (commandExists -Command "choco") {
-    warn "chocolatey already installed"
-  } else {
-    Set-ExecutionPolicy Bypass `
-      -Scope Process `
-      -Force; `
-      [System.Net.ServicePointManager]::SecurityProtocol = `
-      [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
-      iex ((New-Object System.Net.WebClient).`
-      DownloadString('https://chocolatey.org/install.ps1'))
-  }
-}
-
 function install_tools {
-  warn "admin privileges required."
-
-  if (commandExists -Command "choco") {
+  if (commandExists -Command "winget") {
     $tools = @(
-      'psscriptanalyzer', 'wezterm', 'neovim', 'pandoc', 'yq', 'jq'
+      'wezterm', 'neovim', 'pandoc'
       )
     foreach ($tool in $tools) {
-      if (choco list --localonly | Select-String $tool) {
+      winget list --name $tool
+      if ($LASTEXITCODE -eq 0) {
         warn "${tool} already installed"
       } else {
-        choco install $tool --yes
+        winget install ${tool} --accept-package-agreements --accept-source-agreements --silent
+        info "installed ${tool}"
       }
     }
   } else {
-    die "chocolatey not installed"
+    die "winget not installed"
   }
 }
+
+# TODO: install psscriptanalyzer
