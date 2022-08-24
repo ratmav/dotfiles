@@ -1,11 +1,11 @@
 . .\powershell\windows.ps1
 
 function bootstrap {
-  install_chocolatey
-  install_tools
+  winget_packages
   configure_nvim
   configure_git
   configure_wez
+  install_psscriptanalyzer
 }
 
 function available {

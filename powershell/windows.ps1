@@ -57,10 +57,17 @@ function configure_wez {
   }
 }
 
+function install_psscriptanalyzer {
+  Start-Process `
+    -FilePath "powershell" `
+    -Verb runAs `
+    -ArgumentList "Install-Module -Name PSScriptAnalyzer -Force"
+}
+
 function winget_packages {
   if (commandExists -Command "winget") {
     $tools = @(
-      'wezterm', 'neovim', 'pandoc'
+      "wezterm", "neovim", "pandoc"
       )
     foreach ($tool in $tools) {
       winget list --name $tool
@@ -77,5 +84,3 @@ function winget_packages {
     die "winget not installed"
   }
 }
-
-# TODO: install psscriptanalyzer
