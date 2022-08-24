@@ -44,7 +44,6 @@ function configure_nvim {
   }
 }
 
-# TODO: can we avoid admin? see https://wezfurlong.org/wezterm/config/files.html
 function configure_wez {
   warn "admin privileges required."
 
