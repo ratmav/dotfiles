@@ -69,6 +69,5 @@ main_macos() {
     macos_brew_packages
     macos_cask_packages
     macos_brew_bash
-    # macos_brew_wezterm
   fi
 }
