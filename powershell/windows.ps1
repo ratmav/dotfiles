@@ -57,7 +57,7 @@ function configure_wez {
   }
 }
 
-function install_tools {
+function winget_packages {
   if (commandExists -Command "winget") {
     $tools = @(
       'wezterm', 'neovim', 'pandoc'
@@ -67,7 +67,9 @@ function install_tools {
       if ($LASTEXITCODE -eq 0) {
         warn "${tool} already installed"
       } else {
-        winget install ${tool} --accept-package-agreements --accept-source-agreements --silent
+        winget install ${tool} `
+          --accept-package-agreements `
+          --accept-source-agreements
         info "installed ${tool}"
       }
     }
