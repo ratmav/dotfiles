@@ -1,12 +1,12 @@
 {
-  "userConfigMajorVersion": 4,
+  "userConfigMajorVersion": 5,
   "userConfigMinorVersion": 0,
   "userConfigPatchVersion": 0,
-  "deviceName": "My UHK",
+  "deviceName": "alfred",
   "doubleTapSwitchLayerTimeout": 250,
-  "iconsAndLayerTextsBrightness": 255,
-  "alphanumericSegmentsBrightness": 255,
-  "keyBacklightBrightness": 255,
+  "iconsAndLayerTextsBrightness": 126,
+  "alphanumericSegmentsBrightness": 126,
+  "keyBacklightBrightness": 126,
   "mouseMoveInitialSpeed": 8,
   "mouseMoveAcceleration": 180,
   "mouseMoveDeceleratedSpeed": 80,
@@ -26,6 +26,7 @@
       "description": "QWERTY is the mother of all layouts. This is the Mac version.",
       "layers": [
         {
+          "id": "base",
           "modules": [
             {
               "id": 0,
@@ -419,6 +420,7 @@
           ]
         },
         {
+          "id": "mod",
           "modules": [
             {
               "id": 0,
@@ -644,6 +646,7 @@
           ]
         },
         {
+          "id": "fn",
           "modules": [
             {
               "id": 0,
@@ -657,7 +660,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 26
+                  "macroIndex": 28
                 },
                 {
                   "keyActionType": "playMacro",
@@ -708,7 +711,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 24
+                  "macroIndex": 26
                 },
                 null,
                 null,
@@ -720,7 +723,7 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 20
+                  "macroIndex": 22
                 }
               ]
             },
@@ -754,11 +757,11 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 22
+                  "macroIndex": 24
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 18
+                  "macroIndex": 20
                 },
                 null,
                 {
@@ -771,7 +774,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 28
+                  "macroIndex": 30
                 },
                 {
                   "keyActionType": "playMacro",
@@ -853,6 +856,7 @@
           ]
         },
         {
+          "id": "mouse",
           "modules": [
             {
               "id": 0,
@@ -1028,6 +1032,7 @@
       "description": "QWERTY is the mother of all layouts. This is the PC version.",
       "layers": [
         {
+          "id": "base",
           "modules": [
             {
               "id": 0,
@@ -1421,6 +1426,7 @@
           ]
         },
         {
+          "id": "mod",
           "modules": [
             {
               "id": 0,
@@ -1646,6 +1652,7 @@
           ]
         },
         {
+          "id": "fn",
           "modules": [
             {
               "id": 0,
@@ -1659,7 +1666,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 27
+                  "macroIndex": 29
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1710,7 +1717,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 25
+                  "macroIndex": 27
                 },
                 null,
                 null,
@@ -1722,7 +1729,7 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 21
+                  "macroIndex": 23
                 }
               ]
             },
@@ -1756,11 +1763,11 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 23
+                  "macroIndex": 25
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 19
+                  "macroIndex": 21
                 },
                 null,
                 {
@@ -1773,7 +1780,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 29
+                  "macroIndex": 31
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1855,6 +1862,7 @@
           ]
         },
         {
+          "id": "mouse",
           "modules": [
             {
               "id": 0,
@@ -2272,6 +2280,34 @@
           "type": "basic",
           "scancode": 61,
           "modifierMask": 4
+        }
+      ]
+    },
+    {
+      "isLooped": false,
+      "isPrivate": true,
+      "name": "Redo macOS",
+      "macroActions": [
+        {
+          "macroActionType": "key",
+          "action": "tap",
+          "type": "basic",
+          "scancode": 21,
+          "modifierMask": 8
+        }
+      ]
+    },
+    {
+      "isLooped": false,
+      "isPrivate": true,
+      "name": "Redo PC",
+      "macroActions": [
+        {
+          "macroActionType": "key",
+          "action": "tap",
+          "type": "basic",
+          "scancode": 21,
+          "modifierMask": 1
         }
       ]
     },
