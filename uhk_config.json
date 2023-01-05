@@ -660,7 +660,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 32
+                  "macroIndex": 33
                 },
                 {
                   "keyActionType": "playMacro",
@@ -703,7 +703,10 @@
                 },
                 null,
                 null,
-                null,
+                {
+                  "keyActionType": "playMacro",
+                  "macroIndex": 30
+                },
                 null,
                 null,
                 {
@@ -714,7 +717,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 30
+                  "macroIndex": 31
                 },
                 null,
                 null,
@@ -780,7 +783,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 34
+                  "macroIndex": 35
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1672,7 +1675,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 33
+                  "macroIndex": 34
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1726,7 +1729,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 31
+                  "macroIndex": 32
                 },
                 null,
                 null,
@@ -1792,7 +1795,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 35
+                  "macroIndex": 36
                 },
                 {
                   "keyActionType": "playMacro",
@@ -2460,6 +2463,20 @@
           "type": "basic",
           "scancode": 4,
           "modifierMask": 1
+        }
+      ]
+    },
+    {
+      "isLooped": false,
+      "isPrivate": true,
+      "name": "Settings macOS",
+      "macroActions": [
+        {
+          "macroActionType": "key",
+          "action": "tap",
+          "type": "basic",
+          "scancode": 54,
+          "modifierMask": 8
         }
       ]
     },
