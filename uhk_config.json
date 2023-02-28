@@ -674,7 +674,10 @@
                 null,
                 null,
                 null,
-                null,
+                {
+                  "keyActionType": "playMacro",
+                  "macroIndex": 22
+                },
                 {
                   "keyActionType": "keystroke",
                   "type": "media",
@@ -1689,7 +1692,10 @@
                 null,
                 null,
                 null,
-                null,
+                {
+                  "keyActionType": "playMacro",
+                  "macroIndex": 23
+                },
                 {
                   "keyActionType": "keystroke",
                   "type": "media",
@@ -2363,8 +2369,8 @@
           "macroActionType": "key",
           "action": "tap",
           "type": "basic",
-          "scancode": 21,
-          "modifierMask": 8
+          "scancode": 29,
+          "modifierMask": 10
         }
       ]
     },
@@ -2377,7 +2383,7 @@
           "macroActionType": "key",
           "action": "tap",
           "type": "basic",
-          "scancode": 21,
+          "scancode": 28,
           "modifierMask": 1
         }
       ]
