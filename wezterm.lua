@@ -2,7 +2,7 @@ local wezterm = require 'wezterm';
 
 config = {
   -- display
-  color_scheme = "Gruvbox Dark",
+  color_scheme = "Gruvbox dark, medium (base16)",
   font_size = 16,
   warn_about_missing_glyphs = false,
 
