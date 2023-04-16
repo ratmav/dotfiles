@@ -5,6 +5,8 @@ function bootstrap {
   configure_nvim
   configure_git
   configure_wez
+  configure_komorebi
+  autostart_komorebi
   install_psscriptanalyzer
 }
 
