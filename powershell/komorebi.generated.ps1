@@ -16,6 +16,10 @@ komorebic.exe identify-tray-application class "CreativeCloudDesktopWindowClass"
 # Adobe Photoshop
 komorebic.exe identify-border-overflow-application class "Photoshop"
 
+# Akiflow
+# If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
+komorebic.exe identify-tray-application exe "Akiflow.exe"
+
 # ArmCord
 komorebic.exe identify-border-overflow-application exe "ArmCord.exe"
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
@@ -76,6 +80,9 @@ komorebic.exe identify-border-overflow-application exe "DiscordPTB.exe"
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
 komorebic.exe identify-tray-application exe "DiscordPTB.exe"
 
+# Dropbox
+komorebic.exe float-rule exe "Dropbox.exe"
+
 # ElectronMail
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
 komorebic.exe identify-tray-application exe "ElectronMail.exe"
@@ -83,6 +90,9 @@ komorebic.exe identify-tray-application exe "ElectronMail.exe"
 # Element
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
 komorebic.exe identify-tray-application exe "Element.exe"
+
+# Elephicon
+komorebic.exe float-rule exe "Elephicon.exe"
 
 # ElevenClock
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
@@ -127,8 +137,7 @@ komorebic.exe identify-object-name-change-application exe "GodotManager.exe"
 komorebic.exe identify-tray-application exe "chrome.exe"
 
 # Google Drive
-# If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
-komorebic.exe identify-tray-application exe "GoogleDriveFS.exe"
+komorebic.exe float-rule exe "GoogleDriveFS.exe"
 
 # Houdoku
 komorebic.exe identify-border-overflow-application exe "Houdoku.exe"
@@ -231,6 +240,10 @@ komorebic.exe float-rule class "MozillaTaskbarPreviewClass"
 
 # NVIDIA GeForce Experience
 komorebic.exe identify-border-overflow-application exe "NVIDIA GeForce Experience.exe"
+
+# NZXT CAM
+# If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
+komorebic.exe identify-tray-application exe "NZXT CAM.exe"
 
 # NiceHash Miner
 komorebic.exe identify-border-overflow-application exe "nhm_app.exe"
@@ -365,6 +378,11 @@ komorebic.exe identify-tray-application exe "Spotify.exe"
 # Steam
 komorebic.exe identify-border-overflow-application class "vguiPopupWindow"
 
+# Steam Beta
+komorebic.exe identify-border-overflow-application class "SDL_app"
+# If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
+komorebic.exe identify-tray-application class "SDL_app"
+
 # Stremio
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
 komorebic.exe identify-tray-application exe "stremio.exe"
@@ -384,6 +402,11 @@ komorebic.exe float-rule class "TaskManagerWindow"
 komorebic.exe identify-border-overflow-application exe "Telegram.exe"
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
 komorebic.exe identify-tray-application exe "Telegram.exe"
+
+# TickTick
+komorebic.exe identify-border-overflow-application exe "TickTick.exe"
+# If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
+komorebic.exe identify-tray-application exe "TickTick.exe"
 
 # TouchCursor
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
@@ -420,6 +443,12 @@ komorebic.exe identify-tray-application exe "VoiceAI.exe"
 # WebTorrent Desktop
 # If you have disabled minimize/close to tray for this application, you can delete/comment out the next line
 komorebic.exe identify-tray-application exe "WebTorrent.exe"
+
+# WinZip (32-bit)
+komorebic.exe float-rule exe "winzip32.exe"
+
+# WinZip (64-bit)
+komorebic.exe float-rule exe "winzip64.exe"
 
 # Windows Console (conhost.exe)
 komorebic.exe manage-rule class "ConsoleWindowClass"
