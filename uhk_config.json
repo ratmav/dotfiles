@@ -660,7 +660,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 33
+                  "macroIndex": 35
                 },
                 {
                   "keyActionType": "playMacro",
@@ -669,14 +669,14 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 18
+                  "macroIndex": 20
                 },
                 null,
                 null,
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 22
+                  "macroIndex": 24
                 },
                 {
                   "keyActionType": "keystroke",
@@ -705,10 +705,13 @@
                   "scancode": 182
                 },
                 null,
-                null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 30
+                  "macroIndex": 16
+                },
+                {
+                  "keyActionType": "playMacro",
+                  "macroIndex": 32
                 },
                 null,
                 null,
@@ -720,7 +723,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 31
+                  "macroIndex": 33
                 },
                 null,
                 null,
@@ -732,7 +735,7 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 26
+                  "macroIndex": 28
                 }
               ]
             },
@@ -753,7 +756,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 20
+                  "macroIndex": 22
                 },
                 {
                   "keyActionType": "playMacro",
@@ -769,11 +772,11 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 28
+                  "macroIndex": 30
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 24
+                  "macroIndex": 26
                 },
                 null,
                 {
@@ -786,7 +789,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 35
+                  "macroIndex": 37
                 },
                 {
                   "keyActionType": "playMacro",
@@ -798,7 +801,7 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 16
+                  "macroIndex": 18
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1678,7 +1681,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 34
+                  "macroIndex": 36
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1687,14 +1690,14 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 19
+                  "macroIndex": 21
                 },
                 null,
                 null,
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 23
+                  "macroIndex": 25
                 },
                 {
                   "keyActionType": "keystroke",
@@ -1723,7 +1726,10 @@
                   "scancode": 182
                 },
                 null,
-                null,
+                {
+                  "keyActionType": "playMacro",
+                  "macroIndex": 17
+                },
                 null,
                 null,
                 null,
@@ -1735,7 +1741,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 32
+                  "macroIndex": 34
                 },
                 null,
                 null,
@@ -1747,7 +1753,7 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 27
+                  "macroIndex": 29
                 }
               ]
             },
@@ -1768,7 +1774,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 21
+                  "macroIndex": 23
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1784,11 +1790,11 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 29
+                  "macroIndex": 31
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 25
+                  "macroIndex": 27
                 },
                 null,
                 {
@@ -1801,7 +1807,7 @@
                 null,
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 36
+                  "macroIndex": 38
                 },
                 {
                   "keyActionType": "playMacro",
@@ -1813,7 +1819,7 @@
                 },
                 {
                   "keyActionType": "playMacro",
-                  "macroIndex": 17
+                  "macroIndex": 19
                 },
                 {
                   "keyActionType": "playMacro",
@@ -2272,6 +2278,41 @@
           "action": "tap",
           "type": "basic",
           "scancode": 15,
+          "modifierMask": 8
+        }
+      ]
+    },
+    {
+      "isLooped": false,
+      "isPrivate": true,
+      "name": "Minimize macOS",
+      "macroActions": [
+        {
+          "macroActionType": "key",
+          "action": "tap",
+          "type": "basic",
+          "scancode": 81,
+          "modifierMask": 8
+        },
+        {
+          "macroActionType": "key",
+          "action": "tap",
+          "type": "basic",
+          "scancode": 16,
+          "modifierMask": 8
+        }
+      ]
+    },
+    {
+      "isLooped": false,
+      "isPrivate": true,
+      "name": "Minimize PC",
+      "macroActions": [
+        {
+          "macroActionType": "key",
+          "action": "tap",
+          "type": "basic",
+          "scancode": 81,
           "modifierMask": 8
         }
       ]
