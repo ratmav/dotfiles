@@ -71,7 +71,7 @@ function winget_packages {
       "sysinternals",
       "wezterm",
       "neovim",
-      "pandoc",
+      "pandoc"
       )
     foreach ($tool in $tools) {
       winget list --name $tool

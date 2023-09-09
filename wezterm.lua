@@ -1,3 +1,25 @@
+--[[
+  Behavior:
+    each wez tab starts neovim by default, if neovim is installed and in path.
+
+    if neovim is not installed:
+      * on windows:
+        * use powershell by default.
+        * include powershell in the launch menu.
+        * include git bash in the launch menu if git is installed.
+      * on *nix:
+        * use bash by default.
+
+  Keybindings:
+    * Ctrl-e:   leader ("e" for terminal (e)mulator).
+    * leader-n: new wezterm tab.
+    * leader-h: select tab on left.
+    * leader-l: select tab on right.
+    * leader-c: activate wez copy mode, similar to vi-style visual mode. esc to exit.
+    * leader-y: yank text from wez tab.
+    * leader-p: paste text from wez tab.
+]]
+
 local wezterm = require 'wezterm';
 
 config = {
@@ -43,25 +65,86 @@ config = {
   },
 }
 
--- package.config:sub(1,1) returns '/' for *nix and '\' for *windows.
-if package.config:sub(1,1) ~= '/' then
-  -- add powershell to the launch menu and default to it.
-  local launch_menu = {{
-    label = "powershell",
-    args = {"powershell", "-NoLogo"},
-  }}
-  config.default_prog = {"powershell", "-NoLogo"}
+function add_neovim_to_launch_menu(launch_menu)
+  add_to_launch_menu(launch_menu, "neovim",{"nvim"})
+end
 
-  -- if git bash is found, add it to the launch menu.
+function add_git_bash_to_launch_menu(launch_menu)
+  -- can't just get-command, at least not in a straightforward way.
   local git_bash_path = "C:\\Program Files\\Git\\bin\\bash.exe"
   if io.open(git_bash_path) ~= nil then
-    table.insert(launch_menu, {
-      label = "git-bash",
-      args = {git_bash_path},
-    })
+    add_to_launch_menu(launch_menu, "git bash",{git_bash_path})
   end
+end
+
+function add_to_launch_menu(launch_menu, label, args)
+  table.insert(launch_menu, {
+    label = label,
+    args = args,
+  })
+end
+
+function add_powershell_to_launch_menu(launch_menu)
+  add_to_launch_menu(launch_menu, "powershell",{"powershell", "-NoLogo"})
+end
+
+function has_neovim(is_windows)
+  -- determine check command based on os.
+  local check_command
+  if is_windows then
+    check_command = '(Get-Command nvim -ErrorAction "SilentlyContinue").Path'
+  else
+    check_command = 'type -P nvim'
+  end
+
+  -- check for neovim install.
+  local check = io.popen(check_command)
+  local result = check:read('*a'); check:close()
+
+  if result ~= nil then
+    return true
+  else
+    return false
+  end
+end
+
+function is_windows()
+  -- package.config:sub(1,1) returns '/' for *nix and '\' for windows.
+  if package.config:sub(1,1) ~= '/' then
+    return true
+  else
+    return false
+  end
+end
+
+-- wez defaults to bash on *nix systems.
+function set_default_prog(has_neovim, is_windows)
+  if has_neovim then
+    config.default_prog = {"nvim"}
+  elseif is_windows then
+    config.default_prog = {"powershell", "-NoLogo"}
+  end
+end
+
+function main()
+  local has_neovim  = has_neovim(is_windows)
+  local is_windows  = is_windows()
+  local launch_menu = {}
+
+  if has_neovim then
+    add_neovim_to_launch_menu(launch_menu)
+  end
+
+  if is_windows then
+    add_powershell_to_launch_menu(launch_menu)
+    add_git_bash_to_launch_menu(launch_menu)
+  end
+
+  set_default_prog(has_neovim, is_windows)
 
   config.launch_menu = launch_menu
 end
+
+main()
 
 return config
