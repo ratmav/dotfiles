@@ -45,10 +45,8 @@ function configure_nvim {
 }
 
 function configure_wez {
-  warn "admin privileges required."
-
   if (commandExists -Command "wezterm") {
-    $wezConfig = "C:\Program Files\WezTerm\wezterm.lua"
+    $wezConfig = "$env:USERPROFILE\.config\WezTerm\wezterm.lua"
     Remove-Item -Force -ErrorAction Ignore $wezConfig
     Copy-Item .\wezterm.lua $wezConfig
     info "wrote wez config"

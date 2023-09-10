@@ -88,10 +88,10 @@ function add_powershell_to_launch_menu(launch_menu)
   add_to_launch_menu(launch_menu, "powershell",{"powershell", "-NoLogo"})
 end
 
-function has_neovim(is_windows)
+function has_neovim(windows)
   -- determine check command based on os.
   local check_command
-  if is_windows then
+  if windows then
     check_command = '(Get-Command nvim -ErrorAction "SilentlyContinue").Path'
   else
     check_command = 'type -P nvim'
@@ -109,8 +109,8 @@ function has_neovim(is_windows)
 end
 
 function is_windows()
-  -- package.config:sub(1,1) returns '/' for *nix and '\' for windows.
-  if package.config:sub(1,1) ~= '/' then
+  -- package.config:sub(1,1) returns '\' for windows and '/' for *nix.
+  if package.config:sub(1,1) == '\\' then
     return true
   else
     return false
@@ -118,29 +118,29 @@ function is_windows()
 end
 
 -- wez defaults to bash on *nix systems.
-function set_default_prog(has_neovim, is_windows)
-  if has_neovim then
+function set_default_prog(neovim, windows)
+  if neovim then
     config.default_prog = {"nvim"}
-  elseif is_windows then
+  elseif windows then
     config.default_prog = {"powershell", "-NoLogo"}
   end
 end
 
 function main()
-  local has_neovim  = has_neovim(is_windows)
-  local is_windows  = is_windows()
+  local neovim      = has_neovim(windows)
+  local windows     = is_windows()
   local launch_menu = {}
 
-  if has_neovim then
+  if neovim then
     add_neovim_to_launch_menu(launch_menu)
   end
 
-  if is_windows then
+  if windows then
     add_powershell_to_launch_menu(launch_menu)
     add_git_bash_to_launch_menu(launch_menu)
   end
 
-  set_default_prog(has_neovim, is_windows)
+  set_default_prog(neovim, windows)
 
   config.launch_menu = launch_menu
 end
