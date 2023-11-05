@@ -160,7 +160,6 @@ let mapleader=" "
 " ctrl-p {{{
 nnoremap <Leader>f :CtrlP .<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap <Leader>c :CtrlPClearCache<CR>
 " }}}
 
 " reload config:
@@ -175,6 +174,7 @@ nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
 nnoremap <silent><Leader>n :NERDTreeToggle<CR>
 
 " syfe:
+nnoremap <silent><Leader>c :execute 'SyfeCrlfClear'<CR>
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
 
 " }}}
