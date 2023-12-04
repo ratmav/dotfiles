@@ -11,8 +11,10 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/vim-maximizer'
   Plug 'ratmav/winresizer.vim'
   Plug 'ratmav/vim-fugitive'
+  Plug 'sindrets/diffview.nvim'
 
   " display
+  Plug 'nvim-tree/nvim-web-devicons'
   Plug 'ratmav/vim-gitgutter'
   Plug 'ratmav/gruvbox'
   Plug 'ratmav/rainbow_parentheses.vim'
@@ -177,6 +179,9 @@ nnoremap <silent><Leader>n :NERDTreeToggle<CR>
 " syfe:
 nnoremap <silent><Leader>l :execute 'SyfeCrlfClear'<CR>
 nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
+
+" diffview:
+nnoremap <silent><Leader>d :execute 'DiffviewOpen'<CR>
 
 " }}}
 
