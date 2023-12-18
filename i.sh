@@ -7,19 +7,18 @@ trap terminated SIGTERM
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source ./bash/posix.sh
+source ./bash/_lib.sh
 source ./bash/macos.sh
-source ./bash/fedora.sh
+source ./bash/posix.sh
+source ./bash/sid.sh
 
 bootstrap() {
   if [[ $(uname) == "Darwin" ]]; then
     main_macos
     main_posix
-  elif [[ -f /etc/system-release ]]; then
-    if grep -q "Fedora" /etc/system-release; then
-      main_fedora
-      main_posix
-    fi
+  elif _is_sid; then
+    main_sid
+    main_posix
   elif [[ $OSTYPE == "msys" ]]; then
     main_windows
   else
