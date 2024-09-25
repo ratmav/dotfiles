@@ -2,10 +2,12 @@
 
 macos_brew_bash() {
   if [[ $(uname) == "Darwin" ]]; then
-    LINE='/usr/local/bin/bash'
-    FILE='/etc/shells'
-    grep -qF -- "$LINE" "$FILE" || echo "$LINE" | sudo tee -a "$FILE" > /dev/null
-    chsh -s /usr/local/bin/bash
+    bash_path='/opt/homebrew/bin/bash'
+
+    line=$bash_path
+    file='/etc/shells'
+    grep -qF -- "$line" "$file" || echo "$line" | sudo tee -a "$file" > /dev/null
+    chsh -s $bash_path
     msg "${OK}${FUNCNAME[0]}: configured macos to use homebrew's bash."
   else
     die "${FUNCNAME[0]}: unsupported operating system."
@@ -19,9 +21,10 @@ macos_brew_packages() {
       "reattach-to-user-namespace" "bash" "grep" "pandoc" "librsvg" "python"
       "gpg" "git")
     for package in "${PACKAGES[@]}"; do
-      if brew list | grep $package > /dev/null 2>&1; then
+      if eval "$(/opt/homebrew/bin/brew shellenv)" && brew list | grep $package > /dev/null 2>&1; then
         msg "${WARN}${FUNCNAME[0]}: $package already installed."
       else
+      	eval "$(/opt/homebrew/bin/brew shellenv)"
         quiet "brew install $package"
         msg "${OK}${FUNCNAME[0]}: installed $package via homebrew."
       fi
@@ -39,6 +42,7 @@ macos_cask_packages() {
       if brew list --cask | grep $package > /dev/null 2>&1; then
         msg "${WARN}${FUNCNAME[0]}: $package already installed."
       else
+      	eval "$(/opt/homebrew/bin/brew shellenv)"
         quiet "brew install --cask $package"
         msg "${OK}${FUNCNAME[0]}: installed $package via homebrew cask."
       fi
@@ -53,9 +57,7 @@ macos_homebrew() {
     if type brew > /dev/null 2>&1; then
       msg "${WARN}${FUNCNAME[0]}: homebrew already installed."
     else
-      URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
-      /usr/bin/ruby -e "$(curl -fsSL $URL)"
-      brew tap homebrew/cask-versions
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       msg "${OK}${FUNCNAME[0]}: installed homebrew."
     fi
   else
