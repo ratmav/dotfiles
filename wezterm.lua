@@ -150,7 +150,7 @@ function main()
   elseif host_os == 'macos' then
     -- check homebrew binary symlinks on startup.
     config.set_environment_variables = {
-      PATH = '/usr/local/bin/:' .. os.getenv('PATH')
+      PATH = '/opt/homebrew/bin/:' .. os.getenv('PATH')
     }
   end
 

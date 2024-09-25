@@ -18,7 +18,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/vim-gitgutter'
   Plug 'ratmav/gruvbox'
   Plug 'ratmav/rainbow_parentheses.vim'
-  Plug 'ratmav/vim-airline-system'
   Plug 'ratmav/vim-airline'
 
   " langs
