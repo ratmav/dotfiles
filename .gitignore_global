@@ -10,3 +10,6 @@
 
 # vagrant metadata
 .vagrant
+
+# asdf version files
+.tool-versions
