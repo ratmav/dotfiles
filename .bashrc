@@ -16,6 +16,11 @@ if [[ $(uname) == "Darwin" ]]; then
 
   # put homebrew's sbin in the path.
   export PATH="$(brew --prefix)/sbin:$PATH"
+
+  # homebrew changed default path to /opt/homebrew,
+  # and other tools (docker in particular) still
+  # symlink cli binaries in /usr/local/bin by default.
+  export PATH="/usr/local/bin:$PATH"
 fi
 
 # load miscellaneous environment variables if needed.
