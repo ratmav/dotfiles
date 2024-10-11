@@ -23,6 +23,9 @@ if [[ $(uname) == "Darwin" ]]; then
   export PATH="/usr/local/bin:$PATH"
 fi
 
+# scaf
+PATH=$PATH:$HOME/.local/bin
+
 # load miscellaneous environment variables if needed.
 if [ -f ~/.misc_envars ]; then
     . ~/.misc_envars
