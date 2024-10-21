@@ -25,8 +25,8 @@ posix_git() {
   git config --global core.editor "$(which nvim)"
   msg "${OK}${FUNCNAME[0]}: configured git editor."
 
-  git config --global url."git@gitlab.com:".insteadOf "https://gitlab.com/"
-  msg "${OK}${FUNCNAME[0]}: configured git to connect to gitlab over ssh."
+  git config --global push.autoSetupRemote true
+  msg "${OK}${FUNCNAME[0]}: configured git to automatically setup remote branches on push."
 }
 
 posix_nvim() {

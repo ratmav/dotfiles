@@ -15,6 +15,9 @@ function configure_git {
     git config --global core.eol lf
     git config --global core.autocrlf input
     info "configured git to use lf, not crlf, line endings"
+
+    git config --global push.autoSetupRemote true
+    info "configured git to automatically setup remote branches on push"
   } else {
     die "git not installed"
   }
