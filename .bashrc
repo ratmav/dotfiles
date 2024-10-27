@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 
 export PS1="[\u@\h \W]\\$ "
 
@@ -6,8 +7,8 @@ export PS1="[\u@\h \W]\\$ "
 export CLICOLOR=1
 
 # asdf
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
+source "$HOME"/.asdf/asdf.sh
+source "$HOME"/.asdf/completions/asdf.bash
 
 # macos.
 if [[ $(uname) == "Darwin" ]]; then
@@ -15,18 +16,20 @@ if [[ $(uname) == "Darwin" ]]; then
   export HOMEBREW_NO_ANALYTICS=1
 
   # put homebrew's sbin in the path.
-  export PATH="$(brew --prefix)/sbin:$PATH"
+  PATH="$(brew --prefix)/sbin:$PATH"
+
+  # git bash completion
+  source "$(brew --prefix)"/etc/bash_completion.d/git-completion.bash
 
   # homebrew changed default path to /opt/homebrew,
   # and other tools (docker in particular) still
   # symlink cli binaries in /usr/local/bin by default.
-  export PATH="/usr/local/bin:$PATH"
+  PATH="/usr/local/bin:$PATH"
 fi
 
-# scaf
-PATH=$PATH:$HOME/.local/bin
+export PATH
 
-# load miscellaneous environment variables if needed.
-if [ -f ~/.misc_envars ]; then
-    . ~/.misc_envars
+# load host-specific shell configuration.
+if [ -f "$HOME"/.this_machine ]; then
+    source "$HOME"/.this_machine
 fi
