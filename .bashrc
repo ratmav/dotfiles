@@ -25,6 +25,9 @@ if [[ $(uname) == "Darwin" ]]; then
   # and other tools (docker in particular) still
   # symlink cli binaries in /usr/local/bin by default.
   PATH="/usr/local/bin:$PATH"
+
+  # TeX binaries for pandoc.
+  PATH="/Library/TeX/Root/bin/universal-darwin/:$PATH"
 fi
 
 export PATH
