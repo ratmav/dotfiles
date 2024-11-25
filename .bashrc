@@ -30,6 +30,37 @@ if [[ $(uname) == "Darwin" ]]; then
   PATH="/Library/TeX/Root/bin/universal-darwin/:$PATH"
 fi
 
+# utility functions
+
+git-prune-sync() {
+  if [ $# -eq 0 ]; then
+    local remote=origin
+  else
+    local remote=$1
+  fi
+
+  if [ "$(type -P git)" ]; then
+    git remote prune "$remote"
+    echo "pruned $remote branch references."
+
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+      gone_remote_branches=$(git branch -vv | grep "gone" | awk "{print \$1}")
+
+      if [[ -z "$gone_remote_branches" ]]; then
+        echo "no local branches track a gone $remote branch."
+      else
+        for gone_remote_branch in $gone_remote_branches; do
+          echo "$gone_remote_branch" | xargs git branch -D
+        done
+      fi
+    else
+      echo "not a git repository."
+    fi
+  else
+    echo "'git' command not available. check your installation."
+  fi
+}
+
 export PATH
 
 # load host-specific shell configuration.
