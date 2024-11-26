@@ -81,6 +81,9 @@ set backspace=2
 " disable sql omnicomplete, which is tied to <c-c> for some reason.
 let g:omni_sql_no_default_maps = 1
 
+" disable autocommenting:
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 " }}}
 
 " display {{{
