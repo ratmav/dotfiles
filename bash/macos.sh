@@ -19,7 +19,7 @@ macos_brew_packages() {
     # librsvg and python are used with pandoc.
     PACKAGES=("shellcheck" "coreutils" "bash-completion" "neovim"
       "reattach-to-user-namespace" "bash" "grep" "pandoc" "librsvg" "python"
-      "gpg" "git" "cosign")
+      "gpg" "git" "cosign" "lulu")
     for package in "${PACKAGES[@]}"; do
       if eval "$(/opt/homebrew/bin/brew shellenv)" && brew list | grep $package > /dev/null 2>&1; then
         msg "${WARN}${FUNCNAME[0]}: $package already installed."
@@ -37,7 +37,7 @@ macos_brew_packages() {
 macos_cask_packages() {
   if [[ $(uname) == "Darwin" ]]; then
     # basictex is used with pandoc.
-    PACKAGES=("basictex" "wezterm")
+    PACKAGES=("basictex" "wezterm" "wireshark")
     for package in "${PACKAGES[@]}"; do
       if brew list --cask | grep $package > /dev/null 2>&1; then
         msg "${WARN}${FUNCNAME[0]}: $package already installed."
