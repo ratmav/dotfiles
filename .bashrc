@@ -10,6 +10,9 @@ export CLICOLOR=1
 source "$HOME"/.asdf/asdf.sh
 source "$HOME"/.asdf/completions/asdf.bash
 
+# docker
+export DOCKER_CLI_HINTS=false
+
 # macos.
 if [[ $(uname) == "Darwin" ]]; then
   # disable homebrew analytics.
