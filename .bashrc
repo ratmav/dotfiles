@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1091
 
+# shell configuration
+
 export PS1="[\u@\h \W]\\$ "
 
-# force dircolors.
+## force dircolors.
+
 export CLICOLOR=1
 
-# asdf
+## asdf
+
 source "$HOME"/.asdf/asdf.sh
 source "$HOME"/.asdf/completions/asdf.bash
 
-# docker
+## docker
+
 export DOCKER_CLI_HINTS=false
 
-# macos.
+## macos.
+
 if [[ $(uname) == "Darwin" ]]; then
   # disable homebrew analytics.
   export HOMEBREW_NO_ANALYTICS=1
@@ -33,7 +39,13 @@ if [[ $(uname) == "Darwin" ]]; then
   PATH="/Library/TeX/Root/bin/universal-darwin/:$PATH"
 fi
 
+## final path export.
+
+export PATH
+
 # utility functions
+
+## sync local branches with remote after pruning.
 
 git-prune-sync() {
   if [ $# -eq 0 ]; then
@@ -64,9 +76,26 @@ git-prune-sync() {
   fi
 }
 
-export PATH
+## Makefile tab completion.
 
-# load host-specific shell configuration.
+_make_completion() {
+    local cur prev targets
+
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    # Parse Makefile targets
+    targets=$(make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {split($1,A,/ /);print A[1]}' | sort -u)
+
+    COMPREPLY=( $(compgen -W "${targets}" -- ${cur}) )
+    return 0
+}
+complete -F _make_completion make
+
+
+# host-specific configuration
+
 if [ -f "$HOME"/.this_machine ]; then
     source "$HOME"/.this_machine
 fi
