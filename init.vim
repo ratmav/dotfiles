@@ -52,6 +52,16 @@ let g:NERDTreeShowHidden = 1
 
 " behavior {{{
 
+" avoid vimception in terminal buffers.
+let s:error_msg = "Error: nvim in nvim terminal buffer"
+if !empty($NVIM)
+   echohl ErrorMsg
+   echo s:error_msg
+   echohl None
+   sleep 3
+   cquit
+endif
+
 " use the system clipboard by default:
 set clipboard=unnamedplus
 
