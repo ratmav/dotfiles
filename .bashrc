@@ -93,9 +93,14 @@ _make_completion() {
 }
 complete -F _make_completion make
 
+# rust
+
+if [ -f "$HOME"/.cargo/env ]; then
+  source "$HOME"/.cargo/env
+fi
 
 # host-specific configuration
 
 if [ -f "$HOME"/.this_machine ]; then
-    source "$HOME"/.this_machine
+  source "$HOME"/.this_machine
 fi
