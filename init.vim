@@ -181,16 +181,14 @@ nnoremap <Leader>c :CtrlPClearCache<CR>
 nnoremap <silent><Leader>r :source $MYVIMRC<bar>:edit!<bar>:echo "reloaded config"<CR>
 
 " marv {{{
-nnoremap <silent><Leader>h :execute 'MarvHTML'<CR>
-nnoremap <silent><Leader>p :execute 'MarvPDF'<CR>
+nnoremap <silent><Leader>m :execute 'MarvToggle'<CR>
 " }}}
 
 " nerdtree:
 nnoremap <silent><Leader>n :NERDTreeToggle<CR>
 
 " syfe:
-nnoremap <silent><Leader>l :execute 'SyfeCrlfClear'<CR>
-nnoremap <silent><Leader>w :execute 'SyfeWhitespaceClear'<CR>
+nnoremap <silent><Leader>w :execute 'SyfeWipe'<CR>
 
 " diffview:
 nnoremap <silent><Leader>d :execute 'DiffviewOpen'<CR>
