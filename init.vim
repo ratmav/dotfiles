@@ -52,9 +52,9 @@ let g:NERDTreeShowHidden = 1
 
 " behavior {{{
 
-" avoid vimception in terminal buffers.
+" avoid vimception in terminal buffers (skip during plugin installation).
 let s:error_msg = "Error: nvim in nvim terminal buffer"
-if !empty($NVIM)
+if !empty($NVIM) && $NVIM_INSTALL_MODE != "1"
    echohl ErrorMsg
    echo s:error_msg
    echohl None

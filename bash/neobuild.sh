@@ -34,92 +34,87 @@ msg() {
 }
 
 install_prerequisites() {
-  msg "${WARN}${FUNCNAME[0]}: Installing build prerequisites..."
-  
+  msg "${WARN}${FUNCNAME[0]}: installing build dependencies..."
+
   sudo apt-get update
   sudo apt-get install -y ninja-build gettext cmake unzip curl git
-  
+
   # Additional dependencies from the Neovim BUILD.md
   sudo apt-get install -y pkg-config libtool-bin g++ automake
-  
-  msg "${OK}${FUNCNAME[0]}: Build prerequisites installed."
+
+  msg "${OK}${FUNCNAME[0]}: build prerequisites installed."
 }
 
 clone_neovim() {
-  msg "${WARN}${FUNCNAME[0]}: Cloning Neovim repository..."
-  
+  msg "${WARN}${FUNCNAME[0]}: cloning neovim repository..."
+
   if [ -d "$HOME/neovim" ]; then
-    msg "${WARN}${FUNCNAME[0]}: Neovim directory exists, removing..."
+    msg "${WARN}${FUNCNAME[0]}: neovim directory exists, removing..."
     rm -rf "$HOME/neovim"
   fi
-  
+
   git clone https://github.com/neovim/neovim "$HOME/neovim"
   cd "$HOME/neovim"
-  
+
   # Get the latest semantic version tag (vx.y.z format)
   # This fetches all tags, sorts them by version number (not chronologically), and gets the latest
   latest_version=$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' | sort -V | tail -n 1)
-  
+
   if [ -z "$latest_version" ]; then
-    die "No semantic version tags (vx.y.z) found"
+    die "no semantic version tags (vx.y.z) found"
   fi
-  
-  msg "${WARN}${FUNCNAME[0]}: Checking out latest semantic version tag: $latest_version"
-  
+
+  msg "${WARN}${FUNCNAME[0]}: checking out latest semantic version tag: $latest_version"
+
   git checkout "$latest_version"
-  
-  msg "${OK}${FUNCNAME[0]}: Neovim repository cloned and latest tag checked out."
+
+  msg "${OK}${FUNCNAME[0]}: neovim repository cloned and latest version checked out."
 }
 
 build_neovim() {
-  msg "${WARN}${FUNCNAME[0]}: Building Neovim..."
-  
+  msg "${WARN}${FUNCNAME[0]}: building neovim..."
+
   cd "$HOME/neovim"
   make CMAKE_BUILD_TYPE=Release
-  
-  msg "${OK}${FUNCNAME[0]}: Neovim built successfully."
+
+  msg "${OK}${FUNCNAME[0]}: neovim built successfully."
 }
 
 install_neovim() {
-  msg "${WARN}${FUNCNAME[0]}: Installing Neovim..."
-  
+  msg "${WARN}${FUNCNAME[0]}: installing neovim..."
+
   cd "$HOME/neovim"
   sudo make install
-  
-  msg "${OK}${FUNCNAME[0]}: Neovim installed successfully."
+
+  msg "${OK}${FUNCNAME[0]}: neovim installed successfully."
 }
 
 setup_vim_plug() {
-  msg "${WARN}${FUNCNAME[0]}: Setting up vim-plug..."
-  
+  msg "${WARN}${FUNCNAME[0]}: setting up vim-plug..."
+
   rm -rf $HOME/.local/share/nvim
   URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
-  
+
   msg "${OK}${FUNCNAME[0]}: vim-plug installed."
 }
 
 install_plugins() {
-  msg "${WARN}${FUNCNAME[0]}: Installing Neovim plugins..."
-  
-  nvim +PlugInstall +qall
-  
-  msg "${OK}${FUNCNAME[0]}: Neovim plugins installed."
+  msg "${WARN}${FUNCNAME[0]}: installing neovim plugins..."
+
+  # bypass terminal buffer check
+  NVIM_INSTALL_MODE=1 nvim +PlugInstall +qall
+
+  msg "${OK}${FUNCNAME[0]}: neovim plugins installed."
 }
 
 main() {
-  msg "${WARN}Starting Neovim build process on Debian..."
-  
   install_prerequisites
   clone_neovim
   build_neovim
   install_neovim
   setup_vim_plug
   install_plugins
-  
-  msg "${OK}Neovim successfully built and installed from source!"
-  msg "${WARN}Version information:"
-  nvim --version | head -n 1
 }
 
 # Run the script
