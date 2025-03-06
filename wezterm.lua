@@ -29,7 +29,6 @@ local wezterm = require 'wezterm';
 config = {
   -- display
   color_scheme = "Gruvbox dark, medium (base16)",
-  font_size = 16,
   warn_about_missing_glyphs = false,
 
   -- behavior
@@ -140,6 +139,7 @@ function set_default_prog(neovim, host_os)
 end
 
 function main()
+  local font_size   = 14
   local host_os     = detect_host_os()
   local launch_menu = {}
   local neovim      = has_neovim(host_os)
@@ -152,6 +152,8 @@ function main()
     config.set_environment_variables = {
       PATH = '/opt/homebrew/bin/:' .. os.getenv('PATH')
     }
+
+    font_size = 18
   end
 
   if neovim then
@@ -161,6 +163,8 @@ function main()
   set_default_prog(neovim, host_os)
 
   config.launch_menu = launch_menu
+
+  config.font_size = font_size
 end
 
 main()
