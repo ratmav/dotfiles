@@ -6,7 +6,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ratmav/ctrlp.vim'
   Plug 'ratmav/marv'
   Plug 'ratmav/nerdtree'
-  Plug 'ratmav/syfe'
+  Plug 'ratmav/wisp'
   Plug 'ratmav/vim-bufkill'
   Plug 'ratmav/vim-maximizer'
   Plug 'ratmav/winresizer.vim'
@@ -22,6 +22,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " langs
   Plug 'ratmav/vim-ps1'
+
+  " treesitter
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 " }}}
 
@@ -47,6 +50,22 @@ let g:ctrlp_custom_ignore = '\v\.git|node_modules'
 
 " nerdtree:
 let g:NERDTreeShowHidden = 1
+
+" treesitter {{{
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "markdown", "rust", "python", "yaml", "hcl", "make", "go", "bash", "powershell" },
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true
+  },
+}
+EOF
+" }}}
 
 " }}}
 
@@ -76,7 +95,8 @@ set nowritebackup
 set noswapfile
 
 " code folding:
-set foldmethod=syntax
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 set foldcolumn=2
 set foldlevelstart=100
 
@@ -188,7 +208,7 @@ nnoremap <silent><Leader>m :execute 'MarvToggle'<CR>
 nnoremap <silent><Leader>n :NERDTreeToggle<CR>
 
 " syfe:
-nnoremap <silent><Leader>w :execute 'SyfeWipe'<CR>
+nnoremap <silent><Leader>w :execute 'Wisp'<CR>
 
 " diffview:
 nnoremap <silent><Leader>d :execute 'DiffviewOpen'<CR>
