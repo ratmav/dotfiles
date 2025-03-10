@@ -32,15 +32,22 @@ posix_git() {
 posix_nvim() {
   rm -rf $HOME/.config/nvim
   mkdir -p $HOME/.config/nvim
-  ln -s $PWD/init.vim $HOME/.config/nvim/init.vim
-  msg "${OK}${FUNCNAME[0]}: symlinked nvim config."
+  ln -s $PWD/init.lua $HOME/.config/nvim/init.lua
+  msg "${OK}${FUNCNAME[0]}: symlinked nvim lua config."
 
-  rm -rf $HOME/.local/share/nvim
-  URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs -s $URL
-  msg "${OK}${FUNCNAME[0]}: installed vim-plug."
+  # Clean up all plugins including paq
+  NVIM_PLUGIN_PATH="$HOME/.local/share/nvim/site/pack"
+  rm -rf "$NVIM_PLUGIN_PATH"
+  mkdir -p "$NVIM_PLUGIN_PATH/paqs/start"
+  msg "${OK}${FUNCNAME[0]}: cleaned up all nvim plugins."
 
-  nvim +PlugInstall +qall
+  # Install paq-nvim
+  PAQ_PATH="$HOME/.local/share/nvim/site/pack/paqs/start/paq-nvim"
+  git clone --depth=1 https://github.com/savq/paq-nvim "$PAQ_PATH" > /dev/null 2>&1
+  msg "${OK}${FUNCNAME[0]}: installed paq-nvim."
+
+  # Install plugins
+  nvim --headless -c 'autocmd User PaqDoneInstall quit' -c 'PaqInstall' > /dev/null 2>&1
   msg "${OK}${FUNCNAME[0]}: installed neovim plugins."
 }
 
