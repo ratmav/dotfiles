@@ -19,14 +19,15 @@
     * leader-n: new wezterm tab.
     * leader-h: select tab on left.
     * leader-l: select tab on right.
-    * leader-c: activate wez copy mode, similar to vi-style visual mode. esc to exit.
+    * leader-c: activate wez copy mode, similar to vi-style visual mode.
+      esc to exit.
     * leader-y: yank text from wez tab.
     * leader-p: paste text from wez tab.
 ]]
 
 local wezterm = require 'wezterm';
 
-config = {
+local config = {
   -- display
   color_scheme = "Gruvbox dark, medium (base16)",
   warn_about_missing_glyphs = false,
@@ -68,7 +69,15 @@ config = {
   },
 }
 
-function add_git_bash_to_launch_menu(launch_menu)
+-- We'll need to define add_to_launch_menu first since other functions use it
+local function add_to_launch_menu(launch_menu, label, args)
+  table.insert(launch_menu, {
+    label = label,
+    args = args,
+  })
+end
+
+local function add_git_bash_to_launch_menu(launch_menu)
   -- can't just get-command, at least not in a straightforward way.
   local git_bash_path = "C:\\Program Files\\Git\\bin\\bash.exe"
   if io.open(git_bash_path) ~= nil then
@@ -76,22 +85,15 @@ function add_git_bash_to_launch_menu(launch_menu)
   end
 end
 
-function add_neovim_to_launch_menu(launch_menu)
+local function add_neovim_to_launch_menu(launch_menu)
   add_to_launch_menu(launch_menu, "neovim",{"nvim"})
 end
 
-function add_powershell_to_launch_menu(launch_menu)
+local function add_powershell_to_launch_menu(launch_menu)
   add_to_launch_menu(launch_menu, "powershell",{"powershell", "-NoLogo"})
 end
 
-function add_to_launch_menu(launch_menu, label, args)
-  table.insert(launch_menu, {
-    label = label,
-    args = args,
-  })
-end
-
-function detect_host_os()
+local function detect_host_os()
   -- package.config:sub(1,1) returns '\' for windows and '/' for *nix.
   if package.config:sub(1,1) == '\\' then
     return 'windows'
@@ -108,7 +110,7 @@ function detect_host_os()
   end
 end
 
-function has_neovim(host_os)
+local function has_neovim(host_os)
   -- determine check command based on os.
   local check_command
   if host_os == 'windows' then
@@ -130,7 +132,7 @@ function has_neovim(host_os)
 end
 
 -- wez defaults to bash on *nix systems.
-function set_default_prog(neovim, host_os)
+local function set_default_prog(neovim, host_os)
   if neovim then
     config.default_prog = {"nvim"}
   elseif host_os == 'windows' then
@@ -138,7 +140,7 @@ function set_default_prog(neovim, host_os)
   end
 end
 
-function main()
+local function main()
   local font_size   = 14
   local host_os     = detect_host_os()
   local launch_menu = {}
