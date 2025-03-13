@@ -1,3 +1,6 @@
+-- Use maximum set of standard Lua definitions
+std = "max"
+
 -- Global objects defined by Neovim and WezTerm
 globals = {
   "vim",
@@ -10,20 +13,6 @@ self = false
 
 -- Rerun tests only if their modification time changed
 cache = true
-
--- Check code against these standards
-std = {
-  "lua51",
-  "luajit"
-}
-
--- Read globals
-read_globals = {
-  "io",
-  "table",
-  "package",
-  "os"
-}
 
 -- Maximum line length for code
 max_line_length = 100
