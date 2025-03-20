@@ -4,26 +4,25 @@ paq {
   -- plugin manager
   "savq/paq-nvim";
 
-  -- workflow
-  -- telescope and dependencies
+  -- dependencies
   "nvim-lua/plenary.nvim";
+  "nvim-tree/nvim-web-devicons";
+
+  -- workflow
   {"nvim-telescope/telescope.nvim", tag = "0.1.8"};
   "ratmav/marv";
-  "ratmav/nerdtree"; -- TODO: replace with neotree.
+  "ratmav/nerdtree";
   "ratmav/wisp";
-  "ratmav/vim-bufkill"; -- TODO: lua?
-  "ratmav/vim-maximizer"; -- TODO: lua?
-  "ratmav/winresizer.vim"; -- TODO: lua?
-  "ratmav/vim-fugitive"; -- TODO: lua?
-  "sindrets/diffview.nvim"; -- TODO: lua?
+  "ratmav/vim-bufkill";
+  "ratmav/vim-maximizer";
+  "ratmav/winresizer.vim";
+  "ratmav/vim-fugitive";
+  "sindrets/diffview.nvim";
 
   -- display
-  "nvim-tree/nvim-web-devicons";
-  "ratmav/vim-gitgutter"; -- TODO: lua?
-  "ratmav/gruvbox"; -- TODO: lua?
-  "ratmav/rainbow_parentheses.vim"; -- TODO: lua?
-  "ratmav/vim-airline"; -- TODO: lua?
-
-  -- treesitter
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"};
+  "ratmav/vim-gitgutter";
+  "ratmav/gruvbox";
+  "ratmav/rainbow_parentheses.vim";
+  "ratmav/vim-airline";
 }
