@@ -47,7 +47,7 @@ export PATH
 
 ## attempt to find parent branch.
 git-guess-parent() {
-  # Check if a branch name is provided, otherwise use current branch
+  # check if a branch name is provided, otherwise use current branch
   if [ $# -eq 0 ]; then
     local branch=$(git rev-parse --abbrev-ref HEAD)
   else
@@ -57,32 +57,48 @@ git-guess-parent() {
   if [ "$(type -P git)" ]; then
     if git rev-parse --git-dir > /dev/null 2>&1; then
       if git show-ref --verify --quiet refs/heads/$branch; then
-        # attempts to find the parent branch by:
-        # 1. using show-branch to show relationship between branches
-        # 2. filtering to branches that contain commits that the current branch has
-        # 3. removing the current branch from consideration
-        # 4. taking the topmost result (most likely to be the parent)
-        # 5. extracting just the branch name from the result
-        local parent_branch=$(git show-branch |
-                             grep '*' |
-                             grep -v "$branch" |
-                             head -n1 |
-                             sed 's/.*\[\(.*\)\].*/\1/' |
-                             sed 's/[\^~].*//')
+        # get the branch point by finding the merge-base with each other branch
+        local parent_branch=""
+        local latest_commit=""
 
-        if [[ -z "$parent_branch" ]]; then
-          echo "Could not determine parent branch for '$branch'."
-        else
+        # get all branches except the current one
+        for potential_parent in $(git for-each-ref --format='%(refname:short)' refs/heads/ | grep -v "^$branch$"); do
+          # find the merge-base (common ancestor) with this branch
+          local merge_base=$(git merge-base $potential_parent $branch 2>/dev/null || echo "")
+
+          if [ -n "$merge_base" ]; then
+            # get commit date in seconds since epoch for sorting
+            local commit_date=$(git show -s --format=%ct $merge_base 2>/dev/null)
+
+            # if this is the first valid merge-base or it's more recent than previous ones
+            if [ -z "$latest_commit" ] || [ "$commit_date" -gt "$latest_commit" ]; then
+              # check if this branch is a direct parent by seeing if it contains the merge-base as its tip
+              local tip_commit=$(git rev-parse $potential_parent)
+              if [ "$tip_commit" = "$merge_base" ]; then
+                parent_branch=$potential_parent
+                latest_commit=$commit_date
+              # otherwise, if we don't have a parent yet, or this is more recent, use it
+              elif [ -z "$parent_branch" ] || [ "$commit_date" -gt "$latest_commit" ]; then
+                parent_branch=$potential_parent
+                latest_commit=$commit_date
+              fi
+            fi
+          fi
+        done
+
+        if [ -n "$parent_branch" ]; then
           echo "$parent_branch"
+        else
+          echo "could not determine parent branch for '$branch'."
         fi
       else
-        echo "Branch '$branch' does not exist."
+        echo "branch '$branch' does not exist."
       fi
     else
-      echo "Not a git repository."
+      echo "not a git repository."
     fi
   else
-    echo "'git' command not available. Check your installation."
+    echo "'git' command not available. check your installation."
   fi
 }
 
