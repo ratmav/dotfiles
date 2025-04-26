@@ -58,6 +58,7 @@ main_kali() {
     kali_dependencies
     kali_rust
     kali_wezterm
+    main_neobuild
   else
     die "${FUNCNAME[0]}: unsupported operating system."
   fi

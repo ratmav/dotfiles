@@ -11,6 +11,7 @@ source ./bash/_lib.sh
 source ./bash/macos.sh
 source ./bash/posix.sh
 source ./bash/kali.sh
+source ./bash/neobuild.sh
 
 bootstrap() {
   if [[ $(uname) == "Darwin" ]]; then

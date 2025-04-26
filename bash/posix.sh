@@ -30,8 +30,8 @@ posix_git() {
 }
 
 posix_nvim() {
-  _posix_nvim_config "${FUNCNAME[0]}"
-  _posix_nvim_plugins "${FUNCNAME[0]}"
+  posix_nvim_config "${FUNCNAME[0]}"
+  posix_nvim_plugins "${FUNCNAME[0]}"
 }
 
 posix_symlinks() {
@@ -51,11 +51,11 @@ main_posix() {
   posix_asdf
 }
 
-# Private functions
+# Neovim configuration functions
 
-_posix_nvim_config() {
+posix_nvim_config() {
   local caller="$1"
-  
+
   # Ensure nvim config directory exists
   rm -rf $HOME/.config/nvim
   mkdir -p $HOME/.config/nvim
@@ -68,23 +68,19 @@ _posix_nvim_config() {
 -- Check if we're in installation mode or normal operation
 if vim.env.NVIM_INSTALL_MODE == "1" then
   -- In installation mode, load the plugins registry directly to get the plugin definitions
-  dofile("$PWD/neovim/plugins/init.lua")
-  
-  -- Then run the installation
-  vim.cmd("autocmd User PaqDoneInstall quit")
-  vim.cmd("PaqInstall")
+  dofile("$script_dir/neovim/plugins/init.lua")
 else
   -- In normal operation, load the main neovim config
-  dofile("$PWD/neovim.lua")
+  dofile("$script_dir/neovim.lua")
 end
 EOF
 
   msg "${OK}${caller}: created nvim config that loads from dotfiles repo."
 }
 
-_posix_nvim_plugins() {
+posix_nvim_plugins() {
   local caller="$1"
-  
+
   # Clean up all plugins including paq
   NVIM_PLUGIN_PATH="$HOME/.local/share/nvim/site/pack"
   rm -rf "$NVIM_PLUGIN_PATH"
@@ -96,7 +92,7 @@ _posix_nvim_plugins() {
   git clone --depth=1 https://github.com/savq/paq-nvim "$PAQ_PATH" > /dev/null 2>&1
   msg "${OK}${caller}: installed paq-nvim."
 
-  # Launch Neovim to install plugins - redirect both stdout and stderr
-  NVIM_INSTALL_MODE=1 nvim --headless -c 'autocmd User PaqDoneInstall quit' > /dev/null 2>&1
+  # Launch Neovim to install plugins with timeout
+  timeout 60 env NVIM_INSTALL_MODE=1 nvim --headless -c "lua require('paq').install()" -c qa
   msg "${OK}${caller}: installed neovim plugins."
 }
