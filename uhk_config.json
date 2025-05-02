@@ -1,6 +1,6 @@
 {
-  "userConfigMajorVersion": 8,
-  "userConfigMinorVersion": 3,
+  "userConfigMajorVersion": 9,
+  "userConfigMinorVersion": 0,
   "userConfigPatchVersion": 0,
   "deviceName": "alfred",
   "doubleTapSwitchLayerTimeout": 250,
@@ -44,6 +44,11 @@
   "backlightingMacroColor": {
     "b": 255,
     "g": 255,
+    "r": 255
+  },
+  "backlightingDeviceColor": {
+    "b": 68,
+    "g": 136,
     "r": 255
   },
   "mouseMoveInitialSpeed": 8,
