@@ -26,6 +26,7 @@ vim.keymap.set('t', '<A-l>', '<C-\\><C-N><C-w>l')
 -- Addresses the Neovim 0.11+ change where terminal buffers require Ctrl-\ Ctrl-n to exit
 vim.keymap.set('i', '<C-]>', '<Esc>', { noremap = true })
 vim.keymap.set('t', '<C-]>', '<C-\\><C-n>', { noremap = true })
+vim.keymap.set('c', '<C-]>', '<C-c>', { noremap = true })
 
 -- Window navigation
 vim.keymap.set('i', '<A-h>', '<C-\\><C-N><C-w>h')

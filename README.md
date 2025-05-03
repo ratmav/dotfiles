@@ -83,8 +83,10 @@ functions.
 
 a universal escape key (`Ctrl-]`) has been implemented to provide consistent behavior across all buffer types in Neovim 0.11+. this addresses the change where terminal buffers now require a different command to exit insert mode.
 
-- **standard buffers**:  `Ctrl-]`:  exits insert mode (equivalent to `Esc`)
-- **terminal buffers**: `Ctrl-]`:  exits insert mode (equivalent to `Ctrl-\ Ctrl-n`)
+- **standard buffers**:  exits insert mode (equivalent to `Esc`)
+- **terminal buffers**:  exits insert mode (equivalent to `Ctrl-\ Ctrl-n`)
+- **command-line mode**: exits command-line mode (equivalent to `Ctrl-c`)
+- **telescope windows**: closes telescope floating windows in a single keystroke
 
 this key combination maintains the left pinky, right pinky pattern while providing consistent behavior regardless of buffer context.
 
