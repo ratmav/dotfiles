@@ -99,6 +99,8 @@ this key combination maintains the left pinky, right pinky pattern while providi
 - `<Leader>g`:  find git files (Telescope)
 - `<Leader>l`:  live grep search (Telescope)
 - `<Leader>d`:  open git diff view (Diffview)
+- `<Leader>t`:  toggle scratchpad (Trap)
+- `<Leader>m`:  toggle markdown preview (Marv)
 
 #### buffer management (Ctrl-b prefix)
 
