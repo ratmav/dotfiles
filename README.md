@@ -74,3 +74,57 @@ functions.
 * system shell (live off the land)
     * *nix: [bash](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html)
     * windows: [powershell](https://docs.microsoft.com/en-us/powershell/)
+
+## keyboard shortcuts
+
+### neovim shortcuts
+
+#### universal escape key: Ctrl-]
+
+a universal escape key (`Ctrl-]`) has been implemented to provide consistent behavior across all buffer types in Neovim 0.11+. this addresses the change where terminal buffers now require a different command to exit insert mode.
+
+- **standard buffers**:  exits insert mode (equivalent to `Esc`)
+- **terminal buffers**:  exits insert mode (equivalent to `Ctrl-\ Ctrl-n`)
+- **command-line mode**: exits command-line mode (equivalent to `Ctrl-c`)
+- **telescope windows**: closes telescope floating windows in a single keystroke
+
+this key combination maintains the left pinky, right pinky pattern while providing consistent behavior regardless of buffer context.
+
+#### leader-based commands (space key)
+
+- `<Leader>r`:  reload Neovim configuration
+- `<Leader>n`:  toggle NERDTree file explorer
+- `<Leader>f`:  find files (Telescope)
+- `<Leader>b`:  find buffers (Telescope)
+- `<Leader>g`:  find git files (Telescope)
+- `<Leader>l`:  live grep search (Telescope)
+- `<Leader>d`:  open git diff view (Diffview)
+- `<Leader>t`:  toggle scratchpad (Trap)
+- `<Leader>m`:  toggle markdown preview (Marv)
+
+#### buffer management (Ctrl-b prefix)
+
+- `<C-b>h/l`:   navigate buffers (left/right)
+- `<C-b>r`:     refresh current buffer
+- `<C-b>q`:     close buffer (Vim-Bufkill)
+
+#### window management (Ctrl-w prefix)
+
+- `<C-w>h/j/k/l`: navigate windows (left/down/up/right)
+- `<C-w>r`:     start window resize mode (WinResizer)
+- `<C-w>z`:     toggle maximize current window (Vim-Maximizer)
+
+#### terminal management
+
+- `<C-t>`:      open terminal
+- `<C-]>`:      exit terminal mode (universal escape)
+
+### wezterm shortcuts
+
+#### terminal emulator commands (Ctrl-e leader)
+
+- `<C-e>n`:     new WezTerm tab
+- `<C-e>h/l`:   navigate tabs (left/right)
+- `<C-e>c`:     activate copy mode (similar to vi-style visual mode)
+- `<C-e>y`:     copy/yank text
+- `<C-e>p`:     paste text

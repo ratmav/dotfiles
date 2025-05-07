@@ -20,6 +20,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- Setup telescope
 local telescope = require('telescope')
+local actions = require('telescope.actions')
 telescope.setup {
   defaults = {
     file_ignore_patterns = { ".git/", "node_modules/" },
@@ -32,6 +33,11 @@ telescope.setup {
       "--column",
       "--smart-case",
       "--hidden"
+    },
+    mappings = {
+      i = {
+        ["<C-]>"] = actions.close
+      },
     },
   },
   pickers = {
