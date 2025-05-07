@@ -42,3 +42,7 @@ vim.g.omni_sql_no_default_maps = 1
 vim.cmd [[
   autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 ]]
+
+-- Disable tag plugins (Ctrl-] is used as universal escape key)
+vim.g.loaded_tagstack = 1
+vim.g.loaded_tags = 1

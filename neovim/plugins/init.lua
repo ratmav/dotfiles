@@ -12,11 +12,12 @@ paq {
   {"nvim-telescope/telescope.nvim", tag = "0.1.8"};
   "ratmav/marv";
   "ratmav/nerdtree";
-  "ratmav/wisp";
+  "ratmav/trap";
   "ratmav/vim-bufkill";
   "ratmav/vim-maximizer";
-  "ratmav/winresizer.vim";
   "ratmav/vim-fugitive";
+  "ratmav/winresizer.vim";
+  "ratmav/wisp";
   "sindrets/diffview.nvim";
 
   -- display
