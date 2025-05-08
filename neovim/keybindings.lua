@@ -27,6 +27,9 @@ vim.keymap.set('t', '<A-l>', '<C-\\><C-N><C-w>l')
 vim.keymap.set('i', '<C-]>', '<Esc>', { noremap = true })
 vim.keymap.set('t', '<C-]>', '<C-\\><C-n>', { noremap = true })
 vim.keymap.set('c', '<C-]>', '<C-c>', { noremap = true })
+-- Add visual and visual block mode mappings to fix issue #70
+vim.keymap.set('v', '<C-]>', '<Esc>', { noremap = true })
+vim.keymap.set('x', '<C-]>', '<Esc>', { noremap = true })
 
 -- Window navigation
 vim.keymap.set('i', '<A-h>', '<C-\\><C-N><C-w>h')
