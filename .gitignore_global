@@ -13,3 +13,6 @@
 
 # asdf version files
 .tool-versions
+
+# claude code
+.claude
