@@ -75,6 +75,46 @@ git-prune-sync() {
   fi
 }
 
+## remove all worktrees except the main worktree
+git-worktree-cleanup() {
+  if [ "$(type -P git)" ]; then
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+      local main_worktree=$(git rev-parse --show-toplevel)
+      local worktrees=$(git worktree list --porcelain | grep "^worktree " | cut -d' ' -f2-)
+      local count=0
+
+      if [[ -z "$worktrees" ]]; then
+        echo "no worktrees found."
+        return
+      fi
+
+      while IFS= read -r worktree; do
+        if [[ "$worktree" != "$main_worktree" ]]; then
+          echo "removing worktree: $worktree"
+          if git worktree remove --force "$worktree" 2>/dev/null; then
+            ((count++))
+          else
+            echo "  failed to remove $worktree"
+          fi
+        fi
+      done <<< "$worktrees"
+
+      # clean up any broken references
+      git worktree prune
+
+      if [[ $count -eq 0 ]]; then
+        echo "no worktrees removed (only main exists)."
+      else
+        echo "removed $count worktree(s)."
+      fi
+    else
+      echo "not a git repository."
+    fi
+  else
+    echo "'git' command not available. check your installation."
+  fi
+}
+
 ## Makefile tab completion.
 
 _make_completion() {
