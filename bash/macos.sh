@@ -52,6 +52,43 @@ macos_cask_packages() {
   fi
 }
 
+macos_nix() {
+  if [[ $(uname) == "Darwin" ]]; then
+    if type nix > /dev/null 2>&1; then
+      msg "${WARN}${FUNCNAME[0]}: nix already installed."
+    else
+      sh <(curl -L https://nixos.org/nix/install) --daemon
+      msg "${OK}${FUNCNAME[0]}: installed nix."
+    fi
+  else
+    die "${FUNCNAME[0]}: unsupported operating system."
+  fi
+}
+
+macos_nix_config() {
+  if [[ $(uname) == "Darwin" ]]; then
+    mkdir -p ~/.config/nix
+    rm -f ~/.config/nix/nix.conf
+    echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
+    msg "${OK}${FUNCNAME[0]}: configured nix with flakes support."
+  else
+    die "${FUNCNAME[0]}: unsupported operating system."
+  fi
+}
+
+macos_nix_packages() {
+  if [[ $(uname) == "Darwin" ]]; then
+    if type nix-env > /dev/null 2>&1; then
+      nix-env -if nix/base.nix
+      msg "${OK}${FUNCNAME[0]}: installed nix packages."
+    else
+      msg "${WARN}${FUNCNAME[0]}: nix-env not available."
+    fi
+  else
+    die "${FUNCNAME[0]}: unsupported operating system."
+  fi
+}
+
 macos_homebrew() {
   if [[ $(uname) == "Darwin" ]]; then
     if type brew > /dev/null 2>&1; then
@@ -67,6 +104,9 @@ macos_homebrew() {
 
 main_macos() {
   if [[ $(uname) == "Darwin" ]]; then
+    macos_nix
+    macos_nix_config
+    macos_nix_packages
     macos_homebrew
     macos_brew_packages
     macos_cask_packages

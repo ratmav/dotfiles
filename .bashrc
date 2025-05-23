@@ -9,6 +9,18 @@ export PS1="[\u@\h \W]\\$ "
 
 export CLICOLOR=1
 
+## nix (sourced early, homebrew and asdf will take precedence)
+
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+
+## direnv
+
+if type direnv > /dev/null 2>&1; then
+  eval "$(direnv hook bash)"
+fi
+
 ## asdf
 
 source "$HOME"/.asdf/asdf.sh
