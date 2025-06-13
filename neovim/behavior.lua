@@ -1,10 +1,10 @@
 -- avoid vimception in terminal buffers (skip during plugin installation)
 local error_msg = "Error: nvim in nvim terminal buffer"
-if vim.env.NVIM and vim.env.NVIM_INSTALL_MODE ~= "1" then
+if vim.env.NVIM and #vim.api.nvim_list_uis() > 0 then
   vim.cmd('echohl ErrorMsg')
   vim.cmd('echo "' .. error_msg .. '"')
   vim.cmd('echohl None')
-  vim.cmd('sleep 3')
+  vim.cmd('sleep 2')
   vim.cmd('cquit')
 end
 
