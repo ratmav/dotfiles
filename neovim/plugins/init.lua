@@ -27,3 +27,6 @@ paq {
   "ratmav/rainbow_parentheses.vim";
   "ratmav/vim-airline";
 }
+
+-- Temporarily load development plugin
+vim.opt.runtimepath:append("/home/ratmav/Source/epoch")
