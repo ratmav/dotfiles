@@ -10,6 +10,7 @@ paq {
 
   -- workflow
   {"nvim-telescope/telescope.nvim", tag = "0.1.8"};
+  "ratmav/epoch";
   "ratmav/marv";
   "ratmav/nerdtree";
   "ratmav/trap";
@@ -27,6 +28,3 @@ paq {
   "ratmav/rainbow_parentheses.vim";
   "ratmav/vim-airline";
 }
-
--- Temporarily load development plugin
-vim.opt.runtimepath:append("/home/ratmav/Source/epoch")
