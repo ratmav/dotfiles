@@ -10,7 +10,6 @@ paq {
 
   -- workflow
   {"nvim-telescope/telescope.nvim", tag = "0.1.8"};
-  "ratmav/epoch";
   "ratmav/marv";
   "ratmav/nerdtree";
   "ratmav/trap";
