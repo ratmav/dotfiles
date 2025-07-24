@@ -111,6 +111,7 @@ The PATH precedence ensures Homebrew takes priority while you fix the Nix config
 
 ### ✅ Migrated to Nix
 - [x] direnv
+- [x] uv (Python package manager)
 
 ### 🍺 Still on Homebrew
 **Packages:**
