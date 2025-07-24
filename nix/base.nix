@@ -4,7 +4,8 @@ with pkgs; [
   curl
   direnv
   git
-  grep
-  sed
+  gnugrep
+  opentofu
+  gnused
   uv
 ]
