@@ -1,11 +1,13 @@
-{ pkgs ? import <nixpkgs> {} }:
-
-with pkgs; [
+let
+  stable = import <nixpkgs> { };
+  unstable = import <nixpkgs-unstable> { };
+in
+(with stable; [
   curl
   direnv
   git
   gnugrep
   opentofu
   gnused
-  uv
-]
+])
+++ (with unstable; [ uv ])
