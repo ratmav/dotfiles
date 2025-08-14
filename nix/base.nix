@@ -5,16 +5,18 @@ let
     gke-gcloud-auth-plugin
   ]);
 in
-(with stable; [
-  awscli2
-  azure-cli
-  curl
-  direnv
-  gh
-  git
-  gnugrep
-  opentofu
-  gnused
-])
-++ [ gdk ]
-++ (with unstable; [ uv ])
+stable.buildEnv {
+  name = "base-environment";
+  paths = (with stable; [
+    awscli2
+    curl
+    direnv
+    gh
+    git
+    gnugrep
+    opentofu
+    gnused
+  ])
+  ++ [ gdk ]
+  ++ (with unstable; [ azure-cli uv ]);
+}

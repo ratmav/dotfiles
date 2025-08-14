@@ -34,8 +34,10 @@ brew uninstall ripgrep
 
 ### 3. Update Nix packages
 ```bash
-nix-env -if nix/base.nix
+nix-env --set -f nix/base.nix
 ```
+
+**Note**: Using `--set` ensures only the packages declared in `nix/base.nix` are installed, removing any previously installed packages not in the declaration. This provides the declarative, idempotent behavior where your environment exactly matches your configuration file.
 
 ### 4. Test
 Verify the tool works correctly from the Nix installation.
@@ -62,7 +64,7 @@ with pkgs; [
 
 ### 2. Install nix bash
 ```bash
-nix-env -if nix/base.nix
+nix-env --set -f nix/base.nix
 ```
 
 ### 3. Add nix bash to system shells
@@ -150,6 +152,6 @@ The PATH precedence ensures Homebrew takes priority while you fix the Nix config
 ## Commands
 
 - **Bootstrap setup**: `./i.sh --call main_macos`
-- **Update Nix packages**: `nix-env -if nix/base.nix`
+- **Update Nix packages**: `nix-env --set -f nix/base.nix`
 - **Check what's installed**: `nix-env -q`
 - **Remove Nix package**: `nix-env -e package-name`
