@@ -18,5 +18,9 @@ stable.buildEnv {
     gnused
   ])
   ++ [ gdk ]
-  ++ (with unstable; [ azure-cli uv ]);
+  ++ (with unstable; [
+        azure-cli
+        goose-cli
+        uv
+      ]);
 }

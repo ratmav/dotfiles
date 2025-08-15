@@ -29,6 +29,14 @@ nix-semantic() {
   _nix_print_pin_info "$package" "$version" "$found_commit"
 }
 
+nix-sync() {
+  tui_info "syncing nix configuration..."
+  tui_info "...updating channels"
+  nix-channel --update
+  tui_info "...syncing configuration"
+  nix-env --set -f "${helpers_dir}/../../nix/base.nix"
+}
+
 _nix_find_package_path() {
   local package=$1
   local possible_paths=(
