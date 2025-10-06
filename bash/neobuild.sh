@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source bash/posix.sh
+
 main_neobuild() {
   if _is_kali; then
     local current_dir=$(pwd)
@@ -8,10 +10,6 @@ main_neobuild() {
     _neobuild_clone
     _neobuild_make
     _neobuild_install
-
-    # Configure Neovim and install plugins
-    posix_nvim_config "${FUNCNAME[0]}"
-    posix_nvim_plugins "${FUNCNAME[0]}"
 
     cd "$current_dir"
   else
