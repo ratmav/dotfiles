@@ -1,53 +1,61 @@
-#!/usr/bin/env/bash
+#!/usr/bin/env bash
 
 source ./bash/_lib.sh
 
 
-kali_dependencies() {
+kali_nix() {
   if _is_kali; then
-    packages=("curl" "neovim")
-
-    quiet "sudo apt-get update"
-
-    for package in "${packages[@]}"; do
-      quiet "sudo apt-get install -y $package"
-      msg "${OK}${FUNCNAME[0]}: installed $package."
-    done
-  else
-    die "${FUNCNAME[0]}: unsupported operating system."
-  fi
-}
-
-kali_rust() {
-  if _is_kali; then
-    if type cargo > /dev/null 2>&1; then
-      msg "${WARN}${FUNCNAME[0]}: rust/cargo already installed."
+    if type nix > /dev/null 2>&1; then
+      msg "${WARN}${FUNCNAME[0]}: nix already installed."
     else
-      curl --proto '=https' -tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      sh <(curl -L https://nixos.org/nix/install) --daemon
+      msg "${OK}${FUNCNAME[0]}: installed nix."
     fi
   else
     die "${FUNCNAME[0]}: unsupported operating system."
   fi
 }
 
-kali_wezterm() {
+kali_nix_config() {
   if _is_kali; then
-    if type wezterm > /dev/null 2>&1; then
-      msg "${WARN}${FUNCNAME[0]}: wezterm already installed."
+    mkdir -p ~/.config/nix
+    rm -f ~/.config/nix/nix.conf
+    echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
+    msg "${OK}${FUNCNAME[0]}: configured nix with flakes support."
+  else
+    die "${FUNCNAME[0]}: unsupported operating system."
+  fi
+}
+
+kali_home_manager() {
+  if _is_kali; then
+    if type home-manager > /dev/null 2>&1; then
+      msg "${WARN}${FUNCNAME[0]}: home-manager already installed."
     else
-      local gpg_key_url="https://apt.fury.io/wez"
-      local gpg_key_path="/etc/apt/keyrings/wezterm-fury.gpg"
-      local apt_source_content="deb [signed-by=$gpg_key_path] $gpg_key_url/ * *"
-      local apt_source_path="/etc/apt/sources.list.d/wezterm.list"
+      local hm_url="https://github.com/nix-community/home-manager/archive/master.tar.gz"
+      local unstable_url="https://nixos.org/channels/nixpkgs-unstable"
 
-      curl -fsSL "$gpg_key_url/gpg.key" | sudo gpg --yes --dearmor -o "$gpg_key_path"
-      echo "$apt_source_content" | sudo tee "$apt_source_path"
-
-      sudo apt-get update
-      sudo apt-get install wezterm -y
-
-      msg "${OK}${FUNCNAME[0]}: installed $package."
+      nix-channel --add "$hm_url" home-manager
+      nix-channel --add "$unstable_url" nixpkgs-unstable
+      quiet "nix-channel --update"
+      nix-shell '<home-manager>' -A install
+      msg "${OK}${FUNCNAME[0]}: installed home-manager."
     fi
+  else
+    die "${FUNCNAME[0]}: unsupported operating system."
+  fi
+}
+
+kali_home_config() {
+  if _is_kali; then
+    local config_dir="$HOME/.config/home-manager"
+    local dotfiles_config="$HOME/Source/dotfiles/nix/home.nix"
+
+    mkdir -p "$config_dir"
+    ln -sf "$dotfiles_config" "$config_dir/home.nix"
+
+    msg "${OK}${FUNCNAME[0]}: linked home-manager configuration."
+    msg "${WARN}${FUNCNAME[0]}: run 'home-manager switch' to activate."
   else
     die "${FUNCNAME[0]}: unsupported operating system."
   fi
@@ -55,11 +63,10 @@ kali_wezterm() {
 
 main_kali() {
   if _is_kali; then
-    kali_dependencies
-    kali_rust
-    kali_wezterm
-    main_neobuild
-  else
-    die "${FUNCNAME[0]}: unsupported operating system."
+    kali_nix
+    kali_nix_config
+    kali_home_manager
+    kali_home_config
+    msg "${WARN}run 'home-manager switch'."
   fi
 }

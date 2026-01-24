@@ -33,8 +33,14 @@ nix-sync() {
   tui_info "syncing nix configuration..."
   tui_info "...updating channels"
   nix-channel --update
-  tui_info "...syncing configuration"
-  nix-env --set -f "${helpers_dir}/../../nix/base.nix"
+
+  if [[ $(uname) == "Darwin" ]]; then
+    tui_info "...switching darwin configuration"
+    darwin-rebuild switch
+  fi
+
+  tui_info "...switching home-manager generation"
+  home-manager switch
 }
 
 _nix_find_package_path() {

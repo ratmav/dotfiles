@@ -150,11 +150,6 @@ local function main()
     add_powershell_to_launch_menu(launch_menu)
     add_git_bash_to_launch_menu(launch_menu)
   elseif host_os == 'macos' then
-    -- check homebrew binary symlinks on startup.
-    config.set_environment_variables = {
-      PATH = '/opt/homebrew/bin/:' .. os.getenv('PATH')
-    }
-
     font_size = 18
   end
 
