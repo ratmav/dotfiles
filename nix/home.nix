@@ -3,10 +3,15 @@
 let
   unstable = import <nixpkgs-unstable> { };
 
-  # NixGL for GUI apps on non-NixOS systems
+  # NixGL for GUI apps on non-NixOS systems (kept for potential future use)
   nixgl = import (builtins.fetchTarball {
     url = "https://github.com/nix-community/nixGL/archive/main.tar.gz";
   }) { };
+
+  # nix-flatpak for declarative flatpak management
+  nix-flatpak = builtins.fetchTarball {
+    url = "https://github.com/gmodena/nix-flatpak/archive/main.tar.gz";
+  };
 
   # AWS CLI without Python tests (speeds up builds)
   awscli2-no-tests = unstable.awscli2.overrideAttrs (oldAttrs: {
@@ -34,6 +39,10 @@ let
   ];
 
 in {
+  imports = [
+    "${nix-flatpak}/modules/home-manager.nix"
+  ];
+
   home.username = builtins.getEnv "USER";
   home.homeDirectory = builtins.getEnv "HOME";
   home.stateVersion = "25.05";
@@ -154,6 +163,20 @@ in {
 
   # Other dotfiles
   home.file.".gitignore_global".source = ../.gitignore_global;
+
+  # Flatpak declarative management (Linux only)
+  services.flatpak = lib.mkIf pkgs.stdenv.isLinux {
+    enable = true;
+    packages = [
+      "org.wezfurlong.wezterm"
+      "com.brave.Browser"
+    ];
+    # Flathub is added by default, but can be explicit
+    remotes = [{
+      name = "flathub";
+      location = "https://flathub.org/repo/flathub.flatpakrepo";
+    }];
+  };
 
   programs.home-manager.enable = true;
 }
