@@ -61,6 +61,30 @@ kali_home_config() {
   fi
 }
 
+kali_shell() {
+  if _is_kali; then
+    local bash_path="$HOME/.nix-profile/bin/bash"
+
+    if [ ! -f "$bash_path" ]; then
+      msg "${WARN}${FUNCNAME[0]}: nix bash not found. run home-manager switch first."
+      return
+    fi
+
+    if ! grep -qF "$bash_path" /etc/shells; then
+      echo "$bash_path" | sudo tee -a /etc/shells > /dev/null
+      msg "${OK}${FUNCNAME[0]}: added nix bash to /etc/shells."
+    fi
+
+    if [ "$SHELL" != "$bash_path" ]; then
+      chsh -s "$bash_path"
+      msg "${OK}${FUNCNAME[0]}: changed default shell to nix bash."
+      msg "${WARN}${FUNCNAME[0]}: start new shell session for changes to take effect."
+    fi
+  else
+    die "${FUNCNAME[0]}: unsupported operating system."
+  fi
+}
+
 main_kali() {
   if _is_kali; then
     kali_nix
@@ -68,5 +92,6 @@ main_kali() {
     kali_home_manager
     kali_home_config
     msg "${WARN}run 'home-manager switch'."
+    kali_shell
   fi
 }

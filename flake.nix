@@ -86,6 +86,7 @@
           kali-nix-config = mkApp "kali-nix-config" "kali_nix_config";
           kali-home-manager = mkApp "kali-home-manager" "kali_home_manager";
           kali-home-config = mkApp "kali-home-config" "kali_home_config";
+          kali-shell = mkApp "kali-shell" "kali_shell";
 
           posix-nvim-paq = mkApp "posix-nvim-paq" "posix_nvim_paq";
         });

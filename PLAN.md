@@ -302,7 +302,6 @@ in {
 
     # Terminals & Editors
     wezterm
-    neovim
 
     # Package Managers
     uv
@@ -392,7 +391,6 @@ in {
 
   # Other dotfiles
   home.file.".gitignore_global".source = ../.gitignore_global;
-  home.file.".bash_profile".source = ../.bash_profile;
 
   programs.home-manager.enable = true;
 }
@@ -717,13 +715,13 @@ echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 ```bash
 nix run .#bootstrap
 darwin-rebuild switch
-home-manager switch
+home-manager switch -b backup  # -b backup to safely backup existing dotfiles
 ```
 
 ### Kali Linux
 ```bash
 nix run .#bootstrap
-home-manager switch
+home-manager switch -b backup  # -b backup to safely backup existing dotfiles
 ```
 
 ### Granular Setup
@@ -788,6 +786,28 @@ echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 
 This is a one-time setup. The bootstrap scripts also configure this, but you need it enabled to run the flake commands.
 
+## Expected Migration Behavior
+
+**IMPORTANT:** When running `home-manager switch` for the first time, you will encounter file conflicts. This is **normal and expected** when migrating from an existing dotfiles setup.
+
+**Why this happens:**
+- Your existing dotfiles (`.bashrc`, `.bash_profile`, `.wezterm.lua`, `.config/nvim/init.lua`) were created by the old system
+- home-manager wants to manage these same files with symlinks to `/nix/store/`
+- home-manager refuses to overwrite existing files by default (safety feature)
+
+**Solution:**
+Always use the `-b backup` flag on first run:
+```bash
+home-manager switch -b backup
+```
+
+This will:
+- Rename existing files to `*.backup` (e.g., `.bashrc` → `.bashrc.backup`)
+- Let home-manager create its managed symlinks
+- Keep your old files safe in case you need to rollback
+
+After verifying the new setup works, you can delete the `*.backup` files.
+
 ## Execution Order
 
 1. - [x] **Backup**: `git checkout -b nix-migration-backup && git add -A && git commit -m "Backup"`
@@ -797,11 +817,60 @@ This is a one-time setup. The bootstrap scripts also configure this, but you nee
 5. - [x] **Update bash scripts**: Simplify macos.sh, kali.sh, posix.sh
 6. - [x] **Update helpers**: Modify nix.sh
 7. - [x] **Update wezterm.lua**: Remove Homebrew PATH
-8. - [ ] **Delete**: i.sh, base.nix, neobuild.sh (IN PROGRESS)
-9. - [ ] **Test macOS**: Enable experimental features, then `nix run .#bootstrap` then `darwin-rebuild switch && home-manager switch`
-10. - [ ] **Test Linux**: Enable experimental features, then `nix run .#bootstrap` then `home-manager switch`
-11. - [ ] **Install paq-nvim**: `nix run .#posix`
-12. - [ ] **Verify**: Check tool versions, configs, functionality
+8. - [ ] **Delete**: i.sh, base.nix, neobuild.sh
+9. - [ ] **Test macOS**: Enable experimental features, then `nix run .#bootstrap` then `darwin-rebuild switch && home-manager switch -b backup`
+10. - [x] **Test Linux**: Enable experimental features, then `nix run .#bootstrap` then `home-manager switch -b backup`
+11. - [x] **Install paq-nvim**: `nix run .#posix`
+12. - [x] **Verify**: Check tool versions, configs, functionality (Linux complete)
+
+## Testing Notes (Linux/Kali)
+
+### Status: COMPLETE ✅ (2026-01-24)
+
+**Steps completed:**
+1. [x] Enabled experimental features in `~/.config/nix/nix.conf`
+2. [x] Ran `nix run .#bootstrap` successfully
+3. [x] Fixed home.nix conflict: removed `.bash_profile` manual symlink (programs.bash manages it)
+4. [x] Fixed home.nix conflict: removed `neovim` from home.packages (programs.neovim provides it)
+5. [x] Removed old dotfile symlinks manually (`.bash_profile`, `.bashrc`, `.config/nvim/init.lua`)
+6. [x] Ran `home-manager switch -b backup` successfully
+7. [x] Added `setup_colors`, `msg`, `die`, `quiet` functions to `bash/_lib.sh`
+8. [x] Ran `nix run .#posix` successfully
+9. [x] Verified all tools from Nix in new terminal session
+
+**Verification results:**
+```
+✅ nvim     → /home/ratmav/.nix-profile/bin/nvim
+✅ wezterm  → /home/ratmav/.nix-profile/bin/wezterm
+✅ aws      → /home/ratmav/.nix-profile/bin/aws
+✅ git      → /home/ratmav/.nix-profile/bin/git
+✅ gh       → /home/ratmav/.nix-profile/bin/gh
+✅ direnv   → /home/ratmav/.nix-profile/bin/direnv
+✅ tofu     → /home/ratmav/.nix-profile/bin/tofu (opentofu package)
+✅ goose    → /home/ratmav/.nix-profile/bin/goose
+✅ cosign   → /home/ratmav/.nix-profile/bin/cosign
+✅ pandoc   → /home/ratmav/.nix-profile/bin/pandoc
+✅ uv       → /home/ratmav/.nix-profile/bin/uv
+✅ rg       → /home/ratmav/.nix-profile/bin/rg (ripgrep package)
+```
+
+**Important notes:**
+- User is running **zsh**, not bash (despite bash config in home.nix)
+- Must open new terminal session for PATH changes to take effect
+- Some symlinks had to be removed manually (ones pointing to dotfiles repo)
+
+### Issues Found and Fixed
+
+1. **Experimental features requirement**: Must enable `nix-command flakes` before running flake commands (documented in Prerequisites)
+2. **`.bash_profile` conflict in home.nix**: `programs.bash.enable = true` auto-manages this file, removed manual symlink
+3. **Neovim duplication in home.nix**: Can't have neovim in both `home.packages` and `programs.neovim.enable = true`, removed from packages
+4. **GUI apps missing libEGL.so**: Nix-installed GUI apps can't access system OpenGL libraries - **SOLVED** with nixGL wrapper
+5. **WezTerm missing window decorations on Wayland**: GNOME doesn't provide server-side decorations, WezTerm uses minimal client-side decorations - **SOLVED** by forcing XWayland mode
+6. **Package version conflicts after channel update**: Duplicate bash/git packages in both home.packages and programs.* - **SOLVED** by removing from home.packages
+
+### Expected Migration Behavior
+
+1. **Existing dotfile conflicts**: home-manager will report conflicts with existing dotfiles (`.bashrc`, `.bash_profile`, etc.). This is normal - use `-b backup` flag to safely rename them.
 
 ## Rollback Strategy
 
@@ -837,13 +906,35 @@ home-manager switch
 
 ## Verification Checklist
 
-- [ ] Neovim loads with plugins
-- [ ] WezTerm opens with correct config
-- [ ] Git operations work (gh, git)
-- [ ] Cloud CLIs functional (aws, az, gcloud)
+- [x] Neovim loads with plugins (Linux complete)
+- [x] WezTerm opens with correct config (Linux complete, uses XWayland for decorations)
+- [x] Git operations work (gh, git) (Linux complete)
+- [x] Cloud CLIs functional (aws, az, gcloud) (Linux complete)
 - [ ] Brave browser installed
 - [ ] Lulu running on macOS
-- [ ] Opensnitch running on Linux
-- [ ] direnv activates environments
-- [ ] Pandoc generates PDFs with LaTeX
-- [ ] Same Neovim/WezTerm versions on both platforms
+- [x] Opensnitch running on Linux
+- [x] direnv activates environments (Linux complete)
+- [x] Pandoc generates PDFs with LaTeX (Linux complete)
+- [ ] Same Neovim/WezTerm versions on both platforms (pending macOS testing)
+
+## Known Issues & Solutions
+
+### WezTerm Window Decorations on Wayland/GNOME
+
+**Problem**: WezTerm shows no window borders when running in native Wayland mode on GNOME.
+
+**Root Cause**:
+- GNOME doesn't provide server-side window decorations on Wayland (by design)
+- WezTerm uses smithay-client-toolkit which only provides minimal "FallbackFrame" decorations
+- WezTerm doesn't integrate libdecor library for proper GNOME-themed decorations
+
+**Solution**: Force XWayland mode (X11 compatibility layer) which provides proper decorations
+- Configured in `nix/home.nix` bash function: `GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb`
+- Works on all GNOME/Wayland systems
+- No functional differences from native Wayland for terminal emulator use case
+
+**Tested WezTerm versions**:
+- 0-unstable-2025-08-14: No Wayland decorations
+- 0-unstable-2026-01-09: No Wayland decorations (latest from nixpkgs-unstable)
+
+**Future**: Monitor [WezTerm issue #1659](https://github.com/wezterm/wezterm/issues/1659) for sctk-adwaita integration

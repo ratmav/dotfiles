@@ -3,6 +3,11 @@
 let
   unstable = import <nixpkgs-unstable> { };
 
+  # NixGL for GUI apps on non-NixOS systems
+  nixgl = import (builtins.fetchTarball {
+    url = "https://github.com/nix-community/nixGL/archive/main.tar.gz";
+  }) { };
+
   # AWS CLI without Python tests (speeds up builds)
   awscli2-no-tests = unstable.awscli2.overrideAttrs (oldAttrs: {
     doCheck = false;
@@ -24,6 +29,8 @@ let
 
   linuxPackages = lib.optionals pkgs.stdenv.isLinux [
     unstable.opensnitch  # Linux firewall
+    nixgl.nixGLIntel     # For Intel/Mesa graphics
+    nixgl.nixVulkanIntel # Vulkan support for Intel
   ];
 
 in {
@@ -34,7 +41,7 @@ in {
   # Core packages (cross-platform from unstable)
   home.packages = (with unstable; [
     # Shell & Core Utils
-    bash
+    # bash is provided by programs.bash, not needed here
     coreutils
     curl
     gnugrep
@@ -43,9 +50,9 @@ in {
     shellcheck
 
     # Development Tools
-    git
+    # git is provided by programs.git, not needed here
     gh
-    direnv
+    # direnv is configured by programs.direnv, but keep here for the binary
 
     # Cloud Infrastructure
     azure-cli
@@ -64,15 +71,8 @@ in {
       inherit (texlive) scheme-basic;
     })
 
-    # Terminals & Editors
-    wezterm
-    neovim
-
     # Package Managers
     uv
-
-    # Browsers
-    brave
   ]) ++ [ awscli2-no-tests gcp ] ++ darwinPackages ++ linuxPackages;
 
   # Neovim configuration
@@ -87,9 +87,6 @@ in {
       dofile(vim.fn.expand("~/Source/dotfiles/neovim.lua"))
     '';
   };
-
-  # WezTerm configuration
-  home.file.".wezterm.lua".source = ../wezterm.lua;
 
   # Git configuration
   programs.git = {
@@ -128,6 +125,7 @@ in {
         export PATH="/Library/TeX/Root/bin/universal-darwin:$PATH"
       ''}
 
+
       # Makefile completion
       _make_completion() {
         local cur prev targets
@@ -156,7 +154,6 @@ in {
 
   # Other dotfiles
   home.file.".gitignore_global".source = ../.gitignore_global;
-  home.file.".bash_profile".source = ../.bash_profile;
 
   programs.home-manager.enable = true;
 }

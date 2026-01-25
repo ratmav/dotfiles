@@ -32,6 +32,12 @@ local config = {
   color_scheme = "Gruvbox dark, medium (base16)",
   warn_about_missing_glyphs = false,
 
+  -- window decorations (works on X11 and Wayland)
+  enable_wayland = true,
+  window_decorations = "INTEGRATED_BUTTONS|RESIZE",
+  integrated_title_button_style = "Gnome",
+  integrated_title_button_alignment = "Right",
+
   -- behavior
   disable_default_key_bindings = true,
   leader = { key="e", mods="CTRL" },
