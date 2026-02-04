@@ -1,0 +1,4 @@
+# dynamic test fixture
+# integration tests create, read, and delete this file
+# to verify task management commands work correctly
+kanban/tasks/test-task.md

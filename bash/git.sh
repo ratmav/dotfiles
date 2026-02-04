@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
+git_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+source "${script_dir}/bash/utils/tui.sh"
+
+source "${git_module_dir}/git/clean.sh"
+
+git_help() {
+  utils_stream_multiline_stderr <<EOF
+usage: ish git [command]
+
+commands:
+  clean        remove cruft and maintain clean state
+EOF
+}
+
+git_route() {
+  case "${1-}" in
+    clean)
+      shift
+      case "${1-}" in
+        prune)
+          shift
+          git_clean_prune "$@"
+          ;;
+        worktrees)
+          shift
+          git_clean_worktrees "$@"
+          ;;
+        "")
+          utils_stream_multiline_stderr <<EOF
+usage: ish git clean [command]
+
+commands:
+  prune        prune local branches missing on remote
+  worktrees    remove all worktrees except main
+EOF
+          ;;
+        *)
+          utils_tui_error --message="unknown git clean command: ${1-}"
+          return 1
+          ;;
+      esac
+      ;;
+    help|"")
+      git_help
+      ;;
+    *)
+      utils_tui_error --message="unknown git command: ${1-}"
+      git_help
+      return 1
+      ;;
+  esac
+}
