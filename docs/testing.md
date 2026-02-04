@@ -57,6 +57,59 @@ test/
 - don't unit test wrappers around external tools (git commands, shellcheck, network apis)
 - integration tests verify routing and composition, not duplicate unit coverage
 
+## what to test
+
+when adding new functionality, test these aspects:
+
+**1. happy path:**
+- function produces expected output
+- message is written, file is created, command executes
+
+**2. error conditions:**
+- errors when required options missing (--message, --path, etc.)
+- errors on unknown/invalid options
+- errors on invalid input values
+- error messages are clear and actionable
+
+**3. edge cases:**
+- empty inputs (when valid)
+- special characters in inputs
+- boundary conditions
+
+**4. help text consistency:**
+- help text matches actual command behavior
+- all commands listed in help are implemented
+- all required options documented
+- format follows established pattern (options inline with commands)
+
+**5. environment handling:**
+- ISH_TESTING flag uses fixtures when true
+- production paths used when false
+- no hardcoded paths (use script_dir, module_dir)
+
+**6. integration:**
+- command works through full routing stack
+- output format correct for piping/scripting
+- exit codes correct (0 = success, 1 = error)
+
+**checklist for new commands:**
+```bash
+# 1. happy path
+@test "command does the thing"
+
+# 2. required options
+@test "command errors without required option"
+
+# 3. unknown options
+@test "command errors on unknown option"
+
+# 4. help text
+@test "help text matches implementation"
+
+# 5. ISH_TESTING flag
+@test "command uses fixtures in test mode"
+```
+
 **running tests recursively:**
 - use `--recursive` flag to find tests in subdirectories
 - example: `bats --recursive test/unit/`

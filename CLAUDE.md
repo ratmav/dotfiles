@@ -127,3 +127,23 @@ Say "eyes on target" to confirm alignment with CLAUDE.md principles. This signal
     * avoid mocking unless a fixture won't do the job
 * when debugging, you do not add print statements or extra logging to the code.
 * when debugging, you never ever guess or hack around a problem, you detect the root cause and solve the root cause.
+
+## git commit discipline
+
+* keep changesets small and focused
+    * one logical change per commit
+    * if you're tempted to use "and" in the commit message, it's probably two commits
+* write clear commit messages
+    * first line: concise summary (50 chars or less)
+    * blank line
+    * body: explain what and why (not how - code shows how)
+    * focus on the problem being solved
+* commit early, commit often during development
+    * ideas flow and topple over easily
+    * small commits are easier to review, revert, and understand
+    * squash/rebase before pushing to keep history clean
+* before major work (like restructuring)
+    * clean up the branch
+    * squash work-in-progress commits
+    * rename branch to reflect actual work
+    * ensure you're on the right base

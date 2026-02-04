@@ -70,6 +70,10 @@ kanban_route() {
     scratch)
       shift
       case "${1-}" in
+        capture)
+          shift
+          kanban_scratch_capture "$@"
+          ;;
         show)
           shift
           kanban_scratch_show "$@"
