@@ -1,0 +1,48 @@
+# build ish_core_validate - validation functions and combinators
+
+**milestone:** 2 - fp core + cleanup
+
+**dependencies:** phase 1 (restructure complete)
+
+## description
+
+Build validation functions and combinators that enable clean error handling and input validation.
+
+Pure functions that return true/false, composable with and/or/not.
+
+## subtasks
+
+- [ ] implement basic validators (nonempty, int, ip, hostname, url)
+- [ ] implement combinator: `ish_core_validate_and` - combine with AND
+- [ ] implement combinator: `ish_core_validate_or` - combine with OR
+- [ ] implement combinator: `ish_core_validate_not` - negate validator
+- [ ] implement `ish_core_validate_require` - validate or fail with message
+- [ ] implement `ish_core_validate_make_regex` - create validator from pattern
+- [ ] write unit tests for all validators
+- [ ] write tests for combinator composition
+- [ ] document with type signatures and examples
+
+## deliverable
+
+`packages/ish/source/core/validate.sh` with composable validators
+
+## notes
+
+**See:** docs/architecture/functional_future/overview.md lines 999-1075
+
+**Type signatures:**
+```bash
+# @type: string -> bool
+ish_core_validate_nonempty()
+
+# @type: string -> bool
+ish_core_validate_ip()
+
+# @type: (a -> bool) -> (a -> bool) -> a -> bool
+ish_core_validate_and()
+
+# @type: (a -> bool) -> a -> string -> IO () | error
+ish_core_validate_require()
+```
+
+**Validators are pure. require_* functions perform IO (error/exit).**
