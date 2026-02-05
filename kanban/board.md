@@ -61,9 +61,12 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
 4. [ ] refactor existing code to use ish_core_* primitives
 5. [ ] document FP patterns and usage
 
+**Documentation:**
+6. [ ] [setup-mdbook-docs](tasks/setup-mdbook-docs.md) - mdBook + mermaid for package docs
+
 **Cleanup:**
-6. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
-7. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
+7. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
+8. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
 
 **Note:** FP core is the foundation. Build incrementally, test thoroughly. ALL functions use `ish_core_*` prefix to prevent namespace pollution. See docs/architecture/functional_future/ for vision.
 
