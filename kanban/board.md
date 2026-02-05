@@ -77,10 +77,11 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
 
 1. [ ] [add-to-path](tasks/add-to-path.md) - verify ish self install implementation (using ish_core_*)
 2. [ ] [gpg-signed-commits](tasks/gpg-signed-commits.md) - enable GPG signing
-3. [ ] implement registry commands (migration_path.md Step 3) - using ish_core_*
-4. [ ] test locally (migration_path.md Step 4)
+3. [ ] [implement-registry](tasks/implement-registry.md) - registry system (ish/registry module with data/packages/)
+4. [ ] implement package commands (migration_path.md Step 3) - using ish_core_*
+5. [ ] test locally (migration_path.md Step 4)
 
-**Note:** All new code uses FP core primitives. Keep functions small (≤15 lines), pure where possible, semantic names.
+**Note:** All new code uses FP core primitives. Keep functions small (≤15 lines), pure where possible, semantic names. Registry data lives in source/registry/data/packages/*.conf, validated with `ish registry validate`.
 
 ---
 

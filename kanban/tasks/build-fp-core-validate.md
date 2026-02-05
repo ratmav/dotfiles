@@ -12,14 +12,24 @@ Pure functions that return true/false, composable with and/or/not.
 
 ## subtasks
 
+**Basic Validators:**
 - [ ] implement basic validators (nonempty, int, ip, hostname, url)
 - [ ] implement combinator: `ish_core_validate_and` - combine with AND
 - [ ] implement combinator: `ish_core_validate_or` - combine with OR
 - [ ] implement combinator: `ish_core_validate_not` - negate validator
 - [ ] implement `ish_core_validate_require` - validate or fail with message
 - [ ] implement `ish_core_validate_make_regex` - create validator from pattern
+
+**Namespace Validation:**
+- [ ] implement `ish_core_namespace_validate` - check function matches declared namespace
+- [ ] implement `ish_core_namespace_check_uniqueness` - check for duplicate namespaces
+- [ ] implement `ish_core_namespace_parse` - parse namespace from package.conf
+- [ ] implement `ish_core_namespace_validate_function_name` - check function naming
+
+**Testing:**
 - [ ] write unit tests for all validators
 - [ ] write tests for combinator composition
+- [ ] write tests for namespace validation
 - [ ] document with type signatures and examples
 
 ## deliverable
@@ -46,3 +56,17 @@ ish_core_validate_require()
 ```
 
 **Validators are pure. require_* functions perform IO (error/exit).**
+
+**Namespace validation functions:**
+```bash
+# @type: string (file) -> string (namespace) -> IO () | error
+ish_core_namespace_validate()
+
+# @type: [string] (namespaces) -> bool
+ish_core_namespace_check_uniqueness()
+
+# @type: string (conf_file) -> string (namespace)
+ish_core_namespace_parse()
+```
+
+**Used by registry module to enforce namespace uniqueness.**
