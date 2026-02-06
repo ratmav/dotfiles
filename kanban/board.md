@@ -36,10 +36,11 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
 ### todo (priority order)
 
 1. [ ] execute migration_path.md Step 1 (12-step restructure)
-   - create packages/ish/ and packages/dotfiles/ structure
-   - move source files to package locations
-   - split tests and docs by package
-   - add namespace prefixes (ish_*, dotfiles_*)
+   - [x] create packages/ish/ and packages/dotfiles/ structure
+   - [x] move source files to package locations
+   - [x] [fix-module-loading](tasks/fix-module-loading.md) - fix 28 broken source statements with ISH_PACKAGES_DIR
+   - [ ] split tests and docs by package
+   - [ ] add namespace prefixes (ish_*, dotfiles_*)
 2. [ ] run linter pass (flush out issues)
 3. [ ] verify tests still pass
 4. [ ] verify local package structure works

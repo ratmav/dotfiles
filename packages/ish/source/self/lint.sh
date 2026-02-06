@@ -5,7 +5,7 @@ self_lint_all() {
     utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
 
-  shellcheck bash/**/*.sh ish
+  shellcheck "${ISH_PACKAGES_DIR}"/**/*.sh "${ISH_PACKAGES_DIR}/../ish"
 }
 
 self_lint_bash() {
@@ -13,5 +13,5 @@ self_lint_bash() {
     utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
 
-  shellcheck bash/**/*.sh
+  shellcheck "${ISH_PACKAGES_DIR}"/**/*.sh
 }

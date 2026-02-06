@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
 bootstrap_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/tui.sh"
-source "${script_dir}/bash/platform.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/platform.sh"
 
 bootstrap_help() {
   utils_stream_multiline_stderr <<EOF

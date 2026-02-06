@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-_utils_script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
 _utils_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${_utils_module_dir}/utils/exists.sh"

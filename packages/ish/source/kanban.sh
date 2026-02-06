@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
 kanban_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/tui.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
 source "${kanban_module_dir}/kanban/task.sh"
 source "${kanban_module_dir}/kanban/scratch.sh"
 
@@ -11,9 +10,9 @@ kanban_show() {
   local kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/../test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/../kanban"
   fi
 
   utils_tui_template_file --path="${kanban_dir}/board.md"

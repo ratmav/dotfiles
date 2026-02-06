@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 self_test_all() {
-  "${script_dir}/test/bats/bin/bats" --recursive "${script_dir}/test/unit/" "${script_dir}/test/integration/"
+  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/../test/unit/" "${ISH_PACKAGES_DIR}/../test/integration/"
 }
 
 self_test_unit() {
@@ -21,15 +21,15 @@ self_test_unit() {
 
   local test_path
   if [[ -n "$route" ]]; then
-    test_path="${script_dir}/test/unit/${route}.bats"
+    test_path="${ISH_PACKAGES_DIR}/../test/unit/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
       utils_tui_error --message="test not found: $test_path"
     fi
   else
-    test_path="${script_dir}/test/unit/"
+    test_path="${ISH_PACKAGES_DIR}/../test/unit/"
   fi
 
-  "${script_dir}/test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "$test_path"
 }
 
 self_test_integration() {
@@ -49,13 +49,13 @@ self_test_integration() {
 
   local test_path
   if [[ -n "$route" ]]; then
-    test_path="${script_dir}/test/integration/${route}.bats"
+    test_path="${ISH_PACKAGES_DIR}/../test/integration/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
       utils_tui_error --message="test not found: $test_path"
     fi
   else
-    test_path="${script_dir}/test/integration/"
+    test_path="${ISH_PACKAGES_DIR}/../test/integration/"
   fi
 
-  "${script_dir}/test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "$test_path"
 }

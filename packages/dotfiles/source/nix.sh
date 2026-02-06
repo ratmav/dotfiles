@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-_nix_script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
-
-source "${_nix_script_dir}/bash/utils/tui.sh"
-source "${_nix_script_dir}/bash/utils.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils.sh"
 
 # Public functions (alphabetized)
 

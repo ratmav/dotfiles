@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." &>/dev/null && pwd -P)
+bootstrap_kali_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/tui.sh"
-source "${script_dir}/bash/platform.sh"
-source "${script_dir}/bash/utils.sh"
-source "${script_dir}/bash/bootstrap/posix.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/platform.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils.sh"
+source "${bootstrap_kali_module_dir}/posix.sh"
 
 bootstrap_kali_all() {
   bootstrap_kali_apt

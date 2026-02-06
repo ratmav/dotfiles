@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
 git_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/tui.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
 
 source "${git_module_dir}/git/clean.sh"
 

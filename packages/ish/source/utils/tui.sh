@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." &>/dev/null && pwd -P)
 utils_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/exists.sh"
-source "${script_dir}/bash/utils/stream.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/exists.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/stream.sh"
 source "${utils_tui_module_dir}/tui/template.sh"
 
 utils_tui_set_colors() {

@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." &>/dev/null && pwd -P)
 bootstrap_posix_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/tui.sh"
-source "${script_dir}/bash/utils.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
+source "${ISH_PACKAGES_DIR}/ish/source/utils.sh"
 
 source "${bootstrap_posix_module_dir}/posix/nix.sh"
 source "${bootstrap_posix_module_dir}/posix/git.sh"
