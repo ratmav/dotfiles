@@ -35,7 +35,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo (priority order)
 
-1. [ ] execute migration_path.md Step 1 (12-step restructure)
+1. [x] execute migration_path.md Step 1 (12-step restructure)
    - [x] create packages/ish/ and packages/dotfiles/ structure
    - [x] move source files to package locations
    - [x] [fix-module-loading](tasks/fix-module-loading.md) - fix 28 broken source statements with ISH_PACKAGES_DIR
