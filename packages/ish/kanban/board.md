@@ -40,8 +40,9 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
    - [x] move source files to package locations
    - [x] [fix-module-loading](tasks/fix-module-loading.md) - fix 28 broken source statements with ISH_PACKAGES_DIR
    - [x] [complete-namespace-restructure](tasks/complete-namespace-restructure.md) - remove "self", add "dotfiles" namespace, split tests by package
-   - [ ] [move-kanban-to-ish](tasks/move-kanban-to-ish.md) - move kanban data to ish package, fix script_dir bug
-   - [ ] [package-local-bats](tasks/package-local-bats.md) - copy bats to each package, add dotfiles scaffold tests
+   - [x] [move-kanban-to-ish](tasks/move-kanban-to-ish.md) - move kanban data to ish package, fix script_dir bug
+   - [x] [package-local-bats](tasks/package-local-bats.md) - bats submodules per package, add dotfiles scaffold tests
+   - [ ] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
 2. [ ] [add-run-help-pattern](tasks/add-run-help-pattern.md) - executable leaves use --run/--help flags
 3. [ ] run linter pass (flush out issues)
 4. [ ] verify tests still pass
