@@ -39,11 +39,11 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
    - [x] create packages/ish/ and packages/dotfiles/ structure
    - [x] move source files to package locations
    - [x] [fix-module-loading](tasks/fix-module-loading.md) - fix 28 broken source statements with ISH_PACKAGES_DIR
-   - [ ] split tests and docs by package
-   - [ ] add namespace prefixes (ish_*, dotfiles_*)
-2. [ ] run linter pass (flush out issues)
-3. [ ] verify tests still pass
-4. [ ] verify local package structure works
+   - [ ] [complete-namespace-restructure](tasks/complete-namespace-restructure.md) - remove "self", add "dotfiles" namespace, split tests by package
+2. [ ] [add-run-help-pattern](tasks/add-run-help-pattern.md) - executable leaves use --run/--help flags
+3. [ ] run linter pass (flush out issues)
+4. [ ] verify tests still pass
+5. [ ] verify local package structure works
 
 ### in progress
 
