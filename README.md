@@ -58,7 +58,7 @@ dotfiles
 - self-contained and portable
 - idempotent operations (safe to run multiple times)
 
-see `docs/philosophy.md` for design principles and `docs/vision.md` for strategic direction.
+see `packages/ish/docs/philosophy.md` for design principles and `packages/ish/docs/vision.md` for strategic direction.
 
 ## quick start
 
@@ -96,7 +96,7 @@ functions map to cli commands via naming convention:
 bootstrap_macos_homebrew_install()  →  ish bootstrap macos homebrew install
 ```
 
-see `docs/conventions.md` for complete details.
+see `packages/ish/docs/conventions.md` for complete details.
 
 ## dependencies
 

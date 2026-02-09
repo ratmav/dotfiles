@@ -4,7 +4,7 @@
 
 **Base case:** Local dotfiles management (bootstrap, git, nix, configs)
 
-**Vision:** Functional infrastructure orchestration (see docs/architecture/functional_future/)
+**Vision:** Functional infrastructure orchestration (see packages/ish/docs/architecture/functional_future/)
 
 **Strategy:**
 1. Restructure to package architecture (phase 1)
@@ -16,7 +16,7 @@
 
 ## open questions
 
-none - see docs/architecture/task_reconciliation.md for resolved architectural decisions
+none - see packages/ish/docs/architecture/task_reconciliation.md for resolved architectural decisions
 
 ## milestones
 
@@ -42,7 +42,7 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
    - [x] [complete-namespace-restructure](tasks/complete-namespace-restructure.md) - remove "self", add "dotfiles" namespace, split tests by package
    - [x] [move-kanban-to-ish](tasks/move-kanban-to-ish.md) - move kanban data to ish package, fix script_dir bug
    - [x] [package-local-bats](tasks/package-local-bats.md) - bats submodules per package, add dotfiles scaffold tests
-   - [ ] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
+   - [x] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
 2. [ ] [add-run-help-pattern](tasks/add-run-help-pattern.md) - executable leaves use --run/--help flags
 3. [ ] run linter pass (flush out issues)
 4. [ ] verify tests still pass
@@ -72,7 +72,7 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
 7. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
 8. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
 
-**Note:** FP core is the foundation. Build incrementally, test thoroughly. ALL functions use `ish_core_*` prefix to prevent namespace pollution. See docs/architecture/functional_future/ for vision.
+**Note:** FP core is the foundation. Build incrementally, test thoroughly. ALL functions use `ish_core_*` prefix to prevent namespace pollution. See packages/ish/docs/architecture/functional_future/ for vision.
 
 ---
 
@@ -130,9 +130,9 @@ none - see docs/architecture/task_reconciliation.md for resolved architectural d
 ## notes
 
 **Architecture:**
-- docs/architecture/ - current package system architecture
-- docs/architecture/functional_future/ - FP vision and patterns
-- docs/architecture/task_reconciliation.md - task dispositions and rationale
+- packages/ish/docs/architecture/ - current package system architecture
+- packages/ish/docs/architecture/functional_future/ - FP vision and patterns
+- packages/ish/docs/architecture/task_reconciliation.md - task dispositions and rationale
 
 **Key decisions:**
 - Top-down package model (ish loads packages)
