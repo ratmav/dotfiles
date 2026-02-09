@@ -38,7 +38,7 @@ kanban_task_delete() {
   [[ -z "$name" ]] && utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi
@@ -58,7 +58,7 @@ kanban_task_list() {
   local task_file
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi
@@ -95,7 +95,7 @@ kanban_task_new() {
   [[ -z "$name" ]] && utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi
@@ -139,7 +139,7 @@ kanban_task_path() {
   [[ -z "$name" ]] && utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi
@@ -173,7 +173,7 @@ kanban_task_show() {
   [[ -z "$name" ]] && utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi

@@ -47,14 +47,13 @@ usage: ish [command] [options]
 personal development environment on posix-like platforms.
 
 commands:
-  bootstrap    setup development environment
-  git          git utility functions
+  dotfiles     dotfiles package (bootstrap, git, nix)
   kanban       project task management
-  nix          nix package manager utilities
-  tui          terminal ui functions
+  lint         run linters for ish package
   platform     platform detection functions
+  test         run tests for ish package
+  tui          terminal ui functions
   utils        utility functions
-  self         maintenance commands
   help         show this help message
 
 use 'ish [command] help' for more information about a command.
@@ -62,25 +61,15 @@ EOF
 }
 
 case "${1-}" in
-  bootstrap)
+  dotfiles)
     shift
-    source "${ISH_PACKAGES_DIR}/dotfiles/source/bootstrap.sh"
-    bootstrap_route "$@"
-    ;;
-  git)
-    shift
-    source "${ISH_PACKAGES_DIR}/dotfiles/source/git.sh"
-    git_route "$@"
+    source "${ISH_PACKAGES_DIR}/dotfiles/source/dotfiles.sh"
+    dotfiles_route "$@"
     ;;
   kanban)
     shift
     source "${ISH_PACKAGES_DIR}/ish/source/kanban.sh"
     kanban_route "$@"
-    ;;
-  nix)
-    shift
-    source "${ISH_PACKAGES_DIR}/dotfiles/source/nix.sh"
-    nix_route "$@"
     ;;
   tui)
     shift
@@ -95,10 +84,15 @@ case "${1-}" in
     source "${ISH_PACKAGES_DIR}/ish/source/utils.sh"
     utils_route "$@"
     ;;
-  self)
+  test)
     shift
-    source "${ISH_PACKAGES_DIR}/ish/source/self.sh"
-    self_route "$@"
+    source "${ISH_PACKAGES_DIR}/ish/source/test.sh"
+    ish_test_route "$@"
+    ;;
+  lint)
+    shift
+    source "${ISH_PACKAGES_DIR}/ish/source/lint.sh"
+    ish_lint_route "$@"
     ;;
   help|"")
     ish_help

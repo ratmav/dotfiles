@@ -33,7 +33,7 @@ nix_semantic() {
 
 nix_help() {
   utils_stream_multiline_stderr <<EOF
-usage: ish nix [command]
+usage: ish dotfiles nix [command]
 
 commands:
   semantic     find nixpkgs commit for semantic version

@@ -10,7 +10,7 @@ kanban_show() {
   local kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${ISH_PACKAGES_DIR}/../test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${ISH_PACKAGES_DIR}/../kanban"
   fi

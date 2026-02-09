@@ -32,7 +32,7 @@ bootstrap_posix_symlinks() {
 
 bootstrap_posix_help() {
   utils_stream_multiline_stderr <<EOF
-usage: ish bootstrap posix [command]
+usage: ish dotfiles bootstrap posix [command]
 
 commands:
   all          run all posix bootstrap steps

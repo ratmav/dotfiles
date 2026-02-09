@@ -8,7 +8,7 @@ source "${git_module_dir}/git/clean.sh"
 
 git_help() {
   utils_stream_multiline_stderr <<EOF
-usage: ish git [command]
+usage: ish dotfiles git [command]
 
 commands:
   clean        remove cruft and maintain clean state
@@ -30,7 +30,7 @@ git_route() {
           ;;
         "")
           utils_stream_multiline_stderr <<EOF
-usage: ish git clean [command]
+usage: ish dotfiles git clean [command]
 
 commands:
   prune        prune local branches missing on remote

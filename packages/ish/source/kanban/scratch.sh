@@ -20,7 +20,7 @@ kanban_scratch_path() {
   local kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi
@@ -51,7 +51,7 @@ kanban_scratch_capture() {
 
   # determine kanban directory
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi
@@ -66,7 +66,7 @@ kanban_scratch_show() {
   local kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${script_dir}/test/fixtures/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
     kanban_dir="${script_dir}/kanban"
   fi

@@ -7,7 +7,7 @@ source "${ISH_PACKAGES_DIR}/ish/source/platform.sh"
 
 bootstrap_help() {
   utils_stream_multiline_stderr <<EOF
-usage: ish bootstrap [platform]
+usage: ish dotfiles bootstrap [platform]
 
 platforms:
   all      auto-detect and bootstrap current platform

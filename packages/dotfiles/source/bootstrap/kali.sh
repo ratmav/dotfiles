@@ -74,7 +74,7 @@ bootstrap_kali_wezterm() {
 
 bootstrap_kali_help() {
   utils_stream_multiline_stderr <<EOF
-usage: ish bootstrap kali [command]
+usage: ish dotfiles bootstrap kali [command]
 
 commands:
   all          run all kali bootstrap steps

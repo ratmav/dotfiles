@@ -20,7 +20,7 @@ bootstrap_macos_all() {
 
 bootstrap_macos_help() {
   utils_stream_multiline_stderr <<EOF
-usage: ish bootstrap macos [command]
+usage: ish dotfiles bootstrap macos [command]
 
 commands:
   all          run all macos bootstrap steps
@@ -55,7 +55,7 @@ bootstrap_macos_route() {
         bootstrap_macos_homebrew_cask
         ;;
       "")
-        utils_tui_info --message="usage: ish bootstrap macos homebrew [command]"
+        utils_tui_info --message="usage: ish dotfiles bootstrap macos homebrew [command]"
         utils_tui_info --message=""
         utils_tui_info --message="commands:"
         utils_tui_info --message="  all       run all homebrew setup steps"
