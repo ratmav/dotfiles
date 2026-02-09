@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ish_test_all() {
-  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/ish/test/unit/" "${ISH_PACKAGES_DIR}/ish/test/integration/"
+  "${ISH_PACKAGES_DIR}/ish/test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/ish/test/unit/" "${ISH_PACKAGES_DIR}/ish/test/integration/"
 }
 
 ish_test_unit() {
@@ -29,7 +29,7 @@ ish_test_unit() {
     test_path="${ISH_PACKAGES_DIR}/ish/test/unit/"
   fi
 
-  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/ish/test/bats/bin/bats" --recursive "$test_path"
 }
 
 ish_test_integration() {
@@ -57,7 +57,7 @@ ish_test_integration() {
     test_path="${ISH_PACKAGES_DIR}/ish/test/integration/"
   fi
 
-  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/ish/test/bats/bin/bats" --recursive "$test_path"
 }
 
 ish_test_route() {

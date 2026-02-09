@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 dotfiles_test_all() {
-  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/dotfiles/test/unit/" "${ISH_PACKAGES_DIR}/dotfiles/test/integration/"
+  "${ISH_PACKAGES_DIR}/dotfiles/test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/dotfiles/test/unit/" "${ISH_PACKAGES_DIR}/dotfiles/test/integration/"
 }
 
 dotfiles_test_unit() {
@@ -29,7 +29,7 @@ dotfiles_test_unit() {
     test_path="${ISH_PACKAGES_DIR}/dotfiles/test/unit/"
   fi
 
-  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/dotfiles/test/bats/bin/bats" --recursive "$test_path"
 }
 
 dotfiles_test_integration() {
@@ -57,7 +57,7 @@ dotfiles_test_integration() {
     test_path="${ISH_PACKAGES_DIR}/dotfiles/test/integration/"
   fi
 
-  "${ISH_PACKAGES_DIR}/../test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/dotfiles/test/bats/bin/bats" --recursive "$test_path"
 }
 
 dotfiles_test_route() {
