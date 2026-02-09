@@ -40,7 +40,7 @@ kanban_task_delete() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   task_file="${kanban_dir}/tasks/${name}.md"
@@ -60,7 +60,7 @@ kanban_task_list() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   tasks_dir="${kanban_dir}/tasks"
@@ -97,7 +97,7 @@ kanban_task_new() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   task_file="${kanban_dir}/tasks/${name}.md"
@@ -141,7 +141,7 @@ kanban_task_path() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   task_file="${kanban_dir}/tasks/${name}.md"
@@ -175,7 +175,7 @@ kanban_task_show() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   task_file="${kanban_dir}/tasks/${name}.md"

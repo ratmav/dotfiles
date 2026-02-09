@@ -12,7 +12,7 @@ kanban_show() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${ISH_PACKAGES_DIR}/../kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   utils_tui_template_file --path="${kanban_dir}/board.md"

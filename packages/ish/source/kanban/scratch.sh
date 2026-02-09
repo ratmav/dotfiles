@@ -22,7 +22,7 @@ kanban_scratch_path() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   utils_stream_stdout "${kanban_dir}/scratch.md"
@@ -53,7 +53,7 @@ kanban_scratch_capture() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   # append to scratch.md as markdown list item
@@ -68,7 +68,7 @@ kanban_scratch_show() {
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${script_dir}/kanban"
+    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   utils_tui_template_file --path="${kanban_dir}/scratch.md"
