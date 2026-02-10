@@ -33,21 +33,21 @@ CRITICAL: Resolve package naming inconsistency across BOTH packages before any f
 ### subtasks
 
 **1.1: Rename ish package functions:**
-- [ ] Audit: list all functions missing `ish_` prefix (35 functions)
+- [x] Audit: list all functions missing `ish_` prefix (35 functions)
   ```bash
   kanban_*    → ish_kanban_*     (13 functions)
   utils_*     → ish_utils_*      (18 functions)
   platform_*  → ish_platform_*   (4 functions)
   ```
-- [ ] Rename all function definitions
-- [ ] Update all call sites within ish package
-- [ ] Update all routing functions
-- [ ] Update all help text
+- [x] Rename all function definitions
+- [x] Update all call sites within ish package
+- [x] Update all routing functions
+- [x] Update all help text
 
 **1.2: Update ish package tests:**
-- [ ] Update test function references in unit tests
-- [ ] Update test function references in integration tests
-- [ ] Verify all ish package tests pass
+- [x] Update test function references in unit tests
+- [x] Update test function references in integration tests
+- [x] Verify all ish package tests pass
 
 **1.3: Verify stage 1:**
 ```bash
