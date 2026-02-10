@@ -3,15 +3,15 @@
 # Stream output functions - handle stdout/stderr separation
 # See docs/conventions.md for stream separation pattern
 
-utils_stream_stdout() {
+ish_utils_stream_stdout() {
   printf '%s\n' "$*"
 }
 
-utils_stream_stderr() {
+ish_utils_stream_stderr() {
   printf '%s\n' "$*" >&2
 }
 
-utils_stream_multiline_stdout() {
+ish_utils_stream_multiline_stdout() {
   local lines
   local i
   mapfile -t lines
@@ -20,7 +20,7 @@ utils_stream_multiline_stdout() {
   done
 }
 
-utils_stream_multiline_stderr() {
+ish_utils_stream_multiline_stderr() {
   local lines
   local i
   mapfile -t lines

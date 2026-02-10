@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 
-kanban_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_kanban_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
-source "${kanban_module_dir}/kanban/task.sh"
-source "${kanban_module_dir}/kanban/scratch.sh"
+source "${ish_kanban_module_dir}/kanban/task.sh"
+source "${ish_kanban_module_dir}/kanban/scratch.sh"
 
-kanban_show() {
-  local kanban_dir
+ish_kanban_show() {
+  local ish_kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
-  utils_tui_template_file --path="${kanban_dir}/board.md"
+  ish_utils_tui_template_file --path="${ish_kanban_dir}/board.md"
 }
 
-kanban_help() {
-  utils_stream_multiline_stderr <<EOF
+ish_kanban_help() {
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish kanban [command]
 
 commands:
@@ -29,40 +29,40 @@ commands:
 EOF
 }
 
-kanban_route() {
+ish_kanban_route() {
   case "${1-}" in
     show)
       shift
-      kanban_show "$@"
+      ish_kanban_show "$@"
       ;;
     task)
       shift
       case "${1-}" in
         list)
           shift
-          kanban_task_list "$@"
+          ish_kanban_task_list "$@"
           ;;
         new)
           shift
-          kanban_task_new "$@"
+          ish_kanban_task_new "$@"
           ;;
         delete)
           shift
-          kanban_task_delete "$@"
+          ish_kanban_task_delete "$@"
           ;;
         show)
           shift
-          kanban_task_show "$@"
+          ish_kanban_task_show "$@"
           ;;
         path)
           shift
-          kanban_task_path "$@"
+          ish_kanban_task_path "$@"
           ;;
         help|"")
-          kanban_task_help
+          ish_kanban_task_help
           ;;
         *)
-          utils_tui_error --message="unknown kanban task command: ${1-}"
+          ish_utils_tui_error --message="unknown kanban task command: ${1-}"
           ;;
       esac
       ;;
@@ -71,29 +71,29 @@ kanban_route() {
       case "${1-}" in
         capture)
           shift
-          kanban_scratch_capture "$@"
+          ish_kanban_scratch_capture "$@"
           ;;
         show)
           shift
-          kanban_scratch_show "$@"
+          ish_kanban_scratch_show "$@"
           ;;
         path)
           shift
-          kanban_scratch_path "$@"
+          ish_kanban_scratch_path "$@"
           ;;
         help|"")
-          kanban_scratch_help
+          ish_kanban_scratch_help
           ;;
         *)
-          utils_tui_error --message="unknown kanban scratch command: ${1-}"
+          ish_utils_tui_error --message="unknown kanban scratch command: ${1-}"
           ;;
       esac
       ;;
     help|"")
-      kanban_help
+      ish_kanban_help
       ;;
     *)
-      utils_tui_error --message="unknown kanban command: ${1-}"
+      ish_utils_tui_error --message="unknown kanban command: ${1-}"
       ;;
   esac
 }

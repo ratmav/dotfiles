@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 dotfiles_lint_all() {
-  if ! utils_exists_executable --executable=shellcheck; then
-    utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
+  if ! ish_utils_exists_executable --executable=shellcheck; then
+    ish_utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
 
   shellcheck "${ISH_PACKAGES_DIR}/dotfiles/source"/**/*.sh
 }
 
 dotfiles_lint_bash() {
-  if ! utils_exists_executable --executable=shellcheck; then
-    utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
+  if ! ish_utils_exists_executable --executable=shellcheck; then
+    ish_utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
 
   shellcheck "${ISH_PACKAGES_DIR}/dotfiles/source"/**/*.sh
@@ -27,7 +27,7 @@ dotfiles_lint_route() {
     dotfiles_lint_bash
     ;;
   "")
-    utils_stream_multiline_stderr <<EOF
+    ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles lint [target]
 
 targets:
@@ -36,7 +36,7 @@ targets:
 EOF
     ;;
   *)
-    utils_tui_error --message="unknown lint target: ${1-}"
+    ish_utils_tui_error --message="unknown lint target: ${1-}"
     return 1
     ;;
   esac

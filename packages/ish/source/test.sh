@@ -14,7 +14,7 @@ ish_test_unit() {
         shift
         ;;
       *)
-        utils_tui_error --message="unknown option: $1"
+        ish_utils_tui_error --message="unknown option: $1"
         ;;
     esac
   done
@@ -23,7 +23,7 @@ ish_test_unit() {
   if [[ -n "$route" ]]; then
     test_path="${ISH_PACKAGES_DIR}/ish/test/unit/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
-      utils_tui_error --message="test not found: $test_path"
+      ish_utils_tui_error --message="test not found: $test_path"
     fi
   else
     test_path="${ISH_PACKAGES_DIR}/ish/test/unit/"
@@ -42,7 +42,7 @@ ish_test_integration() {
         shift
         ;;
       *)
-        utils_tui_error --message="unknown option: $1"
+        ish_utils_tui_error --message="unknown option: $1"
         ;;
     esac
   done
@@ -51,7 +51,7 @@ ish_test_integration() {
   if [[ -n "$route" ]]; then
     test_path="${ISH_PACKAGES_DIR}/ish/test/integration/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
-      utils_tui_error --message="test not found: $test_path"
+      ish_utils_tui_error --message="test not found: $test_path"
     fi
   else
     test_path="${ISH_PACKAGES_DIR}/ish/test/integration/"
@@ -75,7 +75,7 @@ ish_test_route() {
     ish_test_integration "$@"
     ;;
   help|"")
-    utils_stream_multiline_stderr <<EOF
+    ish_utils_stream_multiline_stderr <<EOF
 usage: ish test [suite] [options]
 
 suites:
@@ -88,7 +88,7 @@ options:
 EOF
     ;;
   *)
-    utils_tui_error --message="unknown test suite: ${1-}"
+    ish_utils_tui_error --message="unknown test suite: ${1-}"
     return 1
     ;;
   esac

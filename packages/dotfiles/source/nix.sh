@@ -12,27 +12,27 @@ nix_semantic() {
   read -p "Semantic version: " version
 
   if [[ -z "$package" ]] || [[ -z "$version" ]]; then
-    utils_tui_error --message="package name and version are required."
+    ish_utils_tui_error --message="package name and version are required."
   fi
 
-  utils_tui_info --message="searching for $package version $version in nixpkgs..."
+  ish_utils_tui_info --message="searching for $package version $version in nixpkgs..."
 
   if ! found_path=$(_nix_find_package_path "$package"); then
-    utils_tui_error --message="...could not find package '$package'."
+    ish_utils_tui_error --message="...could not find package '$package'."
   fi
 
-  utils_tui_info --message="...found $package $version at: $found_path"
+  ish_utils_tui_info --message="...found $package $version at: $found_path"
 
   if ! found_commit=$(_nix_find_version_commit "$package" "$version" "$found_path"); then
-    utils_tui_error --message="...did not find $package version $version in recent commits."
+    ish_utils_tui_error --message="...did not find $package version $version in recent commits."
   fi
 
-  utils_tui_info --message="...found $package $version at commit $found_commit"
+  ish_utils_tui_info --message="...found $package $version at commit $found_commit"
   _nix_print_pin_info "$package" "$version" "$found_commit"
 }
 
 nix_help() {
-  utils_stream_multiline_stderr <<EOF
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles nix [command]
 
 commands:
@@ -50,7 +50,7 @@ nix_route() {
     nix_help
     ;;
   *)
-    utils_tui_error --message="unknown nix command: ${1-}"
+    ish_utils_tui_error --message="unknown nix command: ${1-}"
     nix_help
     return 1
     ;;
@@ -62,8 +62,8 @@ nix_route() {
 _nix_find_package_path() {
   local package=$1
 
-  if ! utils_exists_executable --executable=curl; then
-    utils_tui_error --message="curl not found. Please install curl."
+  if ! ish_utils_exists_executable --executable=curl; then
+    ish_utils_tui_error --message="curl not found. Please install curl."
   fi
 
   local possible_paths=(
@@ -77,7 +77,7 @@ _nix_find_package_path() {
 
   for path in "${possible_paths[@]}"; do
     if utils_tui_quiet "curl -s -f https://api.github.com/repos/NixOS/nixpkgs/contents/$path"; then
-      utils_tui_info --message="$path"
+      ish_utils_tui_info --message="$path"
       return 0
     fi
   done
@@ -93,7 +93,7 @@ _nix_find_version_commit() {
     local found_version
     found_version=$(_nix_get_version_from_commit "$commit" "$path")
     if [[ "$found_version" == "$version" ]]; then
-      utils_tui_info --message="$commit"
+      ish_utils_tui_info --message="$commit"
       return 0
     fi
   done

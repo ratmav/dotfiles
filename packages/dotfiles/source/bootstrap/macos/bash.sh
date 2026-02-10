@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 bootstrap_macos_bash() {
-  if [[ $(platform_os) != "macos" ]]; then
-    utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
+  if [[ $(ish_platform_os) != "macos" ]]; then
+    ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
     return 1
   fi
 
@@ -11,5 +11,5 @@ bootstrap_macos_bash() {
 
   grep -qF -- "$bash_path" "$file" || echo "$bash_path" | sudo tee -a "$file" > /dev/null
   chsh -s $bash_path
-  utils_tui_info --message="${FUNCNAME[0]}: configured macos to use homebrew's bash."
+  ish_utils_tui_info --message="${FUNCNAME[0]}: configured macos to use homebrew's bash."
 }

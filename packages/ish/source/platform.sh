@@ -6,54 +6,54 @@ source "${_platform_dir}/utils.sh"
 
 # Public functions (alphabetized)
 
-platform_arch() {
+ish_platform_arch() {
   local machine=$(uname -m)
   case "$machine" in
     x86_64|amd64)
-      utils_stream_stdout "amd64"
+      ish_utils_stream_stdout "amd64"
       ;;
     aarch64|arm64)
-      utils_stream_stdout "arm64"
+      ish_utils_stream_stdout "arm64"
       ;;
     *)
-      utils_stream_stdout "$machine"
+      ish_utils_stream_stdout "$machine"
       ;;
   esac
 }
 
-platform_help() {
-  utils_stream_stdout "usage: ish platform [command]"
-  utils_stream_stdout ""
-  utils_stream_stdout "commands:"
-  utils_stream_stdout "  arch         output architecture (arm64, amd64)"
-  utils_stream_stdout "  os           output operating system (macos, kali)"
+ish_platform_help() {
+  ish_utils_stream_stdout "usage: ish platform [command]"
+  ish_utils_stream_stdout ""
+  ish_utils_stream_stdout "commands:"
+  ish_utils_stream_stdout "  arch         output architecture (arm64, amd64)"
+  ish_utils_stream_stdout "  os           output operating system (macos, kali)"
 }
 
-platform_os() {
+ish_platform_os() {
   if _platform_is_macos; then
-    utils_stream_stdout "macos"
+    ish_utils_stream_stdout "macos"
   elif _platform_is_kali; then
-    utils_stream_stdout "kali"
+    ish_utils_stream_stdout "kali"
   else
-    utils_tui_error --message="unsupported platform"
+    ish_utils_tui_error --message="unsupported platform"
   fi
 }
 
 # Routing function - explicitly dispatches commands to functions.
 # See bash/tui.sh for documentation on why we use explicit routing.
-platform_route() {
+ish_platform_route() {
   case "${1-}" in
     arch)
-      platform_arch
+      ish_platform_arch
       ;;
     os)
-      platform_os
+      ish_platform_os
       ;;
     help|"")
-      platform_help
+      ish_platform_help
       ;;
     *)
-      utils_tui_error --message="unknown platform command: ${1-}"
+      ish_utils_tui_error --message="unknown platform command: ${1-}"
       ;;
   esac
 }
@@ -61,7 +61,7 @@ platform_route() {
 # Private functions (alphabetized)
 
 _platform_is_kali() {
-  if utils_exists_file --file=/etc/issue; then
+  if ish_utils_exists_file --file=/etc/issue; then
     if grep -q "Kali" /etc/issue; then
       return 0
     else

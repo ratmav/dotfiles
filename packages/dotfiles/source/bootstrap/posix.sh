@@ -26,12 +26,12 @@ bootstrap_posix_symlinks() {
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
     ln -s $PWD/$link $HOME/$link
-    utils_tui_info --message="${FUNCNAME[0]}: symlinked $link"
+    ish_utils_tui_info --message="${FUNCNAME[0]}: symlinked $link"
   done
 }
 
 bootstrap_posix_help() {
-  utils_stream_multiline_stderr <<EOF
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles bootstrap posix [command]
 
 commands:
@@ -76,7 +76,7 @@ bootstrap_posix_route() {
     bootstrap_posix_help
     ;;
   *)
-    utils_tui_error --message="unknown posix subcommand: ${1-}"
+    ish_utils_tui_error --message="unknown posix subcommand: ${1-}"
     bootstrap_posix_help
     return 1
     ;;

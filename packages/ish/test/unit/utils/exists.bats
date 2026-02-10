@@ -15,52 +15,52 @@ teardown() {
 }
 
 # Baseline check: deliberately tests consistent system state (bash always exists)
-@test "utils_exists_executable detects bash" {
-  assert utils_exists_executable --executable=bash
+@test "ish_utils_exists_executable detects bash" {
+  assert ish_utils_exists_executable --executable=bash
 }
 
-@test "utils_exists_executable detects fixture executable" {
+@test "ish_utils_exists_executable detects fixture executable" {
   fixture_executable mycommand_test_bin
-  assert utils_exists_executable --executable=mycommand_test_bin
+  assert ish_utils_exists_executable --executable=mycommand_test_bin
 }
 
-@test "utils_exists_executable rejects nonexistent commands" {
-  refute utils_exists_executable --executable=fake_command_xyz_does_not_exist
+@test "ish_utils_exists_executable rejects nonexistent commands" {
+  refute ish_utils_exists_executable --executable=fake_command_xyz_does_not_exist
 }
 
-@test "utils_exists_executable requires --executable=" {
-  run utils_exists_executable
+@test "ish_utils_exists_executable requires --executable=" {
+  run ish_utils_exists_executable
   assert_failure
   assert_output --partial "--executable= required"
 }
 
-@test "utils_exists_executable rejects unknown options" {
-  run utils_exists_executable --unknown="value"
+@test "ish_utils_exists_executable rejects unknown options" {
+  run ish_utils_exists_executable --unknown="value"
   assert_failure
   assert_output --partial "unknown option"
 }
 
-@test "utils_exists_file detects fixture file" {
+@test "ish_utils_exists_file detects fixture file" {
   fixture_file myfile_test_file
-  assert utils_exists_file --file="$ISH_TEST_FIXTURES/myfile_test_file"
+  assert ish_utils_exists_file --file="$ISH_TEST_FIXTURES/myfile_test_file"
 }
 
-@test "utils_exists_file rejects nonexistent files" {
-  refute utils_exists_file --file=/tmp/fake_file_xyz_does_not_exist
+@test "ish_utils_exists_file rejects nonexistent files" {
+  refute ish_utils_exists_file --file=/tmp/fake_file_xyz_does_not_exist
 }
 
-@test "utils_exists_file rejects directories" {
-  refute utils_exists_file --file="$ISH_TEST_FIXTURES"
+@test "ish_utils_exists_file rejects directories" {
+  refute ish_utils_exists_file --file="$ISH_TEST_FIXTURES"
 }
 
-@test "utils_exists_file requires --file=" {
-  run utils_exists_file
+@test "ish_utils_exists_file requires --file=" {
+  run ish_utils_exists_file
   assert_failure
   assert_output --partial "--file= required"
 }
 
-@test "utils_exists_file rejects unknown options" {
-  run utils_exists_file --unknown="value"
+@test "ish_utils_exists_file rejects unknown options" {
+  run ish_utils_exists_file --unknown="value"
   assert_failure
   assert_output --partial "unknown option"
 }

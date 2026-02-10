@@ -19,7 +19,7 @@ bootstrap_macos_all() {
 }
 
 bootstrap_macos_help() {
-  utils_stream_multiline_stderr <<EOF
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles bootstrap macos [command]
 
 commands:
@@ -55,7 +55,7 @@ bootstrap_macos_route() {
         bootstrap_macos_homebrew_cask
         ;;
       help|"")
-        utils_stream_multiline_stderr <<EOF
+        ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles bootstrap macos homebrew [command]
 
 commands:
@@ -66,7 +66,7 @@ commands:
 EOF
         ;;
       *)
-        utils_tui_error --message="unknown homebrew subcommand: ${1-}"
+        ish_utils_tui_error --message="unknown homebrew subcommand: ${1-}"
         ;;
     esac
     ;;
@@ -79,7 +79,7 @@ EOF
     ;;
   *)
     bootstrap_macos_help
-    utils_tui_error --message="unknown macos subcommand: ${1-}"
+    ish_utils_tui_error --message="unknown macos subcommand: ${1-}"
     ;;
   esac
 }

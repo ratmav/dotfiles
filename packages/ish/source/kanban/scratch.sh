@@ -2,11 +2,11 @@
 
 # kanban scratch module - scratch file commands
 #
-# dependencies: utils_tui_template_file
+# dependencies: ish_utils_tui_template_file
 # these functions are available because bash/kanban.sh sources dependencies before this module
 
-kanban_scratch_help() {
-  utils_stream_multiline_stderr <<EOF
+ish_kanban_scratch_help() {
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish kanban scratch [command]
 
 commands:
@@ -16,21 +16,21 @@ commands:
 EOF
 }
 
-kanban_scratch_path() {
-  local kanban_dir
+ish_kanban_scratch_path() {
+  local ish_kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
-  utils_stream_stdout "${kanban_dir}/scratch.md"
+  ish_utils_stream_stdout "${ish_kanban_dir}/scratch.md"
 }
 
-kanban_scratch_capture() {
+ish_kanban_scratch_capture() {
   local message=""
-  local kanban_dir
+  local ish_kanban_dir
 
   # parse options
   for arg in "$@"; do
@@ -39,37 +39,37 @@ kanban_scratch_capture() {
         message="${arg#*=}"
         ;;
       *)
-        utils_tui_error --message="unknown option: ${arg}"
+        ish_utils_tui_error --message="unknown option: ${arg}"
         ;;
     esac
   done
 
   # validate message
   if [[ -z "${message}" ]]; then
-    utils_tui_error --message="--message is required"
+    ish_utils_tui_error --message="--message is required"
   fi
 
   # determine kanban directory
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
   # append to scratch.md as markdown list item
-  echo "- ${message}" >> "${kanban_dir}/scratch.md"
+  echo "- ${message}" >> "${ish_kanban_dir}/scratch.md"
 
-  utils_tui_info --message="captured: ${message}"
+  ish_utils_tui_info --message="captured: ${message}"
 }
 
-kanban_scratch_show() {
-  local kanban_dir
+ish_kanban_scratch_show() {
+  local ish_kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/test/fixtures/kanban"
   else
-    kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
+    ish_kanban_dir="${ISH_PACKAGES_DIR}/ish/kanban"
   fi
 
-  utils_tui_template_file --path="${kanban_dir}/scratch.md"
+  ish_utils_tui_template_file --path="${ish_kanban_dir}/scratch.md"
 }

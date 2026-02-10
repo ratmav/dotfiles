@@ -3,10 +3,10 @@
 # tui template module - string templating and file output
 # provides variable substitution ({{placeholder}}) and file content output
 #
-# dependencies: utils_utils_tui_error, utils_exists_file
+# dependencies: utils_utils_tui_error, ish_utils_exists_file
 # these functions are available because bash/utils/tui.sh sources dependencies before this module
 
-utils_tui_template() {
+ish_utils_tui_template() {
   local level="${1-}"
   local template="${2-}"
   shift 2
@@ -18,10 +18,10 @@ utils_tui_template() {
     shift 2
   done
 
-  utils_stream_stderr "${level}${template}"
+  ish_utils_stream_stderr "${level}${template}"
 }
 
-utils_tui_template_file() {
+ish_utils_tui_template_file() {
   local path=""
 
   while [[ $# -gt 0 ]]; do
@@ -31,18 +31,18 @@ utils_tui_template_file() {
         shift
         ;;
       *)
-        utils_tui_error --message="unknown option: $1"
+        ish_utils_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$path" ]] && utils_tui_error --message="--path required"
+  [[ -z "$path" ]] && ish_utils_tui_error --message="--path required"
 
-  if ! utils_exists_file --file="$path"; then
+  if ! ish_utils_exists_file --file="$path"; then
     if [[ ! -e "$path" ]]; then
-      utils_tui_error --message="template not found: $path"
+      ish_utils_tui_error --message="template not found: $path"
     else
-      utils_tui_error --message="not a template file: $path"
+      ish_utils_tui_error --message="not a template file: $path"
     fi
   fi
 

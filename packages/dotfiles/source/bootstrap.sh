@@ -6,7 +6,7 @@ source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
 source "${ISH_PACKAGES_DIR}/ish/source/platform.sh"
 
 bootstrap_help() {
-  utils_stream_multiline_stderr <<EOF
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles bootstrap [platform]
 
 platforms:
@@ -20,8 +20,8 @@ EOF
 bootstrap_route() {
   case "${1-}" in
     all)
-      # platform_os errors and exits for unsupported platforms
-      os=$(platform_os)
+      # ish_platform_os errors and exits for unsupported platforms
+      os=$(ish_platform_os)
 
       case "$os" in
         macos)
@@ -54,7 +54,7 @@ bootstrap_route() {
       ;;
     *)
       bootstrap_help
-      utils_tui_error --message="unknown bootstrap platform: ${1-}"
+      ish_utils_tui_error --message="unknown bootstrap platform: ${1-}"
       ;;
   esac
 }

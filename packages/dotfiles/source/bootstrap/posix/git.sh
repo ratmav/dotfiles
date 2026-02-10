@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
 bootstrap_posix_git_configure() {
-  if ! utils_exists_executable --executable=git; then
-    utils_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
+  if ! ish_utils_exists_executable --executable=git; then
+    ish_utils_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
     return 1
   fi
 
-  if ! utils_exists_executable --executable=nvim; then
-    utils_tui_warn --message="${FUNCNAME[0]}: nvim not found. Skipping git editor configuration."
+  if ! ish_utils_exists_executable --executable=nvim; then
+    ish_utils_tui_warn --message="${FUNCNAME[0]}: nvim not found. Skipping git editor configuration."
   else
     git config --global core.editor "$(which nvim)"
-    utils_tui_info --message="${FUNCNAME[0]}: configured git editor."
+    ish_utils_tui_info --message="${FUNCNAME[0]}: configured git editor."
   fi
 
   git config --global core.excludesfile "$HOME/.gitignore_global"
-  utils_tui_info --message="${FUNCNAME[0]}: configured global gitignore."
+  ish_utils_tui_info --message="${FUNCNAME[0]}: configured global gitignore."
 
   git config --global push.autoSetupRemote true
-  utils_tui_info --message="${FUNCNAME[0]}: configured git to automatically setup remote branches on push."
+  ish_utils_tui_info --message="${FUNCNAME[0]}: configured git to automatically setup remote branches on push."
 }

@@ -12,7 +12,7 @@ source "${dotfiles_module_dir}/git.sh"
 source "${dotfiles_module_dir}/nix.sh"
 
 dotfiles_help() {
-  utils_stream_multiline_stderr <<EOF
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles [command]
 
 dotfiles package - configuration and environment management
@@ -53,7 +53,7 @@ dotfiles_route() {
     ;;
   *)
     dotfiles_help
-    utils_tui_error --message="unknown dotfiles command: ${1-}"
+    ish_utils_tui_error --message="unknown dotfiles command: ${1-}"
     return 1
     ;;
   esac

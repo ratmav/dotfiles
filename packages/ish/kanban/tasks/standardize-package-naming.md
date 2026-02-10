@@ -84,16 +84,23 @@ grep -r "^[a-z_]*() {" packages/ish/source/ | grep -v "^_" | grep -v "^ish_"
 - [ ] Update all routing functions
 - [ ] Update all help text
 
-**2.3: Update dotfiles package tests:**
+**2.3: Move dotfiles tests to dotfiles package:**
+- [ ] Move `packages/ish/test/integration/bootstrap*` → `packages/dotfiles/test/integration/`
+- [ ] Move `packages/ish/test/integration/git*` → `packages/dotfiles/test/integration/`
+- [ ] Move `packages/ish/test/integration/nix.bats` → `packages/dotfiles/test/integration/`
+- [ ] Update test paths in moved files (if needed)
+- [ ] Update `packages/dotfiles/source/test.sh` to point to correct test locations
+
+**2.4: Update dotfiles package tests:**
 - [ ] Update test function references in unit tests
 - [ ] Update test function references in integration tests
 - [ ] Verify all dotfiles package tests pass
 
-**2.4: Update main ish router:**
+**2.5: Update main ish router:**
 - [ ] Update `ish` entry point to reference `packages/ish-dotfiles/`
 - [ ] Verify CLI routing: `./ish dotfiles bootstrap macos all`
 
-**2.5: Verify stage 2:**
+**2.6: Verify stage 2:**
 ```bash
 # All dotfiles functions should have ish_dotfiles_ prefix
 grep -r "^[a-z_]*() {" packages/ish-dotfiles/source/ | grep -v "^_" | grep -v "^ish_dotfiles_"
@@ -124,6 +131,7 @@ All functions consistently named with `ish_<package>_*` prefix across both packa
 - `packages/ish-dotfiles/source/nix.sh`
 - `packages/ish-dotfiles/source/dotfiles.sh` (router)
 - `packages/ish-dotfiles/test/**/*.bats`
+- Move tests from `packages/ish/test/integration/{bootstrap,git,nix}*` to `packages/ish-dotfiles/test/integration/`
 
 **Documentation:**
 - `packages/ish/docs/conventions.md`
@@ -133,6 +141,10 @@ All functions consistently named with `ish_<package>_*` prefix across both packa
 ```bash
 # No functions without ish_ prefix in either package
 grep -r "^[a-z_]*() {" packages/ish/source/ packages/ish-dotfiles/source/ | grep -v "^_" | grep -v "^ish_"
+# (should return nothing)
+
+# No dotfiles tests remaining in ish package
+ls packages/ish/test/integration/ | grep -E "(bootstrap|git|nix)"
 # (should return nothing)
 
 # All tests pass

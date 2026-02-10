@@ -6,8 +6,8 @@ source "${_utils_module_dir}/utils/exists.sh"
 source "${_utils_module_dir}/utils/stream.sh"
 source "${_utils_module_dir}/utils/tui.sh"
 
-utils_help() {
-  utils_stream_multiline_stderr <<EOF
+ish_utils_help() {
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish utils [command]
 
 commands:
@@ -16,29 +16,29 @@ commands:
 EOF
 }
 
-utils_route() {
+ish_utils_route() {
   case "${1-}" in
   exists)
     shift
     case "${1-}" in
       --executable=*)
         local cmd="${1#*=}"
-        if utils_exists_executable "$@"; then
-          utils_tui_info --message="executable '$cmd' exists"
+        if ish_utils_exists_executable "$@"; then
+          ish_utils_tui_info --message="executable '$cmd' exists"
         else
-          utils_tui_error --message="executable '$cmd' not found"
+          ish_utils_tui_error --message="executable '$cmd' not found"
         fi
         ;;
       --file=*)
         local path="${1#*=}"
-        if utils_exists_file "$@"; then
-          utils_tui_info --message="file '$path' exists"
+        if ish_utils_exists_file "$@"; then
+          ish_utils_tui_info --message="file '$path' exists"
         else
-          utils_tui_error --message="file '$path' not found"
+          ish_utils_tui_error --message="file '$path' not found"
         fi
         ;;
       help|"")
-        utils_stream_multiline_stderr <<EOF
+        ish_utils_stream_multiline_stderr <<EOF
 usage: ish utils exists [option]
 
 options:
@@ -47,19 +47,19 @@ options:
 EOF
         ;;
       *)
-        utils_tui_error --message="unknown option: ${1-}"
+        ish_utils_tui_error --message="unknown option: ${1-}"
         ;;
     esac
     ;;
   tui)
     shift
-    utils_tui_route "$@"
+    ish_utils_tui_route "$@"
     ;;
   help|"")
-    utils_help
+    ish_utils_help
     ;;
   *)
-    utils_tui_error --message="unknown utils command: ${1-}"
+    ish_utils_tui_error --message="unknown utils command: ${1-}"
     ;;
   esac
 }

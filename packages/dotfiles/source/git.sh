@@ -7,7 +7,7 @@ source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
 source "${git_module_dir}/git/clean.sh"
 
 git_help() {
-  utils_stream_multiline_stderr <<EOF
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles git [command]
 
 commands:
@@ -29,7 +29,7 @@ git_route() {
           git_clean_worktrees "$@"
           ;;
         help|"")
-          utils_stream_multiline_stderr <<EOF
+          ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles git clean [command]
 
 commands:
@@ -38,7 +38,7 @@ commands:
 EOF
           ;;
         *)
-          utils_tui_error --message="unknown git clean command: ${1-}"
+          ish_utils_tui_error --message="unknown git clean command: ${1-}"
           return 1
           ;;
       esac
@@ -47,7 +47,7 @@ EOF
       git_help
       ;;
     *)
-      utils_tui_error --message="unknown git command: ${1-}"
+      ish_utils_tui_error --message="unknown git command: ${1-}"
       git_help
       return 1
       ;;

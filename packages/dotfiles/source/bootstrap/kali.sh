@@ -15,46 +15,46 @@ bootstrap_kali_all() {
 }
 
 bootstrap_kali_apt() {
-  if [[ $(platform_os) != "kali" ]]; then
-    utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
+  if [[ $(ish_platform_os) != "kali" ]]; then
+    ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
 
   packages=("curl" "neovim" "direnv")
 
-  utils_tui_quiet "sudo apt-get update"
+  ish_utils_tui_quiet "sudo apt-get update"
 
   for package in "${packages[@]}"; do
-    utils_tui_quiet "sudo apt-get install -y $package"
-    utils_tui_info --message="${FUNCNAME[0]}: installed $package."
+    ish_utils_tui_quiet "sudo apt-get install -y $package"
+    ish_utils_tui_info --message="${FUNCNAME[0]}: installed $package."
   done
 }
 
 bootstrap_kali_rust() {
-  if [[ $(platform_os) != "kali" ]]; then
-    utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
+  if [[ $(ish_platform_os) != "kali" ]]; then
+    ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
 
-  if utils_exists_executable --executable=cargo; then
-    utils_tui_warn --message="${FUNCNAME[0]}: rust/cargo already installed."
+  if ish_utils_exists_executable --executable=cargo; then
+    ish_utils_tui_warn --message="${FUNCNAME[0]}: rust/cargo already installed."
   else
-    if ! utils_exists_executable --executable=curl; then
-      utils_tui_error --message="${FUNCNAME[0]}: curl not found. Install curl first."
+    if ! ish_utils_exists_executable --executable=curl; then
+      ish_utils_tui_error --message="${FUNCNAME[0]}: curl not found. Install curl first."
     fi
     curl --proto '=https' -tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    utils_tui_info --message="${FUNCNAME[0]}: installed rust/cargo."
+    ish_utils_tui_info --message="${FUNCNAME[0]}: installed rust/cargo."
   fi
 }
 
 bootstrap_kali_wezterm() {
-  if [[ $(platform_os) != "kali" ]]; then
-    utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
+  if [[ $(ish_platform_os) != "kali" ]]; then
+    ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
 
-  if utils_exists_executable --executable=wezterm; then
-    utils_tui_warn --message="${FUNCNAME[0]}: wezterm already installed."
+  if ish_utils_exists_executable --executable=wezterm; then
+    ish_utils_tui_warn --message="${FUNCNAME[0]}: wezterm already installed."
   else
-    if ! utils_exists_executable --executable=curl; then
-      utils_tui_error --message="${FUNCNAME[0]}: curl not found. Install curl first."
+    if ! ish_utils_exists_executable --executable=curl; then
+      ish_utils_tui_error --message="${FUNCNAME[0]}: curl not found. Install curl first."
     fi
 
     local gpg_key_url="https://apt.fury.io/wez"
@@ -68,12 +68,12 @@ bootstrap_kali_wezterm() {
     sudo apt-get update
     sudo apt-get install wezterm -y
 
-    utils_tui_info --message="${FUNCNAME[0]}: installed wezterm."
+    ish_utils_tui_info --message="${FUNCNAME[0]}: installed wezterm."
   fi
 }
 
 bootstrap_kali_help() {
-  utils_stream_multiline_stderr <<EOF
+  ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles bootstrap kali [command]
 
 commands:
@@ -106,7 +106,7 @@ bootstrap_kali_route() {
     ;;
   *)
     bootstrap_kali_help
-    utils_tui_error --message="unknown kali subcommand: ${1-}"
+    ish_utils_tui_error --message="unknown kali subcommand: ${1-}"
     ;;
   esac
 }

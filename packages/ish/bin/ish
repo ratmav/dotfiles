@@ -9,7 +9,7 @@ export ISH_PACKAGES_DIR
 source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
 source "${ISH_PACKAGES_DIR}/ish/source/platform.sh"
 
-utils_tui_set_colors
+ish_utils_tui_set_colors
 
 ish_help() {
   cat <<EOF
@@ -69,20 +69,20 @@ case "${1-}" in
   kanban)
     shift
     source "${ISH_PACKAGES_DIR}/ish/source/kanban.sh"
-    kanban_route "$@"
+    ish_kanban_route "$@"
     ;;
   tui)
     shift
-    utils_tui_route "$@"
+    ish_utils_tui_route "$@"
     ;;
   platform)
     shift
-    platform_route "$@"
+    ish_platform_route "$@"
     ;;
   utils)
     shift
     source "${ISH_PACKAGES_DIR}/ish/source/utils.sh"
-    utils_route "$@"
+    ish_utils_route "$@"
     ;;
   test)
     shift
@@ -99,6 +99,6 @@ case "${1-}" in
     ;;
   *)
     ish_help
-    utils_tui_error --message="unknown command: ${1-}"
+    ish_utils_tui_error --message="unknown command: ${1-}"
     ;;
 esac
