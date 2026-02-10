@@ -66,39 +66,42 @@ grep -r "^[a-z_]*() {" packages/ish/source/ | grep -v "^_" | grep -v "^ish_"
 ### subtasks
 
 **2.1: Rename dotfiles package directory:**
-- [ ] Rename `packages/dotfiles/` → `packages/ish-dotfiles/`
-- [ ] Update all `source` statements that reference dotfiles package
-- [ ] Update test paths and imports
-- [ ] Update .gitmodules if applicable
+- [x] Rename `packages/dotfiles/` → `packages/ish-dotfiles/`
+- [x] Update all `source` statements that reference dotfiles package
+- [x] Update test paths and imports
+- [x] Update .gitmodules if applicable
 
 **2.2: Rename dotfiles package functions:**
-- [ ] Audit: list all functions needing prefix (42 functions)
+- [x] Audit: list all functions needing prefix (42 functions)
   ```bash
   bootstrap_*  → ish_dotfiles_bootstrap_*  (26 functions)
   git_*        → ish_dotfiles_git_*        (4 functions)
   nix_*        → ish_dotfiles_nix_*        (3 functions)
   dotfiles_*   → ish_dotfiles_*            (9 functions)
   ```
-- [ ] Rename all function definitions
-- [ ] Update all call sites within dotfiles package
-- [ ] Update all routing functions
-- [ ] Update all help text
+- [x] Rename all function definitions
+- [x] Update all call sites within dotfiles package
+- [x] Update all routing functions
+- [x] Update all help text
+- [x] Standardize all source statements to tops of files
+- [x] Fix legacy ish symlink
 
 **2.3: Move dotfiles tests to dotfiles package:**
-- [ ] Move `packages/ish/test/integration/bootstrap*` → `packages/dotfiles/test/integration/`
-- [ ] Move `packages/ish/test/integration/git*` → `packages/dotfiles/test/integration/`
-- [ ] Move `packages/ish/test/integration/nix.bats` → `packages/dotfiles/test/integration/`
-- [ ] Update test paths in moved files (if needed)
-- [ ] Update `packages/dotfiles/source/test.sh` to point to correct test locations
+- [x] Move `packages/ish/test/integration/bootstrap*` → `packages/ish-dotfiles/test/integration/`
+- [x] Move `packages/ish/test/integration/git*` → `packages/ish-dotfiles/test/integration/`
+- [x] Move `packages/ish/test/integration/nix.bats` → `packages/ish-dotfiles/test/integration/`
+- [x] Update test paths in moved files (if needed)
+- [x] Update `packages/ish-dotfiles/source/test.sh` to point to correct test locations
+- [x] Remove hello.bats scaffolds (pattern documented in package-local-bats.md)
 
 **2.4: Update dotfiles package tests:**
-- [ ] Update test function references in unit tests
-- [ ] Update test function references in integration tests
-- [ ] Verify all dotfiles package tests pass
+- [x] Update test function references in unit tests (N/A - integration only)
+- [x] Update test function references in integration tests
+- [x] Verify all dotfiles package tests pass
 
 **2.5: Update main ish router:**
-- [ ] Update `ish` entry point to reference `packages/ish-dotfiles/`
-- [ ] Verify CLI routing: `./ish dotfiles bootstrap macos all`
+- [x] Update `ish` entry point to reference `packages/ish-dotfiles/`
+- [x] Verify CLI routing: `./ish dotfiles bootstrap macos all`
 
 **2.6: Verify stage 2:**
 ```bash
