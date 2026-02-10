@@ -6,7 +6,9 @@
 
 ## description
 
-CRITICAL: Resolve package naming inconsistency before any further refactoring. Currently have mixed `ish_*` and `dotfiles_*` functions. Need consistent convention for package loading and namespace collision detection.
+CRITICAL: Resolve package naming inconsistency across BOTH packages before any further refactoring. Currently have mixed naming with no consistent `ish_` prefix. Need full namespace consistency for package loading and collision detection.
+
+**Scope:** ~77 functions across ~30 files in both ish and dotfiles packages.
 
 ## decision
 
@@ -14,95 +16,144 @@ CRITICAL: Resolve package naming inconsistency before any further refactoring. C
 - Package directory name: `packages/ish-<name>/` (hyphenated)
 - Function prefix: `ish_<name>_*` (underscored)
 - Examples:
-  - Package: `packages/ish/` → functions: `ish_core_*`, `ish_kanban_*`, etc.
+  - Package: `packages/ish/` → functions: `ish_kanban_*`, `ish_utils_*`, `ish_platform_*`
   - Package: `packages/ish-dotfiles/` → functions: `ish_dotfiles_*`
   - Future: `packages/ish-docker/` → functions: `ish_docker_*`
 
 **Why ish_ prefix for all ish ecosystem packages:**
-- Prevents namespace collisions (generic "dotfiles" too common)
+- Prevents namespace collisions (`utils_*`, `platform_*` are too generic)
 - Makes ownership clear (all ish_* functions are ish ecosystem)
 - Enables namespace validation in registry
 - Follows vision.md examples (ish-docker, ish-kubernetes)
 
-## subtasks
+## stage 1: ish package (core utilities)
 
-**Phase 1: Rename dotfiles package and directory:**
+**Scope:** 35 functions in packages/ish/source/
+
+### subtasks
+
+**1.1: Rename ish package functions:**
+- [ ] Audit: list all functions missing `ish_` prefix (35 functions)
+  ```bash
+  kanban_*    → ish_kanban_*     (13 functions)
+  utils_*     → ish_utils_*      (18 functions)
+  platform_*  → ish_platform_*   (4 functions)
+  ```
+- [ ] Rename all function definitions
+- [ ] Update all call sites within ish package
+- [ ] Update all routing functions
+- [ ] Update all help text
+
+**1.2: Update ish package tests:**
+- [ ] Update test function references in unit tests
+- [ ] Update test function references in integration tests
+- [ ] Verify all ish package tests pass
+
+**1.3: Verify stage 1:**
+```bash
+# All ish package functions should have ish_ prefix
+grep -r "^[a-z_]*() {" packages/ish/source/ | grep -v "^_" | grep -v "^ish_"
+# (should return nothing)
+
+# Tests pass
+./ish test all
+```
+
+## stage 2: dotfiles package
+
+**Scope:** ~42 functions in packages/dotfiles/source/
+
+### subtasks
+
+**2.1: Rename dotfiles package directory:**
 - [ ] Rename `packages/dotfiles/` → `packages/ish-dotfiles/`
 - [ ] Update all `source` statements that reference dotfiles package
 - [ ] Update test paths and imports
 - [ ] Update .gitmodules if applicable
 
-**Phase 2: Rename all dotfiles functions:**
-- [ ] Audit: grep for all `bootstrap_*`, `git_*`, `nix_*` functions in dotfiles package
-- [ ] Rename all to `ish_dotfiles_*` prefix:
-  - `bootstrap_posix_*` → `ish_dotfiles_bootstrap_posix_*`
-  - `bootstrap_macos_*` → `ish_dotfiles_bootstrap_macos_*`
-  - `bootstrap_kali_*` → `ish_dotfiles_bootstrap_kali_*`
-  - `git_*` → `ish_dotfiles_git_*`
-  - `nix_*` → `ish_dotfiles_nix_*`
-- [ ] Update all call sites
+**2.2: Rename dotfiles package functions:**
+- [ ] Audit: list all functions needing prefix (42 functions)
+  ```bash
+  bootstrap_*  → ish_dotfiles_bootstrap_*  (26 functions)
+  git_*        → ish_dotfiles_git_*        (4 functions)
+  nix_*        → ish_dotfiles_nix_*        (3 functions)
+  dotfiles_*   → ish_dotfiles_*            (9 functions)
+  ```
+- [ ] Rename all function definitions
+- [ ] Update all call sites within dotfiles package
 - [ ] Update all routing functions
 - [ ] Update all help text
 
-**Phase 3: Update CLI routing:**
-- [ ] Main ish router recognizes `ish dotfiles` namespace
-- [ ] CLI: `ish dotfiles bootstrap macos all` routes to `ish_dotfiles_bootstrap_macos_all()`
-- [ ] Verify help text at all levels
+**2.3: Update dotfiles package tests:**
+- [ ] Update test function references in unit tests
+- [ ] Update test function references in integration tests
+- [ ] Verify all dotfiles package tests pass
 
-**Phase 4: Update tests:**
-- [ ] Update test function names
-- [ ] Update test assertions
-- [ ] Verify all tests pass
+**2.4: Update main ish router:**
+- [ ] Update `ish` entry point to reference `packages/ish-dotfiles/`
+- [ ] Verify CLI routing: `./ish dotfiles bootstrap macos all`
 
-**Phase 5: Document convention:**
-- [ ] Update `docs/conventions.md` with package naming rules
-- [ ] Add examples showing ish_<package>_* pattern
-- [ ] Document CLI routing for packages
+**2.5: Verify stage 2:**
+```bash
+# All dotfiles functions should have ish_dotfiles_ prefix
+grep -r "^[a-z_]*() {" packages/ish-dotfiles/source/ | grep -v "^_" | grep -v "^ish_dotfiles_"
+# (should return nothing)
+
+# Tests pass
+./ish dotfiles test all
+./ish test all
+```
 
 ## deliverable
 
-All functions consistently named with `ish_<package>_*` prefix. Package structure supports loading strategy and namespace validation.
+All functions consistently named with `ish_<package>_*` prefix across both packages. Package structure supports loading strategy and namespace validation.
 
 ## critical files
 
-**Rename directory:**
-- `packages/dotfiles/` → `packages/ish-dotfiles/`
+**Stage 1 (ish package):**
+- `packages/ish/source/kanban.sh` + `kanban/*.sh`
+- `packages/ish/source/utils.sh` + `utils/**/*.sh`
+- `packages/ish/source/platform.sh`
+- `packages/ish/test/**/*.bats`
 
-**Update routing:**
+**Stage 2 (dotfiles package):**
+- `packages/dotfiles/` → `packages/ish-dotfiles/` (directory rename)
 - `ish` (main entry point)
-- `packages/ish-dotfiles/source/*.sh` (all routers)
-
-**Update functions (comprehensive rename):**
 - `packages/ish-dotfiles/source/bootstrap/*.sh`
 - `packages/ish-dotfiles/source/git/*.sh`
 - `packages/ish-dotfiles/source/nix.sh`
+- `packages/ish-dotfiles/source/dotfiles.sh` (router)
+- `packages/ish-dotfiles/test/**/*.bats`
 
-**Update tests:**
-- `packages/ish-dotfiles/test/unit/*.bats`
-- `packages/ish-dotfiles/test/integration/*.bats`
-
-**Update docs:**
+**Documentation:**
 - `packages/ish/docs/conventions.md`
 
-## verification
+## final verification
 
 ```bash
-# No bare dotfiles_* functions should exist
-grep -r "^dotfiles_" packages/ish-dotfiles/source/
+# No functions without ish_ prefix in either package
+grep -r "^[a-z_]*() {" packages/ish/source/ packages/ish-dotfiles/source/ | grep -v "^_" | grep -v "^ish_"
 # (should return nothing)
 
-# All functions should use ish_dotfiles_* prefix
-grep -r "^ish_dotfiles_" packages/ish-dotfiles/source/
-# (should return all public functions)
+# All tests pass
+./ish test all
+./ish dotfiles test all
 
-# CLI should work
-./ish dotfiles bootstrap macos all
-./ish dotfiles git clean prune
+# CLI works correctly
+./ish kanban show
+./ish utils exists --executable=bash
+./ish platform os
+./ish dotfiles bootstrap help
 ```
 
 ## notes
 
-This is BLOCKING. Must be completed before:
-- Task 4: ishen-dotfiles-package (depends on consistent naming)
+**Two-stage approach:**
+- Stage 1 first: Core utilities (ish package) establish foundation
+- Stage 2 second: Dotfiles package depends on renamed core utilities
+- Each stage includes tests and verification
+
+**BLOCKING:** Must be completed before:
+- Task 4: implement-package-loading-strategy (depends on consistent naming)
 - Phase 2: FP core (packages need to load ish_core_* functions)
 - Phase 3: Registry (namespace validation requires consistent prefixes)
