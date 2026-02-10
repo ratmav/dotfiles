@@ -66,7 +66,7 @@ Working registry system with validation, search, and install capabilities.
 
 **Structure:**
 ```
-packages/ish/source/registry/
+lib/ish/lib/registry/
 ├── search.sh
 ├── install.sh
 ├── list.sh
@@ -78,9 +78,11 @@ packages/ish/source/registry/
         └── ish_dotfiles.conf
 ```
 
+Note: After restructure, framework is in `lib/ish/` (see task `implement-package-loading-strategy.md`).
+
 **Package metadata format (bash-parseable):**
 ```bash
-# source/registry/data/packages/ish.conf
+# lib/ish/lib/registry/data/packages/ish.conf
 namespace="ish"
 repo="https://github.com/ratmav/ish.git"
 author="ratmav"
@@ -115,7 +117,7 @@ ish registry validate
 
 # Implementation:
 ish_registry_validate() {
-  local registry_data="$ISH_ROOT/source/registry/data/packages"
+  local registry_data="${ISH_LIB}/registry/data/packages"
 
   # Use core namespace validation
   local namespaces=()
@@ -132,7 +134,7 @@ ish_registry_validate() {
 
 **Publishing workflow:**
 1. Fork ish repo
-2. Add source/registry/data/packages/my_package.conf
+2. Add lib/ish/lib/registry/data/packages/my_package.conf
 3. Submit PR
 4. CI runs `ish registry validate`
 5. If validation passes → merge → published
@@ -142,10 +144,10 @@ ish_registry_validate() {
 ```bash
 ish package install my_package
 
-# 1. Read source/registry/data/packages/my_package.conf
+# 1. Read ${ISH_LIB}/registry/data/packages/my_package.conf
 # 2. Get repo URL
 # 3. Clone repo
-# 4. Install to packages/
+# 4. Install to ${ISH_PACKAGES}/ (packages/ in dev, ~/.local/share/ish/packages/ when installed)
 # 5. Validate namespace matches
 ```
 

@@ -45,7 +45,9 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
    - [x] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
 2. [x] [fix-cli-consistency](tasks/fix-cli-consistency.md) - fix 3 CLI paper cuts (help support, error leakage)
 3. [x] [standardize-package-naming](tasks/standardize-package-naming.md) - COMPLETE: All 42 functions renamed to ish_dotfiles_*, directory moved to packages/ish-dotfiles/, tests moved, source statements standardized
-4. [ ] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md) - define load order for ish_core_* availability
+4. [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md) - lib/ish vs packages/ separation
+   - [x] Phase 1: Documentation complete (architecture docs, task updates, design finalized)
+   - [ ] Phase 2: Execute restructure (git mv packages/ish → lib/ish, update paths, verify tests)
 5. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
 6. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - BLOCKED by tasks 3-4: use ish utilities, hoist reusable code, copy dotfiles to package
 7. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard

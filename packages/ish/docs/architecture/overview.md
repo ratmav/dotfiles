@@ -227,10 +227,12 @@ ish package install --namespace=github/ratmav/dotfiles
    - Start with all required?
    - Add optional later if needed?
 
-8. **NEW:** How to handle bootstrap package special case?
-   - Bootstrap contains ish entry point initially
-   - After split, how does ish find core before packages loaded?
-   - Chicken-and-egg problem?
+8. **RESOLVED:** How to handle bootstrap package special case?
+   - **Decision:** Separate framework from packages (lib/ish vs packages/)
+   - **Rationale:** Framework that loads packages cannot itself be a package (bootstrapping paradox)
+   - **Structure:** Framework in `lib/ish/`, packages in `packages/` or `~/.local/share/ish/packages/`
+   - **Benefits:** No circular dependency, no nested submodules, XDG compliant, future-proof
+   - **See:** `docs/architecture/package_loading.md` for complete design
 
 ---
 

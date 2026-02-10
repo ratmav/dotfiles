@@ -4,49 +4,87 @@
 
 ```bash
 #!/usr/bin/env bash
-# ish entry point
+# lib/ish/bin/ish entry point
 
 set -Eeuo pipefail
 
-# 1. Load core (hardcoded, always available)
-#    Core is special - it must exist for ish to function
-source "${ish_core_path}/source/utils/tui.sh"
-source "${ish_core_path}/source/platform.sh"
-source "${ish_core_path}/source/registry.sh"
-source "${ish_core_path}/source/package.sh"
+# 1. Calculate paths
+#    Determine framework and package locations
+ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
+ISH_LIB="${ISH_ROOT}/lib/ish/lib"
+ISH_PACKAGES="${ISH_ROOT}/packages"  # or ~/.local/share/ish/packages when installed
 
-# 2. Discover installed packages
-#    Scan ~/.local/share/ish/packages/*/source/
-for package_dir in ~/.local/share/ish/packages/*/*/*/*/source; do
-  # Extract namespace from path
-  # Example: ~/.local/share/ish/packages/github/ratmav/dotfiles/source
-  #          → github/ratmav/dotfiles
+export ISH_ROOT ISH_LIB ISH_PACKAGES
 
-  # 3. Load package routers (convention-based)
-  #    Source all *.sh files in source/
-  for module in "${package_dir}"/*.sh; do
-    source "${module}"
-  done
-done
+# 2. Load framework core (always available)
+#    Framework modules must load first - they provide foundation for all packages
+source "${ISH_LIB}/tui.sh"        # ish_utils_tui_* functions
+source "${ISH_LIB}/platform.sh"   # ish_platform_* functions
+ish_utils_tui_set_colors          # Initialize color support
+
+# Future: Load additional core modules
+# source "${ISH_LIB}/core.sh"     # ish_core_* functions
+# source "${ISH_LIB}/registry.sh" # ish_registry_* functions
+# source "${ISH_LIB}/package.sh"  # ish_package_* functions
+
+# 3. Discover installed packages
+#    Phase 1: Explicit routing (current)
+#    Phase 3+: Auto-discovery (future)
+
+# Current: Explicit package loading
+case "${1-}" in
+  dotfiles)
+    source "${ISH_PACKAGES}/ish-dotfiles/source/dotfiles.sh"
+    ish_dotfiles_route "$@"
+    ;;
+  kanban)
+    source "${ISH_LIB}/kanban.sh"  # Note: ish package, part of framework
+    ish_kanban_route "$@"
+    ;;
+  # ... other explicit routes
+esac
+
+# Future: Auto-discovery package scanner
+# for pkg_dir in "${ISH_PACKAGES}"/*; do
+#   [[ -d "${pkg_dir}" ]] || continue
+#   pkg_name=$(basename "${pkg_dir}")
+#   pkg_manifest="${pkg_dir}/package.json"
+#   [[ -f "${pkg_manifest}" ]] || continue
+#
+#   # Source package router
+#   pkg_router="${pkg_dir}/source/${pkg_name}.sh"
+#   [[ -f "${pkg_router}" ]] && source "${pkg_router}"
+# done
 
 # 4. Dispatch to command
 #    Route based on first argument
-case "${1-}" in
-  register)
-    shift
-    ish_register_route "$@"
-    ;;
-  package)
-    shift
-    ish_package_route "$@"
-    ;;
-  *)
-    # Delegate to installed packages
-    # Example: ./ish bootstrap → calls dotfiles_bootstrap_route
-    # Example: ./ish foo → calls foo_route
-    ;;
-esac
+cmd="${1-}"
+shift || true
+
+# Try package commands first
+if type -t "ish_${cmd}_route" &>/dev/null; then
+  "ish_${cmd}_route" "$@"
+  exit $?
+fi
+
+# Try framework commands
+if type -t "ish_${cmd}_main" &>/dev/null; then
+  "ish_${cmd}_main" "$@"
+  exit $?
+fi
+
+# No match
+ish_utils_tui_error --message="Unknown command: ${cmd}"
+exit 1
 ```
+
+### Path Environment Variables
+
+Set by entry point, available to all code:
+
+- `ISH_ROOT` - Repository root (or `~/.local` in installed mode)
+- `ISH_LIB` - Framework library directory (`lib/ish/lib/` or `~/.local/lib/ish/lib/`)
+- `ISH_PACKAGES` - Packages directory (`packages/` or `~/.local/share/ish/packages/`)
 
 ### Command Namespace Examples
 

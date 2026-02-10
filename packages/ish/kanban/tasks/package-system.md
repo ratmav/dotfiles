@@ -11,7 +11,7 @@ create a package system for sharing ish modules across projects with a signed, s
 ## subtasks
 
 - [ ] design package structure (git repos with ish-style code)
-- [ ] implement `ish package install user/repo` (clones into packages directory)
+- [ ] implement `ish package install user/repo` (clones into `${ISH_PACKAGES}` directory)
 - [ ] implement package loading (source modules into ish namespace)
 - [ ] enforce namespace convention (packages must prefix functions with package name)
 - [ ] create registry format (simple static json/yaml file)
@@ -19,6 +19,8 @@ create a package system for sharing ish modules across projects with a signed, s
 - [ ] make registry self-hostable
 - [ ] host as ish-registry repo or static site
 - [ ] document package creation guide
+
+**Note:** See `implement-package-loading-strategy.md` for framework/packages separation. Framework in `lib/ish/`, packages in `${ISH_PACKAGES}` (`packages/` dev, `~/.local/share/ish/packages/` installed).
 
 ## deliverable
 

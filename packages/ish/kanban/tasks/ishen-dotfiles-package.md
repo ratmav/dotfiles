@@ -11,7 +11,7 @@ Make dotfiles package use ish utilities wherever possible and hoist generically 
 **Goals:**
 1. Replace duplicate code in dotfiles with ish utilities
 2. Identify and hoist generic patterns to ish (array handling, file/symlink operations)
-3. Copy actual dotfile configs to `packages/dotfiles/data/`
+3. Copy actual dotfile configs to `packages/ish-dotfiles/data/`
 4. Fix scaffold tests to demonstrate router help pattern
 5. Document router help convention
 6. Update scaffolding task to include router help
@@ -37,8 +37,8 @@ nvim/
 ```
 
 **Scaffold tests don't demonstrate router pattern:**
-- `packages/dotfiles/test/unit/hello.bats` - generic echo test
-- `packages/dotfiles/test/integration/hello.bats` - tests `./ish dotfiles help`
+- `packages/ish-dotfiles/test/unit/hello.bats` - generic echo test
+- `packages/ish-dotfiles/test/integration/hello.bats` - tests `./ish dotfiles help`
 - Should demonstrate testing a router help command
 
 ## target state
@@ -49,12 +49,14 @@ nvim/
 - File operations use ish `file_*` module (to be created)
 
 **Ish has new generic modules:**
-- `packages/ish/source/file.sh` - symlink, copy, move operations
+- `lib/ish/lib/file.sh` - symlink, copy, move operations
 - Enhanced array/list utilities in `utils/` or new module
+
+**Note:** After restructure (see `implement-package-loading-strategy.md`), framework is in `lib/ish/`.
 
 **Dotfiles configs in package:**
 ```
-packages/dotfiles/data/
+packages/ish-dotfiles/data/
 ├── .bash_profile
 ├── .bashrc
 ├── .gitignore
@@ -69,14 +71,14 @@ packages/dotfiles/data/
 
 **Scaffold tests demonstrate router pattern:**
 ```bash
-# packages/dotfiles/test/unit/hello.bats
+# packages/ish-dotfiles/test/unit/hello.bats
 @test "dotfiles router help shows usage" {
   run ./ish dotfiles help
   assert_success
   assert_output --partial "usage: ish dotfiles"
 }
 
-# packages/dotfiles/test/integration/hello.bats
+# packages/ish-dotfiles/test/integration/hello.bats
 @test "dotfiles bootstrap router help shows usage" {
   run ./ish dotfiles bootstrap help
   assert_success
@@ -87,17 +89,17 @@ packages/dotfiles/data/
 ## subtasks
 
 ### 1. Move dotfiles tests to dotfiles package
-- [ ] Move `packages/ish/test/integration/bootstrap.bats` → `packages/dotfiles/test/integration/bootstrap.bats`
-- [ ] Move `packages/ish/test/integration/bootstrap/` → `packages/dotfiles/test/integration/bootstrap/`
-- [ ] Move `packages/ish/test/integration/git.bats` → `packages/dotfiles/test/integration/git.bats`
-- [ ] Move `packages/ish/test/integration/git/` → `packages/dotfiles/test/integration/git/`
-- [ ] Move `packages/ish/test/integration/nix.bats` → `packages/dotfiles/test/integration/nix.bats`
+- [x] Move `packages/ish/test/integration/bootstrap.bats` → `packages/ish-dotfiles/test/integration/bootstrap.bats`
+- [x] Move `packages/ish/test/integration/bootstrap/` → `packages/ish-dotfiles/test/integration/bootstrap/`
+- [x] Move `packages/ish/test/integration/git.bats` → `packages/ish-dotfiles/test/integration/git.bats`
+- [x] Move `packages/ish/test/integration/git/` → `packages/ish-dotfiles/test/integration/git/`
+- [x] Move `packages/ish/test/integration/nix.bats` → `packages/ish-dotfiles/test/integration/nix.bats`
 - [ ] Update test helper paths in moved tests (change `../test_helper` to correct relative path)
 - [ ] Verify `./ish test integration` only runs ish tests
 - [ ] Verify `./ish dotfiles test integration` runs dotfiles tests
 
 ### 2. Audit dotfiles for ish utility usage
-- [ ] Read all files in `packages/dotfiles/source/`
+- [ ] Read all files in `packages/ish-dotfiles/source/`
 - [ ] Identify patterns that duplicate ish utilities
 - [ ] Identify patterns that should be hoisted to ish
 - [ ] Document findings: what to replace, what to hoist
@@ -118,23 +120,23 @@ packages/dotfiles/data/
 - [ ] Test each refactored module
 
 ### 5. Copy dotfiles to package data directory
-- [ ] Create `packages/dotfiles/data/` directory
-- [ ] Copy `.bash_profile` to `packages/dotfiles/data/.bash_profile`
-- [ ] Copy `.bashrc` to `packages/dotfiles/data/.bashrc`
-- [ ] Copy `.gitignore` to `packages/dotfiles/data/.gitignore`
-- [ ] Copy `.gitignore_global` to `packages/dotfiles/data/.gitignore_global`
-- [ ] Copy `.gitmodules` to `packages/dotfiles/data/.gitmodules`
-- [ ] Copy `.luacheckrc` to `packages/dotfiles/data/.luacheckrc`
-- [ ] Copy `neovim.lua` to `packages/dotfiles/data/neovim.lua`
-- [ ] Copy `wezterm.lua` to `packages/dotfiles/data/wezterm.lua`
-- [ ] Copy `nvim/` to `packages/dotfiles/data/nvim/` (entire directory)
+- [ ] Create `packages/ish-dotfiles/data/` directory
+- [ ] Copy `.bash_profile` to `packages/ish-dotfiles/data/.bash_profile`
+- [ ] Copy `.bashrc` to `packages/ish-dotfiles/data/.bashrc`
+- [ ] Copy `.gitignore` to `packages/ish-dotfiles/data/.gitignore`
+- [ ] Copy `.gitignore_global` to `packages/ish-dotfiles/data/.gitignore_global`
+- [ ] Copy `.gitmodules` to `packages/ish-dotfiles/data/.gitmodules`
+- [ ] Copy `.luacheckrc` to `packages/ish-dotfiles/data/.luacheckrc`
+- [ ] Copy `neovim.lua` to `packages/ish-dotfiles/data/neovim.lua`
+- [ ] Copy `wezterm.lua` to `packages/ish-dotfiles/data/wezterm.lua`
+- [ ] Copy `nvim/` to `packages/ish-dotfiles/data/nvim/` (entire directory)
 - [ ] Keep originals at root (don't move, copy)
 
 ### 6. Fix scaffold tests to demonstrate router help
-- [ ] Update `packages/dotfiles/test/unit/hello.bats`:
+- [ ] Update `packages/ish-dotfiles/test/unit/hello.bats`:
   - Test dotfiles router help
   - Test a module router help (e.g., bootstrap)
-- [ ] Update `packages/dotfiles/test/integration/hello.bats`:
+- [ ] Update `packages/ish-dotfiles/test/integration/hello.bats`:
   - Test deeper router help (e.g., bootstrap posix)
 - [ ] Ensure tests pass
 
@@ -159,11 +161,11 @@ Dotfiles package uses ish utilities consistently. Generic patterns hoisted to is
 ## critical files
 
 **Move dotfiles tests:**
-- `packages/ish/test/integration/bootstrap.bats` → `packages/dotfiles/test/integration/bootstrap.bats` - MOVE
-- `packages/ish/test/integration/bootstrap/` → `packages/dotfiles/test/integration/bootstrap/` - MOVE
-- `packages/ish/test/integration/git.bats` → `packages/dotfiles/test/integration/git.bats` - MOVE
-- `packages/ish/test/integration/git/` → `packages/dotfiles/test/integration/git/` - MOVE
-- `packages/ish/test/integration/nix.bats` → `packages/dotfiles/test/integration/nix.bats` - MOVE
+- `packages/ish/test/integration/bootstrap.bats` → `packages/ish-dotfiles/test/integration/bootstrap.bats` - MOVE
+- `packages/ish/test/integration/bootstrap/` → `packages/ish-dotfiles/test/integration/bootstrap/` - MOVE
+- `packages/ish/test/integration/git.bats` → `packages/ish-dotfiles/test/integration/git.bats` - MOVE
+- `packages/ish/test/integration/git/` → `packages/ish-dotfiles/test/integration/git/` - MOVE
+- `packages/ish/test/integration/nix.bats` → `packages/ish-dotfiles/test/integration/nix.bats` - MOVE
 
 **New ish utilities:**
 - `packages/ish/source/file.sh` - CREATE
@@ -171,25 +173,25 @@ Dotfiles package uses ish utilities consistently. Generic patterns hoisted to is
 - `packages/ish/test/integration/file.bats` - CREATE
 
 **Refactor dotfiles:**
-- `packages/dotfiles/source/bootstrap/*.sh` - UPDATE (use ish utilities)
-- `packages/dotfiles/source/git/*.sh` - UPDATE (use ish utilities)
-- `packages/dotfiles/source/nix.sh` - UPDATE (use ish utilities)
+- `packages/ish-dotfiles/source/bootstrap/*.sh` - UPDATE (use ish utilities)
+- `packages/ish-dotfiles/source/git/*.sh` - UPDATE (use ish utilities)
+- `packages/ish-dotfiles/source/nix.sh` - UPDATE (use ish utilities)
 
 **Copy dotfiles:**
-- `packages/dotfiles/data/` - CREATE directory
-- `packages/dotfiles/data/.bash_profile` - COPY from root
-- `packages/dotfiles/data/.bashrc` - COPY from root
-- `packages/dotfiles/data/.gitignore` - COPY from root
-- `packages/dotfiles/data/.gitignore_global` - COPY from root
-- `packages/dotfiles/data/.gitmodules` - COPY from root
-- `packages/dotfiles/data/.luacheckrc` - COPY from root
-- `packages/dotfiles/data/neovim.lua` - COPY from root
-- `packages/dotfiles/data/wezterm.lua` - COPY from root
-- `packages/dotfiles/data/nvim/` - COPY from root
+- `packages/ish-dotfiles/data/` - CREATE directory
+- `packages/ish-dotfiles/data/.bash_profile` - COPY from root
+- `packages/ish-dotfiles/data/.bashrc` - COPY from root
+- `packages/ish-dotfiles/data/.gitignore` - COPY from root
+- `packages/ish-dotfiles/data/.gitignore_global` - COPY from root
+- `packages/ish-dotfiles/data/.gitmodules` - COPY from root
+- `packages/ish-dotfiles/data/.luacheckrc` - COPY from root
+- `packages/ish-dotfiles/data/neovim.lua` - COPY from root
+- `packages/ish-dotfiles/data/wezterm.lua` - COPY from root
+- `packages/ish-dotfiles/data/nvim/` - COPY from root
 
 **Fix scaffolds:**
-- `packages/dotfiles/test/unit/hello.bats` - UPDATE
-- `packages/dotfiles/test/integration/hello.bats` - UPDATE
+- `packages/ish-dotfiles/test/unit/hello.bats` - UPDATE
+- `packages/ish-dotfiles/test/integration/hello.bats` - UPDATE
 
 **Documentation:**
 - `packages/ish/docs/conventions.md` - UPDATE (router help convention)
@@ -223,8 +225,8 @@ Dotfiles package uses ish utilities consistently. Generic patterns hoisted to is
 ./ish dotfiles test integration
 
 # Scaffold tests demonstrate router help
-cat packages/dotfiles/test/unit/hello.bats  # shows router help test
-cat packages/dotfiles/test/integration/hello.bats  # shows router help test
+cat packages/ish-dotfiles/test/unit/hello.bats  # shows router help test
+cat packages/ish-dotfiles/test/integration/hello.bats  # shows router help test
 ```
 
 ## notes
@@ -237,5 +239,5 @@ cat packages/dotfiles/test/integration/hello.bats  # shows router help test
 
 **Keep originals at root:**
 - Don't move `.bashrc`, `.bash_profile`, etc. from root
-- Copy them to `packages/dotfiles/data/`
+- Copy them to `packages/ish-dotfiles/data/`
 - Root files stay for backward compatibility during transition
