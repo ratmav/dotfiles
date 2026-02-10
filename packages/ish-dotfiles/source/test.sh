@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 dotfiles_test_all() {
-  "${ISH_PACKAGES_DIR}/dotfiles/test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/dotfiles/test/unit/" "${ISH_PACKAGES_DIR}/dotfiles/test/integration/"
+  "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/ish-dotfiles/test/unit/" "${ISH_PACKAGES_DIR}/ish-dotfiles/test/integration/"
 }
 
 dotfiles_test_unit() {
@@ -21,15 +21,15 @@ dotfiles_test_unit() {
 
   local test_path
   if [[ -n "$route" ]]; then
-    test_path="${ISH_PACKAGES_DIR}/dotfiles/test/unit/${route}.bats"
+    test_path="${ISH_PACKAGES_DIR}/ish-dotfiles/test/unit/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
       ish_utils_tui_error --message="test not found: $test_path"
     fi
   else
-    test_path="${ISH_PACKAGES_DIR}/dotfiles/test/unit/"
+    test_path="${ISH_PACKAGES_DIR}/ish-dotfiles/test/unit/"
   fi
 
-  "${ISH_PACKAGES_DIR}/dotfiles/test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "$test_path"
 }
 
 dotfiles_test_integration() {
@@ -49,15 +49,15 @@ dotfiles_test_integration() {
 
   local test_path
   if [[ -n "$route" ]]; then
-    test_path="${ISH_PACKAGES_DIR}/dotfiles/test/integration/${route}.bats"
+    test_path="${ISH_PACKAGES_DIR}/ish-dotfiles/test/integration/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
       ish_utils_tui_error --message="test not found: $test_path"
     fi
   else
-    test_path="${ISH_PACKAGES_DIR}/dotfiles/test/integration/"
+    test_path="${ISH_PACKAGES_DIR}/ish-dotfiles/test/integration/"
   fi
 
-  "${ISH_PACKAGES_DIR}/dotfiles/test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "$test_path"
 }
 
 dotfiles_test_route() {

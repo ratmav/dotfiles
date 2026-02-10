@@ -5,7 +5,7 @@ source "${ISH_PACKAGES_DIR}/ish/source/utils.sh"
 
 # Public functions (alphabetized)
 
-nix_semantic() {
+ish_dotfiles_nix_semantic() {
   local package version found_path found_commit
 
   read -p "Package name: " package
@@ -31,7 +31,7 @@ nix_semantic() {
   _nix_print_pin_info "$package" "$version" "$found_commit"
 }
 
-nix_help() {
+ish_dotfiles_nix_help() {
   ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles nix [command]
 
@@ -40,18 +40,18 @@ commands:
 EOF
 }
 
-nix_route() {
+ish_dotfiles_nix_route() {
   case "${1-}" in
   semantic)
     shift
-    nix_semantic "$@"
+    ish_dotfiles_nix_semantic "$@"
     ;;
   help|"")
-    nix_help
+    ish_dotfiles_nix_help
     ;;
   *)
     ish_utils_tui_error --message="unknown nix command: ${1-}"
-    nix_help
+    ish_dotfiles_nix_help
     return 1
     ;;
   esac
@@ -76,7 +76,7 @@ _nix_find_package_path() {
   )
 
   for path in "${possible_paths[@]}"; do
-    if utils_tui_quiet "curl -s -f https://api.github.com/repos/NixOS/nixpkgs/contents/$path"; then
+    if ish_utils_tui_quiet "curl -s -f https://api.github.com/repos/NixOS/nixpkgs/contents/$path"; then
       ish_utils_tui_info --message="$path"
       return 0
     fi
@@ -127,5 +127,5 @@ with pkgs; [
   {{package}}    # This will be {{package}} {{version}}
 ]'
 
-  utils_tui_template "${ISH_TUI_INFO}" "$template" package "$package" version "$version" commit "$commit"
+  ish_utils_tui_template "${ISH_TUI_INFO}" "$template" package "$package" version "$version" commit "$commit"
 }

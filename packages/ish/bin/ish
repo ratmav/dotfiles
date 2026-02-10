@@ -63,7 +63,7 @@ EOF
 case "${1-}" in
   dotfiles)
     shift
-    source "${ISH_PACKAGES_DIR}/dotfiles/source/dotfiles.sh"
+    source "${ISH_PACKAGES_DIR}/ish-dotfiles/source/dotfiles.sh"
     dotfiles_route "$@"
     ;;
   kanban)

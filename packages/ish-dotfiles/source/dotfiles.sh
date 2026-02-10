@@ -46,7 +46,7 @@ dotfiles_route() {
     ;;
   nix)
     shift
-    nix_route "$@"
+    ish_dotfiles_nix_route "$@"
     ;;
   help|"")
     dotfiles_help
