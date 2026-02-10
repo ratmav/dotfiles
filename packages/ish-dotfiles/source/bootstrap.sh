@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-bootstrap_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_dotfiles_bootstrap_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
 source "${ISH_PACKAGES_DIR}/ish/source/platform.sh"
+source "${ish_dotfiles_bootstrap_module_dir}/bootstrap/macos.sh"
+source "${ish_dotfiles_bootstrap_module_dir}/bootstrap/kali.sh"
+source "${ish_dotfiles_bootstrap_module_dir}/bootstrap/posix.sh"
 
-bootstrap_help() {
+ish_dotfiles_bootstrap_help() {
   ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles bootstrap [platform]
 
@@ -17,7 +20,7 @@ platforms:
 EOF
 }
 
-bootstrap_route() {
+ish_dotfiles_bootstrap_route() {
   case "${1-}" in
     all)
       # ish_platform_os errors and exits for unsupported platforms
@@ -25,35 +28,30 @@ bootstrap_route() {
 
       case "$os" in
         macos)
-          source "${bootstrap_module_dir}/bootstrap/macos.sh"
-          bootstrap_macos_all
+          ish_dotfiles_bootstrap_macos_all
           ;;
         kali)
-          source "${bootstrap_module_dir}/bootstrap/kali.sh"
-          bootstrap_kali_all
+          ish_dotfiles_bootstrap_kali_all
           ;;
       esac
       ;;
     macos)
       shift
-      source "${bootstrap_module_dir}/bootstrap/macos.sh"
-      bootstrap_macos_route "$@"
+      ish_dotfiles_bootstrap_macos_route "$@"
       ;;
     kali)
       shift
-      source "${bootstrap_module_dir}/bootstrap/kali.sh"
-      bootstrap_kali_route "$@"
+      ish_dotfiles_bootstrap_kali_route "$@"
       ;;
     posix)
       shift
-      source "${bootstrap_module_dir}/bootstrap/posix.sh"
-      bootstrap_posix_route "$@"
+      ish_dotfiles_bootstrap_posix_route "$@"
       ;;
     help|"")
-      bootstrap_help
+      ish_dotfiles_bootstrap_help
       ;;
     *)
-      bootstrap_help
+      ish_dotfiles_bootstrap_help
       ish_utils_tui_error --message="unknown bootstrap platform: ${1-}"
       ;;
   esac

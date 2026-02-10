@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git_clean_prune() {
+ish_dotfiles_git_clean_prune() {
   if [ $# -eq 0 ]; then
     local remote=origin
   else
@@ -25,7 +25,7 @@ git_clean_prune() {
   fi
 }
 
-git_clean_worktrees() {
+ish_dotfiles_git_clean_worktrees() {
   if git rev-parse --git-dir > /dev/null 2>&1; then
     local main_worktree=$(git rev-parse --show-toplevel)
     local worktrees=$(git worktree list --porcelain | grep "^worktree " | cut -d' ' -f2-)

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-bootstrap_macos_homebrew_install() {
+ish_dotfiles_bootstrap_macos_homebrew_install() {
   if [[ $(ish_platform_os) != "macos" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
     return 1
@@ -14,7 +14,7 @@ bootstrap_macos_homebrew_install() {
   fi
 }
 
-bootstrap_macos_homebrew_brew() {
+ish_dotfiles_bootstrap_macos_homebrew_brew() {
   if [[ $(ish_platform_os) != "macos" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
     return 1
@@ -41,7 +41,7 @@ bootstrap_macos_homebrew_brew() {
   done
 }
 
-bootstrap_macos_homebrew_cask() {
+ish_dotfiles_bootstrap_macos_homebrew_cask() {
   if [[ $(ish_platform_os) != "macos" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
     return 1

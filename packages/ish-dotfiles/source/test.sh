@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-dotfiles_test_all() {
+ish_dotfiles_test_all() {
   "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/ish-dotfiles/test/unit/" "${ISH_PACKAGES_DIR}/ish-dotfiles/test/integration/"
 }
 
-dotfiles_test_unit() {
+ish_dotfiles_test_unit() {
   local route=""
 
   while [[ $# -gt 0 ]]; do
@@ -32,7 +32,7 @@ dotfiles_test_unit() {
   "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "$test_path"
 }
 
-dotfiles_test_integration() {
+ish_dotfiles_test_integration() {
   local route=""
 
   while [[ $# -gt 0 ]]; do
@@ -60,19 +60,19 @@ dotfiles_test_integration() {
   "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "$test_path"
 }
 
-dotfiles_test_route() {
+ish_dotfiles_test_route() {
   case "${1-}" in
   all)
     shift
-    dotfiles_test_all "$@"
+    ish_dotfiles_test_all "$@"
     ;;
   unit)
     shift
-    dotfiles_test_unit "$@"
+    ish_dotfiles_test_unit "$@"
     ;;
   integration)
     shift
-    dotfiles_test_integration "$@"
+    ish_dotfiles_test_integration "$@"
     ;;
   "")
     ish_utils_stream_multiline_stderr <<EOF

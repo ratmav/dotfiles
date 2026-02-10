@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-bootstrap_macos_bash() {
+ish_dotfiles_bootstrap_macos_bash() {
   if [[ $(ish_platform_os) != "macos" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
     return 1

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-bootstrap_posix_nix_install() {
+ish_dotfiles_bootstrap_posix_nix_install() {
   if ish_utils_exists_executable --executable=nix; then
     ish_utils_tui_warn --message="${FUNCNAME[0]}: nix already installed."
   else
@@ -13,7 +13,7 @@ bootstrap_posix_nix_install() {
   fi
 }
 
-bootstrap_posix_nix_config() {
+ish_dotfiles_bootstrap_posix_nix_config() {
   local nix_conf="$HOME/.config/nix/nix.conf"
   local nix_config="experimental-features = nix-command flakes"
 

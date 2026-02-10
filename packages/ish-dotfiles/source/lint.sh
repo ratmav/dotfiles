@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dotfiles_lint_all() {
+ish_dotfiles_lint_all() {
   if ! ish_utils_exists_executable --executable=shellcheck; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
@@ -8,7 +8,7 @@ dotfiles_lint_all() {
   shellcheck "${ISH_PACKAGES_DIR}/dotfiles/source"/**/*.sh
 }
 
-dotfiles_lint_bash() {
+ish_dotfiles_lint_bash() {
   if ! ish_utils_exists_executable --executable=shellcheck; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
@@ -16,15 +16,15 @@ dotfiles_lint_bash() {
   shellcheck "${ISH_PACKAGES_DIR}/dotfiles/source"/**/*.sh
 }
 
-dotfiles_lint_route() {
+ish_dotfiles_lint_route() {
   case "${1-}" in
   all)
     shift
-    dotfiles_lint_all
+    ish_dotfiles_lint_all
     ;;
   bash)
     shift
-    dotfiles_lint_bash
+    ish_dotfiles_lint_bash
     ;;
   "")
     ish_utils_stream_multiline_stderr <<EOF

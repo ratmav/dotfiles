@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-bootstrap_posix_nvim_clean() {
+ish_dotfiles_bootstrap_posix_nvim_clean() {
   local config_path="$HOME/.config/nvim"
   local nvim_plugin_path="$HOME/.local/share/nvim/site/pack"
 
@@ -13,7 +13,7 @@ bootstrap_posix_nvim_clean() {
   ish_utils_tui_info --message="${FUNCNAME[0]}: removed nvim plugins."
 }
 
-bootstrap_posix_nvim_configure() {
+ish_dotfiles_bootstrap_posix_nvim_configure() {
   if ! ish_utils_exists_executable --executable=git; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
     return 1
@@ -30,7 +30,7 @@ bootstrap_posix_nvim_configure() {
   ish_utils_tui_info --message="${FUNCNAME[0]}: symlinked nvim config."
 }
 
-bootstrap_posix_nvim_plugins() {
+ish_dotfiles_bootstrap_posix_nvim_plugins() {
   local plugin_init="$PWD/neovim/plugins/init.lua"
 
   # Launch Neovim to install plugins with timeout

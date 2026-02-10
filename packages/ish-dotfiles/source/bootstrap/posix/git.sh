@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-bootstrap_posix_git_configure() {
+ish_dotfiles_bootstrap_posix_git_configure() {
   if ! ish_utils_exists_executable --executable=git; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
     return 1

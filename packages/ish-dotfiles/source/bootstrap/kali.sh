@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
-bootstrap_kali_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_dotfiles_bootstrap_kali_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ISH_PACKAGES_DIR}/ish/source/utils/tui.sh"
 source "${ISH_PACKAGES_DIR}/ish/source/platform.sh"
 source "${ISH_PACKAGES_DIR}/ish/source/utils.sh"
-source "${bootstrap_kali_module_dir}/posix.sh"
+source "${ish_dotfiles_bootstrap_kali_module_dir}/posix.sh"
 
-bootstrap_kali_all() {
-  bootstrap_kali_apt
-  bootstrap_kali_rust
-  bootstrap_kali_wezterm
-  bootstrap_posix_all
+ish_dotfiles_bootstrap_kali_all() {
+  ish_dotfiles_bootstrap_kali_apt
+  ish_dotfiles_bootstrap_kali_rust
+  ish_dotfiles_bootstrap_kali_wezterm
+  ish_dotfiles_bootstrap_posix_all
 }
 
-bootstrap_kali_apt() {
+ish_dotfiles_bootstrap_kali_apt() {
   if [[ $(ish_platform_os) != "kali" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
@@ -29,7 +29,7 @@ bootstrap_kali_apt() {
   done
 }
 
-bootstrap_kali_rust() {
+ish_dotfiles_bootstrap_kali_rust() {
   if [[ $(ish_platform_os) != "kali" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
@@ -45,7 +45,7 @@ bootstrap_kali_rust() {
   fi
 }
 
-bootstrap_kali_wezterm() {
+ish_dotfiles_bootstrap_kali_wezterm() {
   if [[ $(ish_platform_os) != "kali" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
@@ -72,7 +72,7 @@ bootstrap_kali_wezterm() {
   fi
 }
 
-bootstrap_kali_help() {
+ish_dotfiles_bootstrap_kali_help() {
   ish_utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles bootstrap kali [command]
 
@@ -84,28 +84,28 @@ commands:
 EOF
 }
 
-bootstrap_kali_route() {
+ish_dotfiles_bootstrap_kali_route() {
   case "${1-}" in
   all)
-    bootstrap_kali_all
+    ish_dotfiles_bootstrap_kali_all
     ;;
   apt)
     shift
-    bootstrap_kali_apt
+    ish_dotfiles_bootstrap_kali_apt
     ;;
   rust)
     shift
-    bootstrap_kali_rust
+    ish_dotfiles_bootstrap_kali_rust
     ;;
   wezterm)
     shift
-    bootstrap_kali_wezterm
+    ish_dotfiles_bootstrap_kali_wezterm
     ;;
   help|"")
-    bootstrap_kali_help
+    ish_dotfiles_bootstrap_kali_help
     ;;
   *)
-    bootstrap_kali_help
+    ish_dotfiles_bootstrap_kali_help
     ish_utils_tui_error --message="unknown kali subcommand: ${1-}"
     ;;
   esac
