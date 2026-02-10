@@ -46,3 +46,23 @@ ish_core_stream_fold()
 ```
 
 **These primitives guarantee composition works correctly.**
+
+**Performance characteristics:**
+
+FP stream operations spawn processes. Understand performance implications:
+
+- Process spawn cost: ~5ms per operation per line
+- Pipeline: 3 operations × 100 lines = ~1.5s total
+- Acceptable for: <1000 line datasets (typical ish use case)
+- Problem scenario: 10,000 line file × 5 operations = ~250s (too slow)
+
+**Mitigation strategies:**
+- Target use case: small datasets (dotfiles, host inventories ~10-100 items)
+- Hot paths: Use awk/sed for bulk operations if needed
+- Document performance in function comments
+- Add perf tests: time operations on 100/1000/10000 line inputs
+
+**Testing:**
+- [ ] Unit tests for correctness
+- [ ] Performance tests for scale understanding
+- [ ] Document acceptable dataset sizes

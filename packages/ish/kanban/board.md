@@ -44,12 +44,14 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
    - [x] [package-local-bats](tasks/package-local-bats.md) - bats submodules per package, add dotfiles scaffold tests
    - [x] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
 2. [x] [fix-cli-consistency](tasks/fix-cli-consistency.md) - fix 3 CLI paper cuts (help support, error leakage)
-3. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
-4. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - use ish utilities, hoist reusable code, copy dotfiles to package
-5. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard
-6. [ ] run linter pass (flush out issues)
-7. [ ] verify tests still pass
-8. [ ] verify local package structure works
+3. [ ] [standardize-package-naming](tasks/standardize-package-naming.md) - CRITICAL BLOCKER: resolve ish_* vs dotfiles_* naming, establish ish_<package>_* convention
+4. [ ] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md) - define load order for ish_core_* availability
+5. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
+6. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - BLOCKED by tasks 3-4: use ish utilities, hoist reusable code, copy dotfiles to package
+7. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard
+8. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
+9. [ ] verify tests still pass
+10. [ ] verify local package structure works
 
 ### in progress
 
@@ -74,6 +76,8 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 **Cleanup:**
 7. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
 8. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
+9. [ ] [implement-module-namespace-linter](tasks/implement-module-namespace-linter.md) - static analysis for module_dir violations and DAG enforcement
+10. [ ] [verify-bash-portability](tasks/verify-bash-portability.md) - version checks, cross-platform testing
 
 **Note:** FP core is the foundation. Build incrementally, test thoroughly. ALL functions use `ish_core_*` prefix to prevent namespace pollution. See packages/ish/docs/architecture/functional_future/ for vision.
 

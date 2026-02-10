@@ -159,3 +159,25 @@ ish package install my_package
 1. **Publish time:** CI runs validate on PR
 2. **Install time:** Check registry + local packages
 3. **Runtime:** In-memory check on package load
+
+**Version pinning (future-proofing):**
+
+Registry format designed to support version specs (not implemented initially):
+```bash
+# Current (always HEAD):
+ish package install github/ratmav/ish-docker
+
+# Future (when needed):
+ish package install github/ratmav/ish-docker@v1.2.3
+ish package install github/ratmav/ish-docker@commit-sha
+ish package install github/ratmav/ish-docker@HEAD  # explicit
+```
+
+Default behavior: pull HEAD (always be upgrading philosophy)
+Version pinning: opt-in when stability needed
+
+Design considerations:
+- [ ] Registry format supports version field (but defaults to HEAD)
+- [ ] Parse `@version` suffix if provided
+- [ ] Validate: git tag exists / commit SHA exists
+- [ ] Document: version pinning is opt-in
