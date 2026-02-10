@@ -1,35 +1,7 @@
 #!/usr/bin/env bash
 
 ish_dotfiles_test_all() {
-  "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/ish-dotfiles/test/unit/" "${ISH_PACKAGES_DIR}/ish-dotfiles/test/integration/"
-}
-
-ish_dotfiles_test_unit() {
-  local route=""
-
-  while [[ $# -gt 0 ]]; do
-    case $1 in
-      --route=*)
-        route="${1#*=}"
-        shift
-        ;;
-      *)
-        ish_utils_tui_error --message="unknown option: $1"
-        ;;
-    esac
-  done
-
-  local test_path
-  if [[ -n "$route" ]]; then
-    test_path="${ISH_PACKAGES_DIR}/ish-dotfiles/test/unit/${route}.bats"
-    if [[ ! -f "$test_path" ]]; then
-      ish_utils_tui_error --message="test not found: $test_path"
-    fi
-  else
-    test_path="${ISH_PACKAGES_DIR}/ish-dotfiles/test/unit/"
-  fi
-
-  "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "$test_path"
+  "${ISH_PACKAGES_DIR}/ish-dotfiles/test/bats/bin/bats" --recursive "${ISH_PACKAGES_DIR}/ish-dotfiles/test/integration/"
 }
 
 ish_dotfiles_test_integration() {
@@ -66,10 +38,6 @@ ish_dotfiles_test_route() {
     shift
     ish_dotfiles_test_all "$@"
     ;;
-  unit)
-    shift
-    ish_dotfiles_test_unit "$@"
-    ;;
   integration)
     shift
     ish_dotfiles_test_integration "$@"
@@ -79,9 +47,8 @@ ish_dotfiles_test_route() {
 usage: ish dotfiles test [suite] [options]
 
 suites:
-  all          run all tests
-  unit         run unit tests only
-  integration  run integration tests only
+  all          run all tests (integration only)
+  integration  run integration tests
 
 options:
   --route=PATH    run specific test file (e.g., bootstrap/posix)
