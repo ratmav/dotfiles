@@ -28,7 +28,7 @@ git_route() {
           shift
           git_clean_worktrees "$@"
           ;;
-        "")
+        help|"")
           utils_stream_multiline_stderr <<EOF
 usage: ish dotfiles git clean [command]
 

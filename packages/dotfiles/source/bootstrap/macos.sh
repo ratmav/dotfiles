@@ -54,14 +54,16 @@ bootstrap_macos_route() {
         shift
         bootstrap_macos_homebrew_cask
         ;;
-      "")
-        utils_tui_info --message="usage: ish dotfiles bootstrap macos homebrew [command]"
-        utils_tui_info --message=""
-        utils_tui_info --message="commands:"
-        utils_tui_info --message="  all       run all homebrew setup steps"
-        utils_tui_info --message="  install   install homebrew"
-        utils_tui_info --message="  brew      install brew packages"
-        utils_tui_info --message="  cask      install cask packages"
+      help|"")
+        utils_stream_multiline_stderr <<EOF
+usage: ish dotfiles bootstrap macos homebrew [command]
+
+commands:
+  all       run all homebrew setup steps
+  install   install homebrew
+  brew      install brew packages
+  cask      install cask packages
+EOF
         ;;
       *)
         utils_tui_error --message="unknown homebrew subcommand: ${1-}"

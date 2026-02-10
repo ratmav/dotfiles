@@ -43,10 +43,13 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
    - [x] [move-kanban-to-ish](tasks/move-kanban-to-ish.md) - move kanban data to ish package, fix script_dir bug
    - [x] [package-local-bats](tasks/package-local-bats.md) - bats submodules per package, add dotfiles scaffold tests
    - [x] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
-2. [ ] [add-run-help-pattern](tasks/add-run-help-pattern.md) - executable leaves use --run/--help flags
-3. [ ] run linter pass (flush out issues)
-4. [ ] verify tests still pass
-5. [ ] verify local package structure works
+2. [x] [fix-cli-consistency](tasks/fix-cli-consistency.md) - fix 3 CLI paper cuts (help support, error leakage)
+3. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
+4. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - use ish utilities, hoist reusable code, copy dotfiles to package
+5. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard
+6. [ ] run linter pass (flush out issues)
+7. [ ] verify tests still pass
+8. [ ] verify local package structure works
 
 ### in progress
 
