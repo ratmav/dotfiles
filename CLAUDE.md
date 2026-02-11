@@ -56,6 +56,25 @@ Humor helps. We're computer nerds - technical wordplay and puns are encouraged. 
 
 Say "eyes on target" to confirm alignment with CLAUDE.md principles. This signals you're staying focused and following the working style.
 
+## Dogfooding ish
+
+**CRITICAL: We use ish to manage ish development. This is non-negotiable.**
+
+- **Check kanban for next steps:** Use `./ish kanban show` to see what's next - don't guess or refer to internal plans
+- **Document in ish kanban:** When planning changes, document them in ish kanban tasks first
+- **Work from ish tasks:** When implementing, follow the ish tasks as the source of truth
+- **Update tasks as you work:** Mark tasks in progress, completed, or blocked
+- **Don't curate context:** The user is the architect - they curate context, not you
+- **Don't guess when facts exist:** The kanban board and tasks are the hard facts - use them
+- **Get feedback directly:** Don't try to anticipate what the user wants - check the kanban or ask
+- **Stop and ask when ambiguous:** When there is ambiguity in the design or kanban, STOP and ASK - this is a crucial part of design. We want to flush these questions out early and often so we can address them BEFORE we paint ourselves into corners or build an eventual albatross.
+
+**Why this matters:**
+- Wastes time when you operate from hidden internal plans instead of documented tasks
+- Creates rework when you guess instead of checking the actual system of record
+- The kanban board is the single source of truth for what's next and why
+- Early questions prevent late disasters
+
 ## Key Principles
 
 1. **Verify Before Acting** - Check current state, read files, confirm assumptions

@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." &>/dev/null && pwd -P)
+ISH_CORE="${ISH_ROOT}/core/source"
+ISH_PACKAGES="${ISH_ROOT}/packages"
+
+export ISH_ROOT ISH_CORE ISH_PACKAGES
+
+# Load utility functions (sourcing for function definitions, case statements fall through)
+source "${ISH_CORE}/utils/tui.sh"
+source "${ISH_CORE}/platform.sh"
+
+ish_utils_tui_set_colors
+
+ish_help() {
+  cat <<EOF
+                            .:
+                            :.
+                         :oo::.
+           ..       ...:oOOOoo: ....           :
+           oOOo::o::ooOOOOOoOO. .: .o::...:...::
+           .:oo: :..:O8O:.  Oo   .  oOOOOOOOOOO:
+          .oo8o. ....::Oo.  O8:     o8O8888O....
+         .oOO8O.  ..::.:O:  :O:     :OOoo:.  .:O.
+        .ooooo.    :OO: .:  :::::  .ooo:    o::..:
+     .oooo:oo:.     .::::oOooOOOO:.:o.    .O8.   o:
+   .:o:...    .   :::::oOOOOoooOOOOo::  .oo::   :Ooo:
+  :O8O.      .o:.:oOOOoooo::o:::OOO:.oo:OOo    ::OOOOOo.
+   .ooo::     .oOo:oOOoo::ooo: .:o::..ooo.     . .:OOO8OOo..
+   .oO88O:o:  ooo::oo:ooo:::...:::..::::::        ..:ooo::
+   .:O88OOOO:oOoOOoo:oo:oooo:.. .:..:oOOo.:..:.    ......
+   .:oo:.   .:Oo:oooooooOOOOO:.  :o::ooo.:ooOO.  ..:..:o.
+   .:.....:oo:OO:ooooo:oOOOOoo.   o. :o:.oo.:. .:  :o.oo
+   :Oooo:oo:  :O:oOo:::::ooo:.   .o.  :oo:O:   .:..ooOOo
+   :8Oo:...  ..o:oo::::.....     o:..:oOO:...:.:::ooOOOo
+     :OOoo:...:o::::.:o:.     ..::.:::o::  .:.::::..o8Oo.
+       :oooo..:o:.:::::o:..........:o:...::..oOo::o::O8O:..
+         .oo...OO:. ...:.    .. .:oOo:.  :o: .o::::. .oo..::
+           .:.:O8:..:..::..   ...::oOo.   ::.... .:.....
+             .ooOo:oo:.:o::::..               oOo::.:o.
+                ...... .:ooOo.              . .O8OOOO:
+                          .o:                 .o:.o:.
+                                               .oo:
+                                                 ..
+
+usage: ish [command] [options]
+
+personal development environment on posix-like platforms.
+
+commands:
+  ratfiles     ratfiles package (bootstrap, git, nix)
+  kanban       project task management
+  lint         run linters for ish package
+  platform     platform detection functions
+  test         run tests for ish package
+  tui          terminal ui functions
+  utils        utility functions
+  help         show this help message
+
+use 'ish [command] help' for more information about a command.
+EOF
+}
+
+case "${1-}" in
+  ratfiles)
+    shift
+    source "${ISH_PACKAGES}/ish-ratfiles/source/dotfiles.sh"
+    ish_ratfiles_route "$@"
+    ;;
+  kanban)
+    shift
+    source "${ISH_CORE}/kanban.sh"
+    ish_kanban_route "$@"
+    ;;
+  tui)
+    shift
+    ish_utils_tui_route "$@"
+    ;;
+  platform)
+    shift
+    ish_platform_route "$@"
+    ;;
+  utils)
+    shift
+    source "${ISH_CORE}/utils.sh"
+    ish_utils_route "$@"
+    ;;
+  test)
+    shift
+    source "${ISH_CORE}/test.sh"
+    ish_test_route "$@"
+    ;;
+  lint)
+    shift
+    source "${ISH_CORE}/lint.sh"
+    ish_lint_route "$@"
+    ;;
+  help|"")
+    ish_help
+    ;;
+  *)
+    ish_help
+    ish_utils_tui_error --message="unknown command: ${1-}"
+    ;;
+esac

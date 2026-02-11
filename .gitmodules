@@ -5,20 +5,20 @@
 	path = packages/ish/test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git
 [submodule "packages/ish/test/bats"]
-	path = packages/ish/test/bats
+	path = core/test/bats
 	url = https://github.com/bats-core/bats-core.git
 [submodule "packages/ish-dotfiles/test/bats"]
-	path = packages/ish-dotfiles/test/bats
+	path = packages/ish-ratfiles/test/bats
 	url = https://github.com/bats-core/bats-core.git
 [submodule "packages/ish-dotfiles/test/test_helper/bats-support"]
-	path = packages/ish-dotfiles/test/test_helper/bats-support
+	path = packages/ish-ratfiles/test/test_helper/bats-support
 	url = https://github.com/bats-core/bats-support.git
 [submodule "packages/ish-dotfiles/test/test_helper/bats-assert"]
-	path = packages/ish-dotfiles/test/test_helper/bats-assert
+	path = packages/ish-ratfiles/test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git
 [submodule "packages/ish/test/test_helper/bats-assert"]
-	path = packages/ish/test/test_helper/bats-assert
+	path = core/test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git
 [submodule "packages/ish/test/test_helper/bats-support"]
-	path = packages/ish/test/test_helper/bats-support
+	path = core/test/test_helper/bats-support
 	url = https://github.com/bats-core/bats-support.git
