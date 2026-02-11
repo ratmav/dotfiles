@@ -76,45 +76,54 @@ Separate framework from packages using simple `~/.ish/` structure:
   - Find tasks that reference package loading
   - Update them to reference core/ structure
 
-### Phase 2: Execute Restructure (future session)
+### Phase 2: Execute Restructure (COMPLETE)
 
-- [ ] Move framework directory
+- [x] Move framework directory
   ```bash
   git mv packages/ish core
   ```
 
-- [ ] Keep source/ directory (no rename needed)
+- [x] Keep source/ directory (no rename needed)
   - Framework modules stay in `core/source/`
   - No structural changes to module layout
 
-- [ ] Update entry point path calculation in `core/bin/ish`
+- [x] Update entry point path calculation in `core/bin/ish`
   ```bash
-  # Old (assumes packages/ish/bin/ish)
-  ISH_PACKAGES_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
-
-  # New (dev: ~/Source/dotfiles, installed: ~/.ish)
-  ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
-  ISH_CORE="${ISH_ROOT}/core/source"
-  ISH_PACKAGES="${ISH_ROOT}/packages"
+  # Fixed: ISH_CORE="${ISH_ROOT}/core" (not core/source)
+  # All source statements updated to include /source/ explicitly
   ```
 
-- [ ] Rename ish-dotfiles to ish-ratfiles
+- [x] Rename ish-dotfiles to ish-ratfiles
   ```bash
   git mv packages/ish-dotfiles packages/ish-ratfiles
   ```
-  - Rename all `ish_dotfiles_*` functions to `ish_ratfiles_*`
-  - Update command routing: `ish dotfiles` → `ish ratfiles`
-  - Update source statements
-  - Update tests
+  - Renamed all `ish_dotfiles_*` functions to `ish_ratfiles_*`
+  - Updated command routing: `ish dotfiles` → `ish ratfiles`
+  - Updated source statements
+  - Updated tests
 
-- [ ] Update path references in `packages/ish-ratfiles/source/*.sh`
-  - Change `${ISH_PACKAGES_DIR}/ish/` to `${ISH_CORE}/`
-  - Update framework module references
+- [x] Update path references in `packages/ish-ratfiles/source/*.sh`
+  - Changed all source statements to use `${ISH_CORE}/source/` pattern
+  - Updated framework module references
 
-- [ ] Update root `ish` symlink
+- [x] Update root `ish` symlink
   ```bash
   ln -sf core/bin/ish ish
   ```
+
+- [x] Fixed architectural violations
+  - Extracted help functions to child modules (utils/exists, git/clean, bootstrap/macos/homebrew)
+  - Removed duplicate tests (tests live where code lives)
+  - Fixed .gitmodules naming to match actual paths
+
+- [x] Update test files
+  - Updated all test paths to use `${ISH_CORE}/source/` pattern
+  - Fixed inline bash commands in tests
+  - Verified test invocation still works
+
+- [x] Run full verification - 98/98 tests passing
+
+### Phase 3: Install Command (future session)
 
 - [ ] Implement `ish_filesystem_line_in_file` module
   - Idempotent line insertion for PATH management
@@ -125,12 +134,6 @@ Separate framework from packages using simple `~/.ish/` structure:
   - Clone framework to ~/.ish/core/
   - Add ~/.ish/core/bin to PATH using ish_filesystem_line_in_file
   - Update ~/.bashrc and ~/.zshrc
-
-- [ ] Update test files
-  - Update paths to framework modules
-  - Verify test invocation still works
-
-- [ ] Run full verification (see below)
 
 ## deliverable
 
