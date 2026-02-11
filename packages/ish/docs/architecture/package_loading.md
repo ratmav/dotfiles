@@ -9,8 +9,8 @@ When ish loads, it needs to scan for packages. But if the framework itself lives
 **Principle:** The framework that loads packages cannot itself be a package.
 
 **Structure:**
-- **Framework** (`lib/ish/`) - Core system, never scanned as a package
-- **Packages** (`packages/` or `~/.local/share/ish/packages/`) - Discovered and loaded by framework
+- **Framework** (`core/`) - Core system, never scanned as a package
+- **Packages** (`packages/` or `~/.ish/packages/`) - Discovered and loaded by framework
 
 ## Directory Layout
 
@@ -18,21 +18,21 @@ When ish loads, it needs to scan for packages. But if the framework itself lives
 
 ```
 ~/Source/dotfiles/
-├── ish -> lib/ish/bin/ish              # Convenience symlink
-├── lib/
-│   └── ish/                            # Framework installation
-│       ├── bin/ish                     # Entry point
-│       ├── lib/                        # Core modules
-│       │   ├── core.sh                 # Future: ish_core_* functions
-│       │   ├── tui.sh                  # Terminal UI
-│       │   ├── platform.sh             # Platform detection
-│       │   ├── registry.sh             # Future: package registry
-│       │   └── package.sh              # Future: package management
-│       ├── test/                       # Framework tests
-│       └── docs/                       # Framework docs
-└── packages/
+├── ish -> core/bin/ish                 # Convenience symlink
+├── core/                               # Framework (mirrors ~/.ish/core/)
+│   ├── bin/ish                         # Entry point
+│   ├── source/                         # Core modules
+│   │   ├── core.sh                     # Future: ish_core_* functions
+│   │   ├── tui.sh                      # Terminal UI
+│   │   ├── platform.sh                 # Platform detection
+│   │   ├── registry.sh                 # Future: package registry
+│   │   └── package.sh                  # Future: package management
+│   ├── test/                           # Framework tests
+│   └── docs/                           # Framework docs
+└── packages/                           # Packages (mirrors ~/.ish/packages/)
     ├── ish-dotfiles/                   # A package (peer, not child)
     │   ├── source/
+    │   ├── bin/                        # Package binaries (optional)
     │   └── test/bats/                  # Own submodules, no nesting
     └── [future packages]/
 ```
@@ -40,36 +40,35 @@ When ish loads, it needs to scan for packages. But if the framework itself lives
 ### Installed Mode (Future)
 
 ```
-~/.local/
-├── bin/
-│   └── ish -> ../lib/ish/bin/ish       # Symlink to entry point
-├── lib/
-│   └── ish/                            # Framework (immutable, git managed)
-│       ├── bin/ish
-│       └── lib/
-└── share/
-    └── ish/
-        └── packages/                    # Packages (mutable, git managed)
-            ├── github-ratmav-dotfiles/  # Flat namespace (no nesting)
-            └── github-user-foo/
+~/.ish/
+├── core/                               # Framework (immutable, git managed)
+│   ├── bin/ish                         # Entry point
+│   ├── source/                         # Framework modules
+│   ├── test/                           # Framework tests
+│   └── docs/                           # Framework docs
+└── packages/                           # Packages (mutable, git managed)
+    ├── ish-dotfiles/                   # Flat namespace (no nesting)
+    │   ├── source/
+    │   └── bin/                        # Package binaries
+    └── ish-foo/
 ```
 
 ## Loading Sequence
 
 ### 1. Entry Point Execution
 
-`lib/ish/bin/ish` executes:
+`core/bin/ish` executes:
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Calculate paths
+# Calculate paths (dev: ~/Source/dotfiles, installed: ~/.ish)
 ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
-ISH_LIB="${ISH_ROOT}/lib/ish/lib"
-ISH_PACKAGES="${ISH_ROOT}/packages"  # or ~/.local/share/ish/packages when installed
+ISH_CORE="${ISH_ROOT}/core/source"
+ISH_PACKAGES="${ISH_ROOT}/packages"
 
-export ISH_ROOT ISH_LIB ISH_PACKAGES
+export ISH_ROOT ISH_CORE ISH_PACKAGES
 ```
 
 ### 2. Load Framework Core
@@ -78,14 +77,14 @@ Framework modules load first, providing foundation for all packages:
 
 ```bash
 # Load core utilities
-source "${ISH_LIB}/tui.sh"          # ish_utils_tui_* functions
-source "${ISH_LIB}/platform.sh"      # ish_platform_* functions
-ish_utils_tui_set_colors            # Initialize color support
+source "${ISH_CORE}/tui.sh"          # ish_utils_tui_* functions
+source "${ISH_CORE}/platform.sh"     # ish_platform_* functions
+ish_utils_tui_set_colors             # Initialize color support
 
 # Future: Load more core modules
-# source "${ISH_LIB}/core.sh"        # ish_core_* functions
-# source "${ISH_LIB}/registry.sh"    # ish_registry_* functions
-# source "${ISH_LIB}/package.sh"     # ish_package_* functions
+# source "${ISH_CORE}/core.sh"       # ish_core_* functions
+# source "${ISH_CORE}/registry.sh"   # ish_registry_* functions
+# source "${ISH_CORE}/package.sh"    # ish_package_* functions
 ```
 
 ### 3. Discover Packages (Phase 1: Explicit)
@@ -99,7 +98,7 @@ case "${1-}" in
     ish_dotfiles_route "$@"
     ;;
   kanban)
-    source "${ISH_LIB}/kanban.sh"  # Note: ish package, not external
+    source "${ISH_CORE}/kanban.sh"  # Note: ish package, part of framework
     ish_kanban_route "$@"
     ;;
   # ... etc
@@ -163,7 +162,7 @@ Core utilities (`ish_utils_tui_*`, `ish_platform_*`) must be available before an
 
 ### 2. Framework is Special
 
-Framework lives in `lib/ish/`, **never** in `packages/`.
+Framework lives in `core/`, **never** in `packages/`.
 
 **Why:** Prevents bootstrapping recursion. The thing doing the loading cannot be one of the things being loaded.
 
@@ -192,8 +191,8 @@ Scan `packages/` to find installed packages, no hardcoded list.
 Set by entry point, available to all code:
 
 ```bash
-ISH_ROOT       # Repository root (or ~/.local in installed mode)
-ISH_LIB        # Framework library directory
+ISH_ROOT       # Repository root (or ~/.ish in installed mode)
+ISH_CORE       # Framework source directory (core/source/)
 ISH_PACKAGES   # Packages directory
 ```
 
@@ -201,7 +200,7 @@ ISH_PACKAGES   # Packages directory
 
 From any code:
 ```bash
-source "${ISH_LIB}/tui.sh"       # Load framework TUI module
+source "${ISH_CORE}/tui.sh"      # Load framework TUI module
 ish_utils_tui_info "message"     # Call framework function
 ```
 
@@ -215,7 +214,7 @@ ish_dotfiles_route "$@"
 
 From package code (referencing framework):
 ```bash
-source "${ISH_LIB}/platform.sh"
+source "${ISH_CORE}/platform.sh"
 os=$(ish_platform_os_detect)
 ```
 
@@ -227,51 +226,86 @@ Framework is **never** scanned as a package. The loader and the loaded are separ
 
 ### No Nested Submodules
 
-- `ish` framework: standalone repo → `lib/ish/`
+- `ish` framework: standalone repo → `core/`
 - `ish-dotfiles` package: standalone repo → `packages/ish-dotfiles/`
 - Both are peers, not parent/child
 
 `ish-dotfiles` can have its own submodules (`test/bats/`) without nesting inside framework's submodules.
 
-### XDG Compliant
+### Simple Single-Directory Installation
 
-Follows system conventions:
-- `~/.local/lib/` - Application libraries (read-only, versioned)
-- `~/.local/share/` - User data (mutable, user-managed)
-- `~/.local/bin/` - User executables (already in PATH)
-
-Tools like nvim, systemd, and desktop environments use this pattern.
+Everything ish-related in one place:
+- `~/.ish/core/` - Framework (read-only, git managed)
+- `~/.ish/packages/` - Packages (mutable, git managed)
+- Easy to backup, sync, or remove entire `~/.ish/` directory
+- Development structure mirrors installed structure exactly
 
 ### Works in Both Modes
 
 **Development:**
 ```bash
 cd ~/Source/dotfiles
-./ish kanban show           # Uses relative paths from ./lib/ish/
+./ish kanban show           # Uses relative paths from ./core/
 ```
 
 **Installed:**
 ```bash
-ish kanban show             # Uses absolute paths from ~/.local/lib/ish/
+ish kanban show             # Uses absolute paths from ~/.ish/core/
 ```
 
-Same code, different base paths via `${ISH_ROOT}`, `${ISH_LIB}`, `${ISH_PACKAGES}`.
+Same code, different base paths via `${ISH_ROOT}`, `${ISH_CORE}`, `${ISH_PACKAGES}`.
 
 ### Future-Proof
 
 When ish splits to separate repo (Phase 6):
-- Framework → `github.com/ratmav/ish` (installed to `~/.local/lib/ish/`)
-- Packages → Various repos (installed to `~/.local/share/ish/packages/`)
+- Framework → `github.com/ratmav/ish` (installed to `~/.ish/core/`)
+- Packages → Various repos (installed to `~/.ish/packages/`)
 - **No structural changes needed** - paths already correct
+
+## PATH Management
+
+### Installation
+
+`ish install` command:
+1. Clones ish framework to ~/.ish/core/
+2. Adds ~/.ish/core/bin to PATH in shell rc files
+3. Uses ish_filesystem_line_in_file for idempotent insertion
+4. Checks ~/.bashrc and ~/.zshrc for existing entry
+
+### Package Binaries
+
+Packages can provide binaries in their bin/ directory:
+- `packages/ish-dotfiles/bin/`
+- These can be added to PATH: `~/.ish/packages/ish-dotfiles/bin`
+- Managed by package install command
+
+### Implementation
+
+```bash
+ish_filesystem_line_in_file() {
+  local file="$1"
+  local line="$2"
+
+  # Check if line already exists
+  if grep -Fxq "$line" "$file" 2>/dev/null; then
+    return 0  # Already present
+  fi
+
+  # Add line
+  echo "$line" >> "$file"
+}
+```
 
 ## Migration Plan
 
 See task `implement-package-loading-strategy.md` for step-by-step restructure:
-1. `git mv packages/ish lib/ish`
-2. Update path calculations in entry point
+1. `git mv packages/ish core`
+2. Update path calculations in entry point (use `ISH_CORE`)
 3. Update references in package code
-4. Update tests
-5. Verify all commands work
+4. Implement `ish_filesystem_line_in_file` module
+5. Implement `ish install` command with PATH management
+6. Update tests
+7. Verify all commands work
 
 ## Future Enhancements
 
@@ -284,7 +318,7 @@ See task `implement-package-loading-strategy.md` for step-by-step restructure:
 ### Phase 4: Dynamic Installation
 
 - `ish package install github-user-repo`
-- Clone to `packages/` or `~/.local/share/ish/packages/`
+- Clone to `packages/` or `~/.ish/packages/`
 - Auto-discover on next invocation
 
 ### Phase 5: Dependency Management
@@ -297,5 +331,5 @@ See task `implement-package-loading-strategy.md` for step-by-step restructure:
 
 - Framework becomes standalone repo
 - Installed via `ish self-install` (or system package manager)
-- Packages remain in `~/.local/share/ish/packages/`
+- Packages remain in `~/.ish/packages/`
 - Clear separation between framework (immutable) and packages (mutable)

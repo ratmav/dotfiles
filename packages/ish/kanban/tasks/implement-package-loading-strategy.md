@@ -19,38 +19,40 @@ Additional issue: If ish-dotfiles becomes a submodule of ish (with ish in `packa
 
 ## solution
 
-Separate framework from packages following XDG Base Directory Spec:
+Separate framework from packages using simple `~/.ish/` structure:
 
 **Development mode:**
 ```
 ~/Source/dotfiles/
-├── ish -> lib/ish/bin/ish              # Symlink for convenience
-├── lib/
-│   └── ish/                            # Framework (never scanned as package)
-│       ├── bin/ish                     # Entry point
-│       ├── lib/                        # Core modules
-│       ├── test/                       # Framework tests
-│       └── docs/                       # Framework docs
-└── packages/
+├── ish -> core/bin/ish                 # Symlink for convenience
+├── core/                               # Framework (mirrors ~/.ish/core/)
+│   ├── bin/ish                         # Entry point
+│   ├── source/                         # Framework modules
+│   ├── test/                           # Framework tests
+│   └── docs/                           # Framework docs
+└── packages/                           # Packages (mirrors ~/.ish/packages/)
     ├── ish-dotfiles/                   # A package (peer, not child)
     └── [future packages]/
 ```
 
 **Installed mode (future):**
 ```
-~/.local/
-├── bin/ish -> ../lib/ish/bin/ish
-├── lib/ish/                            # Framework (immutable)
-└── share/ish/packages/                 # Packages (mutable)
-    ├── github-ratmav-dotfiles/
-    └── github-user-foo/
+~/.ish/
+├── core/                               # Framework (immutable)
+│   ├── bin/ish                         # Entry point
+│   ├── source/                         # Framework modules
+│   ├── test/                           # Framework tests
+│   └── docs/                           # Framework docs
+└── packages/                           # Installed packages (mutable)
+    ├── ish-dotfiles/
+    └── ish-foo/
 ```
 
 **Benefits:**
 - Framework clearly separated, never scanned as package
 - No nested submodules (ish and ish-dotfiles are peer repos)
-- XDG compliant paths
-- Works in both development and installed modes
+- Simple single-directory installation (~/.ish/)
+- Development structure mirrors installed structure exactly
 - Future-proof for Phase 6 split
 
 ## subtasks
@@ -63,50 +65,57 @@ Separate framework from packages following XDG Base Directory Spec:
   - Define loading order and discovery rules
 
 - [x] Update `packages/ish/docs/architecture/overview.md`
-  - Close open question #8 with lib/ish decision
+  - Close open question #8 with core/ decision
   - Document rationale: prevents bootstrapping recursion
 
 - [x] Update `packages/ish/docs/architecture/module_loading_system.md`
-  - Correct paths to show lib/ish structure (future state)
+  - Correct paths to show core/ structure (future state)
   - Update example code with correct scanner implementation
 
 - [x] Update dependent tasks (registry, install in later phases)
   - Find tasks that reference package loading
-  - Update them to reference lib/ish structure
+  - Update them to reference core/ structure
 
 ### Phase 2: Execute Restructure (future session)
 
 - [ ] Move framework directory
   ```bash
-  git mv packages/ish lib/ish
+  git mv packages/ish core
   ```
 
-- [ ] Rename source/ to lib/ for clarity
-  ```bash
-  mkdir -p lib/ish/lib
-  git mv lib/ish/source/* lib/ish/lib/
-  rmdir lib/ish/source
-  ```
+- [ ] Keep source/ directory (no rename needed)
+  - Framework modules stay in `core/source/`
+  - No structural changes to module layout
 
-- [ ] Update entry point path calculation in `lib/ish/bin/ish`
+- [ ] Update entry point path calculation in `core/bin/ish`
   ```bash
   # Old (assumes packages/ish/bin/ish)
   ISH_PACKAGES_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
 
-  # New (assumes lib/ish/bin/ish)
+  # New (dev: ~/Source/dotfiles, installed: ~/.ish)
   ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
-  ISH_LIB="${ISH_ROOT}/lib/ish/lib"
+  ISH_CORE="${ISH_ROOT}/core/source"
   ISH_PACKAGES="${ISH_ROOT}/packages"
   ```
 
 - [ ] Update path references in `packages/ish-dotfiles/source/*.sh`
-  - Change `${ISH_PACKAGES_DIR}/ish/` to `${ISH_LIB}/`
+  - Change `${ISH_PACKAGES_DIR}/ish/` to `${ISH_CORE}/`
   - Update framework module references
 
 - [ ] Update root `ish` symlink
   ```bash
-  ln -sf lib/ish/bin/ish ish
+  ln -sf core/bin/ish ish
   ```
+
+- [ ] Implement `ish_filesystem_line_in_file` module
+  - Idempotent line insertion for PATH management
+  - Check if line exists before adding
+  - Used by `ish install` command
+
+- [ ] Implement `ish install` command
+  - Clone framework to ~/.ish/core/
+  - Add ~/.ish/core/bin to PATH using ish_filesystem_line_in_file
+  - Update ~/.bashrc and ~/.zshrc
 
 - [ ] Update test files
   - Update paths to framework modules
@@ -116,9 +125,10 @@ Separate framework from packages following XDG Base Directory Spec:
 
 ## deliverable
 
-- Framework in `lib/ish/`, packages in `packages/`
+- Framework in `core/`, packages in `packages/` (installed: `~/.ish/core/` and `~/.ish/packages/`)
 - Clear separation prevents bootstrapping recursion
 - Package scanner only targets `packages/`
+- PATH management via `ish install` command using idempotent line insertion
 - Documentation explains architecture and loading order
 - All tests pass after restructure
 
@@ -132,9 +142,11 @@ Separate framework from packages following XDG Base Directory Spec:
 - `packages/ish/kanban/tasks/package-system.md` (UPDATE - references)
 
 ### Code (Phase 2) - creates new paths
-- `packages/ish/` → `lib/ish/` (git mv)
-- `lib/ish/bin/ish` (UPDATE - path calculation)
+- `packages/ish/` → `core/` (git mv)
+- `core/bin/ish` (UPDATE - path calculation)
 - `packages/ish-dotfiles/source/*.sh` (UPDATE - framework references)
+- `core/source/filesystem.sh` (CREATE - ish_filesystem_line_in_file module)
+- `core/source/install.sh` (CREATE - ish install command with PATH management)
 - Root `ish` symlink (UPDATE - target)
 
 ## verification

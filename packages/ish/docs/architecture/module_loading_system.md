@@ -4,28 +4,28 @@
 
 ```bash
 #!/usr/bin/env bash
-# lib/ish/bin/ish entry point
+# core/bin/ish entry point
 
 set -Eeuo pipefail
 
 # 1. Calculate paths
-#    Determine framework and package locations
+#    Determine framework and package locations (dev: ~/Source/dotfiles, installed: ~/.ish)
 ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
-ISH_LIB="${ISH_ROOT}/lib/ish/lib"
-ISH_PACKAGES="${ISH_ROOT}/packages"  # or ~/.local/share/ish/packages when installed
+ISH_CORE="${ISH_ROOT}/core/source"
+ISH_PACKAGES="${ISH_ROOT}/packages"
 
-export ISH_ROOT ISH_LIB ISH_PACKAGES
+export ISH_ROOT ISH_CORE ISH_PACKAGES
 
 # 2. Load framework core (always available)
 #    Framework modules must load first - they provide foundation for all packages
-source "${ISH_LIB}/tui.sh"        # ish_utils_tui_* functions
-source "${ISH_LIB}/platform.sh"   # ish_platform_* functions
+source "${ISH_CORE}/tui.sh"       # ish_utils_tui_* functions
+source "${ISH_CORE}/platform.sh"  # ish_platform_* functions
 ish_utils_tui_set_colors          # Initialize color support
 
 # Future: Load additional core modules
-# source "${ISH_LIB}/core.sh"     # ish_core_* functions
-# source "${ISH_LIB}/registry.sh" # ish_registry_* functions
-# source "${ISH_LIB}/package.sh"  # ish_package_* functions
+# source "${ISH_CORE}/core.sh"    # ish_core_* functions
+# source "${ISH_CORE}/registry.sh" # ish_registry_* functions
+# source "${ISH_CORE}/package.sh"  # ish_package_* functions
 
 # 3. Discover installed packages
 #    Phase 1: Explicit routing (current)
@@ -38,7 +38,7 @@ case "${1-}" in
     ish_dotfiles_route "$@"
     ;;
   kanban)
-    source "${ISH_LIB}/kanban.sh"  # Note: ish package, part of framework
+    source "${ISH_CORE}/kanban.sh"  # Note: ish package, part of framework
     ish_kanban_route "$@"
     ;;
   # ... other explicit routes
@@ -82,9 +82,9 @@ exit 1
 
 Set by entry point, available to all code:
 
-- `ISH_ROOT` - Repository root (or `~/.local` in installed mode)
-- `ISH_LIB` - Framework library directory (`lib/ish/lib/` or `~/.local/lib/ish/lib/`)
-- `ISH_PACKAGES` - Packages directory (`packages/` or `~/.local/share/ish/packages/`)
+- `ISH_ROOT` - Repository root (or `~/.ish` in installed mode)
+- `ISH_CORE` - Framework source directory (`core/source/` or `~/.ish/core/source/`)
+- `ISH_PACKAGES` - Packages directory (`packages/` or `~/.ish/packages/`)
 
 ### Command Namespace Examples
 

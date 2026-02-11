@@ -52,7 +52,7 @@ nvim/
 - `lib/ish/lib/file.sh` - symlink, copy, move operations
 - Enhanced array/list utilities in `utils/` or new module
 
-**Note:** After restructure (see `implement-package-loading-strategy.md`), framework is in `lib/ish/`.
+**Note:** After restructure (see `implement-package-loading-strategy.md`), framework is in `core/`.
 
 **Dotfiles configs in package:**
 ```
@@ -105,7 +105,7 @@ packages/ish-dotfiles/data/
 - [ ] Document findings: what to replace, what to hoist
 
 ### 3. Hoist generic patterns to ish
-- [ ] Create `packages/ish/source/file.sh` module for file operations:
+- [ ] Create `core/source/file.sh` module for file operations:
   - `file_symlink` - create symlink with error handling
   - `file_copy` - copy file/directory
   - `file_exists` - check file existence
@@ -141,16 +141,16 @@ packages/ish-dotfiles/data/
 - [ ] Ensure tests pass
 
 ### 7. Document router help convention
-- [ ] Update `packages/ish/docs/conventions.md` CLI section:
+- [ ] Update `core/docs/conventions.md` CLI section:
   - Document that all routers must support `help` command
   - Show pattern: `help|"")` in case statements
   - Include example code
-- [ ] Update `packages/ish/docs/architecture/package_types.md`:
+- [ ] Update `core/docs/architecture/package_types.md`:
   - Add router help pattern to scaffold example
   - Show test pattern for router help
 
 ### 8. Update scaffolding task
-- [ ] Read `packages/ish/kanban/tasks/scaffolding.md`
+- [ ] Read `core/kanban/tasks/scaffolding.md`
 - [ ] Add router help requirement to scaffolding checklist
 - [ ] Include help test template in scaffolding output
 
@@ -168,9 +168,9 @@ Dotfiles package uses ish utilities consistently. Generic patterns hoisted to is
 - `packages/ish/test/integration/nix.bats` → `packages/ish-dotfiles/test/integration/nix.bats` - MOVE
 
 **New ish utilities:**
-- `packages/ish/source/file.sh` - CREATE
-- `packages/ish/test/unit/file.bats` - CREATE
-- `packages/ish/test/integration/file.bats` - CREATE
+- `core/source/file.sh` - CREATE
+- `core/test/unit/file.bats` - CREATE
+- `core/test/integration/file.bats` - CREATE
 
 **Refactor dotfiles:**
 - `packages/ish-dotfiles/source/bootstrap/*.sh` - UPDATE (use ish utilities)
@@ -194,9 +194,9 @@ Dotfiles package uses ish utilities consistently. Generic patterns hoisted to is
 - `packages/ish-dotfiles/test/integration/hello.bats` - UPDATE
 
 **Documentation:**
-- `packages/ish/docs/conventions.md` - UPDATE (router help convention)
-- `packages/ish/docs/architecture/package_types.md` - UPDATE (scaffold example)
-- `packages/ish/kanban/tasks/scaffolding.md` - UPDATE (router help requirement)
+- `core/docs/conventions.md` - UPDATE (router help convention)
+- `core/docs/architecture/package_types.md` - UPDATE (scaffold example)
+- `core/kanban/tasks/scaffolding.md` - UPDATE (router help requirement)
 
 ## benefits
 

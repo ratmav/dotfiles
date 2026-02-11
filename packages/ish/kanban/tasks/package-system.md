@@ -20,7 +20,7 @@ create a package system for sharing ish modules across projects with a signed, s
 - [ ] host as ish-registry repo or static site
 - [ ] document package creation guide
 
-**Note:** See `implement-package-loading-strategy.md` for framework/packages separation. Framework in `lib/ish/`, packages in `${ISH_PACKAGES}` (`packages/` dev, `~/.local/share/ish/packages/` installed).
+**Note:** See `implement-package-loading-strategy.md` for framework/packages separation. Framework in `core/`, packages in `${ISH_PACKAGES}` (`packages/` dev, `~/.ish/packages/` installed).
 
 ## deliverable
 
