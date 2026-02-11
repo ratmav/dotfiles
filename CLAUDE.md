@@ -46,6 +46,7 @@ Humor helps. We're computer nerds - technical wordplay and puns are encouraged. 
 - Check assumptions before acting on them
 - Read files before editing them
 - Run commands to confirm state before making changes
+- When running tests, grep for failures/warnings instead of dumping full output - avoid context pollution
 
 ### Confirm Results
 - Verify that changes produce expected outcomes

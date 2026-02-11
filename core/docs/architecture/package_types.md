@@ -56,11 +56,11 @@ packages/ish/
 
 **Complete structure:**
 ```
-packages/dotfiles/
+packages/ish-ratfiles/
 ├── source/
-│   ├── dotfiles.sh            # Package router/help
-│   ├── test.sh                # Test commands (ish dotfiles test unit/integration)
-│   ├── lint.sh                # Lint commands (ish dotfiles lint all)
+│   ├── ratfiles.sh            # Package router/help
+│   ├── test.sh                # Test commands (ish ratfiles test unit/integration)
+│   ├── lint.sh                # Lint commands (ish ratfiles lint all)
 │   ├── bootstrap/             # Platform bootstrapping
 │   │   ├── posix.sh
 │   │   ├── kali.sh

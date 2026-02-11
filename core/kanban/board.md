@@ -45,7 +45,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
    - [x] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
 2. [x] [fix-cli-consistency](tasks/fix-cli-consistency.md) - fix 3 CLI paper cuts (help support, error leakage)
 3. [x] [standardize-package-naming](tasks/standardize-package-naming.md) - COMPLETE: All 42 functions renamed to ish_dotfiles_*, directory moved to packages/ish-dotfiles/, tests moved, source statements standardized
-4. [x] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md) - COMPLETE: core/ vs packages/ separation
+4. [x] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md) - Phase 2 complete (structure only)
    - [x] Phase 1: Documentation complete (architecture docs, task updates, design finalized)
    - [x] Phase 2: Execute restructure complete
      - [x] Moved packages/ish → core
@@ -54,13 +54,18 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
      - [x] Fixed architectural violations (help functions in child modules)
      - [x] Fixed .gitmodules naming
      - [x] All 98 tests passing
-5. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
-6. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
-7. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard
-8. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-9. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
-10. [ ] verify tests still pass
-11. [ ] verify local package structure works
+   - Note: Auto-discovery not yet implemented (see tasks 5-6)
+5. [ ] [fix-ratfiles-naming](tasks/fix-ratfiles-naming.md) - Remove legacy "dotfiles.sh" naming ← PRIORITY
+6. [ ] [implement-package-discovery](tasks/implement-package-discovery.md) - Convention-based auto-discovery ← PRIORITY
+   - Dependencies: task 5 (naming must be consistent first)
+   - Unblocks: Adding packages without editing entry point
+7. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
+8. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
+9. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard
+10. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+11. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
+12. [ ] verify tests still pass
+13. [ ] verify local package structure works
 
 ### in progress
 

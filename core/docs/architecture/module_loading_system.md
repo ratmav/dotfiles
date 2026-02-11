@@ -33,9 +33,9 @@ ish_utils_tui_set_colors          # Initialize color support
 
 # Current: Explicit package loading
 case "${1-}" in
-  dotfiles)
-    source "${ISH_PACKAGES}/ish-dotfiles/source/dotfiles.sh"
-    ish_dotfiles_route "$@"
+  ratfiles)
+    source "${ISH_PACKAGES}/ish-ratfiles/source/ratfiles.sh"
+    ish_ratfiles_route "$@"
     ;;
   kanban)
     source "${ISH_CORE}/kanban.sh"  # Note: ish package, part of framework

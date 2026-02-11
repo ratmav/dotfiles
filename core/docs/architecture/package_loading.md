@@ -93,9 +93,9 @@ Currently packages are explicitly routed:
 
 ```bash
 case "${1-}" in
-  dotfiles)
-    source "${ISH_PACKAGES}/ish-dotfiles/source/dotfiles.sh"
-    ish_dotfiles_route "$@"
+  ratfiles)
+    source "${ISH_PACKAGES}/ish-ratfiles/source/ratfiles.sh"
+    ish_ratfiles_route "$@"
     ;;
   kanban)
     source "${ISH_CORE}/kanban.sh"  # Note: ish package, part of framework
@@ -208,8 +208,8 @@ ish_utils_tui_info "message"     # Call framework function
 
 From framework code:
 ```bash
-source "${ISH_PACKAGES}/ish-dotfiles/source/dotfiles.sh"
-ish_dotfiles_route "$@"
+source "${ISH_PACKAGES}/ish-ratfiles/source/ratfiles.sh"
+ish_ratfiles_route "$@"
 ```
 
 From package code (referencing framework):
