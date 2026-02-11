@@ -2,8 +2,8 @@
 
 ish_ratfiles_bootstrap_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/utils/tui.sh"
-source "${ISH_CORE}/platform.sh"
+source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/platform.sh"
 source "${ish_ratfiles_bootstrap_module_dir}/bootstrap/macos.sh"
 source "${ish_ratfiles_bootstrap_module_dir}/bootstrap/kali.sh"
 source "${ish_ratfiles_bootstrap_module_dir}/bootstrap/posix.sh"

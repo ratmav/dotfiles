@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+ish_ratfiles_bootstrap_macos_homebrew_help() {
+  ish_utils_stream_multiline_stderr <<EOF
+usage: ish ratfiles bootstrap macos homebrew [command]
+
+commands:
+  all       run all homebrew setup steps
+  install   install homebrew
+  brew      install brew packages
+  cask      install cask packages
+EOF
+}
+
 ish_ratfiles_bootstrap_macos_homebrew_install() {
   if [[ $(ish_platform_os) != "macos" ]]; then
     ish_utils_tui_error --message="${FUNCNAME[0]}: unsupported operating system."

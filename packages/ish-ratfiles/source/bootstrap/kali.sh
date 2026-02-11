@@ -2,9 +2,9 @@
 
 ish_ratfiles_bootstrap_kali_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/utils/tui.sh"
-source "${ISH_CORE}/platform.sh"
-source "${ISH_CORE}/utils.sh"
+source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/platform.sh"
+source "${ISH_CORE}/source/utils.sh"
 source "${ish_ratfiles_bootstrap_kali_module_dir}/posix.sh"
 
 ish_ratfiles_bootstrap_kali_all() {

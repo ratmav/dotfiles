@@ -4,7 +4,7 @@ setup() {
   load '../../test_helper/common-setup'
   _common_setup
 
-  source ${ISH_CORE}/utils/tui.sh
+  source ${ISH_CORE}/source/utils/tui.sh
 }
 
 # ish_utils_tui_error - CRITICAL: must exit with code 1 (fail-fast behavior)

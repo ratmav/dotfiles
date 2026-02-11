@@ -2,8 +2,8 @@
 
 ish_ratfiles_bootstrap_posix_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/utils/tui.sh"
-source "${ISH_CORE}/utils.sh"
+source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/utils.sh"
 
 source "${ish_ratfiles_bootstrap_posix_module_dir}/posix/nix.sh"
 source "${ish_ratfiles_bootstrap_posix_module_dir}/posix/git.sh"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source "${ISH_CORE}/utils/tui.sh"
-source "${ISH_CORE}/utils.sh"
+source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/utils.sh"
 
 # Public functions (alphabetized)
 

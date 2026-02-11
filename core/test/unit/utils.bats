@@ -8,13 +8,13 @@ setup() {
   load '../test_helper/common-setup'
   _common_setup
 
-  source ${ISH_CORE}/utils.sh
+  source ${ISH_CORE}/source/utils.sh
 }
 
 # Stream separation tests
 
 @test "ish_utils_stream_stdout writes to stdout" {
-  run bash -c 'source ${ISH_CORE}/utils.sh; ish_utils_stream_stdout "test" >/tmp/stdout.txt 2>/tmp/stderr.txt; cat /tmp/stdout.txt'
+  run bash -c 'source ${ISH_CORE}/source/utils.sh; ish_utils_stream_stdout "test" >/tmp/stdout.txt 2>/tmp/stderr.txt; cat /tmp/stdout.txt'
   assert_output "test"
 
   # verify stderr is empty
@@ -23,7 +23,7 @@ setup() {
 }
 
 @test "ish_utils_stream_stderr writes to stderr" {
-  run bash -c 'source ${ISH_CORE}/utils.sh; ish_utils_stream_stderr "test" >/tmp/stdout.txt 2>/tmp/stderr.txt; cat /tmp/stderr.txt'
+  run bash -c 'source ${ISH_CORE}/source/utils.sh; ish_utils_stream_stderr "test" >/tmp/stdout.txt 2>/tmp/stderr.txt; cat /tmp/stderr.txt'
   assert_output "test"
 
   # verify stdout is empty
@@ -32,19 +32,19 @@ setup() {
 }
 
 @test "ish_utils_stream_stdout handles dash prefixed arguments" {
-  run bash -c 'source ${ISH_CORE}/utils.sh; ish_utils_stream_stdout "-n"'
+  run bash -c 'source ${ISH_CORE}/source/utils.sh; ish_utils_stream_stdout "-n"'
   assert_output "-n"
 }
 
 @test "ish_utils_stream_stderr handles dash prefixed arguments" {
-  run bash -c 'source ${ISH_CORE}/utils.sh; ish_utils_stream_stderr "-n" 2>&1'
+  run bash -c 'source ${ISH_CORE}/source/utils.sh; ish_utils_stream_stderr "-n" 2>&1'
   assert_output "-n"
 }
 
 # ish_utils_stream_multiline_stdout - multi-line output to stdout
 
 @test "ish_utils_stream_multiline_stdout outputs multiple lines to stdout" {
-  run bash -c 'source ${ISH_CORE}/utils.sh; ish_utils_stream_multiline_stdout <<EOF
+  run bash -c 'source ${ISH_CORE}/source/utils.sh; ish_utils_stream_multiline_stdout <<EOF
 line one
 line two
 line three
@@ -56,7 +56,7 @@ EOF'
 }
 
 @test "ish_utils_stream_multiline_stdout preserves blank lines" {
-  run --keep-empty-lines bash -c 'source ${ISH_CORE}/utils.sh; printf "%s\n%s\n%s\n" "first" "" "second" | ish_utils_stream_multiline_stdout'
+  run --keep-empty-lines bash -c 'source ${ISH_CORE}/source/utils.sh; printf "%s\n%s\n%s\n" "first" "" "second" | ish_utils_stream_multiline_stdout'
   assert_success
   assert_line --index 0 "first"
   assert_line --index 1 ""
@@ -66,7 +66,7 @@ EOF'
 # ish_utils_stream_multiline_stderr - multi-line output to stderr
 
 @test "ish_utils_stream_multiline_stderr outputs multiple lines to stderr" {
-  run bash -c 'source ${ISH_CORE}/utils.sh; ish_utils_stream_multiline_stderr <<EOF
+  run bash -c 'source ${ISH_CORE}/source/utils.sh; ish_utils_stream_multiline_stderr <<EOF
 line one
 line two
 line three
@@ -78,7 +78,7 @@ EOF' 2>&1
 }
 
 @test "ish_utils_stream_multiline_stderr preserves blank lines" {
-  run --keep-empty-lines bash -c 'source ${ISH_CORE}/utils.sh; printf "%s\n%s\n%s\n" "first" "" "second" | ish_utils_stream_multiline_stderr 2>&1'
+  run --keep-empty-lines bash -c 'source ${ISH_CORE}/source/utils.sh; printf "%s\n%s\n%s\n" "first" "" "second" | ish_utils_stream_multiline_stderr 2>&1'
   assert_success
   assert_line --index 0 "first"
   assert_line --index 1 ""

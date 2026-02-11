@@ -6,8 +6,8 @@ setup() {
 
   load '../../test_helper/fixtures'
 
-  source ${ISH_CORE}/utils/tui.sh
-  source ${ISH_CORE}/utils/exists.sh
+  source ${ISH_CORE}/source/utils/tui.sh
+  source ${ISH_CORE}/source/utils/exists.sh
 }
 
 teardown() {

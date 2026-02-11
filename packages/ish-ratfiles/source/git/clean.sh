@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+ish_ratfiles_git_clean_help() {
+  ish_utils_stream_multiline_stderr <<EOF
+usage: ish ratfiles git clean [command]
+
+commands:
+  prune        prune local branches missing on remote
+  worktrees    remove all worktrees except main
+EOF
+}
+
 ish_ratfiles_git_clean_prune() {
   if [ $# -eq 0 ]; then
     local remote=origin

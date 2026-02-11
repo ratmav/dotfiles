@@ -2,7 +2,7 @@
 
 ish_kanban_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/utils/tui.sh"
+source "${ISH_CORE}/source/utils/tui.sh"
 source "${ish_kanban_module_dir}/kanban/task.sh"
 source "${ish_kanban_module_dir}/kanban/scratch.sh"
 

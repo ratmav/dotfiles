@@ -3,14 +3,14 @@
 set -Eeuo pipefail
 
 ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." &>/dev/null && pwd -P)
-ISH_CORE="${ISH_ROOT}/core/source"
+ISH_CORE="${ISH_ROOT}/core"
 ISH_PACKAGES="${ISH_ROOT}/packages"
 
 export ISH_ROOT ISH_CORE ISH_PACKAGES
 
 # Load utility functions (sourcing for function definitions, case statements fall through)
-source "${ISH_CORE}/utils/tui.sh"
-source "${ISH_CORE}/platform.sh"
+source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/platform.sh"
 
 ish_utils_tui_set_colors
 
@@ -71,7 +71,7 @@ case "${1-}" in
     ;;
   kanban)
     shift
-    source "${ISH_CORE}/kanban.sh"
+    source "${ISH_CORE}/source/kanban.sh"
     ish_kanban_route "$@"
     ;;
   tui)
@@ -84,17 +84,17 @@ case "${1-}" in
     ;;
   utils)
     shift
-    source "${ISH_CORE}/utils.sh"
+    source "${ISH_CORE}/source/utils.sh"
     ish_utils_route "$@"
     ;;
   test)
     shift
-    source "${ISH_CORE}/test.sh"
+    source "${ISH_CORE}/source/test.sh"
     ish_test_route "$@"
     ;;
   lint)
     shift
-    source "${ISH_CORE}/lint.sh"
+    source "${ISH_CORE}/source/lint.sh"
     ish_lint_route "$@"
     ;;
   help|"")

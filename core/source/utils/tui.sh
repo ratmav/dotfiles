@@ -2,8 +2,8 @@
 
 ish_utils_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/utils/exists.sh"
-source "${ISH_CORE}/utils/stream.sh"
+source "${ISH_CORE}/source/utils/exists.sh"
+source "${ISH_CORE}/source/utils/stream.sh"
 source "${ish_utils_tui_module_dir}/tui/template.sh"
 
 ish_utils_tui_set_colors() {

@@ -7,9 +7,9 @@ setup() {
   load '../../../test_helper/common-setup'
   _common_setup
 
-  source ${ISH_CORE}/utils/tui.sh
-  source ${ISH_CORE}/utils/exists.sh
-  source ${ISH_CORE}/utils/tui/template.sh
+  source ${ISH_CORE}/source/utils/tui.sh
+  source ${ISH_CORE}/source/utils/exists.sh
+  source ${ISH_CORE}/source/utils/tui/template.sh
 }
 
 # ish_utils_tui_template - string templating with {{variable}} substitution
@@ -35,7 +35,7 @@ setup() {
 # ish_utils_tui_template_file - output file contents to stdout
 
 @test "ish_utils_tui_template_file outputs file contents" {
-  run ish_utils_tui_template_file --path=${ISH_CORE}/test/fixtures/tui/test-file.txt
+  run ish_utils_tui_template_file --path=${ISH_ROOT}/core/test/fixtures/tui/test-file.txt
   assert_success
   assert_output --partial "line one"
   assert_output --partial "line two"
@@ -43,7 +43,7 @@ setup() {
 }
 
 @test "ish_utils_tui_template_file preserves line order" {
-  run ish_utils_tui_template_file --path=${ISH_CORE}/test/fixtures/tui/test-file.txt
+  run ish_utils_tui_template_file --path=${ISH_ROOT}/core/test/fixtures/tui/test-file.txt
   assert_success
   assert_line --index 0 "line one"
   assert_line --index 1 "line two"
@@ -63,7 +63,7 @@ setup() {
 }
 
 @test "ish_utils_tui_template_file fails on directory" {
-  run ish_utils_tui_template_file --path=${ISH_CORE}/test/fixtures
+  run ish_utils_tui_template_file --path=${ISH_ROOT}/core/test/fixtures
   assert_failure
   assert_output --partial "not a template file"
 }

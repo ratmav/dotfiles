@@ -12,7 +12,7 @@ setup() {
 }
 
 @test "ish tui template file outputs file contents" {
-  run ./ish tui template file --path=${ISH_CORE}/test/fixtures/tui/test-file.txt
+  run ./ish tui template file --path=${ISH_ROOT}/core/test/fixtures/tui/test-file.txt
   assert_success
   assert_output --partial "line one"
   assert_output --partial "line two"
@@ -20,7 +20,7 @@ setup() {
 }
 
 @test "ish tui template file preserves line order" {
-  run ./ish tui template file --path=${ISH_CORE}/test/fixtures/tui/test-file.txt
+  run ./ish tui template file --path=${ISH_ROOT}/core/test/fixtures/tui/test-file.txt
   assert_success
   assert_line --index 0 "line one"
   assert_line --index 1 "line two"
@@ -40,7 +40,7 @@ setup() {
 }
 
 @test "ish tui template file fails on directory" {
-  run ./ish tui template file --path=${ISH_CORE}/test/fixtures
+  run ./ish tui template file --path=${ISH_ROOT}/core/test/fixtures
   assert_failure
   assert_output --partial "not a template file"
 }

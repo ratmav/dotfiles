@@ -4,7 +4,7 @@ setup() {
   load '../test_helper/common-setup'
   _common_setup
 
-  source ${ISH_CORE}/platform.sh
+  source ${ISH_CORE}/source/platform.sh
 }
 
 # Baseline check: deliberately tests consistent system state

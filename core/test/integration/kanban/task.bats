@@ -13,7 +13,7 @@ setup() {
 
 teardown() {
   fixture_kanban_task_destroy
-  rm -f ${ISH_CORE}/test/fixtures/kanban/tasks/new-task.md
+  rm -f ${ISH_ROOT}/core/test/fixtures/kanban/tasks/new-task.md
   unset ISH_TESTING
 }
 
@@ -90,7 +90,7 @@ teardown() {
 
   run ./ish kanban task path --name=test-task
   assert_success
-  assert_output --partial "${ISH_CORE}/test/fixtures/kanban/tasks/test-task.md"
+  assert_output --partial "${ISH_ROOT}/core/test/fixtures/kanban/tasks/test-task.md"
 }
 
 @test "ish kanban task path requires --name flag" {
@@ -111,7 +111,7 @@ teardown() {
   run ./ish kanban task new --name=new-task
   assert_success
 
-  [ -f "${ISH_CORE}/test/fixtures/kanban/tasks/new-task.md" ]
+  [ -f "${ISH_ROOT}/core/test/fixtures/kanban/tasks/new-task.md" ]
 }
 
 @test "ish kanban task new requires --name flag" {
@@ -136,7 +136,7 @@ teardown() {
   run ./ish kanban task delete --name=test-task
   assert_success
 
-  [ ! -f "${ISH_CORE}/test/fixtures/kanban/tasks/test-task.md" ]
+  [ ! -f "${ISH_ROOT}/core/test/fixtures/kanban/tasks/test-task.md" ]
 }
 
 @test "ish kanban task delete requires --name flag" {
