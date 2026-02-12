@@ -55,6 +55,7 @@ fixture_kanban_task_create() {
   local script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." &>/dev/null && pwd -P)
   local task_file="$script_dir/test/fixtures/kanban/tasks/test-task.md"
 
+  mkdir -p "$(dirname "$task_file")"
   cat > "$task_file" <<'EOF'
 # test-task
 
