@@ -35,7 +35,8 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo (priority order)
 
-1. [x] execute migration_path.md Step 1 (12-step restructure)
+1. [ ] [refactor-help-to-templates](tasks/refactor-help-to-templates.md) - Move help heredocs to templates.sh modules ← PRIORITY
+2. [x] execute migration_path.md Step 1 (12-step restructure)
    - [x] create packages/ish/ and packages/dotfiles/ structure
    - [x] move source files to package locations
    - [x] [fix-module-loading](tasks/fix-module-loading.md) - fix 28 broken source statements with ISH_PACKAGES_DIR
@@ -55,10 +56,12 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
      - [x] Fixed .gitmodules naming
      - [x] All 98 tests passing
    - Note: Auto-discovery not yet implemented (see tasks 5-6)
-5. [ ] [fix-ratfiles-naming](tasks/fix-ratfiles-naming.md) - Remove legacy "dotfiles.sh" naming ← PRIORITY
-6. [ ] [implement-package-discovery](tasks/implement-package-discovery.md) - Convention-based auto-discovery ← PRIORITY
-   - Dependencies: task 5 (naming must be consistent first)
-   - Unblocks: Adding packages without editing entry point
+5. [x] [fix-ratfiles-naming](tasks/fix-ratfiles-naming.md) - COMPLETE: Renamed dotfiles.sh → ratfiles.sh, updated entry point
+6. [x] [implement-package-discovery](tasks/implement-package-discovery.md) - COMPLETE: Convention-based auto-discovery implemented
+   - ✓ Package scanner in core/source/packages.sh
+   - ✓ Dynamic routing via ish_packages_route
+   - ✓ Dynamic help listing with ish_packages_list_for_help
+   - ✓ All 98 tests passing
 7. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
 8. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
 9. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard
