@@ -11,8 +11,12 @@ export ISH_ROOT ISH_CORE ISH_PACKAGES
 # Load utility functions (sourcing for function definitions, case statements fall through)
 source "${ISH_CORE}/source/utils/tui.sh"
 source "${ISH_CORE}/source/platform.sh"
+source "${ISH_CORE}/source/packages.sh"
 
 ish_utils_tui_set_colors
+
+# Discover and load packages
+ish_packages_discover
 
 ish_help() {
   cat <<EOF
@@ -50,7 +54,7 @@ usage: ish [command] [options]
 personal development environment on posix-like platforms.
 
 commands:
-  ratfiles     ratfiles package (bootstrap, git, nix)
+$(ish_packages_list_for_help)
   kanban       project task management
   lint         run linters for ish package
   platform     platform detection functions
@@ -64,11 +68,6 @@ EOF
 }
 
 case "${1-}" in
-  ratfiles)
-    shift
-    source "${ISH_PACKAGES}/ish-ratfiles/source/ratfiles.sh"
-    ish_ratfiles_route "$@"
-    ;;
   kanban)
     shift
     source "${ISH_CORE}/source/kanban.sh"
@@ -101,7 +100,14 @@ case "${1-}" in
     ish_help
     ;;
   *)
+    # Try package discovery before failing
+    cmd="${1-}"
+    shift || true
+    if ish_packages_route "${cmd}" "$@"; then
+      exit 0
+    fi
+
     ish_help
-    ish_utils_tui_error --message="unknown command: ${1-}"
+    ish_utils_tui_error --message="unknown command: ${cmd}"
     ;;
 esac

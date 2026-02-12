@@ -5,19 +5,19 @@ setup() {
   _common_setup
 }
 
-@test "ish nix help shows usage" {
+@test "ish ratfiles nix help shows usage" {
   run ./ish ratfiles nix help
   assert_success
   assert_output --partial "usage: ish ratfiles nix"
 }
 
-@test "ish nix with no args shows help" {
+@test "ish ratfiles nix with no args shows help" {
   run ./ish ratfiles nix
   assert_success
   assert_output --partial "usage: ish ratfiles nix"
 }
 
-@test "ish nix with invalid command shows error" {
+@test "ish ratfiles nix with invalid command shows error" {
   run ./ish ratfiles nix invalid_command
   assert_failure
   assert_output --partial "unknown nix command"

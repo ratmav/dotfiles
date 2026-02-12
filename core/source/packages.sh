@@ -3,6 +3,19 @@
 # Package discovery and routing
 # Convention: packages/ish-{name}/ with source/{name}.sh router
 
+ish_packages_list_for_help() {
+  local pkg_dir pkg_name
+
+  for pkg_dir in "${ISH_PACKAGES}"/ish-*; do
+    [[ -d "${pkg_dir}" ]] || continue
+
+    # Extract name: ish-ratfiles → ratfiles
+    pkg_name="${pkg_dir##*/ish-}"
+
+    echo "  ${pkg_name}     ${pkg_name} package"
+  done
+}
+
 ish_packages_discover() {
   local pkg_dir pkg_name pkg_router
 

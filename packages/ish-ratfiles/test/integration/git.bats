@@ -5,7 +5,7 @@ setup() {
   _common_setup
 }
 
-@test "ish git help shows usage" {
+@test "ish ratfiles git help shows usage" {
   run ./ish ratfiles git help
   assert_success
   assert_output --partial "usage: ish ratfiles git"
