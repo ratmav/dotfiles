@@ -16,6 +16,16 @@ ish_lint_bash() {
   shellcheck "${ISH_PACKAGES_DIR}"/**/*.sh
 }
 
+ish_lint_help() {
+  ish_utils_stream_multiline_stderr <<EOF
+usage: ish lint [target]
+
+targets:
+  all          lint all files
+  bash         lint bash scripts only
+EOF
+}
+
 ish_lint_route() {
   case "${1-}" in
   all)
@@ -27,13 +37,7 @@ ish_lint_route() {
     ish_lint_bash
     ;;
   help|"")
-    ish_utils_stream_multiline_stderr <<EOF
-usage: ish lint [target]
-
-targets:
-  all          lint all files
-  bash         lint bash scripts only
-EOF
+    ish_lint_help
     ;;
   *)
     ish_utils_tui_error --message="unknown lint target: ${1-}"

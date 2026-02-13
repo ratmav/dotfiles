@@ -60,6 +60,20 @@ ish_test_integration() {
   "${ISH_ROOT}/core/test/bats/bin/bats" --recursive "$test_path"
 }
 
+ish_test_help() {
+  ish_utils_stream_multiline_stderr <<EOF
+usage: ish test [suite] [options]
+
+suites:
+  all          run all tests
+  unit         run unit tests only
+  integration  run integration tests only
+
+options:
+  --route=PATH    run specific test file (e.g., tui/template)
+EOF
+}
+
 ish_test_route() {
   case "${1-}" in
   all)
@@ -75,17 +89,7 @@ ish_test_route() {
     ish_test_integration "$@"
     ;;
   help|"")
-    ish_utils_stream_multiline_stderr <<EOF
-usage: ish test [suite] [options]
-
-suites:
-  all          run all tests
-  unit         run unit tests only
-  integration  run integration tests only
-
-options:
-  --route=PATH    run specific test file (e.g., tui/template)
-EOF
+    ish_test_help
     ;;
   *)
     ish_utils_tui_error --message="unknown test suite: ${1-}"
