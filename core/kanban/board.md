@@ -35,12 +35,19 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo (priority order)
 
-1. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
-2. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
-3. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-4. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
-5. [ ] verify tests still pass
-6. [ ] verify local package structure works
+1. [ ] [kanban-board-parser](tasks/kanban-board-parser.md) - create board parser infrastructure
+2. [ ] [kanban-board-mutations](tasks/kanban-board-mutations.md) - add board mutation operations
+3. [ ] [kanban-task-validation](tasks/kanban-task-validation.md) - add validation functions
+4. [ ] [kanban-source-board-module](tasks/kanban-source-board-module.md) - source board module in main kanban
+5. [ ] [kanban-task-create-integration](tasks/kanban-task-create-integration.md) - enhance task creation with board integration
+6. [ ] [kanban-task-close](tasks/kanban-task-close.md) - replace delete with close command
+7. [ ] [kanban-integration-testing](tasks/kanban-integration-testing.md) - complete integration test coverage
+8. [ ] [kanban-task-list-filters](tasks/kanban-task-list-filters.md) - enhance task listing with filters
+9. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
+10. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+11. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
+12. [ ] verify tests still pass
+13. [ ] verify local package structure works
 
 ### completed
 
@@ -50,6 +57,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 - [x] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md)
 - [x] [fix-ratfiles-naming](tasks/fix-ratfiles-naming.md)
 - [x] [implement-package-discovery](tasks/implement-package-discovery.md)
+- [x] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
 - [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX
 
 ### in progress
