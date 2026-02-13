@@ -35,40 +35,22 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo (priority order)
 
-1. [ ] [refactor-help-to-templates](tasks/refactor-help-to-templates.md) - Move help heredocs to templates.sh modules ← PRIORITY
-2. [x] execute migration_path.md Step 1 (12-step restructure)
-   - [x] create packages/ish/ and packages/dotfiles/ structure
-   - [x] move source files to package locations
-   - [x] [fix-module-loading](tasks/fix-module-loading.md) - fix 28 broken source statements with ISH_PACKAGES_DIR
-   - [x] [complete-namespace-restructure](tasks/complete-namespace-restructure.md) - remove "self", add "dotfiles" namespace, split tests by package
-   - [x] [move-kanban-to-ish](tasks/move-kanban-to-ish.md) - move kanban data to ish package, fix script_dir bug
-   - [x] [package-local-bats](tasks/package-local-bats.md) - bats submodules per package, add dotfiles scaffold tests
-   - [x] [move-docs-to-ish](tasks/move-docs-to-ish.md) - move docs/ to packages/ish/docs/ (all docs are ish-specific)
-2. [x] [fix-cli-consistency](tasks/fix-cli-consistency.md) - fix 3 CLI paper cuts (help support, error leakage)
-3. [x] [standardize-package-naming](tasks/standardize-package-naming.md) - COMPLETE: All 42 functions renamed to ish_dotfiles_*, directory moved to packages/ish-dotfiles/, tests moved, source statements standardized
-4. [x] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md) - Phase 2 complete (structure only)
-   - [x] Phase 1: Documentation complete (architecture docs, task updates, design finalized)
-   - [x] Phase 2: Execute restructure complete
-     - [x] Moved packages/ish → core
-     - [x] Renamed ish-dotfiles → ish-ratfiles (directory, functions, commands)
-     - [x] Fixed ISH_CORE path (core not core/source), updated all source statements
-     - [x] Fixed architectural violations (help functions in child modules)
-     - [x] Fixed .gitmodules naming
-     - [x] All 98 tests passing
-   - Note: Auto-discovery not yet implemented (see tasks 5-6)
-5. [x] [fix-ratfiles-naming](tasks/fix-ratfiles-naming.md) - COMPLETE: Renamed dotfiles.sh → ratfiles.sh, updated entry point
-6. [x] [implement-package-discovery](tasks/implement-package-discovery.md) - COMPLETE: Convention-based auto-discovery implemented
-   - ✓ Package scanner in core/source/packages.sh
-   - ✓ Dynamic routing via ish_packages_route
-   - ✓ Dynamic help listing with ish_packages_list_for_help
-   - ✓ All 98 tests passing
-7. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
-8. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
-9. [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX: --run flag is atypical, current behavior is standard
-10. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-11. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
-12. [ ] verify tests still pass
-13. [ ] verify local package structure works
+1. [ ] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
+2. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
+3. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+4. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
+5. [ ] verify tests still pass
+6. [ ] verify local package structure works
+
+### completed
+
+- [x] execute migration_path.md Step 1 (12-step restructure)
+- [x] [fix-cli-consistency](tasks/fix-cli-consistency.md)
+- [x] [standardize-package-naming](tasks/standardize-package-naming.md)
+- [x] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md)
+- [x] [fix-ratfiles-naming](tasks/fix-ratfiles-naming.md)
+- [x] [implement-package-discovery](tasks/implement-package-discovery.md)
+- [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX
 
 ### in progress
 
