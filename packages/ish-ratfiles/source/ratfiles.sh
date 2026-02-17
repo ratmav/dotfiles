@@ -2,7 +2,7 @@
 
 ish_ratfiles_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/tui.sh"
 source "${ISH_CORE}/source/utils.sh"
 
 source "${ish_ratfiles_module_dir}/test.sh"
@@ -84,7 +84,7 @@ ish_ratfiles_route() {
     ;;
   *)
     ish_ratfiles_help
-    ish_utils_tui_error --message="unknown ratfiles command: ${1-}"
+    ish_tui_error --message="unknown ratfiles command: ${1-}"
     return 1
     ;;
   esac

@@ -14,7 +14,7 @@ ish_kanban_test_unit() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
@@ -23,7 +23,7 @@ ish_kanban_test_unit() {
   if [[ -n "$route" ]]; then
     test_path="${ISH_PACKAGES}/ish-kanban/test/unit/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
-      ish_utils_tui_error --message="test not found: $test_path"
+      ish_tui_error --message="test not found: $test_path"
     fi
   else
     test_path="${ISH_PACKAGES}/ish-kanban/test/unit/"
@@ -42,7 +42,7 @@ ish_kanban_test_integration() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
@@ -51,7 +51,7 @@ ish_kanban_test_integration() {
   if [[ -n "$route" ]]; then
     test_path="${ISH_PACKAGES}/ish-kanban/test/integration/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
-      ish_utils_tui_error --message="test not found: $test_path"
+      ish_tui_error --message="test not found: $test_path"
     fi
   else
     test_path="${ISH_PACKAGES}/ish-kanban/test/integration/"
@@ -88,7 +88,7 @@ options:
 EOF
     ;;
   *)
-    ish_utils_tui_error --message="unknown test suite: ${1-}"
+    ish_tui_error --message="unknown test suite: ${1-}"
     return 1
     ;;
   esac

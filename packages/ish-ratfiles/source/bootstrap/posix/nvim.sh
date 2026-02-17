@@ -6,16 +6,16 @@ ish_ratfiles_bootstrap_posix_nvim_clean() {
 
   rm -rf $config_path
   mkdir -p $HOME/.config/nvim
-  ish_utils_tui_info --message="${FUNCNAME[0]}: removed nvim config."
+  ish_tui_info --message="${FUNCNAME[0]}: removed nvim config."
 
   rm -rf "$nvim_plugin_path"
   mkdir -p "$nvim_plugin_path/paqs/start"
-  ish_utils_tui_info --message="${FUNCNAME[0]}: removed nvim plugins."
+  ish_tui_info --message="${FUNCNAME[0]}: removed nvim plugins."
 }
 
 ish_ratfiles_bootstrap_posix_nvim_configure() {
   if ! ish_utils_exists_executable --executable=git; then
-    ish_utils_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
+    ish_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
     return 1
   fi
 
@@ -23,11 +23,11 @@ ish_ratfiles_bootstrap_posix_nvim_configure() {
   local paq_url="https://github.com/savq/paq-nvim"
 
   git clone --depth=1 "$paq_url" "$paq_path" > /dev/null 2>&1
-  ish_utils_tui_info --message="${FUNCNAME[0]}: installed paq-nvim."
+  ish_tui_info --message="${FUNCNAME[0]}: installed paq-nvim."
 
   # Create symlink to main neovim config
   ln -s "$PWD/neovim.lua" "$HOME/.config/nvim/init.lua"
-  ish_utils_tui_info --message="${FUNCNAME[0]}: symlinked nvim config."
+  ish_tui_info --message="${FUNCNAME[0]}: symlinked nvim config."
 }
 
 ish_ratfiles_bootstrap_posix_nvim_plugins() {
@@ -41,9 +41,9 @@ ish_ratfiles_bootstrap_posix_nvim_plugins() {
   plugin_result=$?
 
   if [ $plugin_result -ne 0 ]; then
-    ish_utils_tui_error --message="${FUNCNAME[0]}: plugin installation timed out."
+    ish_tui_error --message="${FUNCNAME[0]}: plugin installation timed out."
     return 1
   fi
 
-  ish_utils_tui_info --message="${FUNCNAME[0]}: installed neovim plugins."
+  ish_tui_info --message="${FUNCNAME[0]}: installed neovim plugins."
 }

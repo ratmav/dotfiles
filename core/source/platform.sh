@@ -35,7 +35,7 @@ ish_platform_os() {
   elif _platform_is_kali; then
     ish_utils_stream_stdout "kali"
   else
-    ish_utils_tui_error --message="unsupported platform"
+    ish_tui_error --message="unsupported platform"
   fi
 }
 
@@ -53,7 +53,7 @@ ish_platform_route() {
       ish_platform_help
       ;;
     *)
-      ish_utils_tui_error --message="unknown platform command: ${1-}"
+      ish_tui_error --message="unknown platform command: ${1-}"
       ;;
   esac
 }

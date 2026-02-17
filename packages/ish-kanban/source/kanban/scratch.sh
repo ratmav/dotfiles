@@ -2,7 +2,7 @@
 
 # kanban scratch module - scratch file commands
 #
-# dependencies: ish_utils_tui_template_file
+# dependencies: ish_tui_template_file
 # these functions are available because bash/kanban.sh sources dependencies before this module
 
 ish_kanban_scratch_help() {
@@ -39,14 +39,14 @@ ish_kanban_scratch_capture() {
         message="${arg#*=}"
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: ${arg}"
+        ish_tui_error --message="unknown option: ${arg}"
         ;;
     esac
   done
 
   # validate message
   if [[ -z "${message}" ]]; then
-    ish_utils_tui_error --message="--message is required"
+    ish_tui_error --message="--message is required"
   fi
 
   # determine kanban directory
@@ -59,7 +59,7 @@ ish_kanban_scratch_capture() {
   # append to scratch.md as markdown list item
   echo "- ${message}" >> "${ish_kanban_dir}/scratch.md"
 
-  ish_utils_tui_info --message="captured: ${message}"
+  ish_tui_info --message="captured: ${message}"
 }
 
 ish_kanban_scratch_show() {
@@ -71,5 +71,5 @@ ish_kanban_scratch_show() {
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
-  ish_utils_tui_template_file --path="${ish_kanban_dir}/scratch.md"
+  ish_tui_template_file --path="${ish_kanban_dir}/scratch.md"
 }

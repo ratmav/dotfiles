@@ -20,12 +20,12 @@ ish_utils_exists_executable() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$command" ]] && ish_utils_tui_error --message="--executable= required"
+  [[ -z "$command" ]] && ish_tui_error --message="--executable= required"
 
   type "$command" > /dev/null 2>&1
 }
@@ -40,12 +40,12 @@ ish_utils_exists_file() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$path" ]] && ish_utils_tui_error --message="--file= required"
+  [[ -z "$path" ]] && ish_tui_error --message="--file= required"
 
   [[ -f "$path" ]]
 }

@@ -26,23 +26,25 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo (priority order)
 
-**Foundation:**
-1. [ ] [build-fp-core-file-descriptor](tasks/build-fp-core-file-descriptor.md) - the POSIX I/O primitive everything stands on
-
 **Primitives (built on file descriptors):**
-2. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr
-3. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints)
-4. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
+1. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr
+2. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints)
+
+3. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
+
+**Utils Removal/Cleanup:**
+4. there is source/utils/exists.sh - it seem to just be checking for files, including executable files. is this just something that should be built on our fp core file module?
+5. there is source/stream.sh and source/utils/stream.sh. which one stays?
 
 **Integrations (external binaries composed through primitives):**
-5. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
-6. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
+6. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
+7. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
 
 **FP Layer:**
-7. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
-8. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-9. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-10. [ ] document FP patterns and usage
+8. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
+9. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
+10. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+11. [ ] document FP patterns and usage
 
 ### in progress
 

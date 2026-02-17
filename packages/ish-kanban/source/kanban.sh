@@ -2,7 +2,7 @@
 
 ish_kanban_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/tui.sh"
 source "${ish_kanban_module_dir}/kanban/task.sh"
 source "${ish_kanban_module_dir}/kanban/scratch.sh"
 source "${ish_kanban_module_dir}/test.sh"
@@ -16,7 +16,7 @@ ish_kanban_show() {
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
-  ish_utils_tui_template_file --path="${ish_kanban_dir}/board.md"
+  ish_tui_template_file --path="${ish_kanban_dir}/board.md"
 }
 
 ish_kanban_help() {
@@ -64,7 +64,7 @@ ish_kanban_route() {
           ish_kanban_task_help
           ;;
         *)
-          ish_utils_tui_error --message="unknown kanban task command: ${1-}"
+          ish_tui_error --message="unknown kanban task command: ${1-}"
           ;;
       esac
       ;;
@@ -87,7 +87,7 @@ ish_kanban_route() {
           ish_kanban_scratch_help
           ;;
         *)
-          ish_utils_tui_error --message="unknown kanban scratch command: ${1-}"
+          ish_tui_error --message="unknown kanban scratch command: ${1-}"
           ;;
       esac
       ;;
@@ -99,7 +99,7 @@ ish_kanban_route() {
       ish_kanban_help
       ;;
     *)
-      ish_utils_tui_error --message="unknown kanban command: ${1-}"
+      ish_tui_error --message="unknown kanban command: ${1-}"
       ;;
   esac
 }

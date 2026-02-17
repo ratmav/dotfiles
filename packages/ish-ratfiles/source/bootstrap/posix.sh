@@ -2,7 +2,7 @@
 
 ish_ratfiles_bootstrap_posix_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/tui.sh"
 source "${ISH_CORE}/source/utils.sh"
 
 source "${ish_ratfiles_bootstrap_posix_module_dir}/posix/nix.sh"
@@ -26,7 +26,7 @@ ish_ratfiles_bootstrap_posix_symlinks() {
   for link in "${LINKS[@]}"; do
     rm -rf $HOME/$link
     ln -s $PWD/$link $HOME/$link
-    ish_utils_tui_info --message="${FUNCNAME[0]}: symlinked $link"
+    ish_tui_info --message="${FUNCNAME[0]}: symlinked $link"
   done
 }
 
@@ -76,7 +76,7 @@ ish_ratfiles_bootstrap_posix_route() {
     ish_ratfiles_bootstrap_posix_help
     ;;
   *)
-    ish_utils_tui_error --message="unknown posix subcommand: ${1-}"
+    ish_tui_error --message="unknown posix subcommand: ${1-}"
     ish_ratfiles_bootstrap_posix_help
     return 1
     ;;

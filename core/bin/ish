@@ -9,11 +9,11 @@ ISH_PACKAGES="${ISH_ROOT}/packages"
 export ISH_ROOT ISH_CORE ISH_PACKAGES
 
 # Load utility functions (sourcing for function definitions, case statements fall through)
-source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/tui.sh"
 source "${ISH_CORE}/source/platform.sh"
 source "${ISH_CORE}/source/packages.sh"
 
-ish_utils_tui_set_colors
+ish_tui_set_colors
 
 # Discover and load packages
 ish_packages_discover
@@ -69,7 +69,7 @@ EOF
 case "${1-}" in
   tui)
     shift
-    ish_utils_tui_route "$@"
+    ish_tui_route "$@"
     ;;
   platform)
     shift
@@ -102,6 +102,6 @@ case "${1-}" in
     fi
 
     ish_help
-    ish_utils_tui_error --message="unknown command: ${cmd}"
+    ish_tui_error --message="unknown command: ${cmd}"
     ;;
 esac

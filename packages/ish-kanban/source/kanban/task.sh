@@ -2,7 +2,7 @@
 
 # kanban task module - task management commands
 #
-# dependencies: ish_utils_tui_error, ish_utils_tui_template_file
+# dependencies: ish_tui_error, ish_tui_template_file
 # these functions are available because bash/kanban.sh sources dependencies before this module
 
 ish_kanban_task_help() {
@@ -30,12 +30,12 @@ ish_kanban_task_delete() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
+  [[ -z "$name" ]] && ish_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
@@ -46,7 +46,7 @@ ish_kanban_task_delete() {
   task_file="${ish_kanban_dir}/tasks/${name}.md"
 
   if [[ ! -f "$task_file" ]]; then
-    ish_utils_tui_error --message="task not found: $name"
+    ish_tui_error --message="task not found: $name"
   fi
 
   rm "$task_file"
@@ -87,12 +87,12 @@ ish_kanban_task_new() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
+  [[ -z "$name" ]] && ish_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
@@ -103,7 +103,7 @@ ish_kanban_task_new() {
   task_file="${ish_kanban_dir}/tasks/${name}.md"
 
   if [[ -f "$task_file" ]]; then
-    ish_utils_tui_error --message="task already exists: $name"
+    ish_tui_error --message="task already exists: $name"
   fi
 
   cat > "$task_file" <<EOF
@@ -131,12 +131,12 @@ ish_kanban_task_path() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
+  [[ -z "$name" ]] && ish_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
@@ -147,7 +147,7 @@ ish_kanban_task_path() {
   task_file="${ish_kanban_dir}/tasks/${name}.md"
 
   if [[ ! -f "$task_file" ]]; then
-    ish_utils_tui_error --message="task not found: $name"
+    ish_tui_error --message="task not found: $name"
   fi
 
   ish_utils_stream_stdout "$task_file"
@@ -165,12 +165,12 @@ ish_kanban_task_show() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
+  [[ -z "$name" ]] && ish_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
@@ -181,8 +181,8 @@ ish_kanban_task_show() {
   task_file="${ish_kanban_dir}/tasks/${name}.md"
 
   if [[ ! -f "$task_file" ]]; then
-    ish_utils_tui_error --message="task not found: $name"
+    ish_tui_error --message="task not found: $name"
   fi
 
-  ish_utils_tui_template_file --path="$task_file"
+  ish_tui_template_file --path="$task_file"
 }

@@ -2,7 +2,7 @@
 
 ish_ratfiles_bootstrap_macos_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ISH_CORE}/source/utils/tui.sh"
+source "${ISH_CORE}/source/tui.sh"
 source "${ISH_CORE}/source/platform.sh"
 source "${ISH_CORE}/source/utils.sh"
 source "${ish_ratfiles_bootstrap_macos_module_dir}/posix.sh"
@@ -58,7 +58,7 @@ ish_ratfiles_bootstrap_macos_route() {
         ish_ratfiles_bootstrap_macos_homebrew_help
         ;;
       *)
-        ish_utils_tui_error --message="unknown homebrew subcommand: ${1-}"
+        ish_tui_error --message="unknown homebrew subcommand: ${1-}"
         ;;
     esac
     ;;
@@ -71,7 +71,7 @@ ish_ratfiles_bootstrap_macos_route() {
     ;;
   *)
     ish_ratfiles_bootstrap_macos_help
-    ish_utils_tui_error --message="unknown macos subcommand: ${1-}"
+    ish_tui_error --message="unknown macos subcommand: ${1-}"
     ;;
   esac
 }

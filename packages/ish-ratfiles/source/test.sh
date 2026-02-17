@@ -14,7 +14,7 @@ ish_ratfiles_test_integration() {
         shift
         ;;
       *)
-        ish_utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
@@ -23,7 +23,7 @@ ish_ratfiles_test_integration() {
   if [[ -n "$route" ]]; then
     test_path="${ISH_PACKAGES}/ish-ratfiles/test/integration/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
-      ish_utils_tui_error --message="test not found: $test_path"
+      ish_tui_error --message="test not found: $test_path"
     fi
   else
     test_path="${ISH_PACKAGES}/ish-ratfiles/test/integration/"
@@ -55,7 +55,7 @@ options:
 EOF
     ;;
   *)
-    ish_utils_tui_error --message="unknown test suite: ${1-}"
+    ish_tui_error --message="unknown test suite: ${1-}"
     return 1
     ;;
   esac

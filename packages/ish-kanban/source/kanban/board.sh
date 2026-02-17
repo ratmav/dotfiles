@@ -4,8 +4,8 @@ ish_kanban_board_parse() {
   local board_file
   board_file="$(ish_packages_data_dir "ish-kanban")/board.md"
 
-  ish_utils_exists_file --file="$board_file" || ish_utils_tui_error --message="board not found: $board_file"
-  ish_utils_exists_executable --executable=awk || ish_utils_tui_error --message="awk required"
+  ish_utils_exists_file --file="$board_file" || ish_tui_error --message="board not found: $board_file"
+  ish_utils_exists_executable --executable=awk || ish_tui_error --message="awk required"
 
   awk '
   /^## phase [0-9]+:/ {
@@ -31,11 +31,11 @@ ish_kanban_board_get_milestone_desc() {
   local milestone="${1-}"
   local board_file
 
-  [[ -z "$milestone" ]] && ish_utils_tui_error --message="milestone number required"
+  [[ -z "$milestone" ]] && ish_tui_error --message="milestone number required"
 
   board_file="$(ish_packages_data_dir "ish-kanban")/board.md"
-  ish_utils_exists_file --file="$board_file" || ish_utils_tui_error --message="board not found: $board_file"
-  ish_utils_exists_executable --executable=awk || ish_utils_tui_error --message="awk required"
+  ish_utils_exists_file --file="$board_file" || ish_tui_error --message="board not found: $board_file"
+  ish_utils_exists_executable --executable=awk || ish_tui_error --message="awk required"
 
   awk -v m="$milestone" '
   /^## phase [0-9]+:/ {
@@ -54,11 +54,11 @@ ish_kanban_board_validate_milestone() {
   local milestone="${1-}"
   local board_file found
 
-  [[ -z "$milestone" ]] && ish_utils_tui_error --message="milestone number required"
+  [[ -z "$milestone" ]] && ish_tui_error --message="milestone number required"
 
   board_file="$(ish_packages_data_dir "ish-kanban")/board.md"
-  ish_utils_exists_file --file="$board_file" || ish_utils_tui_error --message="board not found: $board_file"
-  ish_utils_exists_executable --executable=awk || ish_utils_tui_error --message="awk required"
+  ish_utils_exists_file --file="$board_file" || ish_tui_error --message="board not found: $board_file"
+  ish_utils_exists_executable --executable=awk || ish_tui_error --message="awk required"
 
   found=$(awk -v m="$milestone" '
   /^## phase [0-9]+:/ {

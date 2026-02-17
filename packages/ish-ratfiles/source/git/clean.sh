@@ -18,20 +18,20 @@ ish_ratfiles_git_clean_prune() {
   fi
 
   git remote prune "$remote"
-  ish_utils_tui_info --message="pruned $remote branch references."
+  ish_tui_info --message="pruned $remote branch references."
 
   if git rev-parse --git-dir > /dev/null 2>&1; then
     gone_remote_branches=$(git branch -vv | grep "gone" | awk "{print \$1}")
 
     if [[ -z "$gone_remote_branches" ]]; then
-      ish_utils_tui_warn --message="no local branches track a gone $remote branch."
+      ish_tui_warn --message="no local branches track a gone $remote branch."
     else
       for gone_remote_branch in $gone_remote_branches; do
         echo "$gone_remote_branch" | xargs git branch -D
       done
     fi
   else
-    ish_utils_tui_error --message="not a git repository."
+    ish_tui_error --message="not a git repository."
   fi
 }
 
@@ -42,17 +42,17 @@ ish_ratfiles_git_clean_worktrees() {
     local count=0
 
     if [[ -z "$worktrees" ]]; then
-      ish_utils_tui_warn --message="no worktrees found."
+      ish_tui_warn --message="no worktrees found."
       return
     fi
 
     while IFS= read -r worktree; do
       if [[ "$worktree" != "$main_worktree" ]]; then
-        ish_utils_tui_info --message="removing worktree: $worktree"
+        ish_tui_info --message="removing worktree: $worktree"
         if git worktree remove --force "$worktree" 2>/dev/null; then
           ((count++))
         else
-          ish_utils_tui_warn --message="failed to remove $worktree"
+          ish_tui_warn --message="failed to remove $worktree"
         fi
       fi
     done <<< "$worktrees"
@@ -61,11 +61,11 @@ ish_ratfiles_git_clean_worktrees() {
     git worktree prune
 
     if [[ $count -eq 0 ]]; then
-      ish_utils_tui_warn --message="no worktrees removed (only main exists)."
+      ish_tui_warn --message="no worktrees removed (only main exists)."
     else
-      ish_utils_tui_info --message="removed $count worktree(s)."
+      ish_tui_info --message="removed $count worktree(s)."
     fi
   else
-    ish_utils_tui_error --message="not a git repository."
+    ish_tui_error --message="not a git repository."
   fi
 }
