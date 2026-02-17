@@ -2,7 +2,7 @@
 
 **milestone:** 1 - restructure
 
-**dependencies:** kanban-board-parser
+**dependencies:** kanban-sqlite-redesign
 
 **priority:** medium
 

@@ -52,10 +52,10 @@ Native vim works now via `:w !` and `:r !`. Future `:Ish` neovim plugin modeled 
 
 The following existing tasks are eliminated — SQLite provides what they were going to build out of markdown parsing:
 
-- kanban-board-parser
-- kanban-board-mutations
-- kanban-source-board-module
-- kanban-task-create-integration
+- kanban-board-parser (eliminated — SQLite replaces markdown parsing)
+- kanban-board-mutations (eliminated)
+- kanban-source-board-module (eliminated)
+- kanban-task-create-integration (eliminated)
 
 ## fp layering (future: phase 2)
 

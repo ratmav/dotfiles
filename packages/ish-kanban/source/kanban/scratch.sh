@@ -3,7 +3,7 @@
 # kanban scratch module - scratch file commands
 #
 # dependencies: ish_tui_template_file
-# these functions are available because bash/kanban.sh sources dependencies before this module
+# these functions are available because kanban.sh sources dependencies before this module
 
 ish_kanban_scratch_help() {
   ish_utils_stream_multiline_stderr <<EOF
