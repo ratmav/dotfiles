@@ -101,6 +101,14 @@ Say "eyes on target" to confirm alignment with CLAUDE.md principles. This signal
 - Keep documentation minimal - only essential steps
 - Trust the automation - if it's in a task, reference the task, don't explain it
 
+## Versioning and Backwards Compatibility
+
+- **No backwards compatibility until v0.1.0 ships.**
+- Docs describe the target state. Code catches up to docs, not the other way around.
+- Don't preserve stale naming, paths, or patterns out of caution — update everything aggressively.
+- Hedging on backwards compat is how doc rot happens. We saw it: conventions.md drifted from code because stale names were left "until migration completes." That's the wrong instinct pre-v0.1.0.
+- When updating docs, use generic examples (foo_bar) instead of specific names to prevent rot in the first place.
+
 ## Dev/Test/Prod Parity
 
 - Aim for as near identical parity between dev, test, and prod as possible

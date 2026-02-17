@@ -37,8 +37,8 @@ ish is designed to require minimal external dependencies and use tools already p
 functions map to file paths via naming convention:
 
 ```
-function: bootstrap_posix_nix_install
-file:     bash/bootstrap/posix/nix.sh
+function: foo_bar_install
+file:     source/foo/bar.sh
 ```
 
 **pattern:** `module_submodule_action()`
@@ -80,7 +80,7 @@ _module_helper_one() { ... }
 _module_helper_two() { ... }
 ```
 
-**example from bash/platform.sh:**
+**example from core/source/platform.sh:**
 ```bash
 # public functions (alphabetized)
 platform_arch() { ... }
@@ -101,7 +101,7 @@ _platform_is_macos() { ... }
 
 **usage in other files:**
 ```bash
-source "${script_dir}/bash/platform.sh"
+source "${ISH_CORE}/source/platform.sh"
 
 # ✓ use public api
 if [[ $(platform_os) == "macos" ]]; then
@@ -117,21 +117,17 @@ fi
 ### directory structure
 
 ```
-bash/
-  tui.sh              # terminal ui utilities
+source/
+  tui.sh              # terminal ui
   platform.sh         # platform detection
-  git.sh              # git router + functions
-  bootstrap/
-    macos.sh          # macos router
-    macos/
-      homebrew.sh     # homebrew functions
-      bash.sh         # bash configuration functions
-    kali.sh           # kali router
-    posix.sh          # posix router
-    posix/
-      nix.sh          # nix functions
-      nvim.sh         # neovim functions
-  legacy/             # deprecated code kept as reference
+  stream.sh           # FP stream primitives
+  color.sh            # terminal color detection
+  file_descriptor.sh  # POSIX I/O
+  exists.sh           # command availability (type)
+  foo/
+    bar.sh            # grouped functions
+    bar/
+      baz.sh          # further grouping when 2+ functions share prefix
 ```
 
 ### the growth pattern: from router to module
@@ -140,22 +136,22 @@ start simple and grow organically:
 
 **stage 1: functions in router file**
 ```bash
-# bash/git.sh
-git_prune_sync() { ... }
-git_worktree_cleanup() { ... }
+# source/foo.sh
+foo_bar_sync() { ... }
+foo_baz_cleanup() { ... }
 
-git_route() {
+foo_route() {
   case "${1-}" in
-    prune)
+    bar)
       shift
       case "${1-}" in
-        sync) git_prune_sync "$@" ;;
+        sync) foo_bar_sync "$@" ;;
       esac
       ;;
-    worktree)
+    baz)
       shift
       case "${1-}" in
-        cleanup) git_worktree_cleanup "$@" ;;
+        cleanup) foo_baz_cleanup "$@" ;;
       esac
       ;;
   esac
@@ -164,24 +160,24 @@ git_route() {
 
 **stage 2: extract when grouping becomes clear**
 
-if you add more `git_prune_*` functions, extract to a module:
+if you add more `foo_bar_*` functions, extract to a module:
 ```bash
-# bash/git/prune.sh
-git_prune_sync() { ... }
-git_prune_local() { ... }
-git_prune_stale() { ... }
+# source/foo/bar.sh
+foo_bar_sync() { ... }
+foo_bar_local() { ... }
+foo_bar_stale() { ... }
 
-# bash/git.sh (router sources and delegates)
-source "${script_dir}/bash/git/prune.sh"
+# source/foo.sh (router sources and delegates)
+source "${_foo_module_dir}/foo/bar.sh"
 
-git_route() {
+foo_route() {
   case "${1-}" in
-    prune)
+    bar)
       shift
       case "${1-}" in
-        sync) git_prune_sync "$@" ;;
-        local) git_prune_local "$@" ;;
-        stale) git_prune_stale "$@" ;;
+        sync) foo_bar_sync "$@" ;;
+        local) foo_bar_local "$@" ;;
+        stale) foo_bar_stale "$@" ;;
       esac
       ;;
   esac
@@ -190,26 +186,26 @@ git_route() {
 
 **stage 3: create sub-router when crossing directory boundary**
 
-if `prune` gets complex enough to need subdirectories:
+if `bar` gets complex enough to need subdirectories:
 ```bash
-# bash/git/prune.sh (becomes a router)
-source "${script_dir}/bash/git/prune/remote.sh"
-source "${script_dir}/bash/git/prune/local.sh"
+# source/foo/bar.sh (becomes a router)
+source "${_bar_module_dir}/bar/remote.sh"
+source "${_bar_module_dir}/bar/local.sh"
 
-git_prune_route() {
+foo_bar_route() {
   case "${1-}" in
-    sync) git_prune_sync "$@" ;;
-    remote) shift; git_prune_remote_route "$@" ;;
-    local) shift; git_prune_local_route "$@" ;;
+    sync) foo_bar_sync "$@" ;;
+    remote) shift; foo_bar_remote_route "$@" ;;
+    local) shift; foo_bar_local_route "$@" ;;
   esac
 }
 
-# bash/git.sh
-source "${script_dir}/bash/git/prune.sh"
+# source/foo.sh
+source "${_foo_module_dir}/foo/bar.sh"
 
-git_route() {
+foo_route() {
   case "${1-}" in
-    prune) shift; git_prune_route "$@" ;;
+    bar) shift; foo_bar_route "$@" ;;
   esac
 }
 ```
@@ -225,10 +221,10 @@ git_route() {
 
 create a subdirectory when:
 - **2+ functions share a common prefix** beyond the module name
-  - example: `git_prune_sync`, `git_prune_local` → create `bash/git/prune.sh`
+  - example: `git_prune_sync`, `git_prune_local` → create `source/foo/bar.sh`
   - repetition is jarring; address it immediately
 - **logical grouping is clear** based on functionality
-  - example: all homebrew operations → `bash/bootstrap/macos/homebrew.sh`
+  - example: all homebrew operations → `source/foo/bar/baz.sh`
 - **file gets long (>150 lines)** → split by functional groups
 
 keep in parent file when:
@@ -251,22 +247,17 @@ see `docs/explicit_routing.md` for detailed explanation.
 when a module has an "all" command that runs multiple steps, create a dedicated `*_all()` function:
 
 ```bash
-# bash/bootstrap/macos.sh
-bootstrap_macos_all() {
-  # platform-specific steps
-  bootstrap_macos_homebrew_install
-  bootstrap_macos_homebrew_brew
-  bootstrap_macos_homebrew_cask
-  bootstrap_macos_bash
-
-  # shared/dependency steps
-  bootstrap_posix_all
+# source/foo.sh
+foo_all() {
+  foo_bar_install
+  foo_bar_configure
+  foo_baz_setup
 }
 
-bootstrap_macos_route() {
+foo_route() {
   case "${1-}" in
     all)
-      bootstrap_macos_all  # router just calls wrapper
+      foo_all  # router just calls wrapper
       ;;
     # ...
   esac
@@ -366,29 +357,29 @@ utils_file_exists()      → ish utils file-exists foo.txt  # ✗ kebab-case
 **solution: add routing layer**
 ```bash
 # good function names enable clean cli
-utils_exists_executable()  → ish utils exists executable bash    # ✓ all single words
-utils_exists_file()        → ish utils exists file foo.txt      # ✓ all single words
+ish_exists_executable()  → ish utils exists executable bash    # ✓ all single words
+ish_file_exists()        → ish utils exists file foo.txt      # ✓ all single words
 ```
 
 **the pattern:**
 1. **identify the problem:** function name has multi-word concept (`is_installed`)
 2. **extract the concept:** what category does this belong to? (`exists`)
-3. **create subdirectory:** `bash/utils/exists.sh`
-4. **rename functions:** `utils_exists_executable()`, `utils_exists_file()`
-5. **add routing:** router at `bash/utils.sh` dispatches to `exists` subcommand
+3. **create subdirectory:** `core/source/exists.sh`
+4. **rename functions:** `ish_exists_executable()`, `ish_file_exists()`
+5. **add routing:** router at `core/source/utils.sh` dispatches to `exists` subcommand
 
 **structure:**
 ```
-bash/
-├── utils.sh              # router with utils_route()
-└── utils/
-    └── exists.sh         # implementation with utils_exists_*() functions
+source/
+├── foo.sh              # router with foo_route()
+└── foo/
+    └── bar.sh          # implementation with foo_bar_*() functions
 ```
 
 **result:**
-- cli: `ish utils exists executable bash` - reads naturally, all single words
-- function: `utils_exists_executable()` - follows naming convention
-- extensible: can add `utils_exists_directory()` without refactoring
+- cli: `ish foo bar action` - reads naturally, all single words
+- function: `ish_foo_bar_action()` - follows naming convention
+- extensible: can add `foo_bar_other()` without refactoring
 
 ### hemingway over melville: brevity and clarity
 
@@ -445,7 +436,7 @@ for single required option (most common case), use a private parsing helper:
 
 ```bash
 # public function
-utils_exists_file() {
+ish_file_exists() {
   local path=$(_utils_parse_single_option "--file" "$@")
   [[ -f "$path" ]]
 }
@@ -463,12 +454,12 @@ _utils_parse_single_option() {
         shift
         ;;
       *)
-        utils_tui_error --message="unknown option: $1"
+        ish_tui_error --message="unknown option: $1"
         ;;
     esac
   done
 
-  [[ -z "$value" ]] && utils_tui_error --message="$option_name required"
+  [[ -z "$value" ]] && ish_tui_error --message="$option_name required"
 
   echo "$value"
 }
@@ -476,10 +467,10 @@ _utils_parse_single_option() {
 
 **special case: tui module**
 
-tui functions parse options inline and use utils_stream_stderr directly to avoid circular dependencies:
+tui functions parse options inline and use ish_stream_stderr directly (tui sources stream.sh):
 
 ```bash
-utils_tui_info() {
+ish_tui_info() {
   local message=""
 
   while [[ $# -gt 0 ]]; do
@@ -489,25 +480,25 @@ utils_tui_info() {
         shift
         ;;
       *)
-        utils_stream_stderr "${ISH_TUI_ERROR}unknown option: $1"
+        ish_stream_stderr "${ISH_TUI_ERROR}unknown option: $1"
         exit 1
         ;;
     esac
   done
 
   if [[ -z "$message" ]]; then
-    utils_stream_stderr "${ISH_TUI_ERROR}--message= required${ISH_TUI_CLEAR}"
+    ish_stream_stderr "${ISH_TUI_ERROR}--message= required${ISH_TUI_CLEAR}"
     return 1
   fi
 
-  utils_stream_stderr "${ISH_TUI_INFO}${message}${ISH_TUI_CLEAR}"
+  ish_stream_stderr "${ISH_TUI_INFO}${message}${ISH_TUI_CLEAR}"
 }
 ```
 
 **guidelines:**
-- inline option parsing when functions can't call utils_tui_error (circular dependency)
-- use utils_stream_stderr directly for error messages within tui module
-- use utils_tui_error for validation errors in all other modules
+- inline option parsing when functions can't call ish_tui_error (circular dependency)
+- use ish_stream_stderr directly for error messages within tui module
+- use ish_tui_error for validation errors in all other modules
 
 ## help text format
 
@@ -538,11 +529,11 @@ this isn't just a nice property - it's the architectural foundation that makes e
 nodes in the graph are modules (files). edges are dependencies (source statements).
 
 ```
-bash/utils/tui.sh ──sources──> bash/utils/exists.sh
-            ──sources──> bash/utils/tui/template.sh
+core/source/tui.sh ──sources──> core/source/exists.sh
+            ──sources──> core/source/tui/template.sh
 
-bash/utils/tui/template.sh ──uses──> utils_tui_error (from parent)
-                     ──uses──> utils_exists_file (parent sourced it)
+core/source/tui/template.sh ──uses──> ish_tui_error (from parent)
+                     ──uses──> ish_file_exists (parent sourced it)
 ```
 
 **directed**: dependencies flow in one direction (parent → child, never child → parent)
@@ -574,18 +565,18 @@ bash/utils/tui/template.sh ──uses──> utils_tui_error (from parent)
 the parent/child relationship in directories mirrors the dag structure:
 
 ```
-bash/
-├── tui.sh              # parent node
-└── tui/
-    └── template.sh     # child node
+source/
+├── foo.sh              # parent node
+└── foo/
+    └── bar.sh          # child node
 
 parent sources child. child uses parent's functions. acyclic by construction.
 ```
 
 **rules enforced by structure:**
-1. **parents source children** - `bash/utils/tui.sh` sources `bash/utils/tui/template.sh`
-2. **children use parent functions** - `template.sh` calls `utils_tui_error` that parent defined
-3. **siblings source shared dependencies** - both source `bash/utils/exists.sh` if needed
+1. **parents source children** - `core/source/tui.sh` sources `core/source/tui/template.sh`
+2. **children use parent functions** - `template.sh` calls `ish_tui_error` that parent defined
+3. **siblings source shared dependencies** - both source `core/source/exists.sh` if needed
 4. **no child-to-parent edges** - child cannot source parent (directory hierarchy prevents it)
 
 **this structure makes cycles structurally impossible:**
@@ -603,14 +594,14 @@ if you want to create a cycle, **don't**. the urge to create a cycle is the arch
 this is fine - parent already loaded it before sourcing child.
 
 ```bash
-# bash/utils/tui.sh
-utils_tui_error() { ... }
+# core/source/tui.sh
+ish_tui_error() { ... }
 source "${module_dir}/tui/template.sh"
 
-# bash/utils/tui/template.sh
-utils_tui_template_file() {
-  # just use utils_tui_error - parent loaded it
-  utils_tui_error --message="..."
+# core/source/tui/template.sh
+ish_tui_template_file() {
+  # just use ish_tui_error - parent loaded it
+  ish_tui_error --message="..."
 }
 ```
 
@@ -620,8 +611,8 @@ this means the function is in the wrong place. move it to parent or extract to s
 
 ```bash
 # bad: parent needs child's function
-# bash/utils/tui.sh needs utils_tui_template_parse() from bash/utils/tui/template.sh
-# solution: move utils_tui_template_parse to bash/utils/tui.sh (parent)
+# core/source/tui.sh needs ish_tui_template_parse() from core/source/tui/template.sh
+# solution: move ish_tui_template_parse to core/source/tui.sh (parent)
 ```
 
 **scenario 3: two modules need each other**
@@ -633,10 +624,10 @@ this means they're actually one module, or both need a third module.
 # solution 1: merge A and B (they're coupled, make it explicit)
 # solution 2: extract shared functionality to module C, both depend on C
 
-bash/
-├── module_c.sh         # shared functionality
-├── module_a.sh         # sources module_c.sh
-└── module_b.sh         # sources module_c.sh
+source/
+├── foo_c.sh            # shared functionality
+├── foo_a.sh            # sources foo_c.sh
+└── foo_b.sh            # sources foo_c.sh
 ```
 
 **scenario 4: cross-cutting concern**
@@ -650,9 +641,9 @@ if an abstraction crosses the parent/child boundary in ways that create cycles, 
 external-lib/           # separate project
 └── shared.sh
 
-bash/
-├── module_a.sh         # sources external-lib/shared.sh
-└── module_b.sh         # sources external-lib/shared.sh
+source/
+├── foo_a.sh            # sources external-lib/shared.sh
+└── foo_b.sh            # sources external-lib/shared.sh
 ```
 
 **key insight: cycles indicate coupling.** if you can't avoid a cycle, the coupled code should be isolated (merged or extracted). the dag structure forces you to make coupling explicit.
@@ -685,9 +676,9 @@ every file explicitly sources what it needs at the top of the file:
 
 script_dir=$(cd "$(dirname "${bash_source[0]}")/../.." &>/dev/null && pwd -p)
 
-source "${script_dir}/bash/utils/tui.sh"
-source "${script_dir}/bash/platform.sh"
-source "${script_dir}/bash/bootstrap/posix.sh"
+source "${script_dir}/core/source/tui.sh"
+source "${ISH_CORE}/source/platform.sh"
+source "${ISH_CORE}/source/bootstrap/posix.sh"
 ```
 
 **rules:**
@@ -725,7 +716,7 @@ ISH_TEST_FIXTURES="/tmp/ish_fixtures"
 
 **rationale:**
 - clear ownership - all ISH_* variables belong to ish
-- avoids stomping user variables (utils_tui_error could conflict with function names)
+- avoids stomping user variables (ish_tui_error could conflict with function names)
 - easy to grep for all ish environment state
 - follows common practice (BATS_*, DOCKER_*, etc.)
 
@@ -771,42 +762,39 @@ modules use two path variables for sourcing dependencies:
 when modules source each other, variable collisions break path resolution:
 
 ```bash
-# bash/bootstrap/posix.sh
-module_dir=/path/to/bash/bootstrap  # set correctly
-source "${script_dir}/bash/utils/tui.sh"  # sources tui.sh
-# tui.sh redefines module_dir=/path/to/bash (collision!)
-source "${module_dir}/posix/nix.sh" # now broken - wrong path
+# source/foo.sh
+module_dir=/path/to/source/foo  # set correctly
+source "${ISH_CORE}/source/tui.sh"  # sources tui.sh
+# tui.sh redefines module_dir=/path/to/source (collision!)
+source "${module_dir}/foo/bar.sh" # now broken - wrong path
 ```
 
-**the solution: namespace module_dir by file path**
+**the solution: namespace module_dir by full file path**
 
 ```bash
-# bash/utils/tui.sh
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
-tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+# core/source/tui.sh
+_core_source_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/exists.sh"
-source "${tui_module_dir}/tui/template.sh"
+source "${_core_source_tui_module_dir}/stream.sh"
+source "${_core_source_tui_module_dir}/tui/template.sh"
 
-# bash/bootstrap/posix.sh
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." &>/dev/null && pwd -P)
-bootstrap_posix_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+# packages/foo/source/bar.sh
+_foo_source_bar_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/tui.sh"
-source "${script_dir}/bash/utils.sh"
-source "${bootstrap_posix_module_dir}/posix/nix.sh"
+source "${ISH_CORE}/source/tui.sh"
+source "${_foo_source_bar_module_dir}/bar/baz.sh"
 ```
 
 **naming pattern:**
-- `bash/utils/tui.sh` → `tui_module_dir`
-- `bash/utils.sh` → `utils_module_dir`
-- `bash/bootstrap/posix.sh` → `bootstrap_posix_module_dir`
-- `bash/bootstrap/macos.sh` → `bootstrap_macos_module_dir`
-- pattern: convert file path to snake_case, append `_module_dir`
+- `core/source/tui.sh` → `_core_source_tui_module_dir`
+- `core/source/utils.sh` → `_core_source_utils_module_dir`
+- `packages/foo/source/bar.sh` → `_foo_source_bar_module_dir`
+- pattern: convert full file path to snake_case, prepend `_`, append `_module_dir`
 
 **rules:**
 - never use unnamespaced `module_dir` (causes collisions)
-- namespace based on full module path from bash/ directory
+- derive name from full path (guarantees uniqueness even if two modules share a leaf name)
+- `_` prefix signals file-level private variable
 - use `script_dir` for sourcing peer modules (no namespace needed - always same value)
 - use `*_module_dir` for sourcing submodules within same hierarchy
 - declare both at top of file, before any source statements
@@ -856,18 +844,18 @@ function_name() {
 **errors are fatal. warnings are not.**
 
 ```bash
-utils_tui_error --message="text"  # exits immediately with code 1
-utils_tui_warn --message="text"   # continues execution
-utils_tui_info --message="text"   # continues execution
+ish_tui_error --message="text"  # exits immediately with code 1
+ish_tui_warn --message="text"   # continues execution
+ish_tui_info --message="text"   # continues execution
 ```
 
-**`utils_tui_error` semantics:**
+**`ish_tui_error` semantics:**
 - prints error message to stderr
 - exits immediately with code 1
 - no need for `return 1` or `exit 1` after calling it
 - use for unrecoverable errors (missing dependencies, invalid state)
 
-**`utils_tui_warn` semantics:**
+**`ish_tui_warn` semantics:**
 - prints warning message to stderr
 - continues execution
 - use for recoverable issues (already installed, skipping optional step)
@@ -880,7 +868,7 @@ case "${1-}" in
     ;;
   *)
     some_help                                      # show help first
-    utils_tui_error --message="unknown command"   # then fail fast
+    ish_tui_error --message="unknown command"   # then fail fast
     ;;
 esac
 ```
@@ -897,13 +885,13 @@ esac
 the tui module provides distinct functions for different output purposes:
 
 **message functions** (stderr):
-- `utils_tui_error --message="text"` - error messages, exits with code 1
-- `utils_tui_warn --message="text"` - warning messages, continues
-- `utils_tui_info --message="text"` - info messages, continues
-- `utils_tui_template()` - string templating with {{variable}} substitution
+- `ish_tui_error --message="text"` - error messages, exits with code 1
+- `ish_tui_warn --message="text"` - warning messages, continues
+- `ish_tui_info --message="text"` - info messages, continues
+- `ish_tui_template()` - string templating with {{variable}} substitution
 
 **file output functions** (stdout):
-- `utils_tui_template_file --path=file` - outputs file contents to stdout
+- `ish_tui_template_file --path=file` - outputs file contents to stdout
 
 **why separate?**
 
@@ -921,8 +909,8 @@ the tui module provides distinct functions for different output purposes:
 
 2. **clarity** - explicit function names document intent
    ```bash
-   utils_tui_info --message="loading template"          # user message
-   utils_tui_template_file --path=kanban/board.md       # data output
+   ish_tui_info --message="loading template"          # user message
+   ish_tui_template_file --path=kanban/board.md       # data output
    ```
 
 3. **unix philosophy** - errors to stderr, data to stdout
@@ -961,12 +949,12 @@ utils_help() {
 }
 
 # user messages (stderr, colored)
-utils_tui_info --message="detected platform: $os"
-utils_tui_warn --message="unsupported platform"
-utils_tui_error --message="platform detection failed"
+ish_tui_info --message="detected platform: $os"
+ish_tui_warn --message="unsupported platform"
+ish_tui_error --message="platform detection failed"
 
 # file/data output (stdout, pipeable)
-utils_tui_template_file --path=board.md
+ish_tui_template_file --path=board.md
 ```
 
 **why utils_output?**
@@ -990,35 +978,35 @@ utils_tui_template_file --path=board.md
    ```
 
 3. **consistent** - complements utils_tui_* message functions
-   - `utils_stream_stdout` → stdout (return values, data)
-   - `utils_tui_info/warn/error` → stderr (user messages, colored)
+   - `ish_stream_stdout` → stdout (return values, data)
+   - `ish_tui_info/warn/error` → stderr (user messages, colored)
    - avoid bare `echo` and `printf` (ambiguous intent)
 
 **when to use:**
-- use `utils_stream_stdout` for return values, plain data output
-- use `utils_stream_multiline_stderr` for help text
+- use `ish_stream_stdout` for return values, plain data output
+- use `ish_stream_stderr` for help text
 - use `utils_tui_*` for user-facing operational messages
 - avoid bare `echo` and `printf` in favor of explicit functions
 
 **child modules don't source parent:**
 
-`bash/utils/tui/template.sh` depends on `utils_tui_error` and `utils_exists_file`, but doesn't source them:
+`core/source/tui/template.sh` depends on `ish_tui_error` and `ish_file_exists`, but doesn't source them:
 
 ```bash
 #!/usr/bin/env bash
 
 # tui template module - file output functions
-# dependencies: utils_tui_error, utils_exists_file
-# these functions are available because bash/utils/tui.sh sources dependencies before this module
+# dependencies: ish_tui_error, ish_file_exists
+# these functions are available because core/source/tui.sh sources dependencies before this module
 
-utils_tui_template_file() {
+ish_tui_template_file() {
   local path=""
 
-  # ... uses utils_tui_error and utils_exists_file
+  # ... uses ish_tui_error and ish_file_exists
 }
 ```
 
-parent `bash/utils/tui.sh` sources dependencies first, then sources child:
+parent `core/source/tui.sh` sources dependencies first, then sources child:
 
 ```bash
 #!/usr/bin/env bash
@@ -1026,7 +1014,7 @@ parent `bash/utils/tui.sh` sources dependencies first, then sources child:
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
 module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/bash/utils/exists.sh"  # provides utils_exists_file
+source "${script_dir}/core/source/exists.sh"  # provides ish_file_exists
 source "${module_dir}/tui/template.sh"        # can now use dependencies
 ```
 
@@ -1048,9 +1036,9 @@ setup() {
   _common_setup
 
   # source dependencies in correct order
-  source bash/utils/tui.sh              # provides utils_tui_error
-  source bash/utils/exists.sh           # provides utils_exists_file
-  source bash/utils/tui/template.sh     # the module being tested
+  source core/source/tui.sh              # provides ish_tui_error
+  source core/source/exists.sh           # provides ish_file_exists
+  source core/source/tui/template.sh     # the module being tested
 }
 ```
 
@@ -1068,7 +1056,7 @@ integration tests use the cli directly, so dependencies are handled automaticall
 
 ## utility abstractions
 
-extract common patterns into `bash/utils.sh` when they repeat **2+ times**.
+extract common patterns into `core/source/utils.sh` when they repeat **2+ times**.
 
 **the 2+ rule:**
 - 1 occurrence → write inline
@@ -1116,21 +1104,21 @@ from wikipedia on [standard streams](https://en.wikipedia.org/wiki/Standard_stre
 
 ### the architecture
 
-**foundation layer: `bash/utils/stream.sh`**
+**foundation layer: `core/source/stream.sh`**
 ```bash
-utils_stream_stdout()  # printf '%s\n' "$*" >&1
-utils_stream_stderr()  # printf '%s\n' "$*" >&2
+ish_stream_stdout()  # printf '%s\n' "$*" >&1
+ish_stream_stderr()  # printf '%s\n' "$*" >&2
 ```
 
 - safe output via printf (handles `-n` flags, special chars, newlines)
 - no dependencies - this is the base layer
 - used by everything else
 
-**terminal ui layer: `bash/utils/tui.sh`**
+**terminal ui layer: `core/source/tui.sh`**
 ```bash
-utils_tui_error()  # colored error message, exits with code 1
-utils_tui_warn()   # colored warning message, continues execution
-utils_tui_info()   # colored info message, continues execution
+ish_tui_error()  # colored error message, exits with code 1
+ish_tui_warn()   # colored warning message, continues execution
+ish_tui_info()   # colored info message, continues execution
 ```
 
 - decorated output with colors and formatting
@@ -1142,7 +1130,7 @@ utils_tui_info()   # colored info message, continues execution
 **internal functions return data via stdout:**
 ```bash
 platform_os() {
-  utils_stream_stdout "macos"  # fd 1
+  ish_stream_stdout "macos"  # fd 1
 }
 
 # calling code captures clean data
@@ -1154,7 +1142,7 @@ os=$(platform_os)  # os="macos", no pollution
 utils_route() {
   case "${1-}" in
     *)
-      utils_tui_error --message="unknown command: ${1-}"  # fd 2, exits
+      ish_tui_error --message="unknown command: ${1-}"  # fd 2, exits
       ;;
   esac
 }
@@ -1162,7 +1150,7 @@ utils_route() {
 
 **template rendering outputs to stdout:**
 ```bash
-utils_tui_template_file --path=template.conf > output.conf
+ish_tui_template_file --path=template.conf > output.conf
 ```
 
 **benefits:**
@@ -1173,23 +1161,23 @@ utils_tui_template_file --path=template.conf > output.conf
 
 ### when to use each
 
-**use `utils_stream_stdout` when:**
+**use `ish_stream_stdout` when:**
 - function returns data meant to be captured
 - outputting template/file contents
 - returning computed values
 
-**use `utils_tui_error` when:**
+**use `ish_tui_error` when:**
 - invalid input or missing required parameters
 - operation failed and cannot continue
 - use `--message=` flag for error text
 - automatically exits with code 1
 
-**use `utils_tui_warn` when:**
+**use `ish_tui_warn` when:**
 - operation succeeded but with caveats
 - deprecated features used
 - non-fatal issues detected
 
-**use `utils_tui_info` when:**
+**use `ish_tui_info` when:**
 - reporting progress or status
 - confirming successful operations
 - verbose output for debugging
@@ -1202,22 +1190,13 @@ utils_tui_template_file --path=template.conf > output.conf
 
 ### the dag: no circular dependencies
 
-**before the refactor:**
 ```
-bash/tui.sh ──sources──> bash/utils.sh
-bash/utils.sh ──sources──> bash/tui.sh   # CIRCULAR!
-```
-
-**after the refactor:**
-```
-bash/utils.sh ──sources──> bash/utils/stream.sh
-                       ──sources──> bash/utils/tui.sh
-
-bash/utils/tui.sh ──sources──> bash/utils/stream.sh
-                          ──sources──> bash/utils/exists.sh
+core/source/tui.sh ──sources──> core/source/stream.sh
+                   ──sources──> core/source/exists.sh
+                   ──sources──> core/source/tui/template.sh
 ```
 
-no cycles - tui is now a child of utils, uses stream directly.
+tui sources stream (which sources file_descriptor and color). no cycles — dependencies flow one direction.
 
 ## comments
 

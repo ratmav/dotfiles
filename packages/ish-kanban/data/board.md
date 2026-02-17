@@ -26,8 +26,14 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo (priority order)
 
+**Spec compliance:**
+1. [ ] [fix-module-dir-namespacing](tasks/fix-module-dir-namespacing.md) - core uses short-form `_tui_module_dir`; spec requires `ish_tui_module_dir` (function-prefix derivation)
+
+**Doc audit:**
+2. [ ] [complete-doc-audit](tasks/complete-doc-audit.md) - finish cleaning stale naming, paths, and examples across all docs and tasks
+
 **Foundation:**
-1. [ ] build-fp-core-exists - `ish_exists_executable` at `core/source/exists.sh` (wraps `type`). Environment introspection alongside color + file_descriptor. Migrate 20+ consumers from `ish_utils_exists_executable`.
+3. [ ] build-fp-core-exists - `ish_exists_executable` at `core/source/exists.sh` (wraps `type`). Environment introspection alongside color + file_descriptor. Migrate 20+ consumers from `ish_utils_exists_executable`.
 
 **Primitives (built on file descriptors):**
 2. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr. Migrate 20+ consumers from `ish_utils_stream_*` → `ish_stream_*`. Delete `source/utils/stream.sh`.
@@ -95,7 +101,8 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 2. [ ] [gpg-signed-commits](tasks/gpg-signed-commits.md) - enable GPG signing
 3. [ ] [implement-registry](tasks/implement-registry.md) - registry system (ish/registry module with data/packages/)
 4. [ ] implement package commands (migration_path.md Step 3) - using ish_*
-5. [ ] test locally (migration_path.md Step 4)
+5. [ ] [project-ishrc](tasks/project-ishrc.md) - per-project hot package loading via .ishrc in cwd
+6. [ ] test locally (migration_path.md Step 4)
 
 ---
 

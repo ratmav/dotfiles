@@ -6,18 +6,18 @@
 
 ```bash
 # this is monadic (just syntax)
-ish_git_add "kanban.sql" \
-    && ish_git_commit "update kanban data" \
+ish_git_add "foo.sql" \
+    && ish_git_commit "update foo" \
     && ish_git_push
 
 # this is the same thing, formalized
 ish_git_bind \
-    "ish_git_add kanban.sql" \
-    "ish_git_commit 'update kanban data'" \
+    "ish_git_add foo.sql" \
+    "ish_git_commit 'update foo'" \
     "ish_git_push"
 ```
 
-the difference: `&&` is fire-and-forget. `bind` adds error context (which step failed, which repo, what to do about it) and makes the chain a composable value rather than syntax.
+the difference: `&&` is fire-and-forget. `bind` adds error context (which step failed, what to do about it) and makes the chain a composable value rather than syntax.
 
 ## where bind lives
 
@@ -91,8 +91,8 @@ at the integration layer, bind becomes architecturally significant. the canonica
 
 ```bash
 ish_git_bind \
-    "ish_git_add kanban.sql" \
-    "ish_git_commit 'update kanban data'" \
+    "ish_git_add foo.sql" \
+    "ish_git_commit 'update foo'" \
     "ish_git_push"
 ```
 
@@ -119,11 +119,11 @@ primitive binds      chain POSIX operations (stream, file, pipe)
 foundation           color, file_descriptor, exists (the bottom)
 ```
 
-monads are the vertical spine. every layer's bind composes the layer below it. package code never sees bind directly — the semantic layer hides it behind names like `ish_require_valid_hostname` and `ish_fail_with`.
+monads are the vertical spine. every layer's bind composes the layer below it. package code never sees bind directly — the semantic layer hides it behind names like `require_valid_foo` and `fail_with`.
 
 ## see also
 
 - `core/source/stream.sh` — working bind implementation
 - `core/test/unit/stream.bats` — bind tests including short-circuit proof
-- `core/docs/architecture/functional_future/fp_magic.md` — the full stack vision
-- `core/docs/architecture/functional_future/overview.md` — type signatures and monad law tests
+- [layers.md](layers.md) — the full stack
+- [primitives.md](primitives.md) — type signatures and examples
