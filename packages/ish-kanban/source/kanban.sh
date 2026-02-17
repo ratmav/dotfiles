@@ -11,7 +11,7 @@ ish_kanban_show() {
   local ish_kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
   else
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi

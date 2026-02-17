@@ -42,7 +42,7 @@ teardown() {
   run ./ish kanban show
   assert_success
   assert_output --partial "## milestones"
-  assert_output --partial "milestone 1: test milestone"
+  assert_output --partial "phase 1: test milestone"
 }
 
 @test "ish kanban show includes task links" {

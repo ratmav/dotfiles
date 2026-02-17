@@ -38,7 +38,7 @@ ish_kanban_task_delete() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
   else
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
@@ -58,7 +58,7 @@ ish_kanban_task_list() {
   local task_file
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
   else
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
@@ -95,7 +95,7 @@ ish_kanban_task_new() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
   else
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
@@ -139,7 +139,7 @@ ish_kanban_task_path() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
   else
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
@@ -173,7 +173,7 @@ ish_kanban_task_show() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
   else
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi

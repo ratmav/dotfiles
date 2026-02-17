@@ -3,6 +3,18 @@
 # Package discovery and routing
 # Convention: packages/ish-{name}/ with source/{name}.sh router
 
+ish_packages_data_dir() {
+  local package="${1-}"
+
+  [[ -z "$package" ]] && return 1
+
+  if [[ "${ISH_TESTING:-false}" == "true" ]]; then
+    printf '%s' "${ISH_PACKAGES}/${package}/test/fixtures"
+  else
+    printf '%s' "${ISH_PACKAGES}/${package}/data"
+  fi
+}
+
 ish_packages_list_for_help() {
   local pkg_dir pkg_name
 

@@ -49,7 +49,7 @@ teardown() {
 @test "ish kanban scratch path outputs file path" {
   run ./ish kanban scratch path
   assert_success
-  assert_output --partial "${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban/scratch.md"
+  assert_output --partial "${ISH_PACKAGES}/ish-kanban/test/fixtures/scratch.md"
 }
 
 # kanban scratch capture - appends quick note to scratch
@@ -97,5 +97,5 @@ teardown() {
   # verify path points to fixture
   run ./ish kanban scratch path
   assert_success
-  assert_output --partial "${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban/scratch.md"
+  assert_output --partial "${ISH_PACKAGES}/ish-kanban/test/fixtures/scratch.md"
 }
