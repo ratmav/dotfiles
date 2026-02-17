@@ -60,15 +60,16 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo
 
-1. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
-2. [ ] refactor ratfiles to use ish_* primitives
-3. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, tui_error usage, quoted variables
-4. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
-5. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
-6. [ ] [implement-module-namespace-linter](tasks/implement-module-namespace-linter.md) - static analysis for module_dir violations and DAG enforcement
-7. [ ] [verify-bash-portability](tasks/verify-bash-portability.md) - version checks, cross-platform testing
-8. [ ] verify tests still pass
-9. [ ] verify local package structure works
+1. [ ] [reconcile-task-architecture](tasks/reconcile-task-architecture.md) - document top-down decision in architecture docs, delete task_reconciliation.md
+2. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
+3. [ ] refactor ratfiles to use ish_* primitives
+4. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, tui_error usage, quoted variables
+5. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
+6. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
+7. [ ] [implement-module-namespace-linter](tasks/implement-module-namespace-linter.md) - static analysis for module_dir violations and DAG enforcement
+8. [ ] [verify-bash-portability](tasks/verify-bash-portability.md) - version checks, cross-platform testing
+9. [ ] verify tests still pass
+10. [ ] verify local package structure works
 
 ---
 
