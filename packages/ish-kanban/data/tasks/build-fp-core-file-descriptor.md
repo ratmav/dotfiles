@@ -1,4 +1,4 @@
-# build ish_core_file_descriptor - functional file descriptor operations
+# build ish_file_descriptor - functional file descriptor operations
 
 **dependencies:** none (this is the foundation)
 
@@ -12,20 +12,20 @@ This module owns the raw fd operations that stream, file, and pipe build on top 
 
 ## subtasks
 
-- [ ] implement `ish_core_file_descriptor_open` - open fd to a target (file, device), return fd number
-- [ ] implement `ish_core_file_descriptor_close` - close an fd
-- [ ] implement `ish_core_file_descriptor_duplicate` - copy fd to another number (the mechanism behind redirection)
-- [ ] implement `ish_core_file_descriptor_read` - read from an fd to stdout
-- [ ] implement `ish_core_file_descriptor_write` - write stdin to an fd
-- [ ] implement `ish_core_file_descriptor_bind` - chain fd operations with error propagation
-- [ ] implement `ish_core_file_descriptor_require` - assert fd is open/valid or fail
+- [ ] implement `ish_file_descriptor_open` - open fd to a target (file, device), return fd number
+- [ ] implement `ish_file_descriptor_close` - close an fd
+- [ ] implement `ish_file_descriptor_duplicate` - copy fd to another number (the mechanism behind redirection)
+- [ ] implement `ish_file_descriptor_read` - read from an fd to stdout
+- [ ] implement `ish_file_descriptor_write` - write stdin to an fd
+- [ ] implement `ish_file_descriptor_bind` - chain fd operations with error propagation
+- [ ] implement `ish_file_descriptor_require` - assert fd is open/valid or fail
 - [ ] write unit tests for each primitive
 - [ ] test monad laws (identity, composition) for file_descriptor_bind
 - [ ] document with type signatures and examples
 
 ## deliverable
 
-`packages/ish/source/core/file_descriptor.sh` with tested FP primitives
+`core/source/file_descriptor.sh` with tested FP primitives
 
 ## notes
 
@@ -34,25 +34,25 @@ This module owns the raw fd operations that stream, file, and pipe build on top 
 **Type signatures:**
 ```bash
 # @type: filepath -> mode -> IO fd | error
-ish_core_file_descriptor_open()
+ish_file_descriptor_open()
 
 # @type: fd -> IO () | error
-ish_core_file_descriptor_close()
+ish_file_descriptor_close()
 
 # @type: fd_source -> fd_target -> IO () | error
-ish_core_file_descriptor_duplicate()
+ish_file_descriptor_duplicate()
 
 # @type: fd -> IO string | error
-ish_core_file_descriptor_read()
+ish_file_descriptor_read()
 
 # @type: fd -> stdin -> IO () | error
-ish_core_file_descriptor_write()
+ish_file_descriptor_write()
 
 # @type: (fd -> IO b) -> IO fd -> IO b | error
-ish_core_file_descriptor_bind()
+ish_file_descriptor_bind()
 
 # @type: fd -> IO () | error
-ish_core_file_descriptor_require()
+ish_file_descriptor_require()
 ```
 
 **Bash fd mechanics:**

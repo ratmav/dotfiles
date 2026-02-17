@@ -1,4 +1,4 @@
-# build ish_core_validate - validation functions and combinators
+# build ish_validate - validation functions and combinators
 
 **milestone:** 2 - fp core + cleanup
 
@@ -14,17 +14,17 @@ Pure functions that return true/false, composable with and/or/not.
 
 **Basic Validators:**
 - [ ] implement basic validators (nonempty, int, ip, hostname, url)
-- [ ] implement combinator: `ish_core_validate_and` - combine with AND
-- [ ] implement combinator: `ish_core_validate_or` - combine with OR
-- [ ] implement combinator: `ish_core_validate_not` - negate validator
-- [ ] implement `ish_core_validate_require` - validate or fail with message
-- [ ] implement `ish_core_validate_make_regex` - create validator from pattern
+- [ ] implement combinator: `ish_validate_and` - combine with AND
+- [ ] implement combinator: `ish_validate_or` - combine with OR
+- [ ] implement combinator: `ish_validate_not` - negate validator
+- [ ] implement `ish_validate_require` - validate or fail with message
+- [ ] implement `ish_validate_make_regex` - create validator from pattern
 
 **Namespace Validation:**
-- [ ] implement `ish_core_namespace_validate` - check function matches declared namespace
-- [ ] implement `ish_core_namespace_check_uniqueness` - check for duplicate namespaces
-- [ ] implement `ish_core_namespace_parse` - parse namespace from package.conf
-- [ ] implement `ish_core_namespace_validate_function_name` - check function naming
+- [ ] implement `ish_namespace_validate` - check function matches declared namespace
+- [ ] implement `ish_namespace_check_uniqueness` - check for duplicate namespaces
+- [ ] implement `ish_namespace_parse` - parse namespace from package.conf
+- [ ] implement `ish_namespace_validate_function_name` - check function naming
 
 **Testing:**
 - [ ] write unit tests for all validators
@@ -34,7 +34,7 @@ Pure functions that return true/false, composable with and/or/not.
 
 ## deliverable
 
-`packages/ish/source/core/validate.sh` with composable validators
+`core/source/validate.sh` with composable validators
 
 ## notes
 
@@ -43,16 +43,16 @@ Pure functions that return true/false, composable with and/or/not.
 **Type signatures:**
 ```bash
 # @type: string -> bool
-ish_core_validate_nonempty()
+ish_validate_nonempty()
 
 # @type: string -> bool
-ish_core_validate_ip()
+ish_validate_ip()
 
 # @type: (a -> bool) -> (a -> bool) -> a -> bool
-ish_core_validate_and()
+ish_validate_and()
 
 # @type: (a -> bool) -> a -> string -> IO () | error
-ish_core_validate_require()
+ish_validate_require()
 ```
 
 **Validators are pure. require_* functions perform IO (error/exit).**
@@ -60,13 +60,13 @@ ish_core_validate_require()
 **Namespace validation functions:**
 ```bash
 # @type: string (file) -> string (namespace) -> IO () | error
-ish_core_namespace_validate()
+ish_namespace_validate()
 
 # @type: [string] (namespaces) -> bool
-ish_core_namespace_check_uniqueness()
+ish_namespace_check_uniqueness()
 
 # @type: string (conf_file) -> string (namespace)
-ish_core_namespace_parse()
+ish_namespace_parse()
 ```
 
 **Used by registry module to enforce namespace uniqueness.**

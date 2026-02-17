@@ -12,7 +12,7 @@
 3. Implement kanban SQLite redesign using FP, delete dead code (phase 3)
 4. Proven patterns extend to registry, remote execution, infra packages (future)
 
-**Naming convention:** `ish_core_stream`, `ish_core_file`, `ish_core_sqlite`, `ish_core_git` (not utils - too generic)
+**Naming convention:** `ish_stream`, `ish_file`, `ish_sqlite`, `ish_git` (not utils - too generic)
 
 ## open questions
 
@@ -41,8 +41,8 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 **FP Layer:**
 7. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
 8. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-7. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-8. [ ] document FP patterns and usage
+9. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+10. [ ] document FP patterns and usage
 
 ### in progress
 
@@ -55,7 +55,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 ### todo
 
 1. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
-2. [ ] refactor ratfiles to use ish_core_* primitives
+2. [ ] refactor ratfiles to use ish_* primitives
 3. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
 4. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
 5. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
@@ -88,10 +88,10 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo
 
-1. [ ] [add-to-path](tasks/add-to-path.md) - verify ish self install implementation (using ish_core_*)
+1. [ ] [add-to-path](tasks/add-to-path.md) - verify ish self install implementation (using ish_*)
 2. [ ] [gpg-signed-commits](tasks/gpg-signed-commits.md) - enable GPG signing
 3. [ ] [implement-registry](tasks/implement-registry.md) - registry system (ish/registry module with data/packages/)
-4. [ ] implement package commands (migration_path.md Step 3) - using ish_core_*
+4. [ ] implement package commands (migration_path.md Step 3) - using ish_*
 5. [ ] test locally (migration_path.md Step 4)
 
 ---
@@ -102,10 +102,16 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo
 
-1. [ ] add remote execution architecture docs
-2. [ ] [remote-flag](tasks/remote-flag.md) - implement --remote=host flag
-3. [ ] [ssh-features](tasks/ssh-features.md) - ssh key management
-4. [ ] [advanced-remote](tasks/advanced-remote.md) - host groups, parallel execution
+**Integrations (external binaries composed through primitives):**
+1. [ ] [build-fp-integration-curl](tasks/build-fp-integration-curl.md) - HTTP operations via curl
+2. [ ] [build-fp-integration-ssh](tasks/build-fp-integration-ssh.md) - remote execution via ssh
+3. [ ] [build-fp-integration-jq](tasks/build-fp-integration-jq.md) - JSON parsing via jq
+
+**Remote execution features:**
+4. [ ] add remote execution architecture docs
+5. [ ] [remote-flag](tasks/remote-flag.md) - implement --remote=host flag
+6. [ ] [ssh-features](tasks/ssh-features.md) - ssh key management
+7. [ ] [advanced-remote](tasks/advanced-remote.md) - host groups, parallel execution
 
 ---
 
@@ -142,7 +148,9 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 **Key decisions:**
 - Top-down package model (ish loads packages)
-- FP core: file_descriptor → primitives (stream, file, pipe) → integrations (sqlite, git) → layer (validate, semantic)
+- FP core: file_descriptor → primitives (stream, file, pipe) → integrations (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
+- Integrations are built when their first consumer exists (sqlite/git for kanban, curl/ssh/jq for remote exec)
+- Monads: every `*_bind` function is the monadic operation — see core/docs/architecture/functional_future/monads.md
 - Build FP first, refactor existing code, then tackle kanban redesign with proven tools
 - Base case: local dotfiles management
 - Future: homelab/infrastructure orchestration

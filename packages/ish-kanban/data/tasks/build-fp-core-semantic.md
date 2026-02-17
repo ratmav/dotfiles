@@ -1,4 +1,4 @@
-# build ish_core_semantic - semantic wrappers for clean code
+# build ish_semantic - semantic wrappers for clean code
 
 **milestone:** 2 - fp core + cleanup
 
@@ -12,23 +12,23 @@ Wraps stream operations, validation, and error handling with clear, semantic nam
 
 ## subtasks
 
-- [ ] implement `ish_core_parse_option` - extract command-line options
-- [ ] implement `ish_core_require_*` family - semantic validators
-  - ish_core_require_valid_hostname
-  - ish_core_require_valid_ip
-  - ish_core_require_file_exists
-  - ish_core_require_executable_exists
-- [ ] implement error handling: `ish_core_fail_with` - error and exit
+- [ ] implement `ish_parse_option` - extract command-line options
+- [ ] implement `ish_require_*` family - semantic validators
+  - ish_require_valid_hostname
+  - ish_require_valid_ip
+  - ish_require_file_exists
+  - ish_require_executable_exists
+- [ ] implement error handling: `ish_fail_with` - error and exit
 - [ ] implement user communication:
-  - `ish_core_inform_user` - info message
-  - `ish_core_warn_user` - warning message
+  - `ish_inform_user` - info message
+  - `ish_warn_user` - warning message
 - [ ] write unit tests for each semantic wrapper
 - [ ] write integration tests showing readable code patterns
 - [ ] document usage patterns with examples
 
 ## deliverable
 
-`packages/ish/source/core/semantic.sh` with English-like wrappers
+`core/source/semantic.sh` with English-like wrappers
 
 ## notes
 
@@ -36,16 +36,16 @@ Wraps stream operations, validation, and error handling with clear, semantic nam
 
 **Example usage:**
 ```bash
-# Instead of: ish_core_validate_require ish_core_validate_hostname "$hostname" "invalid"
-ish_core_require_valid_hostname "$hostname"
+# Instead of: ish_validate_require ish_validate_hostname "$hostname" "invalid"
+ish_require_valid_hostname "$hostname"
 
 # Instead of: utils_tui_info --message="testing connectivity"
-ish_core_inform_user "testing connectivity"
+ish_inform_user "testing connectivity"
 
 # Instead of: utils_tui_error --message="cannot connect"
-ish_core_fail_with "cannot connect"
+ish_fail_with "cannot connect"
 ```
 
 **This layer makes code read like English while using FP primitives underneath.**
 
-**CRITICAL:** All functions namespaced with `ish_core_*` to prevent package collisions.
+**CRITICAL:** All functions namespaced with `ish_*` to prevent package collisions.

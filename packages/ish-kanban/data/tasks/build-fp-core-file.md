@@ -1,4 +1,4 @@
-# build ish_core_file - functional file operations
+# build ish_file - functional file operations
 
 **dependencies:** build-fp-core-file-descriptor
 
@@ -12,19 +12,19 @@ These wrap POSIX file operations in monadic error handling so callers chain file
 
 ## subtasks
 
-- [ ] implement `ish_core_file_read` - read file contents to stdout, fail with context if missing
-- [ ] implement `ish_core_file_write` - write stdin to file atomically (temp + mv), fail with context
-- [ ] implement `ish_core_file_append` - append stdin to file, fail with context
-- [ ] implement `ish_core_file_exists` - predicate for filter/guard
-- [ ] implement `ish_core_file_require` - assert file exists or fail with message
-- [ ] implement `ish_core_file_bind` - chain file operations with error propagation
+- [ ] implement `ish_file_read` - read file contents to stdout, fail with context if missing
+- [ ] implement `ish_file_write` - write stdin to file atomically (temp + mv), fail with context
+- [ ] implement `ish_file_append` - append stdin to file, fail with context
+- [ ] implement `ish_file_exists` - predicate for filter/guard
+- [ ] implement `ish_file_require` - assert file exists or fail with message
+- [ ] implement `ish_file_bind` - chain file operations with error propagation
 - [ ] write unit tests for each primitive
 - [ ] test monad laws (identity, composition) for file_bind
 - [ ] document with type signatures and examples
 
 ## deliverable
 
-`packages/ish/source/core/file.sh` with tested FP primitives
+`core/source/file.sh` with tested FP primitives
 
 ## notes
 
@@ -37,25 +37,25 @@ These wrap POSIX file operations in monadic error handling so callers chain file
 **Type signatures:**
 ```bash
 # @type: filepath -> IO string | error
-ish_core_file_read()
+ish_file_read()
 
 # @type: filepath -> stdin -> IO () | error
-ish_core_file_write()
+ish_file_write()
 
 # @type: filepath -> stdin -> IO () | error
-ish_core_file_append()
+ish_file_append()
 
 # @type: filepath -> bool
-ish_core_file_exists()
+ish_file_exists()
 
 # @type: filepath -> string -> IO () | error
-ish_core_file_require()
+ish_file_require()
 
 # @type: (filepath -> IO b) -> IO filepath -> IO b | error
-ish_core_file_bind()
+ish_file_bind()
 ```
 
-**Atomic writes are critical.** `ish_core_file_write` must use temp file + mv pattern. a failed write must not corrupt the target file. this is especially important for `kanban.sql` — a half-written dump is worse than no write at all.
+**Atomic writes are critical.** `ish_file_write` must use temp file + mv pattern. a failed write must not corrupt the target file. this is especially important for `kanban.sql` — a half-written dump is worse than no write at all.
 
 **Performance characteristics:**
 

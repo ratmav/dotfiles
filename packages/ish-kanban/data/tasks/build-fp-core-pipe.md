@@ -1,4 +1,4 @@
-# build ish_core_pipe - functional pipe operations
+# build ish_pipe - functional pipe operations
 
 **dependencies:** build-fp-core-file-descriptor
 
@@ -12,19 +12,19 @@ Pipes are file descriptors underneath (a pair of fds created by `pipe()` syscall
 
 ## subtasks
 
-- [ ] implement `ish_core_pipe_connect` - pipe stdout of one command to stdin of another
-- [ ] implement `ish_core_pipe_chain` - compose a sequence of commands into a pipeline
-- [ ] implement `ish_core_pipe_tee` - split pipe output to multiple destinations
-- [ ] implement `ish_core_pipe_bind` - chain pipe operations with error propagation
-- [ ] implement `ish_core_pipe_status` - capture exit status of all pipeline stages (PIPESTATUS)
-- [ ] implement `ish_core_pipe_require_success` - assert all pipeline stages succeeded or fail
+- [ ] implement `ish_pipe_connect` - pipe stdout of one command to stdin of another
+- [ ] implement `ish_pipe_chain` - compose a sequence of commands into a pipeline
+- [ ] implement `ish_pipe_tee` - split pipe output to multiple destinations
+- [ ] implement `ish_pipe_bind` - chain pipe operations with error propagation
+- [ ] implement `ish_pipe_status` - capture exit status of all pipeline stages (PIPESTATUS)
+- [ ] implement `ish_pipe_require_success` - assert all pipeline stages succeeded or fail
 - [ ] write unit tests for each primitive
 - [ ] test monad laws (identity, composition) for pipe_bind
 - [ ] document with type signatures and examples
 
 ## deliverable
 
-`packages/ish/source/core/pipe.sh` with tested FP primitives
+`core/source/pipe.sh` with tested FP primitives
 
 ## notes
 
@@ -37,22 +37,22 @@ Pipes are file descriptors underneath (a pair of fds created by `pipe()` syscall
 **Type signatures:**
 ```bash
 # @type: cmd_a -> cmd_b -> IO output | error
-ish_core_pipe_connect()
+ish_pipe_connect()
 
 # @type: [cmd] -> IO output | error
-ish_core_pipe_chain()
+ish_pipe_chain()
 
 # @type: cmd -> [destination] -> IO output | error
-ish_core_pipe_tee()
+ish_pipe_tee()
 
 # @type: (IO a) -> (IO b) -> IO b | error
-ish_core_pipe_bind()
+ish_pipe_bind()
 
 # @type: IO [int] (exit codes per stage)
-ish_core_pipe_status()
+ish_pipe_status()
 
 # @type: IO () | error (if any stage failed)
-ish_core_pipe_require_success()
+ish_pipe_require_success()
 ```
 
 **PIPESTATUS is critical.** bash's `|` only reports the exit code of the last command. `set -o pipefail` reports the first non-zero, but you lose which stage. `PIPESTATUS` array captures every stage. this module must expose that.

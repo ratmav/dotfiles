@@ -144,9 +144,9 @@ each model file defines bash functions that wrap CRUD operations on the correspo
 
 ## fp layering (future: phase 2)
 
-the sqlite operations in kanban are a prime candidate for generic FP primitives in `ish_core_*`. the split:
+the sqlite operations in kanban are a prime candidate for generic FP primitives in `ish_*`. the split:
 
-**generic (`ish_core_*`):** three layers emerging from kanban:
+**generic (`ish_*`):** three layers emerging from kanban:
 
 - **foundation**: file_descriptor — the POSIX I/O primitive everything stands on
 - **primitives** (built on file descriptors): stream (data flowing through pipes — map/bind/filter/fold), file (buckets — persistent I/O endpoints), pipe (process composition — connecting commands)
@@ -158,4 +158,4 @@ all follow the same pattern — chained operations that short-circuit on failure
 
 this separation means other packages can use sqlite without reinventing query execution. the kanban package is the proving ground — build it concrete first, extract the generic layer when we see the patterns repeat.
 
-**the write path is a monad.** export → commit → push is a chain where each step depends on the prior succeeding, and any failure short-circuits with an error context. this is `bind` — a prime candidate for `ish_core_stream` once the FP layer exists. build it imperative first (sequential `&&` checks), extract to monadic composition in phase 2.
+**the write path is a monad.** export → commit → push is a chain where each step depends on the prior succeeding, and any failure short-circuits with an error context. this is `bind` — a prime candidate for `ish_stream` once the FP layer exists. build it imperative first (sequential `&&` checks), extract to monadic composition in phase 2.

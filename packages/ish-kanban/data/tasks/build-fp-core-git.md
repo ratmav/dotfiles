@@ -1,4 +1,4 @@
-# build ish_core_git - functional git operations
+# build ish_git - functional git operations
 
 **dependencies:** build-fp-core-stream, build-fp-core-file, build-fp-core-pipe
 
@@ -12,21 +12,21 @@ This is the monadic write path. every step depends on the prior succeeding. any 
 
 ## subtasks
 
-- [ ] implement `ish_core_git_add` - stage files, fail with context
-- [ ] implement `ish_core_git_commit` - commit staged changes with message, fail with context
-- [ ] implement `ish_core_git_push` - push to remote, fail with context
-- [ ] implement `ish_core_git_pull` - pull from remote, fail with context (conflicts, network)
-- [ ] implement `ish_core_git_bind` - chain git operations with error propagation
-- [ ] implement `ish_core_git_require` - assert git exists and cwd is a repo, or fail
-- [ ] implement `ish_core_git_status` - check working tree state, stream to stdout
-- [ ] implement `ish_core_git_is_clean` - predicate: is working tree clean?
+- [ ] implement `ish_git_add` - stage files, fail with context
+- [ ] implement `ish_git_commit` - commit staged changes with message, fail with context
+- [ ] implement `ish_git_push` - push to remote, fail with context
+- [ ] implement `ish_git_pull` - pull from remote, fail with context (conflicts, network)
+- [ ] implement `ish_git_bind` - chain git operations with error propagation
+- [ ] implement `ish_git_require` - assert git exists and cwd is a repo, or fail
+- [ ] implement `ish_git_status` - check working tree state, stream to stdout
+- [ ] implement `ish_git_is_clean` - predicate: is working tree clean?
 - [ ] write unit tests for each primitive
 - [ ] test monad laws (identity, composition) for git_bind
 - [ ] document with type signatures and examples
 
 ## deliverable
 
-`packages/ish/source/core/git.sh` with tested FP primitives
+`core/source/git.sh` with tested FP primitives
 
 ## notes
 
@@ -39,42 +39,42 @@ This is the monadic write path. every step depends on the prior succeeding. any 
 **Type signatures:**
 ```bash
 # @type: [filepath] -> IO () | error
-ish_core_git_add()
+ish_git_add()
 
 # @type: string (message) -> IO () | error
-ish_core_git_commit()
+ish_git_commit()
 
 # @type: IO () | error
-ish_core_git_push()
+ish_git_push()
 
 # @type: IO () | error
-ish_core_git_pull()
+ish_git_pull()
 
 # @type: (IO a) -> (IO b) -> IO b | error
-ish_core_git_bind()
+ish_git_bind()
 
 # @type: IO () | error
-ish_core_git_require()
+ish_git_require()
 
 # @type: IO [line] | error
-ish_core_git_status()
+ish_git_status()
 
 # @type: bool
-ish_core_git_is_clean()
+ish_git_is_clean()
 ```
 
 **The canonical chain:**
 ```bash
 # imperative (phase 1 — how kanban builds it first)
-ish_core_git_add "kanban.sql" \
-    && ish_core_git_commit "update kanban data" \
-    && ish_core_git_push
+ish_git_add "kanban.sql" \
+    && ish_git_commit "update kanban data" \
+    && ish_git_push
 
 # monadic (phase 2 — what it refactors to)
-ish_core_git_bind \
-    "ish_core_git_add kanban.sql" \
-    "ish_core_git_commit 'update kanban data'" \
-    "ish_core_git_push"
+ish_git_bind \
+    "ish_git_add kanban.sql" \
+    "ish_git_commit 'update kanban data'" \
+    "ish_git_push"
 ```
 
 **Error context is critical.** a bare "push failed" is useless. each function must include what failed, where (which repo/directory), and what the user should do about it. example: `"git push failed in packages/ish-kanban/data/ — resolve conflicts manually and push"`.

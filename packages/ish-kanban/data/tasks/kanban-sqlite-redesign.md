@@ -59,7 +59,7 @@ The following existing tasks are eliminated — SQLite provides what they were g
 
 ## fp layering (future: phase 2)
 
-sqlite query execution, file handling, and stream handling are the first FP extraction targets for `ish_core_*`. kanban models are the proving ground — build concrete first, extract generic primitives when patterns repeat. see `packages/ish-kanban/docs/data_model.md` for details.
+sqlite query execution, file handling, and stream handling are the first FP extraction targets for `ish_*`. kanban models are the proving ground — build concrete first, extract generic primitives when patterns repeat. see `packages/ish-kanban/docs/data_model.md` for details.
 
 ## data portability
 

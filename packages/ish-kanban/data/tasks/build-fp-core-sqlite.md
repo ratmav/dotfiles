@@ -1,4 +1,4 @@
-# build ish_core_sqlite - functional sqlite operations
+# build ish_sqlite - functional sqlite operations
 
 **dependencies:** build-fp-core-stream, build-fp-core-file, build-fp-core-pipe
 
@@ -12,21 +12,21 @@ The kanban models own the SQL (what to query). This module owns the execution (h
 
 ## subtasks
 
-- [ ] implement `ish_core_sqlite_exec` - execute statement, no result (INSERT/UPDATE/DELETE/DDL)
-- [ ] implement `ish_core_sqlite_query` - execute query, stream results to stdout (SELECT)
-- [ ] implement `ish_core_sqlite_query_one` - execute query, return single row or fail
-- [ ] implement `ish_core_sqlite_bind` - chain queries with error propagation
-- [ ] implement `ish_core_sqlite_transaction` - wrap operations in BEGIN/COMMIT, ROLLBACK on failure
-- [ ] implement `ish_core_sqlite_require` - assert sqlite3 exists or fail with message
-- [ ] implement `ish_core_sqlite_dump` - export data INSERTs to stdout (no schema)
-- [ ] implement `ish_core_sqlite_load` - import SQL from stdin
+- [ ] implement `ish_sqlite_exec` - execute statement, no result (INSERT/UPDATE/DELETE/DDL)
+- [ ] implement `ish_sqlite_query` - execute query, stream results to stdout (SELECT)
+- [ ] implement `ish_sqlite_query_one` - execute query, return single row or fail
+- [ ] implement `ish_sqlite_bind` - chain queries with error propagation
+- [ ] implement `ish_sqlite_transaction` - wrap operations in BEGIN/COMMIT, ROLLBACK on failure
+- [ ] implement `ish_sqlite_require` - assert sqlite3 exists or fail with message
+- [ ] implement `ish_sqlite_dump` - export data INSERTs to stdout (no schema)
+- [ ] implement `ish_sqlite_load` - import SQL from stdin
 - [ ] write unit tests for each primitive
 - [ ] test monad laws (identity, composition) for sqlite_bind
 - [ ] document with type signatures and examples
 
 ## deliverable
 
-`packages/ish/source/core/sqlite.sh` with tested FP primitives
+`core/source/sqlite.sh` with tested FP primitives
 
 ## notes
 
@@ -40,33 +40,33 @@ The kanban models own the SQL (what to query). This module owns the execution (h
 **Type signatures:**
 ```bash
 # @type: dbpath -> sql -> IO () | error
-ish_core_sqlite_exec()
+ish_sqlite_exec()
 
 # @type: dbpath -> sql -> IO [row] | error
-ish_core_sqlite_query()
+ish_sqlite_query()
 
 # @type: dbpath -> sql -> IO row | error
-ish_core_sqlite_query_one()
+ish_sqlite_query_one()
 
 # @type: (row -> IO b) -> IO row -> IO b | error
-ish_core_sqlite_bind()
+ish_sqlite_bind()
 
 # @type: dbpath -> IO () -> IO () | error (ROLLBACK)
-ish_core_sqlite_transaction()
+ish_sqlite_transaction()
 
 # @type: dbpath -> IO () | error
-ish_core_sqlite_require()
+ish_sqlite_require()
 
 # @type: dbpath -> [table] -> IO string | error
-ish_core_sqlite_dump()
+ish_sqlite_dump()
 
 # @type: dbpath -> stdin -> IO () | error
-ish_core_sqlite_load()
+ish_sqlite_load()
 ```
 
 **Result format.** sqlite3 outputs pipe-separated by default. use `-separator` flag for consistency. callers parse results via stream_map. keep the output format simple and predictable — one row per line, fields separated by a known delimiter.
 
-**Foreign keys must be enabled.** sqlite3 does not enforce foreign keys by default. every connection must run `PRAGMA foreign_keys = ON;` before any operations. `ish_core_sqlite_exec` and `ish_core_sqlite_query` handle this internally — callers never think about it.
+**Foreign keys must be enabled.** sqlite3 does not enforce foreign keys by default. every connection must run `PRAGMA foreign_keys = ON;` before any operations. `ish_sqlite_exec` and `ish_sqlite_query` handle this internally — callers never think about it.
 
 **Performance characteristics:**
 

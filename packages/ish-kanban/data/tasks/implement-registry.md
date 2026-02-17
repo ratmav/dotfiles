@@ -6,7 +6,7 @@
 
 ## description
 
-Build package registry system in ish/registry module. Registry data lives in registry/data/packages/*.conf. Registry commands use ish_core_* primitives.
+Build package registry system in ish/registry module. Registry data lives in registry/data/packages/*.conf. Registry commands use ish_* primitives.
 
 Publishing = PR to ish repo to add package.conf. CI runs validation to enforce namespace uniqueness.
 
@@ -32,8 +32,8 @@ Publishing = PR to ish repo to add package.conf. CI runs validation to enforce n
 - [ ] clone and install package
 - [ ] validate namespace matches metadata
 
-**Namespace Validation (uses ish_core_namespace_*):**
-- [ ] `ish_registry_validate` calls `ish_core_namespace_check_uniqueness`
+**Namespace Validation (uses ish_namespace_*):**
+- [ ] `ish_registry_validate` calls `ish_namespace_check_uniqueness`
 - [ ] check data/packages/ for duplicate namespaces
 - [ ] fail if duplicates found, show conflicting packages
 - [ ] can run as cron job / CI check
@@ -99,19 +99,19 @@ ish_registry_parse_package() {
 }
 ```
 
-**Registry commands use ish_core_*:**
+**Registry commands use ish_*:**
 ```bash
 ish_registry_search() {
-  local query=$(ish_core_parse_option "--query" "$@")
-  ish_core_require_nonempty "$query"
+  local query=$(ish_parse_option "--query" "$@")
+  ish_require_nonempty "$query"
 
   find "$registry_data" -name "*.conf" | \
-    ish_core_stream_filter "grep -q '$query'" | \
-    ish_core_stream_map "ish_registry_parse_package"
+    ish_stream_filter "grep -q '$query'" | \
+    ish_stream_map "ish_registry_parse_package"
 }
 ```
 
-**Validation command (uses ish_core_namespace_*):**
+**Validation command (uses ish_namespace_*):**
 ```bash
 ish registry validate
 
@@ -122,11 +122,11 @@ ish_registry_validate() {
   # Use core namespace validation
   local namespaces=()
   for conf in "$registry_data"/*.conf; do
-    namespaces+=($(ish_core_namespace_parse "$conf"))
+    namespaces+=($(ish_namespace_parse "$conf"))
   done
 
-  ish_core_namespace_check_uniqueness "${namespaces[@]}" || \
-    ish_core_fail_with "namespace collision detected in registry"
+  ish_namespace_check_uniqueness "${namespaces[@]}" || \
+    ish_fail_with "namespace collision detected in registry"
 }
 
 # Exit 0 = valid, Exit 1 = collision
