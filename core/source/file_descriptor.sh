@@ -3,9 +3,9 @@
 # Foundation layer. Depends only on color.
 # The POSIX I/O primitive everything else stands on.
 
-_file_descriptor_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_file_descriptor_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${_file_descriptor_dir}/color.sh"
+source "${ish_file_descriptor_module_dir}/color.sh"
 ish_color_init
 
 ish_file_descriptor_close() {

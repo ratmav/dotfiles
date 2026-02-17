@@ -4,9 +4,9 @@
 # FP operations on data flowing through pipes: map, bind, filter, fold.
 # Also provides stdout/stderr output — the error output mechanism everything upstream uses.
 
-_stream_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_stream_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${_stream_dir}/file_descriptor.sh"
+source "${ish_stream_module_dir}/file_descriptor.sh"
 
 ish_stream_bind() {
   local func="${1-}"

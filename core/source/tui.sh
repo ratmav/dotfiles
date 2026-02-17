@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${_tui_module_dir}/stream.sh"
+source "${ish_tui_module_dir}/stream.sh"
 source "${ISH_CORE}/source/utils/exists.sh"
-source "${_tui_module_dir}/tui/template.sh"
+source "${ish_tui_module_dir}/tui/template.sh"
 
 ish_tui_set_colors() {
   ISH_TUI_ERROR="$ISH_COLOR_RED"

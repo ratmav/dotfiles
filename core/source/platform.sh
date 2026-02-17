@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-_platform_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_platform_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${_platform_dir}/utils.sh"
+source "${ish_platform_module_dir}/utils.sh"
 
 # Public functions (alphabetized)
 

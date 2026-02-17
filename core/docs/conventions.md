@@ -168,7 +168,7 @@ foo_bar_local() { ... }
 foo_bar_stale() { ... }
 
 # source/foo.sh (router sources and delegates)
-source "${_foo_module_dir}/foo/bar.sh"
+source "${foo_module_dir}/foo/bar.sh"
 
 foo_route() {
   case "${1-}" in
@@ -189,8 +189,8 @@ foo_route() {
 if `bar` gets complex enough to need subdirectories:
 ```bash
 # source/foo/bar.sh (becomes a router)
-source "${_bar_module_dir}/bar/remote.sh"
-source "${_bar_module_dir}/bar/local.sh"
+source "${foo_bar_module_dir}/bar/remote.sh"
+source "${foo_bar_module_dir}/bar/local.sh"
 
 foo_bar_route() {
   case "${1-}" in
@@ -201,7 +201,7 @@ foo_bar_route() {
 }
 
 # source/foo.sh
-source "${_foo_module_dir}/foo/bar.sh"
+source "${foo_module_dir}/foo/bar.sh"
 
 foo_route() {
   case "${1-}" in
@@ -596,7 +596,7 @@ this is fine - parent already loaded it before sourcing child.
 ```bash
 # core/source/tui.sh
 ish_tui_error() { ... }
-source "${module_dir}/tui/template.sh"
+source "${ish_tui_module_dir}/tui/template.sh"
 
 # core/source/tui/template.sh
 ish_tui_template_file() {
@@ -769,41 +769,60 @@ source "${ISH_CORE}/source/tui.sh"  # sources tui.sh
 source "${module_dir}/foo/bar.sh" # now broken - wrong path
 ```
 
-**the solution: namespace module_dir by full file path**
+**the solution: derive module_dir from the function name prefix**
+
+the variable name is the module's function prefix + `_module_dir`. the function
+prefix already guarantees uniqueness (it's how we namespace everything else), so
+module_dir just follows the same rule.
 
 ```bash
-# core/source/tui.sh
-_core_source_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+# core module: functions are ish_tui_*, so variable is ish_tui_module_dir
+ish_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${_core_source_tui_module_dir}/stream.sh"
-source "${_core_source_tui_module_dir}/tui/template.sh"
+source "${ish_tui_module_dir}/stream.sh"
+source "${ish_tui_module_dir}/tui/template.sh"
 
-# packages/foo/source/bar.sh
-_foo_source_bar_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+# package module: functions are foo_bar_*, so variable is foo_bar_module_dir
+foo_bar_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ISH_CORE}/source/tui.sh"
-source "${_foo_source_bar_module_dir}/bar/baz.sh"
+source "${foo_bar_module_dir}/bar/baz.sh"
 ```
 
 **naming pattern:**
-- `core/source/tui.sh` → `_core_source_tui_module_dir`
-- `core/source/utils.sh` → `_core_source_utils_module_dir`
-- `packages/foo/source/bar.sh` → `_foo_source_bar_module_dir`
-- pattern: convert full file path to snake_case, prepend `_`, append `_module_dir`
+- function prefix `ish_tui_*` → `ish_tui_module_dir`
+- function prefix `ish_stream_*` → `ish_stream_module_dir`
+- function prefix `foo_bar_*` → `foo_bar_module_dir`
+- function prefix `foo_bar_baz_*` → `foo_bar_baz_module_dir`
+- pattern: take the module's function prefix, append `_module_dir`
 
 **rules:**
 - never use unnamespaced `module_dir` (causes collisions)
-- derive name from full path (guarantees uniqueness even if two modules share a leaf name)
-- `_` prefix signals file-level private variable
-- use `script_dir` for sourcing peer modules (no namespace needed - always same value)
+- derive name from function prefix (not file path — paths change when repos split)
 - use `*_module_dir` for sourcing submodules within same hierarchy
-- declare both at top of file, before any source statements
+- declare at top of file, before any source statements
+
+**repo split migration path:**
+
+function prefixes are stable identifiers — they don't change when repos split.
+directory structure is an artifact of where code lives today; function prefixes
+encode what the code *is*.
+
+| phase | location | function prefix | module_dir |
+|---|---|---|---|
+| now (monorepo) | `core/source/tui.sh` | `ish_tui_*` | `ish_tui_module_dir` |
+| now (monorepo) | `packages/ish-kanban/source/kanban.sh` | `ish_kanban_*` | `ish_kanban_module_dir` |
+| after split | `ish/source/tui.sh` | `ish_tui_*` | `ish_tui_module_dir` |
+| after split | `ish-kanban/source/kanban.sh` | `ish_kanban_*` | `ish_kanban_module_dir` |
+
+nothing changes. that's the point.
 
 **rationale:**
 - prevents variable collisions when modules compose
 - maintains module boundaries (respects DAG architecture)
 - makes dependencies explicit and traceable
 - enables safe cross-module sourcing
+- survives repo restructuring (function prefix is the stable identity)
 
 ## local variables
 
@@ -1011,11 +1030,10 @@ parent `core/source/tui.sh` sources dependencies first, then sources child:
 ```bash
 #!/usr/bin/env bash
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd -P)
-module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+ish_tui_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${script_dir}/core/source/exists.sh"  # provides ish_file_exists
-source "${module_dir}/tui/template.sh"        # can now use dependencies
+source "${ISH_CORE}/source/exists.sh"             # provides ish_file_exists
+source "${ish_tui_module_dir}/tui/template.sh"    # can now use dependencies
 ```
 
 **why this pattern?**
