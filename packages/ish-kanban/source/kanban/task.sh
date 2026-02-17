@@ -38,9 +38,9 @@ ish_kanban_task_delete() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   task_file="${ish_kanban_dir}/tasks/${name}.md"
@@ -58,9 +58,9 @@ ish_kanban_task_list() {
   local task_file
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   tasks_dir="${ish_kanban_dir}/tasks"
@@ -95,9 +95,9 @@ ish_kanban_task_new() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   task_file="${ish_kanban_dir}/tasks/${name}.md"
@@ -139,9 +139,9 @@ ish_kanban_task_path() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   task_file="${ish_kanban_dir}/tasks/${name}.md"
@@ -173,9 +173,9 @@ ish_kanban_task_show() {
   [[ -z "$name" ]] && ish_utils_tui_error --message="--name required"
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   task_file="${ish_kanban_dir}/tasks/${name}.md"

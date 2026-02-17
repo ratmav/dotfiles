@@ -20,9 +20,9 @@ ish_kanban_scratch_path() {
   local ish_kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   ish_utils_stream_stdout "${ish_kanban_dir}/scratch.md"
@@ -51,9 +51,9 @@ ish_kanban_scratch_capture() {
 
   # determine kanban directory
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   # append to scratch.md as markdown list item
@@ -66,9 +66,9 @@ ish_kanban_scratch_show() {
   local ish_kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   ish_utils_tui_template_file --path="${ish_kanban_dir}/scratch.md"

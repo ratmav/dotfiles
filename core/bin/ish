@@ -55,7 +55,6 @@ personal development environment on posix-like platforms.
 
 commands:
 $(ish_packages_list_for_help)
-  kanban       project task management
   lint         run linters for ish package
   platform     platform detection functions
   test         run tests for ish package
@@ -68,11 +67,6 @@ EOF
 }
 
 case "${1-}" in
-  kanban)
-    shift
-    source "${ISH_CORE}/source/kanban.sh"
-    ish_kanban_route "$@"
-    ;;
   tui)
     shift
     ish_utils_tui_route "$@"

@@ -47,6 +47,7 @@ Humor helps. We're computer nerds - technical wordplay and puns are encouraged. 
 - Read files before editing them
 - Run commands to confirm state before making changes
 - When running tests, grep for failures/warnings instead of dumping full output - avoid context pollution
+- When adding git submodules (e.g., bats, bats-support, bats-assert), audit commits against existing packages to ensure all submodules are pinned to the same version
 
 ### Confirm Results
 - Verify that changes produce expected outcomes

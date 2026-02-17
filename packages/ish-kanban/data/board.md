@@ -43,11 +43,12 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 6. [ ] [kanban-task-close](tasks/kanban-task-close.md) - replace delete with close command
 7. [ ] [kanban-integration-testing](tasks/kanban-integration-testing.md) - complete integration test coverage
 8. [ ] [kanban-task-list-filters](tasks/kanban-task-list-filters.md) - enhance task listing with filters
-9. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
-10. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-11. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
-12. [ ] verify tests still pass
-13. [ ] verify local package structure works
+9. [ ] [kanban-data-submodule](tasks/kanban-data-submodule.md) - extract kanban data to git submodule, add load/remove/delete commands
+10. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
+11. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+12. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
+13. [ ] verify tests still pass
+14. [ ] verify local package structure works
 
 ### completed
 
@@ -138,6 +139,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 1. [ ] [git-default-branch](tasks/git-default-branch.md) - create main branch with GPG signed commit
 2. [ ] execute migration_path.md Step 5 (split repos)
+3. [ ] [core-semantic-versioning](tasks/core-semantic-versioning.md) - semver tags for ish core, package version pinning, install/test/lint validation
 
 ---
 

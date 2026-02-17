@@ -1,0 +1,3 @@
+version: v1.13.0-10-g5f12b31
+commit: 5f12b3172105a0f26bce629ff8ae0ac76c4bd61e
+source: https://github.com/bats-core/bats-core.git

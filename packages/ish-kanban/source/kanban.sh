@@ -5,14 +5,15 @@ ish_kanban_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -
 source "${ISH_CORE}/source/utils/tui.sh"
 source "${ish_kanban_module_dir}/kanban/task.sh"
 source "${ish_kanban_module_dir}/kanban/scratch.sh"
+source "${ish_kanban_module_dir}/test.sh"
 
 ish_kanban_show() {
   local ish_kanban_dir
 
   if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_CORE}/test/fixtures/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures/kanban"
   else
-    ish_kanban_dir="${ISH_CORE}/kanban"
+    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
   ish_utils_tui_template_file --path="${ish_kanban_dir}/board.md"
@@ -26,6 +27,7 @@ commands:
   show     output board.md
   task     manage tasks
   scratch  manage scratchpad
+  test     run kanban tests
 EOF
 }
 
@@ -88,6 +90,10 @@ ish_kanban_route() {
           ish_utils_tui_error --message="unknown kanban scratch command: ${1-}"
           ;;
       esac
+      ;;
+    test)
+      shift
+      ish_kanban_test_route "$@"
       ;;
     help|"")
       ish_kanban_help

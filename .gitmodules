@@ -16,3 +16,12 @@
 [submodule "packages/ish-ratfiles/test/test_helper/bats-assert"]
 	path = packages/ish-ratfiles/test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git
+[submodule "packages/ish-kanban/test/bats"]
+	path = packages/ish-kanban/test/bats
+	url = https://github.com/bats-core/bats-core.git
+[submodule "packages/ish-kanban/test/test_helper/bats-support"]
+	path = packages/ish-kanban/test/test_helper/bats-support
+	url = https://github.com/bats-core/bats-support.git
+[submodule "packages/ish-kanban/test/test_helper/bats-assert"]
+	path = packages/ish-kanban/test/test_helper/bats-assert
+	url = https://github.com/bats-core/bats-assert.git
