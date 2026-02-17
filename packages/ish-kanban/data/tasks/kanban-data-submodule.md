@@ -1,26 +1,25 @@
 # kanban-data-submodule
 
-**milestone:** 1 - restructure
-
-**dependencies:** none
+**dependencies:** kanban-sqlite-redesign
 
 **priority:** medium
 
 ## description
 
-Extract kanban data (`packages/ish-kanban/data/`) into a dedicated git repository and wire it up as a git submodule. Add commands to manage kanban data repositories.
+Extract `packages/ish-kanban/data/` into a dedicated git repository and wire it up as a git submodule. This separates kanban code (package, in main repo) from kanban data (tasks, in submodule) so data can be versioned and synced independently across machines.
 
-Implement:
-- `ish kanban load` - initialize/update data submodule
-- `ish kanban remove` - remove data submodule completely
-- `ish kanban delete` - remove local data (keep remote)
+The submodule contains:
+- `kanban.sql` — committed, text, mergeable. data INSERTs only (no schema).
+- `kanban.db` — `.gitignore`'d. runtime cache rebuilt from migrations + `kanban.sql`.
 
-This separates the kanban code (package) from the kanban data (board, tasks, scratch) so the data can be versioned independently and shared across repos.
+## sync model
+
+writes auto-commit and push in the submodule. if anything fails (conflict, no remote, network), ish errors and tells the user to resolve manually. conflicts in `kanban.sql` are normal text merge conflicts — resolved by the user in their editor.
 
 ## deliverable
 
-- Dedicated git repository for kanban data (board.md, tasks/*.md, scratch.md)
-- `packages/ish-kanban/data/` configured as git submodule pointing to data repo
-- Three management commands working
-- Update path resolution if needed (should work transparently via submodule)
-- Tests for load/remove/delete commands
+- Dedicated git repository for kanban data
+- `packages/ish-kanban/data/` configured as git submodule
+- `.gitignore` in data repo excluding `kanban.db`
+- Auto-export of `kanban.sql` after write operations (already spec'd in kanban-sqlite-redesign)
+- Auto-import from `kanban.sql` when db is missing (already spec'd in kanban-sqlite-redesign)

@@ -1,8 +1,8 @@
 # build ish_core_stream - functional stream operations
 
-**milestone:** 2 - fp core + cleanup
+**dependencies:** build-fp-core-file-descriptor, build-fp-core-pipe
 
-**dependencies:** phase 1 (restructure complete)
+**priority:** high
 
 ## description
 

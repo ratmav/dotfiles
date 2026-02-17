@@ -7,91 +7,82 @@
 **Vision:** Functional infrastructure orchestration (see packages/ish/docs/architecture/functional_future/)
 
 **Strategy:**
-1. Restructure to package architecture (phase 1)
-2. Build FP core (`ish_core_*`) - the magic layer (phase 2)
-3. Implement features FP-style using core primitives (phase 3+)
-4. Proven patterns extend to homelab/infra packages (future)
+1. Build FP core — primitives and integrations (phase 1)
+2. Refactor existing code (ratfiles, etc.) to use FP, cleanup (phase 2)
+3. Implement kanban SQLite redesign using FP, delete dead code (phase 3)
+4. Proven patterns extend to registry, remote execution, infra packages (future)
 
-**Naming convention:** `ish_core_stream`, `ish_core_validate`, `ish_core_semantic` (not utils - too generic)
+**Naming convention:** `ish_core_stream`, `ish_core_file`, `ish_core_sqlite`, `ish_core_git` (not utils - too generic)
 
 ## open questions
 
 none - see packages/ish/docs/architecture/task_reconciliation.md for resolved architectural decisions
 
-## milestones
-
-- [ ] **phase 1: restructure** ← current phase
-- [ ] phase 2: fp core + cleanup
-- [ ] phase 3: core implementation (fp-style)
-- [ ] phase 4: remote execution
-- [ ] phase 5: enhancements
-- [ ] phase 6: split repos
-
 ---
 
-## phase 1: restructure
+## phase 1: fp core
 
-**goal:** align project structure with package architecture
+**goal:** build functional programming foundation
 
 ### todo (priority order)
 
-1. [ ] [kanban-board-parser](tasks/kanban-board-parser.md) - create board parser infrastructure
-2. [ ] [kanban-board-mutations](tasks/kanban-board-mutations.md) - add board mutation operations
-3. [ ] [kanban-task-validation](tasks/kanban-task-validation.md) - add validation functions
-4. [ ] [kanban-source-board-module](tasks/kanban-source-board-module.md) - source board module in main kanban
-5. [ ] [kanban-task-create-integration](tasks/kanban-task-create-integration.md) - enhance task creation with board integration
-6. [ ] [kanban-task-close](tasks/kanban-task-close.md) - replace delete with close command
-7. [ ] [kanban-integration-testing](tasks/kanban-integration-testing.md) - complete integration test coverage
-8. [ ] [kanban-task-list-filters](tasks/kanban-task-list-filters.md) - enhance task listing with filters
-9. [ ] [kanban-data-submodule](tasks/kanban-data-submodule.md) - extract kanban data to git submodule, add load/remove/delete commands
-10. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - UNBLOCKED: tasks 3-4 complete, ready to proceed
-11. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-12. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
-13. [ ] verify tests still pass
-14. [ ] verify local package structure works
+**Foundation:**
+1. [ ] [build-fp-core-file-descriptor](tasks/build-fp-core-file-descriptor.md) - the POSIX I/O primitive everything stands on
 
-### completed
+**Primitives (built on file descriptors):**
+2. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr
+3. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints)
+4. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
 
-- [x] execute migration_path.md Step 1 (12-step restructure)
-- [x] [fix-cli-consistency](tasks/fix-cli-consistency.md)
-- [x] [standardize-package-naming](tasks/standardize-package-naming.md)
-- [x] [implement-package-loading-strategy](tasks/implement-package-loading-strategy.md)
-- [x] [fix-ratfiles-naming](tasks/fix-ratfiles-naming.md)
-- [x] [implement-package-discovery](tasks/implement-package-discovery.md)
-- [x] [add-comprehensive-help-tests](tasks/add-comprehensive-help-tests.md) - complete test coverage for all router help commands
-- [x] [add-run-help-pattern](tasks/add-run-help-pattern.md) - WONTFIX
+**Integrations (external binaries composed through primitives):**
+5. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
+6. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
+
+**FP Layer:**
+7. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
+8. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
+7. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+8. [ ] document FP patterns and usage
 
 ### in progress
 
 ---
 
-## phase 2: fp core + cleanup
+## phase 2: refactor + cleanup
 
-**goal:** build functional programming foundation and clean up legacy systems
+**goal:** refactor existing code to use FP core, clean up legacy
 
 ### todo
 
-**FP Core (The Magic Layer):**
-1. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold primitives
-2. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
-3. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-4. [ ] refactor existing code to use ish_core_* primitives
-5. [ ] document FP patterns and usage
-
-**Documentation:**
-6. [ ] [setup-mdbook-docs](tasks/setup-mdbook-docs.md) - mdBook + mermaid for package docs
-
-**Cleanup:**
-7. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
-8. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
-9. [ ] [implement-module-namespace-linter](tasks/implement-module-namespace-linter.md) - static analysis for module_dir violations and DAG enforcement
-10. [ ] [verify-bash-portability](tasks/verify-bash-portability.md) - version checks, cross-platform testing
-
-**Note:** FP core is the foundation. Build incrementally, test thoroughly. ALL functions use `ish_core_*` prefix to prevent namespace pollution. See packages/ish/docs/architecture/functional_future/ for vision.
+1. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
+2. [ ] refactor ratfiles to use ish_core_* primitives
+3. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
+4. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
+5. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
+6. [ ] [implement-module-namespace-linter](tasks/implement-module-namespace-linter.md) - static analysis for module_dir violations and DAG enforcement
+7. [ ] [verify-bash-portability](tasks/verify-bash-portability.md) - version checks, cross-platform testing
+8. [ ] verify tests still pass
+9. [ ] verify local package structure works
 
 ---
 
-## phase 3: core implementation (fp-style)
+## phase 3: kanban redesign
+
+**goal:** implement SQLite-backed kanban using FP core, delete dead code
+
+### todo
+
+1. [ ] [kanban-sqlite-redesign](tasks/kanban-sqlite-redesign.md) - replace markdown board + task files with SQLite, migrations, and active record models
+2. [ ] [kanban-task-validation](tasks/kanban-task-validation.md) - add validation functions
+3. [ ] [kanban-task-close](tasks/kanban-task-close.md) - replace delete with close command
+4. [ ] [kanban-integration-testing](tasks/kanban-integration-testing.md) - complete integration test coverage
+5. [ ] [kanban-task-list-filters](tasks/kanban-task-list-filters.md) - enhance task listing with filters
+6. [ ] [kanban-data-submodule](tasks/kanban-data-submodule.md) - extract kanban data to git submodule
+7. [ ] delete dead kanban code (old markdown parsing, task files)
+
+---
+
+## phase 4: core implementation (fp-style)
 
 **goal:** implement package system and registry using FP core primitives
 
@@ -103,11 +94,9 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 4. [ ] implement package commands (migration_path.md Step 3) - using ish_core_*
 5. [ ] test locally (migration_path.md Step 4)
 
-**Note:** All new code uses FP core primitives. Keep functions small (≤15 lines), pure where possible, semantic names. Registry data lives in source/registry/data/packages/*.conf, validated with `ish registry validate`.
-
 ---
 
-## phase 4: remote execution
+## phase 5: remote execution
 
 **goal:** enable remote execution across hosts
 
@@ -120,7 +109,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ---
 
-## phase 5: enhancements
+## phase 6: enhancements
 
 **goal:** improve developer experience
 
@@ -128,10 +117,11 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 1. [ ] [dependency-tree](tasks/dependency-tree.md) - kanban dependency visualization
 2. [ ] [scaffolding](tasks/scaffolding.md) - module scaffolding commands
+3. [ ] [setup-mdbook-docs](tasks/setup-mdbook-docs.md) - mdBook + mermaid for package docs
 
 ---
 
-## phase 6: split repos
+## phase 7: split repos
 
 **goal:** extract ish to separate repo
 
@@ -152,7 +142,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 **Key decisions:**
 - Top-down package model (ish loads packages)
-- FP core primitives (`ish_core_*`) provide foundation
-- Build incrementally: restructure → FP core → implement features → extend
+- FP core: file_descriptor → primitives (stream, file, pipe) → integrations (sqlite, git) → layer (validate, semantic)
+- Build FP first, refactor existing code, then tackle kanban redesign with proven tools
 - Base case: local dotfiles management
 - Future: homelab/infrastructure orchestration
