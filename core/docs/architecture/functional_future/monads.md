@@ -25,12 +25,21 @@ every layer has its own bind function. the pattern is identical — chain operat
 
 | layer | bind function | what it chains | failure modes |
 |-------|--------------|----------------|---------------|
+| foundation | `ish_color_init` | terminal capability detection | non-terminal, NO_COLOR, dumb term |
 | foundation | `ish_file_descriptor_bind` | fd operations | open/close/redirect failures |
+| foundation | `ish_exists_executable` | command availability (`type` builtin) | missing binary, no PATH entry |
 | primitive | `ish_stream_bind` | line transforms | bad data, transform errors |
 | primitive | `ish_file_bind` | file operations | missing files, permission, disk full |
 | primitive | `ish_pipe_bind` | pipeline stages | any stage failure (via PIPESTATUS) |
 | integration | `ish_sqlite_bind` | queries | constraint violations, corrupt db |
 | integration | `ish_git_bind` | git operations | conflicts, auth, network timeout |
+
+the foundation answers three questions every layer above needs answered:
+- **color:** "can this terminal render colors?" (capability)
+- **file_descriptor:** "can I do POSIX I/O on this fd?" (I/O)
+- **exists:** "is this command available?" (environment)
+
+`ish_exists_executable` wraps the shell `type` builtin — it checks builtins, functions, aliases, and PATH. it's environment introspection, not file I/O (`[[ -f ]]` checks files; `type` checks the shell's command resolution). every integration must call `ish_exists_executable` before invoking its external binary (sqlite3, git, curl, ssh, jq, awk, etc.).
 
 the primitives give you building blocks. the integrations compose them into real workflows.
 
@@ -107,7 +116,7 @@ integration binds    compose primitive operations (git, sqlite)
     ↓
 primitive binds      chain POSIX operations (stream, file, pipe)
     ↓
-foundation bind      raw fd operations (the bottom)
+foundation           color, file_descriptor, exists (the bottom)
 ```
 
 monads are the vertical spine. every layer's bind composes the layer below it. package code never sees bind directly — the semantic layer hides it behind names like `ish_require_valid_hostname` and `ish_fail_with`.

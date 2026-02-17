@@ -26,15 +26,16 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo (priority order)
 
+**Foundation:**
+1. [ ] build-fp-core-exists - `ish_exists_executable` at `core/source/exists.sh` (wraps `type`). Environment introspection alongside color + file_descriptor. Migrate 20+ consumers from `ish_utils_exists_executable`.
+
 **Primitives (built on file descriptors):**
-1. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr
-2. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints)
+2. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr. Migrate 20+ consumers from `ish_utils_stream_*` → `ish_stream_*`. Delete `source/utils/stream.sh`.
+3. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
+4. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
 
-3. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
-
-**Utils Removal/Cleanup:**
-4. there is source/utils/exists.sh - it seem to just be checking for files, including executable files. is this just something that should be built on our fp core file module?
-5. there is source/stream.sh and source/utils/stream.sh. which one stays?
+**Utils removal:**
+5. [ ] delete `source/utils/` directory and `utils.sh` — empty after exists, stream, and file migrations complete
 
 **Integrations (external binaries composed through primitives):**
 6. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
@@ -58,7 +59,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 1. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
 2. [ ] refactor ratfiles to use ish_* primitives
-3. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, utils_tui_error usage, quoted variables
+3. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, tui_error usage, quoted variables
 4. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
 5. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
 6. [ ] [implement-module-namespace-linter](tasks/implement-module-namespace-linter.md) - static analysis for module_dir violations and DAG enforcement
@@ -150,7 +151,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 **Key decisions:**
 - Top-down package model (ish loads packages)
-- FP core: file_descriptor → primitives (stream, file, pipe) → integrations (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
+- FP core: foundation (color, file_descriptor, exists) → primitives (stream, file, pipe) → integrations (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
 - Integrations are built when their first consumer exists (sqlite/git for kanban, curl/ssh/jq for remote exec)
 - Monads: every `*_bind` function is the monadic operation — see core/docs/architecture/functional_future/monads.md
 - Build FP first, refactor existing code, then tackle kanban redesign with proven tools
