@@ -10,8 +10,8 @@ ish uses [bats-core](https://github.com/bats-core/bats-core) for automated testi
 ## running tests
 
 ```bash
-./ish self test all          # run all tests (unit + integration)
-./ish self test unit         # run unit tests only
-./ish self test integration  # run integration tests only
-./ish self lint all          # run shellcheck on all bash files
+./ish test all          # run all tests (unit + integration)
+./ish test unit         # run unit tests only
+./ish test integration  # run integration tests only
+./ish lint all          # run shellcheck on all bash files
 ```

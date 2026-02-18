@@ -8,10 +8,6 @@ docs have stale naming, specific examples that rot, references to old `bash/` pa
 
 ## remaining work
 
-### step 4: split vision.md
-- [ ] split into vision/ directory with focused files
-- [ ] fix stale tui_* function names during split
-
 ### step 5: split remaining large core docs
 - [ ] philosophy.md (235 lines)
 - [ ] explicit_routing.md (69 lines — under limit, just fix stale content)
