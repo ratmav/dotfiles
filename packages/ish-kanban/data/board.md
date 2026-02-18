@@ -16,7 +16,7 @@
 
 ## open questions
 
-none - see packages/ish/docs/architecture/task_reconciliation.md for resolved architectural decisions
+none - resolved architectural decisions documented in kanban tasks
 
 ---
 
@@ -60,7 +60,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 
 ### todo
 
-1. [ ] [reconcile-task-architecture](tasks/reconcile-task-architecture.md) - document top-down decision in architecture docs, delete task_reconciliation.md
+1. [ ] [reconcile-task-architecture](tasks/reconcile-task-architecture.md) - document top-down decision in architecture docs
 2. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
 3. [ ] refactor ratfiles to use ish_* primitives
 4. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, tui_error usage, quoted variables
@@ -152,7 +152,7 @@ none - see packages/ish/docs/architecture/task_reconciliation.md for resolved ar
 **Architecture:**
 - packages/ish/docs/architecture/ - current package system architecture
 - packages/ish/docs/architecture/functional_future/ - FP vision and patterns
-- packages/ish/docs/architecture/task_reconciliation.md - task dispositions and rationale
+- packages/ish-kanban/data/tasks/reconcile-task-architecture.md - top-down decision and rationale
 
 **Key decisions:**
 - Top-down package model (ish loads packages)

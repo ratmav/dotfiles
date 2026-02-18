@@ -6,14 +6,14 @@
 
 ## description
 
-document the top-down architectural decision in the appropriate architecture doc (likely overview.md). currently only captured in `core/docs/architecture/task_reconciliation.md`, which should be deleted once this is done.
+document the top-down architectural decision in the appropriate architecture doc (likely overview.md).
 
 **decision:** ish uses top-down architecture. ish orchestrates, packages extend. dependency direction is `ish → packages`. rejected bottom-up (projects importing framework).
 
 ## subtasks
 
 - [ ] add top-down decision to architecture overview (or appropriate doc)
-- [ ] delete `core/docs/architecture/task_reconciliation.md`
+- [x] delete `core/docs/architecture/task_reconciliation.md`
 
 ## deliverable
 

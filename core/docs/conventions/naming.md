@@ -90,3 +90,15 @@ result=$(foo_bar_action)
 # don't use private functions
 # _foo_bar_is_baz  # don't do this!
 ```
+
+## namespace collision prevention
+
+naming conventions prevent collisions at three levels:
+
+1. **remote uniqueness** — git hosting enforces `service/user/repo` uniqueness
+2. **local uniqueness** — filesystem prevents duplicate package directories
+3. **function prefixes** — all packages use `ish_` prefix to stay under the ish namespace:
+   - `ish_tui_*` for core tui module
+   - `ish_kanban_*` for kanban package
+   - `ish_ratfiles_*` for ratfiles package
+   - `ish_foo_*` for a hypothetical package named "foo"
