@@ -52,7 +52,7 @@ Documented bash version requirement. Tested on multiple platforms. Version check
 
 - `ish` (main entry point - add version check)
 - `README.md` (UPDATE - requirements section)
-- `packages/ish/docs/philosophy.md` (UPDATE - portability notes)
+- `core/docs/conventions/file_organization.md` (UPDATE - portability notes)
 
 ## verification
 

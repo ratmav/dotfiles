@@ -8,11 +8,6 @@ docs have stale naming, specific examples that rot, references to old `bash/` pa
 
 ## remaining work
 
-### step 5: split remaining large core docs
-- [ ] philosophy.md (235 lines)
-- [ ] explicit_routing.md (69 lines — under limit, just fix stale content)
-- [ ] fix bash/ refs and generic examples during split
-
 ### step 6: split large architecture docs
 - [ ] package_loading.md (335), overview.md (245), migration_path.md (198)
 - [ ] task_reconciliation.md (186), registry_commands.md (184), package_types.md (152)

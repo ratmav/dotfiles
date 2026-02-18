@@ -1,5 +1,20 @@
 # routing
 
+## why explicit routing
+
+bash positional parameters (`$1`, `$2`, etc.) are inherited when sourcing files. if a sourced file has a case statement at file scope, it executes with the caller's args — producing unwanted output.
+
+```bash
+# user runs: ish bootstrap macos help
+ish: $1="bootstrap", shifts to $1="macos"
+  └─ sources macos.sh: inherits $1="macos", shifts to $1="help"
+      ├─ sources tui.sh: inherits $1="help"
+      │   └─ file-scope case matches "help", prints tui help ✗
+      └─ macos case matches "help", prints macos help ✓
+```
+
+**solution:** separate function loading from command dispatching. sourcing loads definitions only. routing is explicit via `*_route()` functions that callers invoke deliberately.
+
 ## routing pattern
 
 every routable module (exposed via cli) has:
@@ -8,8 +23,6 @@ every routable module (exposed via cli) has:
 2. **`module_all()`** wrapper function for complete workflows (if module supports "all")
 3. **`module_help()`** function describing commands
 4. **`module_route()`** function with case statement for dispatching
-
-see `docs/explicit_routing.md` for detailed explanation.
 
 ### the `*_all()` wrapper pattern
 

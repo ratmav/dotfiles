@@ -58,7 +58,7 @@ dotfiles
 - self-contained and portable
 - idempotent operations (safe to run multiple times)
 
-see `packages/ish/docs/philosophy.md` for design principles and `packages/ish/docs/vision.md` for strategic direction.
+see `core/docs/conventions.md` for design principles and `core/docs/vision.md` for strategic direction.
 
 ## quick start
 

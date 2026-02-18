@@ -115,3 +115,17 @@ create a subdirectory when:
 keep in parent file when:
 - **single function** for a concept
 - **unclear grouping** - wait until the pattern emerges (but once you have 2, extract)
+
+## sizing guidelines
+
+bash requires more lines than python/ruby for error handling and conditionals. thresholds are looser than general CLAUDE.md guidelines:
+
+**functions:**
+- <15 lines: ideal
+- 15-30 lines: acceptable
+- >30 lines: break up
+
+**modules:**
+- <100 lines: good
+- 100-150 lines: warning sign
+- >150 lines: extract to sub-modules

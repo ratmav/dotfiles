@@ -22,9 +22,9 @@ Clean, browsable documentation with mermaid diagrams, built from markdown.
 - [ ] configure book.toml with mermaid plugin
 - [ ] organize existing docs into book structure:
   - architecture/ docs
-  - conventions.md
-  - philosophy.md
-  - testing.md
+  - conventions/ (split into 13 files)
+  - testing/ (split into 4 files)
+  - vision/ (split into 3 files)
 - [ ] add SUMMARY.md with chapter structure
 - [ ] build and verify: `mdbook build`
 
@@ -89,9 +89,9 @@ packages/ish/docs/
 │   │   ├── overview.md
 │   │   ├── core_concepts.md
 │   │   └── functional_future/
-│   ├── conventions.md
-│   ├── philosophy.md
-│   └── testing.md
+│   ├── conventions/
+│   ├── testing/
+│   └── vision/
 └── book/                        # Generated HTML (gitignored)
 ```
 
