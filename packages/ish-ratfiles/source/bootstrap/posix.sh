@@ -31,7 +31,7 @@ ish_ratfiles_bootstrap_posix_symlinks() {
 }
 
 ish_ratfiles_bootstrap_posix_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles bootstrap posix [command]
 
 commands:

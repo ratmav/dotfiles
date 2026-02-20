@@ -43,7 +43,7 @@ ish_ratfiles_test_route() {
     ish_ratfiles_test_integration "$@"
     ;;
   "")
-    ish_utils_stream_multiline_stderr <<EOF
+    ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles test [suite] [options]
 
 suites:

@@ -19,7 +19,7 @@ ish_ratfiles_bootstrap_macos_all() {
 }
 
 ish_ratfiles_bootstrap_macos_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles bootstrap macos [command]
 
 commands:

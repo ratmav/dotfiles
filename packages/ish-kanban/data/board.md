@@ -27,22 +27,21 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo (priority order)
 
 **Primitives (built on file descriptors):**
-1. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr. Migrate 20+ consumers from `ish_utils_stream_*` → `ish_stream_*`. Delete `source/utils/stream.sh`.
-2. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
-3. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
+1. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
+2. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
 
 **Utils removal:**
-4. [ ] delete `source/utils/` directory and `utils.sh` — empty after exists, stream, and file migrations complete
+3. [ ] delete `source/utils/` directory and `utils.sh` — empty after exists, stream, and file migrations complete
 
 **Integrations (external binaries composed through primitives):**
-5. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
-6. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
+4. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
+5. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
 
 **FP Layer:**
-7. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
-8. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-9. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-10. [ ] document FP patterns and usage
+6. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
+7. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
+8. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+9. [ ] document FP patterns and usage
 
 ### in progress
 

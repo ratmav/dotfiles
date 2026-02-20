@@ -32,7 +32,7 @@ ish_ratfiles_nix_semantic() {
 }
 
 ish_ratfiles_nix_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles nix [command]
 
 commands:

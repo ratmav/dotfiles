@@ -103,6 +103,53 @@ setup() {
   assert_output "hello"
 }
 
+@test "ish_stream_multiline_stdout outputs multiple lines" {
+  run bash -c '
+    source ${ISH_CORE}/source/stream.sh
+    ish_stream_multiline_stdout <<EOF
+line one
+line two
+line three
+EOF
+  '
+  assert_success
+  assert_line --index 0 "line one"
+  assert_line --index 1 "line two"
+  assert_line --index 2 "line three"
+}
+
+@test "ish_stream_multiline_stderr outputs multiple lines to stderr" {
+  run bash -c '
+    source ${ISH_CORE}/source/stream.sh
+    ish_stream_multiline_stderr <<EOF
+alpha
+bravo
+EOF
+  ' 2>&1
+  assert_success
+  assert_line --index 0 "alpha"
+  assert_line --index 1 "bravo"
+}
+
+@test "ish_stream_multiline_stdout with empty heredoc produces no output" {
+  run bash -c '
+    source ${ISH_CORE}/source/stream.sh
+    printf "" | ish_stream_multiline_stdout
+  '
+  assert_success
+  refute_output
+}
+
+@test "ish_stream_stdout handles dash prefixed arguments" {
+  run bash -c 'source ${ISH_CORE}/source/stream.sh; ish_stream_stdout "-n"'
+  assert_output "-n"
+}
+
+@test "ish_stream_stderr handles dash prefixed arguments" {
+  run bash -c 'source ${ISH_CORE}/source/stream.sh; ish_stream_stderr "-n" 2>&1'
+  assert_output "-n"
+}
+
 @test "ish_stream_map requires function argument" {
   run bash -c 'source ${ISH_CORE}/source/stream.sh; ish_stream_map 2>&1'
   assert_failure

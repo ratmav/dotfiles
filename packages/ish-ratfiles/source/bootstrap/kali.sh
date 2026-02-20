@@ -73,7 +73,7 @@ ish_ratfiles_bootstrap_kali_wezterm() {
 }
 
 ish_ratfiles_bootstrap_kali_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles bootstrap kali [command]
 
 commands:

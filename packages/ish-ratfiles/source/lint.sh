@@ -27,7 +27,7 @@ ish_ratfiles_lint_route() {
     ish_ratfiles_lint_bash
     ;;
   "")
-    ish_utils_stream_multiline_stderr <<EOF
+    ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles lint [target]
 
 targets:

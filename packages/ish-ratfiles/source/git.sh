@@ -7,7 +7,7 @@ source "${ISH_CORE}/source/tui.sh"
 source "${ish_ratfiles_git_module_dir}/git/clean.sh"
 
 ish_ratfiles_git_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles git [command]
 
 commands:

@@ -10,30 +10,30 @@ ish_platform_arch() {
   local machine=$(uname -m)
   case "$machine" in
     x86_64|amd64)
-      ish_utils_stream_stdout "amd64"
+      ish_stream_stdout "amd64"
       ;;
     aarch64|arm64)
-      ish_utils_stream_stdout "arm64"
+      ish_stream_stdout "arm64"
       ;;
     *)
-      ish_utils_stream_stdout "$machine"
+      ish_stream_stdout "$machine"
       ;;
   esac
 }
 
 ish_platform_help() {
-  ish_utils_stream_stdout "usage: ish platform [command]"
-  ish_utils_stream_stdout ""
-  ish_utils_stream_stdout "commands:"
-  ish_utils_stream_stdout "  arch         output architecture (arm64, amd64)"
-  ish_utils_stream_stdout "  os           output operating system (macos, kali)"
+  ish_stream_stdout "usage: ish platform [command]"
+  ish_stream_stdout ""
+  ish_stream_stdout "commands:"
+  ish_stream_stdout "  arch         output architecture (arm64, amd64)"
+  ish_stream_stdout "  os           output operating system (macos, kali)"
 }
 
 ish_platform_os() {
   if _platform_is_macos; then
-    ish_utils_stream_stdout "macos"
+    ish_stream_stdout "macos"
   elif _platform_is_kali; then
-    ish_utils_stream_stdout "kali"
+    ish_stream_stdout "kali"
   else
     ish_tui_error --message="unsupported platform"
   fi

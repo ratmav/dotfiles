@@ -75,7 +75,7 @@ ish_kanban_test_route() {
     ish_kanban_test_integration "$@"
     ;;
   "")
-    ish_utils_stream_multiline_stderr <<EOF
+    ish_stream_multiline_stderr <<EOF
 usage: ish kanban test [suite] [options]
 
 suites:

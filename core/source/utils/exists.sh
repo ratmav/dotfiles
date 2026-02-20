@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ish_utils_exists_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish utils exists [option]
 
 options:

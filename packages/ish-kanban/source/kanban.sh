@@ -20,7 +20,7 @@ ish_kanban_show() {
 }
 
 ish_kanban_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish kanban [command]
 
 commands:

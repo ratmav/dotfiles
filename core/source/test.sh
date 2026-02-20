@@ -61,7 +61,7 @@ ish_test_integration() {
 }
 
 ish_test_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish test [suite] [options]
 
 suites:

@@ -6,7 +6,7 @@
 # these functions are available because kanban.sh sources dependencies before this module
 
 ish_kanban_scratch_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish kanban scratch [command]
 
 commands:
@@ -25,7 +25,7 @@ ish_kanban_scratch_path() {
     ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
   fi
 
-  ish_utils_stream_stdout "${ish_kanban_dir}/scratch.md"
+  ish_stream_stdout "${ish_kanban_dir}/scratch.md"
 }
 
 ish_kanban_scratch_capture() {

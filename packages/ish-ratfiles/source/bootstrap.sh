@@ -9,7 +9,7 @@ source "${ish_ratfiles_bootstrap_module_dir}/bootstrap/kali.sh"
 source "${ish_ratfiles_bootstrap_module_dir}/bootstrap/posix.sh"
 
 ish_ratfiles_bootstrap_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles bootstrap [platform]
 
 platforms:

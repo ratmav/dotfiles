@@ -3,11 +3,10 @@
 ish_utils_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ish_utils_module_dir}/utils/exists.sh"
-source "${ish_utils_module_dir}/utils/stream.sh"
 source "${ish_utils_module_dir}/tui.sh"
 
 ish_utils_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish utils [command]
 
 commands:

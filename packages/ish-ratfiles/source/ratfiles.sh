@@ -12,7 +12,7 @@ source "${ish_ratfiles_module_dir}/git.sh"
 source "${ish_ratfiles_module_dir}/nix.sh"
 
 ish_ratfiles_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 
                                     % -
                        %.=*@  ==*  @ @    @@   +@@

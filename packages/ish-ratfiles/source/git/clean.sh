@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ish_ratfiles_git_clean_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish ratfiles git clean [command]
 
 commands:

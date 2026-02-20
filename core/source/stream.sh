@@ -56,6 +56,24 @@ ish_stream_map() {
   done
 }
 
+ish_stream_multiline_stderr() {
+  local lines
+  local i
+  mapfile -t lines
+  for i in "${!lines[@]}"; do
+    printf '%s\n' "${lines[$i]}" >&2
+  done
+}
+
+ish_stream_multiline_stdout() {
+  local lines
+  local i
+  mapfile -t lines
+  for i in "${!lines[@]}"; do
+    printf '%s\n' "${lines[$i]}"
+  done
+}
+
 ish_stream_stderr() {
   printf '%s\n' "$*" >&2
 }

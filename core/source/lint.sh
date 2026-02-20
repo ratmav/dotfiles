@@ -17,7 +17,7 @@ ish_lint_bash() {
 }
 
 ish_lint_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish lint [target]
 
 targets:

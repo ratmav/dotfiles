@@ -6,7 +6,7 @@
 # these functions are available because kanban.sh sources dependencies before this module
 
 ish_kanban_task_help() {
-  ish_utils_stream_multiline_stderr <<EOF
+  ish_stream_multiline_stderr <<EOF
 usage: ish kanban task [command]
 
 commands:
@@ -150,7 +150,7 @@ ish_kanban_task_path() {
     ish_tui_error --message="task not found: $name"
   fi
 
-  ish_utils_stream_stdout "$task_file"
+  ish_stream_stdout "$task_file"
 }
 
 ish_kanban_task_show() {
