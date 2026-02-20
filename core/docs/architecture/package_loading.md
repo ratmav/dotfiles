@@ -66,4 +66,4 @@ ish_tui_error --message="unknown command: ${cmd}"
 
 ## PATH management
 
-`ish self install` adds `~/.ish/core/bin` to `$PATH` in the user's shell config file. packages can also provide binaries in their `bin/` directory.
+`ish install` adds `~/.ish/core/bin` to `$PATH` in the user's shell config file. packages can also provide binaries in their `bin/` directory.

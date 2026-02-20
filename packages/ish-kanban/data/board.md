@@ -95,12 +95,10 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo
 
-1. [ ] [add-to-path](tasks/add-to-path.md) - verify ish self install implementation (using ish_*)
+1. [ ] [add-to-path](tasks/add-to-path.md) - add ish to PATH, implement tab completion
 2. [ ] [gpg-signed-commits](tasks/gpg-signed-commits.md) - enable GPG signing
 3. [ ] [implement-registry](tasks/implement-registry.md) - registry system (ish/registry module with data/packages/)
-4. [ ] implement package commands (migration_path.md Step 3) - using ish_*
-5. [ ] [project-ishrc](tasks/project-ishrc.md) - per-project hot package loading via .ishrc in cwd
-6. [ ] test locally (migration_path.md Step 4)
+4. [ ] [project-ishrc](tasks/project-ishrc.md) - per-project hot package loading via .ishrc in cwd
 
 ---
 
@@ -142,7 +140,7 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo
 
 1. [ ] [git-default-branch](tasks/git-default-branch.md) - create main branch with GPG signed commit
-2. [ ] execute migration_path.md Step 5 (split repos)
+2. [ ] extract `core/` to separate `ish` repo, `packages/ish-ratfiles/` stays in dotfiles repo
 3. [ ] [core-semantic-versioning](tasks/core-semantic-versioning.md) - semver tags for ish core, package version pinning, install/test/lint validation
 
 ---

@@ -35,7 +35,7 @@ when ish loads, it scans for packages. if the framework itself lived in `package
     └── ish-ratfiles/
 ```
 
-same code, different base paths via `${ISH_ROOT}`. user clones to `~/.ish/`, then `ish self install` adds `~/.ish/core/bin` to `$PATH` in the shell config.
+same code, different base paths via `${ISH_ROOT}`. user clones to `~/.ish/`, then `ish install` adds `~/.ish/core/bin` to `$PATH` in the shell config.
 
 ## principles
 
@@ -70,7 +70,7 @@ no `curl | bash`. ish uses clone, inspect, verify:
 
 1. `git clone` — code on disk before execution
 2. inspect — plain text, auditable
-3. `ish self verify` — check gpg signatures
-4. `ish self install` — add `~/.ish/core/bin` to `$PATH` in shell config
+3. `ish validate` — check git integrity, gpg signatures, keyserver, structure, tests
+4. `ish install` — add `~/.ish/core/bin` to `$PATH` in shell config
 
-trust anchors: git sha integrity + gpg signature identity + out-of-band key verification.
+trust anchors: git sha integrity + gpg signature identity + out-of-band key verification. see `design_decisions.md` for full trust model comparison.
