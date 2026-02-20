@@ -30,8 +30,8 @@ Current state forces users to type `ish lint bash` when `ish lint` would be clea
 
 ## critical files
 
-- `packages/ish/source/lint.sh` - Main lint router
-- `packages/ish/docs/conventions.md` - May reference lint commands
+- `core/source/lint.sh` - Main lint router
+- `core/docs/conventions.md` - May reference lint commands
 
 ## verification
 

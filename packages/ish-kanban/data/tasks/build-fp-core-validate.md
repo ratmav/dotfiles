@@ -38,7 +38,7 @@ Pure functions that return true/false, composable with and/or/not.
 
 ## notes
 
-**See:** docs/architecture/functional_future/overview.md lines 999-1075
+**See:** core/docs/architecture/functional_future/primitives.md
 
 **Type signatures:**
 ```bash

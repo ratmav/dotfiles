@@ -2,19 +2,18 @@
 
 **phase:** 2
 
-**dependencies:** complete-doc-audit
+**dependencies:** none
 
 ## description
 
-document the top-down architectural decision in the appropriate architecture doc (likely overview.md).
+document the top-down architectural decision in `design_decisions.md` or `package_system.md`.
 
 **decision:** ish uses top-down architecture. ish orchestrates, packages extend. dependency direction is `ish → packages`. rejected bottom-up (projects importing framework).
 
 ## subtasks
 
-- [ ] add top-down decision to architecture overview (or appropriate doc)
-- [x] delete `core/docs/architecture/task_reconciliation.md`
+- [ ] add top-down decision to architecture doc
 
 ## deliverable
 
-architectural decision documented in its proper home. reconciliation doc removed.
+architectural decision documented in its proper home.

@@ -1,24 +1,24 @@
 # setup mdBook documentation system
 
-**milestone:** 2 - fp core + cleanup
+**phase:** 6
 
-**dependencies:** phase 1 (restructure complete)
+**dependencies:** none
 
 ## description
 
-Set up mdBook-based documentation for ish and dotfiles packages. Use mdbook-mermaid for diagrams. Each package has its own book in docs/.
+set up mdBook-based documentation for ish core and packages. use mdbook-mermaid for diagrams. `ish docs` auto-discovers package docs alongside core docs.
 
-Clean, browsable documentation with mermaid diagrams, built from markdown.
+clean, browsable documentation with mermaid diagrams, built from markdown.
 
 ## subtasks
 
-**Installation (system-level, not nix):**
+**installation (system-level, not nix):**
 - [ ] install mdBook via cargo: `cargo install mdbook`
 - [ ] install mdbook-mermaid: `cargo install mdbook-mermaid`
 - [ ] verify installation: `mdbook --version`
 
-**ish Package Docs:**
-- [ ] initialize mdBook in packages/ish/docs/
+**core docs:**
+- [ ] initialize mdBook in `core/docs/`
 - [ ] configure book.toml with mermaid plugin
 - [ ] organize existing docs into book structure:
   - architecture/ docs
@@ -28,123 +28,59 @@ Clean, browsable documentation with mermaid diagrams, built from markdown.
 - [ ] add SUMMARY.md with chapter structure
 - [ ] build and verify: `mdbook build`
 
-**dotfiles Package Docs:**
-- [ ] initialize mdBook in packages/ish_dotfiles/docs/
-- [ ] configure book.toml with mermaid plugin
-- [ ] organize bootstrap/nix/git documentation
-- [ ] add SUMMARY.md
-- [ ] build and verify
+**package docs auto-discovery:**
+- [ ] `ish docs build` scans `packages/ish-*/docs/` for package books
+- [ ] if a package has docs, include as a chapter or linked book
+- [ ] packages without docs are silently skipped
+- [ ] convention: each package can have its own `book.toml` or just markdown files that get pulled into the main book
 
-**ish Commands:**
-- [ ] implement `ish_self_docs_build` - build ish documentation
-- [ ] implement `ish_self_docs_serve` - serve docs locally (mdbook serve)
-- [ ] implement `ish_self_docs_open` - open docs in browser
-- [ ] add routing for `ish self docs`
+**ish commands:**
+- [ ] implement `ish_docs_build` - build core + discovered package docs
+- [ ] implement `ish_docs_serve` - serve docs locally (mdbook serve), print URL
+- [ ] add routing for `ish docs`
 
-**CI Integration:**
+**CI integration:**
 - [ ] add docs build to CI workflow
 - [ ] fail CI if docs build fails
 - [ ] optionally: deploy docs to GitHub Pages
 
-**Documentation:**
-- [ ] document mdBook setup in README
-- [ ] document how to add new chapters
-- [ ] document mermaid diagram usage
-
 ## deliverable
 
-Working mdBook documentation system for ish and dotfiles packages, with build/serve commands.
+working mdBook documentation system with auto-discovery. `ish docs serve` shows core docs + any package docs that exist.
 
 ## notes
 
-**Why mdBook:**
-- Markdown-based (already using)
-- Clean, searchable HTML output
-- Built-in local server
-- Mermaid diagram support
-- Used by Rust (proven tool)
-- Simple, no complex build system
+**why mdBook:**
+- markdown-based (already using)
+- clean, searchable HTML output
+- built-in local server
+- mermaid diagram support
+- simple, no complex build system
 
-**Installation (system-level):**
-```bash
-# Install via cargo (rust toolchain)
-cargo install mdbook
-cargo install mdbook-mermaid
+**NOT via nix — nix is only for per-project dev environments.**
 
-# Or via system package manager
-# macOS: brew install mdbook
-# Debian/Ubuntu: cargo install (not in apt)
+**structure:**
 ```
-
-**NOT via nix - nix is only for per-project dev environments.**
-
-**Structure:**
-```
-packages/ish/docs/
-├── book.toml                    # mdBook config
+core/docs/
+├── book.toml
 ├── src/
-│   ├── SUMMARY.md              # Table of contents
+│   ├── SUMMARY.md
 │   ├── introduction.md
 │   ├── architecture/
-│   │   ├── overview.md
-│   │   ├── core_concepts.md
-│   │   └── functional_future/
 │   ├── conventions/
 │   ├── testing/
 │   └── vision/
-└── book/                        # Generated HTML (gitignored)
+└── book/                        # generated HTML (gitignored)
+
+packages/ish-kanban/docs/        # auto-discovered, included in build
+packages/ish-ratfiles/docs/      # auto-discovered, included in build
 ```
 
-**book.toml example:**
-```toml
-[book]
-title = "ish Documentation"
-authors = ["ratmav"]
-language = "en"
-multilingual = false
-src = "src"
-
-[output.html]
-mathjax-support = false
-
-[preprocessor.mermaid]
-command = "mdbook-mermaid"
-
-[output.html.fold]
-enable = true
-level = 0
-```
-
-**Commands:**
+**commands:**
 ```bash
-# Build docs
-ish self docs build
-# Runs: mdbook build packages/ish/docs
+ish docs build
+# builds core/docs + discovers packages/ish-*/docs/
 
-# Serve locally
-ish self docs serve
-# Runs: mdbook serve packages/ish/docs
-# Opens: http://localhost:3000
-
-# Open in browser
-ish self docs open
-# Opens: packages/ish/docs/book/index.html
+ish docs serve
+# serves combined docs, prints URL to visit
 ```
-
-**Mermaid diagrams:**
-````markdown
-```mermaid
-graph LR
-    A[FP Core] --> B[Semantic Layer]
-    B --> C[Clean Code]
-```
-````
-
-**Benefits:**
-- Clean, professional documentation
-- Searchable
-- Versioned (in git with code)
-- Local preview while writing
-- Mermaid diagrams render properly
-- Can deploy to GitHub Pages
-- System utility (installed via cargo, not nix)

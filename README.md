@@ -42,15 +42,13 @@ dotfiles
 - **bootstrap scripts** - set up development environments on macos and linux
 
 **core utilities:**
-- `bash/tui.sh` - terminal ui (colors, prompts, messages)
-- `bash/platform.sh` - platform detection (os, architecture)
-- `bash/utils.sh` - common operations (existence checks, file operations)
+- `core/source/tui.sh` - terminal ui (colors, prompts, messages)
+- `core/source/platform.sh` - platform detection (os, architecture)
+- `core/source/stream.sh` - FP operations (map, bind, filter, fold)
 
-**task modules:**
-- `bash/bootstrap/` - system setup and configuration
-- `bash/git/` - git operations and cleanup utilities
-- `bash/nix.sh` - nix package version management
-- `bash/self/` - testing and linting
+**packages:**
+- `packages/ish-ratfiles/` - bootstrap, git, nix operations
+- `packages/ish-kanban/` - kanban board and task management
 
 **design principles:**
 - convention over configuration (no yaml, no config files)
@@ -96,7 +94,7 @@ functions map to cli commands via naming convention:
 bootstrap_macos_homebrew_install()  →  ish bootstrap macos homebrew install
 ```
 
-see `packages/ish/docs/conventions.md` for complete details.
+see `core/docs/conventions.md` for complete details.
 
 ## dependencies
 

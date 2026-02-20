@@ -32,7 +32,7 @@ Wraps stream operations, validation, and error handling with clear, semantic nam
 
 ## notes
 
-**See:** docs/architecture/functional_future/overview.md lines 858-912
+**See:** core/docs/architecture/functional_future/layers.md
 
 **Example usage:**
 ```bash

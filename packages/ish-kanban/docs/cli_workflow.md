@@ -1,64 +1,49 @@
 # kanban cli workflow
 
-## task lifecycle
+## current commands
 
 ```bash
-# create — --title is required, --body is optional
-ish kanban task new --title "implement parser"
-ish kanban task new --title "implement parser" --body "detailed description here"
-ish kanban task new --title "implement parser" < spec.md
+# board
+ish kanban show                          # render board.md
 
-# read
-ish kanban task show --id kanban-board-parser
-ish kanban task list
+# tasks
+ish kanban task list                     # list task names
+ish kanban task new --name=NAME          # create task file
+ish kanban task show --name=NAME         # output task content
+ish kanban task path --name=NAME         # output task file path
+ish kanban task delete --name=NAME       # delete task file
 
-# update
-ish kanban task edit --id kanban-board-parser --body "new body"
-ish kanban task edit --id kanban-board-parser < spec.md
-
-# done — deletes the task. git log is the historical record.
-ish kanban task delete --id kanban-board-parser
+# scratch pad
+ish kanban scratch show                  # output scratch content
+ish kanban scratch capture --message=MSG # append to scratch
+ish kanban scratch path                  # output scratch file path
 ```
 
-## dependencies
+editing is done in vim via `path` commands — see [vim_integration.md](vim_integration.md).
+
+## future commands (sqlite redesign)
 
 ```bash
-# link: "parser" depends on "validation"
-ish kanban task link --id parser --depends-on validation
+# task body via flag or stdin
+ish kanban task new --name=NAME --body="description"
+ish kanban task new --name=NAME < spec.md
 
-# unlink: remove dependency
-ish kanban task unlink --id parser --depends-on validation
-```
+# dependencies
+ish kanban task link --name=NAME --depends-on=OTHER
+ish kanban task unlink --name=NAME --depends-on=OTHER
 
-## board view
-
-```bash
+# board view (computed from dependency graph)
 ish kanban board
 ```
 
-output groups tasks by computed state. open = no dependencies. blocked = has dependencies.
-
-```
-open:
-  kanban-sqlite-redesign
-  fix-lint-command
-
-blocked:
-  kanban-migration          <- depends on: kanban-sqlite-redesign
-```
-
-multiple open tasks can exist at once. you pick which to work on.
-
-## stdin detection
+## stdin detection (future)
 
 when no `--body` flag is provided, check stdin:
 
 ```bash
 if [ -n "${body-}" ]; then
-    # --body flag was provided
     :
 elif [ ! -t 0 ]; then
-    # stdin is piped — read body from it
     body=$(cat)
 else
     body=""
@@ -69,27 +54,18 @@ no `$EDITOR` invocation. ever.
 
 ## slug generation
 
-task id (slug) is derived from the title:
-
-```bash
-# "Implement Board Parser" -> "implement-board-parser"
-slug=$(echo "$title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
-```
-
-slugs are the primary key. title uniqueness (enforced by the schema) guarantees slug uniqueness.
+task id (slug) is the `--name` value, already lowercase and hyphenated by convention.
 
 ## flag parsing
 
-all flags use `--name value` format (space-separated, not `=`). parsed with a while/case loop:
+all flags use `--name=value` format (equals sign, no space):
 
 ```bash
-while [ $# -gt 0 ]; do
-    case "$1" in
-        --title) title="$2"; shift 2 ;;
-        --id)    id="$2";    shift 2 ;;
-        --body)  body="$2";  shift 2 ;;
-        --depends-on) depends_on="$2"; shift 2 ;;
-        *) ish_utils_tui_error "unknown flag: $1" ;;
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --name=*) name="${1#*=}"; shift ;;
+        --message=*) message="${1#*=}"; shift ;;
+        *) ish_tui_error --message="unknown option: $1" ;;
     esac
 done
 ```
@@ -97,6 +73,6 @@ done
 ## exit codes
 
 - 0: success
-- 1: error (missing flags, task not found, duplicate title, circular dep)
+- 1: error (missing flags, task not found, duplicate name)
 
-errors go to stderr via `ish_utils_tui_error`. data goes to stdout.
+errors go to stderr via `ish_tui_error`. data goes to stdout.

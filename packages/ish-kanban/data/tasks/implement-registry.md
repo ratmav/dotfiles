@@ -16,7 +16,7 @@ Publishing = PR to ish repo to add package.conf. CI runs validation to enforce n
 - [ ] create source/registry/ module
 - [ ] create source/registry/data/packages/ directory
 - [ ] define package metadata format (bash-parseable *.conf)
-- [ ] add initial packages (ish.conf, ish_dotfiles.conf)
+- [ ] add initial packages (ish.conf, ish_ratfiles.conf)
 
 **Registry Commands (source/registry/):**
 - [ ] implement `ish_registry_search` - find packages by query
@@ -75,7 +75,7 @@ core/source/registry/
 └── data/
     └── packages/
         ├── ish.conf
-        └── ish_dotfiles.conf
+        └── ish_ratfiles.conf
 ```
 
 Note: After restructure, framework is in `core/` (see task `implement-package-loading-strategy.md`).

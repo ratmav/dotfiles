@@ -4,28 +4,28 @@
 
 vim's `:w !` and `:r !` are the pipeline. no plugins required.
 
-### create a task with body
+### create a task with body (future: sqlite redesign)
 
 write the spec in a buffer, then:
 
 ```vim
-:w !ish kanban task new --title "implement parser"
+:w !ish kanban task new --name=implement-parser
 ```
 
 pipes the buffer to stdin. ish reads it as the body.
 
 ### edit an existing task
 
-pull the task body into a buffer:
+get the file path, open it:
 
 ```vim
-:r !ish kanban task show --id kanban-sqlite-redesign
+:r !ish kanban task path --name=implement-parser
 ```
 
-edit the buffer, then write it back:
+or view task content in a buffer:
 
 ```vim
-:w !ish kanban task edit --id kanban-sqlite-redesign
+:r !ish kanban task show --name=implement-parser
 ```
 
 ### visual selection
@@ -33,13 +33,13 @@ edit the buffer, then write it back:
 pipe just the selected lines:
 
 ```vim
-:'<,'>w !ish kanban task new --title "implement parser"
+:'<,'>w !ish kanban task new --name=implement-parser
 ```
 
 ### view the board
 
 ```vim
-:r !ish kanban board
+:r !ish kanban show
 ```
 
 ## neovim plugin: `:Ish` (future)

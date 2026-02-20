@@ -11,7 +11,7 @@ graph tb
     end
 
     subgraph "layer 2: projects"
-        f[ish-dotfiles<br/>personal config]
+        f[ish-ratfiles<br/>personal config]
         g[ish-infra<br/>infrastructure]
         h[ish-myapp<br/>application tasks]
     end
@@ -53,7 +53,7 @@ these are the primitives. everything builds on these.
 
 projects consume the framework and add domain-specific tasks:
 
-- **ish-dotfiles** — `ish bootstrap macos all`, `ish git clean prune`
+- **ish-ratfiles** — `ish ratfiles bootstrap macos all`, `ish ratfiles git clean prune`
 - **ish-infra** — `ish provision web all`, `ish deploy app staging`
 - **ish-myapp** — `ish db migrate`, `ish test integration` via `.ishrc`
 

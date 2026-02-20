@@ -28,7 +28,7 @@ These are the FP building blocks everything else uses.
 
 ## notes
 
-**See:** docs/architecture/functional_future/overview.md lines 914-997
+**See:** core/docs/architecture/functional_future/primitives.md
 
 **Type signatures:**
 ```bash

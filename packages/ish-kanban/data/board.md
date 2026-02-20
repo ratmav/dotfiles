@@ -4,7 +4,7 @@
 
 **Base case:** Local dotfiles management (bootstrap, git, nix, configs)
 
-**Vision:** Functional infrastructure orchestration (see packages/ish/docs/architecture/functional_future/)
+**Vision:** Functional infrastructure orchestration (see core/docs/architecture/functional_future/)
 
 **Strategy:**
 1. Build FP core — primitives and integrations (phase 1)
@@ -26,29 +26,26 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo (priority order)
 
-**Doc audit:**
-1. [ ] [complete-doc-audit](tasks/complete-doc-audit.md) - finish cleaning stale naming, paths, and examples across all docs and tasks
-
 **Foundation:**
-2. [ ] build-fp-core-exists - `ish_exists_executable` at `core/source/exists.sh` (wraps `type`). Environment introspection alongside color + file_descriptor. Migrate 20+ consumers from `ish_utils_exists_executable`.
+1. [ ] build-fp-core-exists - `ish_exists_executable` at `core/source/exists.sh` (wraps `type`). Environment introspection alongside color + file_descriptor. Migrate 20+ consumers from `ish_utils_exists_executable`.
 
 **Primitives (built on file descriptors):**
-3. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr. Migrate 20+ consumers from `ish_utils_stream_*` → `ish_stream_*`. Delete `source/utils/stream.sh`.
-4. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
-5. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
+2. [ ] [build-fp-core-stream](tasks/build-fp-core-stream.md) - map, bind, filter, fold over stdin/stdout/stderr. Migrate 20+ consumers from `ish_utils_stream_*` → `ish_stream_*`. Delete `source/utils/stream.sh`.
+3. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
+4. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
 
 **Utils removal:**
-6. [ ] delete `source/utils/` directory and `utils.sh` — empty after exists, stream, and file migrations complete
+5. [ ] delete `source/utils/` directory and `utils.sh` — empty after exists, stream, and file migrations complete
 
 **Integrations (external binaries composed through primitives):**
-7. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
-8. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
+6. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
+7. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
 
 **FP Layer:**
-9. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
-10. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-11. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-12. [ ] document FP patterns and usage
+8. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
+9. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
+10. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+11. [ ] document FP patterns and usage
 
 ### in progress
 
@@ -148,8 +145,8 @@ none - resolved architectural decisions documented in kanban tasks
 ## notes
 
 **Architecture:**
-- packages/ish/docs/architecture/ - current package system architecture
-- packages/ish/docs/architecture/functional_future/ - FP vision and patterns
+- core/docs/architecture/ - current package system architecture
+- core/docs/architecture/functional_future/ - FP vision and patterns
 - packages/ish-kanban/data/tasks/reconcile-task-architecture.md - top-down decision and rationale
 
 **Key decisions:**

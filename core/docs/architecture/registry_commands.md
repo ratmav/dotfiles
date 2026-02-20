@@ -33,11 +33,10 @@ ish package update <name>
 - if validation fails: rollback to recorded sha, warn
 
 ```bash
-ish package scaffold --name=NAME [--with-data]
+ish package scaffold --name=NAME
 ```
 - create standard package structure with hello world example
-- generate `source/`, `test/`, `docs/`
-- optionally create `data/` if `--with-data`
+- generate `source/`, `test/`, `docs/`, `data/`
 
 ## ish validate
 
