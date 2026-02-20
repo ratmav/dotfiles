@@ -149,7 +149,7 @@ none - resolved architectural decisions documented in kanban tasks
 - Top-down package model (ish loads packages)
 - FP core: foundation (color, file_descriptor, exists) → primitives (stream, file, pipe) → integrations (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
 - Integrations are built when their first consumer exists (sqlite/git for kanban, curl/ssh/jq for remote exec)
-- Monads: every `*_bind` function is the monadic operation — see core/docs/architecture/functional_future/monads.md
+- Bind lives at the primitive layer only (stream_bind, file_bind) — iterates dynamic stdin data with short-circuit. Integrations (git, sqlite) use `&&` for known step sequences. See core/docs/architecture/functional_future/monads.md
 - Build FP first, refactor existing code, then tackle kanban redesign with proven tools
 - Base case: local dotfiles management
 - Future: homelab/infrastructure orchestration

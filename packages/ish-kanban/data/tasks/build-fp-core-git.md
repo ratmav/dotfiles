@@ -8,7 +8,7 @@
 
 Build functional git integration that composes core stream and file primitives around shell calls to `git`. Not a bash primitive — this is a composition layer over an external binary. Git output flows through stream, file operations (staging, working tree) flow through file.
 
-This is the monadic write path. every step depends on the prior succeeding. any failure (conflict, no remote, network) stops the chain and reports the error.
+Each function provides its own error context — what failed, where, and what the user should do about it. Callers compose operations with `&&`.
 
 ## subtasks
 
@@ -16,17 +16,15 @@ This is the monadic write path. every step depends on the prior succeeding. any 
 - [ ] implement `ish_git_commit` - commit staged changes with message, fail with context
 - [ ] implement `ish_git_push` - push to remote, fail with context
 - [ ] implement `ish_git_pull` - pull from remote, fail with context (conflicts, network)
-- [ ] implement `ish_git_bind` - chain git operations with error propagation
 - [ ] implement `ish_git_require` - assert git exists and cwd is a repo, or fail
 - [ ] implement `ish_git_status` - check working tree state, stream to stdout
 - [ ] implement `ish_git_is_clean` - predicate: is working tree clean?
-- [ ] write unit tests for each primitive
-- [ ] test monad laws (identity, composition) for git_bind
+- [ ] write unit tests for each function
 - [ ] document with type signatures and examples
 
 ## deliverable
 
-`core/source/git.sh` with tested FP primitives
+`core/source/git.sh` with tested functions
 
 ## notes
 
@@ -50,9 +48,6 @@ ish_git_push()
 # @type: IO () | error
 ish_git_pull()
 
-# @type: (IO a) -> (IO b) -> IO b | error
-ish_git_bind()
-
 # @type: IO () | error
 ish_git_require()
 
@@ -63,19 +58,14 @@ ish_git_status()
 ish_git_is_clean()
 ```
 
-**The canonical chain:**
+**Callers compose with `&&`:**
 ```bash
-# imperative (phase 1 — how kanban builds it first)
 ish_git_add "kanban.sql" \
     && ish_git_commit "update kanban data" \
     && ish_git_push
-
-# monadic (phase 2 — what it refactors to)
-ish_git_bind \
-    "ish_git_add kanban.sql" \
-    "ish_git_commit 'update kanban data'" \
-    "ish_git_push"
 ```
+
+Each function provides actionable error context on failure. No bind wrapper needed — `&&` already short-circuits, and error context belongs in the individual functions, not in a generic chaining mechanism.
 
 **Error context is critical.** a bare "push failed" is useless. each function must include what failed, where (which repo/directory), and what the user should do about it. example: `"git push failed in packages/ish-kanban/data/ — resolve conflicts manually and push"`.
 
@@ -98,7 +88,6 @@ git operations are I/O + network bound. process spawn is negligible.
 
 **Testing:**
 - [ ] Unit tests for each operation (use temp git repos as fixtures)
-- [ ] Test error propagation through bind chains
 - [ ] Test failure modes: no remote, nothing to commit, conflict
 - [ ] Test working directory handling (submodule vs main repo)
 - [ ] Test is_clean predicate with clean/dirty working trees

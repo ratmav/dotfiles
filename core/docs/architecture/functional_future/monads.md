@@ -1,47 +1,29 @@
-# monads in ish
+# bind in ish
 
 ## the short version
 
-`&&` is already bind. Every `*_bind` function in the architecture formalizes what `&&` does informally — chain operations that can fail, stop on the first failure, carry error context forward.
+`stream_bind` and `file_bind` iterate over dynamic data from stdin and short-circuit on the first failure. they exist because you don't know the data at write time — it flows through pipes.
 
-```bash
-# this is monadic (just syntax)
-ish_git_add "foo.sql" \
-    && ish_git_commit "update foo" \
-    && ish_git_push
-
-# this is the same thing, formalized
-ish_git_bind \
-    "ish_git_add foo.sql" \
-    "ish_git_commit 'update foo'" \
-    "ish_git_push"
-```
-
-the difference: `&&` is fire-and-forget. `bind` adds error context (which step failed, what to do about it) and makes the chain a composable value rather than syntax.
+for known step sequences (git add → commit → push), use `&&`. it already short-circuits. error context belongs in each function, not in a wrapper.
 
 ## where bind lives
 
-every layer has its own bind function. the pattern is identical — chain operations, short-circuit on failure — but the failure modes and error context get richer as you move up the stack.
+bind exists at the **primitive** layer only. it operates on dynamic stdin data — lines you can't enumerate at write time.
 
-| layer | bind function | what it chains | failure modes |
-|-------|--------------|----------------|---------------|
-| foundation | `ish_color_init` | terminal capability detection | non-terminal, NO_COLOR, dumb term |
-| foundation | `ish_file_descriptor_bind` | fd operations | open/close/redirect failures |
-| foundation | `ish_exists_executable` | command availability (`type` builtin) | missing binary, no PATH entry |
-| primitive | `ish_stream_bind` | line transforms | bad data, transform errors |
-| primitive | `ish_file_bind` | file operations | missing files, permission, disk full |
-| primitive | `ish_pipe_bind` | pipeline stages | any stage failure (via PIPESTATUS) |
-| integration | `ish_sqlite_bind` | queries | constraint violations, corrupt db |
-| integration | `ish_git_bind` | git operations | conflicts, auth, network timeout |
+| layer | function | what it does |
+|-------|----------|-------------|
+| primitive | `ish_stream_bind` | apply function to each stdin line, stop on failure |
+| primitive | `ish_file_bind` | apply function to each stdin line (file paths), stop on failure |
 
-the foundation answers three questions every layer above needs answered:
-- **color:** "can this terminal render colors?" (capability)
-- **file_descriptor:** "can I do POSIX I/O on this fd?" (I/O)
-- **exists:** "is this command available?" (environment)
+integrations (git, sqlite) do **not** have bind functions. their operations are known step sequences composed with `&&`:
 
-`ish_exists_executable` wraps the shell `type` builtin — it checks builtins, functions, aliases, and PATH. it's environment introspection, not file I/O (`[[ -f ]]` checks files; `type` checks the shell's command resolution). every integration must call `ish_exists_executable` before invoking its external binary (sqlite3, git, curl, ssh, jq, awk, etc.).
+```bash
+ish_git_add "kanban.sql" \
+    && ish_git_commit "update kanban data" \
+    && ish_git_push
+```
 
-the primitives give you building blocks. the integrations compose them into real workflows.
+each function provides its own error context — what failed, where, what to do. `&&` handles the short-circuiting. no wrapper needed.
 
 ## the mechanism
 
@@ -58,7 +40,7 @@ ish_stream_bind() {
 }
 ```
 
-`|| return $?` is the entire monad. if `$func` returns non-zero, bind stops immediately and propagates the exit code. no remaining lines are processed. the caller sees the failure and can either handle it or propagate it further.
+`|| return $?` is the key. if `$func` returns non-zero, bind stops immediately and propagates the exit code. no remaining lines are processed.
 
 this is proven by test:
 
@@ -71,59 +53,46 @@ printf '%s\n' "good" "bad" "good" | ish_stream_bind _fail_on_bad
 # status: 1
 ```
 
-## monad laws
+## when to use bind vs `&&`
 
-the bind functions must satisfy three laws for composition to work correctly:
-
-**left identity:** `bind(return(a), f) = f(a)` — wrapping a value and immediately binding should equal calling f directly.
-
-**right identity:** `bind(m, return) = m` — binding with identity produces the original value.
-
-**associativity:** `bind(bind(m, f), g) = bind(m, λx.bind(f(x), g))` — grouping doesn't matter.
-
-in bash terms: chaining three operations with bind must produce the same result regardless of how you parenthesize them. the task specs call out testing these laws explicitly.
-
-## where monads earn their keep
-
-at the primitive layer, bind is useful but small — it short-circuits on bad stdin lines. functional, but not dramatic.
-
-at the integration layer, bind becomes architecturally significant. the canonical example is the git write path:
+**use bind** when processing dynamic data from stdin — lines you iterate over:
 
 ```bash
-ish_git_bind \
-    "ish_git_add foo.sql" \
-    "ish_git_commit 'update foo'" \
-    "ish_git_push"
+# validate each item from a stream
+printf '%s\n' "a" "b" "c" | ish_stream_bind validate_item
+
+# process each file path from a list
+find_migration_files | ish_file_bind apply_migration
 ```
 
-each step depends on the prior succeeding. each has rich failure modes:
-- `git add` — file doesn't exist, not in a repo
-- `git commit` — nothing staged, hook failure
-- `git push` — no remote, auth failure, conflicts, network timeout
+**use `&&`** when chaining known operations:
 
-a bare `&&` chain can't carry this context. bind formalizes the chain so each step knows what failed, where, and what the user should do about it.
-
-the same pattern applies to sqlite transactions — a failed INSERT inside a transaction needs to ROLLBACK and report which constraint was violated, not just "something failed."
-
-## relationship to the stack
-
-```
-package code         uses semantic wrappers (reads like English)
-    ↓
-semantic layer       calls bind chains (hides FP machinery)
-    ↓
-integration binds    compose primitive operations (git, sqlite)
-    ↓
-primitive binds      chain POSIX operations (stream, file, pipe)
-    ↓
-foundation           color, file_descriptor, exists (the bottom)
+```bash
+# each function handles its own errors
+ish_git_add "foo.sql" \
+    && ish_git_commit "update foo" \
+    && ish_git_push
 ```
 
-monads are the vertical spine. every layer's bind composes the layer below it. package code never sees bind directly — the semantic layer hides it behind names like `require_valid_foo` and `fail_with`.
+the distinction: bind iterates over data. `&&` sequences commands.
+
+## composition laws
+
+the bind functions satisfy three laws that ensure composition works correctly:
+
+**left identity:** `echo "a" | bind f` equals `f "a"` — feeding a single value through bind equals calling f directly.
+
+**right identity:** `echo "a" | bind echo` equals `echo "a"` — binding with identity is a no-op.
+
+**associativity:** `data | bind f | bind g` equals `data | bind (f | bind g)` — grouping doesn't matter.
+
+these are verified by unit tests for both `stream_bind` and `file_bind`.
 
 ## see also
 
-- `core/source/stream.sh` — working bind implementation
+- `core/source/stream.sh` — stream_bind implementation
+- `core/source/file.sh` — file_bind implementation
 - `core/test/unit/stream.bats` — bind tests including short-circuit proof
+- `core/test/unit/file.bats` — file bind tests including monad laws
 - [layers.md](layers.md) — the full stack
 - [primitives.md](primitives.md) — type signatures and examples

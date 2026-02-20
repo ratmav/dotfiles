@@ -8,25 +8,23 @@
 
 Build functional sqlite integration that composes core stream and file primitives around shell calls to `sqlite3`. Not a bash primitive — this is a composition layer over an external binary. Query results flow through stream, migration files flow through file.
 
-The kanban models own the SQL (what to query). This module owns the execution (how to run it).
+The kanban models own the SQL (what to query). This module owns the execution (how to run it). Each function provides its own error context. Callers compose with `&&`.
 
 ## subtasks
 
 - [ ] implement `ish_sqlite_exec` - execute statement, no result (INSERT/UPDATE/DELETE/DDL)
 - [ ] implement `ish_sqlite_query` - execute query, stream results to stdout (SELECT)
 - [ ] implement `ish_sqlite_query_one` - execute query, return single row or fail
-- [ ] implement `ish_sqlite_bind` - chain queries with error propagation
 - [ ] implement `ish_sqlite_transaction` - wrap operations in BEGIN/COMMIT, ROLLBACK on failure
 - [ ] implement `ish_sqlite_require` - assert sqlite3 exists or fail with message
 - [ ] implement `ish_sqlite_dump` - export data INSERTs to stdout (no schema)
 - [ ] implement `ish_sqlite_load` - import SQL from stdin
-- [ ] write unit tests for each primitive
-- [ ] test monad laws (identity, composition) for sqlite_bind
+- [ ] write unit tests for each function
 - [ ] document with type signatures and examples
 
 ## deliverable
 
-`core/source/sqlite.sh` with tested FP primitives
+`core/source/sqlite.sh` with tested functions
 
 ## notes
 
@@ -48,9 +46,6 @@ ish_sqlite_query()
 # @type: dbpath -> sql -> IO row | error
 ish_sqlite_query_one()
 
-# @type: (row -> IO b) -> IO row -> IO b | error
-ish_sqlite_bind()
-
 # @type: dbpath -> IO () -> IO () | error (ROLLBACK)
 ish_sqlite_transaction()
 
@@ -63,6 +58,14 @@ ish_sqlite_dump()
 # @type: dbpath -> stdin -> IO () | error
 ish_sqlite_load()
 ```
+
+**Callers compose with `&&`:**
+```bash
+ish_sqlite_exec "$db" "INSERT INTO tasks ..." \
+    && ish_sqlite_exec "$db" "UPDATE board ..."
+```
+
+Each function provides actionable error context on failure. No bind wrapper needed — `&&` already short-circuits, and error context belongs in the individual functions, not in a generic chaining mechanism.
 
 **Result format.** sqlite3 outputs pipe-separated by default. use `-separator` flag for consistency. callers parse results via stream_map. keep the output format simple and predictable — one row per line, fields separated by a known delimiter.
 
@@ -85,7 +88,6 @@ sqlite3 is fast. the bottleneck is process spawn (one sqlite3 invocation per que
 
 **Testing:**
 - [ ] Unit tests for correctness (exec/query/query_one/transaction)
-- [ ] Test error propagation through bind chains
 - [ ] Test transaction rollback on failure
 - [ ] Test foreign key enforcement (ON DELETE CASCADE)
 - [ ] Test with empty db, missing db, corrupt db
