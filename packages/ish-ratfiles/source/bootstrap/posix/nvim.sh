@@ -14,7 +14,7 @@ ish_ratfiles_bootstrap_posix_nvim_clean() {
 }
 
 ish_ratfiles_bootstrap_posix_nvim_configure() {
-  if ! ish_utils_exists_executable --executable=git; then
+  if ! ish_exists_executable --executable=git; then
     ish_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
     return 1
   fi

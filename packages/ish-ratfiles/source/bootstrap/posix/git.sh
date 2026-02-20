@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 ish_ratfiles_bootstrap_posix_git_configure() {
-  if ! ish_utils_exists_executable --executable=git; then
+  if ! ish_exists_executable --executable=git; then
     ish_tui_error --message="${FUNCNAME[0]}: git not found. Install git first."
     return 1
   fi
 
-  if ! ish_utils_exists_executable --executable=nvim; then
+  if ! ish_exists_executable --executable=nvim; then
     ish_tui_warn --message="${FUNCNAME[0]}: nvim not found. Skipping git editor configuration."
   else
     git config --global core.editor "$(which nvim)"

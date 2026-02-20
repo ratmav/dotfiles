@@ -62,7 +62,7 @@ ish_ratfiles_nix_route() {
 _nix_find_package_path() {
   local package=$1
 
-  if ! ish_utils_exists_executable --executable=curl; then
+  if ! ish_exists_executable --executable=curl; then
     ish_tui_error --message="curl not found. Please install curl."
   fi
 

@@ -23,7 +23,7 @@ ish_utils_route() {
     case "${1-}" in
       --executable=*)
         local cmd="${1#*=}"
-        if ish_utils_exists_executable "$@"; then
+        if ish_exists_executable "$@"; then
           ish_tui_info --message="executable '$cmd' exists"
         else
           ish_tui_error --message="executable '$cmd' not found"

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 ish_ratfiles_bootstrap_posix_nix_install() {
-  if ish_utils_exists_executable --executable=nix; then
+  if ish_exists_executable --executable=nix; then
     ish_tui_warn --message="${FUNCNAME[0]}: nix already installed."
   else
-    if ! ish_utils_exists_executable --executable=curl; then
+    if ! ish_exists_executable --executable=curl; then
       ish_tui_error --message="${FUNCNAME[0]}: curl not found. Install curl first."
       return 1
     fi

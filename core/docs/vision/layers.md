@@ -36,14 +36,15 @@ the foundation — utility functions every bash project needs:
 
 - **terminal ui** (`tui.sh`) — `ish_tui_error`, `ish_tui_warn`, `ish_tui_info`, prompts, template rendering
 - **platform detection** (`platform.sh`) — `ish_platform_os` → macos, kali, linux; architecture detection
-- **common utilities** (`utils.sh`) — `ish_utils_exists_executable`, `ish_utils_exists_file`, file/string ops
+- **exists** (`exists.sh`) — `ish_exists_executable` (command availability via `type` builtin)
+- **common utilities** (`utils.sh`) — `ish_utils_exists_file`, file/string ops
 - **remote execution** (`remote.sh`) — ssh-based command execution, file transfer, host groups
 - **routing system** — cli argument parsing, command dispatch, convention-driven routing
 
 ```bash
 ish_tui_info --message="processing..."
 ish_platform_os  # returns "macos"
-ish_utils_exists_executable brew
+ish_exists_executable --executable=brew
 ish_remote_exec host1,host2 "uptime"
 ```
 

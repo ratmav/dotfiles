@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ish_ratfiles_lint_all() {
-  if ! ish_utils_exists_executable --executable=shellcheck; then
+  if ! ish_exists_executable --executable=shellcheck; then
     ish_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
 
@@ -9,7 +9,7 @@ ish_ratfiles_lint_all() {
 }
 
 ish_ratfiles_lint_bash() {
-  if ! ish_utils_exists_executable --executable=shellcheck; then
+  if ! ish_exists_executable --executable=shellcheck; then
     ish_tui_error --message="${FUNCNAME[0]}: shellcheck not installed."
   fi
 

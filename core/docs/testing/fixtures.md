@@ -28,9 +28,9 @@ teardown() {
   fixture_cleanup
 }
 
-@test "ish_utils_exists_executable detects fixture" {
+@test "ish_exists_executable detects fixture" {
   fixture_executable mycommand_test_bin
-  assert ish_utils_exists_executable mycommand_test_bin
+  assert ish_exists_executable mycommand_test_bin
 }
 ```
 

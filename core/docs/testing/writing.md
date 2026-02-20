@@ -51,7 +51,7 @@ teardown_file() {
 - same nesting structure, command becomes directory or file name
 
 **test names:** describe what the test validates in plain language
-- good: `"ish_utils_exists_executable detects installed commands"`
+- good: `"ish_exists_executable detects installed commands"`
 - good: `"ish platform with invalid command shows error"`
 - bad: `"test 1"`, `"it works"`
 

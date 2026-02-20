@@ -18,7 +18,7 @@ ish_ratfiles_bootstrap_macos_homebrew_install() {
     return 1
   fi
 
-  if ish_utils_exists_executable --executable=brew; then
+  if ish_exists_executable --executable=brew; then
     ish_tui_warn --message="${FUNCNAME[0]}: homebrew already installed."
   else
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -32,7 +32,7 @@ ish_ratfiles_bootstrap_macos_homebrew_brew() {
     return 1
   fi
 
-  if ! ish_utils_exists_executable --executable=brew; then
+  if ! ish_exists_executable --executable=brew; then
     ish_tui_error --message="${FUNCNAME[0]}: brew not found. Run 'ish bootstrap macos homebrew install' first."
     return 1
   fi
@@ -59,7 +59,7 @@ ish_ratfiles_bootstrap_macos_homebrew_cask() {
     return 1
   fi
 
-  if ! ish_utils_exists_executable --executable=brew; then
+  if ! ish_exists_executable --executable=brew; then
     ish_tui_error --message="${FUNCNAME[0]}: brew not found. Run 'ish bootstrap macos homebrew install' first."
     return 1
   fi

@@ -34,10 +34,10 @@ ish_ratfiles_bootstrap_kali_rust() {
     ish_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
 
-  if ish_utils_exists_executable --executable=cargo; then
+  if ish_exists_executable --executable=cargo; then
     ish_tui_warn --message="${FUNCNAME[0]}: rust/cargo already installed."
   else
-    if ! ish_utils_exists_executable --executable=curl; then
+    if ! ish_exists_executable --executable=curl; then
       ish_tui_error --message="${FUNCNAME[0]}: curl not found. Install curl first."
     fi
     curl --proto '=https' -tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -50,10 +50,10 @@ ish_ratfiles_bootstrap_kali_wezterm() {
     ish_tui_error --message="${FUNCNAME[0]}: unsupported operating system."
   fi
 
-  if ish_utils_exists_executable --executable=wezterm; then
+  if ish_exists_executable --executable=wezterm; then
     ish_tui_warn --message="${FUNCNAME[0]}: wezterm already installed."
   else
-    if ! ish_utils_exists_executable --executable=curl; then
+    if ! ish_exists_executable --executable=curl; then
       ish_tui_error --message="${FUNCNAME[0]}: curl not found. Install curl first."
     fi
 
