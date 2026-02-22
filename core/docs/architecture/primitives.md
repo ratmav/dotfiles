@@ -1,6 +1,6 @@
 # primitives
 
-type signatures and behavior for each FP module.
+type signatures and behavior for each FP module. signatures use `string` — bash's only type. see [types.md](types.md) for why.
 
 ## foundation
 
@@ -18,7 +18,7 @@ ish_color_init()
 # @type: --path=string --fd=int --mode=(read|write|append) -> IO ()
 ish_file_descriptor_open --path=/tmp/foo.txt --fd=5 --mode=read
 
-# @type: --fd=int -> [string]
+# @type: --fd=int -> stdout
 ish_file_descriptor_read --fd=5
 
 # @type: --fd=int -> stdin -> IO ()
@@ -47,17 +47,17 @@ ish_exists_executable --executable=foo_cmd
 ### stream
 
 ```bash
-# @type: (a -> b) -> [a] -> [b]
+# @type: (string -> string) -> stdin -> stdout
 printf '%s\n' "foo" "bar" | ish_stream_map to_upper
 
-# @type: (a -> M b) -> M a -> M b
+# @type: (string -> result string) -> stdin -> result stdout
 # short-circuits on failure (|| return $?)
 printf '%s\n' "foo" "bar" | ish_stream_bind validate_item
 
-# @type: (a -> bool) -> [a] -> [a]
+# @type: (string -> bool) -> stdin -> stdout
 printf '%s\n' "foo" "bar" "baz" | ish_stream_filter is_valid
 
-# @type: (b -> a -> b) -> b -> [a] -> b
+# @type: (string -> string -> string) -> string -> stdin -> string
 printf '%s\n' "1" "2" "3" | ish_stream_fold sum_fn 0
 
 # @type: string -> IO ()
@@ -65,23 +65,29 @@ ish_stream_stdout "foo"
 ish_stream_stderr "bar"
 ```
 
-### file (planned)
+### file
 
 ```bash
-# @type: --path=string -> string
+# @type: --path=string -> stdout
 ish_file_read --path=/tmp/foo.txt
 
 # @type: --path=string -> stdin -> IO ()
 echo "bar" | ish_file_write --path=/tmp/foo.txt
 
+# @type: --path=string -> stdin -> IO ()
+echo "more" | ish_file_append --path=/tmp/foo.txt
+
 # @type: --path=string -> bool
 ish_file_exists --path=/tmp/foo.txt
+
+# @type: --path=string [--message=string] -> IO () | error
+ish_file_require --path=/tmp/foo.txt
 ```
 
 ### pipe (planned)
 
 ```bash
-# @type: [cmd] -> IO () | error (with PIPESTATUS awareness)
+# @type: [string] -> IO () | error (with PIPESTATUS awareness)
 ish_pipe_compose cmd_a cmd_b cmd_c
 ```
 
@@ -103,5 +109,6 @@ each primitive tests:
 
 ## see also
 
+- [types.md](types.md) — what maps from ML to bash and what doesn't
 - [layers.md](layers.md) — where each module sits in the stack
 - [monads.md](monads.md) — how bind works

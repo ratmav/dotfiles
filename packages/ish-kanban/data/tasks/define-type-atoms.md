@@ -58,20 +58,18 @@ For each atom, define:
 - Ish examples: `--path=X --fd=5 --mode=read` (named product), sqlite rows `name|status|priority` (positional product), `ISH_ROOT` + `ISH_CORE` + `ISH_PACKAGES` (global product)
 - Question: this is where bash is weakest. no tuples, no structs. does ish need a product destructuring utility? or is `awk -F'|'` and `IFS='|' read` sufficient?
 
-## subtasks
-
-- [ ] for each atom: document bash representation, ish examples, and whether anything needs building
-- [ ] identify where implicit types caused architectural confusion (file_bind is one — what else?)
-- [ ] assess: do any atoms need explicit utility functions, or are bash idioms sufficient?
-- [ ] write architecture doc: `core/docs/architecture/types.md`
-- [ ] review: does the atom mapping change how we think about any existing or planned modules?
-
 ## deliverable
 
-`core/docs/architecture/types.md` — the translation table from meta language atoms to bash, grounded in ish examples. Not theory — a practical mapping that prevents the next file_bind.
+`core/docs/architecture/types.md` — documents what from ML maps to bash (computation model) and what doesn't (type system).
 
-## notes
+also updated: `core/docs/architecture/primitives.md` — type signatures now use `string` instead of polymorphic `a`.
 
-This is exploratory. The goal is understanding, not code. If the mapping reveals that bash idioms are sufficient (likely for unit, void, function, sum), document that and move on. If it reveals a gap (possibly product), assess whether a utility earns its keep or whether `awk -F'|'` is fine.
+## findings
 
-The litmus test for building something new: are we writing the same destructuring/construction boilerplate in 2+ places? If yes, extract. If no, the idiom is fine.
+the investigation revealed a sharper insight than the original hypothesis. ML has two orthogonal systems: a **type system** (static, what data IS) and a **computation model** (dynamic, how data flows). bash imports the computation model but not the type system. everything is a string.
+
+- **computation patterns map:** monadic bind, result combinators (`&&`, `||`), map/filter/fold, higher-order functions. enforced by bash's runtime (pipes, short-circuit, channel separation).
+- **type atoms don't map:** product, sum, unit, void are descriptive labels with no enforcement. naming `--flag=value` a "product type" is mathematically accurate but operationally empty.
+- **file_bind was caught by computation, not types.** the monad structure revealed the duplication. type vocabulary wouldn't have caught it.
+- **nothing needs building.** bash idioms are sufficient. the value is understanding the boundary, not new utilities.
+- **result is a computation pattern.** `&&` is `and_then`, `||` is `or_else`, `|| return $?` is monadic bind over the result. enforced by shell mechanisms and channel separation.
