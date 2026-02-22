@@ -29,8 +29,8 @@ ish_ratfiles_help() {
                    .oOOo::..oOOOOOOooOO8o.
                   :oOooOOOo. .oOoo:.. .oO:.
  ....            :oooooooooo::oooO.    .OoO.
-:   ::O.        :oOooo...:oooOOOOOo    ..::.
-      o:::.     .oOOOOoo:...:oOOOOOo
+:   ::o         :oOooo...:oooOOOOOo    ..::.
+      o::.     .oOOOOoo:...:oOOOOOo
         o::.    .OOOOOOOo:..oOOOOo.
           :Oo.   :oOOOOOOo..O8OO:
             :::::::OOOOOOo:oOOo:
