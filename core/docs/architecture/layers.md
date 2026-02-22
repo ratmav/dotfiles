@@ -82,4 +82,4 @@ if you know the function name, you know where to find it.
 
 - [monads.md](monads.md) — how bind works at every layer
 - [primitives.md](primitives.md) — type signatures and examples
-- [vision.md](vision.md) — where this goes
+- [fp_vision.md](../vision/fp_vision.md) — where this goes

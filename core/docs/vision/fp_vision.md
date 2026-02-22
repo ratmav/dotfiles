@@ -63,6 +63,6 @@ that's it. no runtime, no agents, no plugins.
 
 ## see also
 
-- [layers.md](layers.md) — the architecture stack
-- [monads.md](monads.md) — how composition works at each layer
-- [primitives.md](primitives.md) — what the FP modules do
+- [layers.md](../architecture/layers.md) — the architecture stack
+- [monads.md](../architecture/monads.md) — how composition works at each layer
+- [primitives.md](../architecture/primitives.md) — what the FP modules do

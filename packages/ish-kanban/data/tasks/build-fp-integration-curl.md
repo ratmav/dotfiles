@@ -100,4 +100,4 @@ ish_curl_get "https://api.example.com/droplets" \
 - [ ] Test header passing
 - [ ] Test failure modes: connection refused, timeout, 404, 500
 
-**See also:** core/docs/architecture/functional_future/just_use_curl.md
+**See also:** core/docs/architecture/just_use_curl.md
