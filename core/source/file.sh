@@ -22,17 +22,6 @@ ish_file_append() {
   cat >> "$path" || return 1
 }
 
-ish_file_bind() {
-  local func="${1-}"
-
-  [[ -z "$func" ]] && _file_error "--func required as first argument"
-
-  local line
-  while IFS= read -r line; do
-    "$func" "$line" || return $?
-  done
-}
-
 ish_file_exists() {
   local path=""
 

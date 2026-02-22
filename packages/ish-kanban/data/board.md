@@ -26,14 +26,8 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo (priority order)
 
-**Design:**
-1. [ ] [define-type-atoms](tasks/define-type-atoms.md) - map product, sum, function, unit, void to bash. Organize modules by structure, not semantics.
-
-**Cleanup:**
-2. [ ] [remove-file-bind](tasks/remove-file-bind.md) - remove duplicate `file_bind` (identical to `stream_bind`). bash is stream-oriented; bind lives in `stream.sh` only.
-
 **Primitives (built on file descriptors):**
-2. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
+1. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
 2. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
 
 **Utils removal:**
@@ -156,7 +150,7 @@ none - resolved architectural decisions documented in kanban tasks
 - Top-down package model (ish loads packages)
 - FP core: foundation (color, file_descriptor, exists) → primitives (stream, file, pipe) → integrations (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
 - Integrations are built when their first consumer exists (sqlite/git for kanban, curl/ssh/jq for remote exec)
-- Bind lives at the primitive layer only (stream_bind, file_bind) — iterates dynamic stdin data with short-circuit. Integrations (git, sqlite) use `&&` for known step sequences. See core/docs/architecture/monads.md
+- Bind lives at the primitive layer only (stream_bind) — iterates dynamic stdin data with short-circuit. Integrations (git, sqlite) use `&&` for known step sequences. See core/docs/architecture/monads.md
 - Build FP first, refactor existing code, then tackle kanban redesign with proven tools
 - Base case: local dotfiles management
 - Future: homelab/infrastructure orchestration

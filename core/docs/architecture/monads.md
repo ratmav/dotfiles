@@ -2,7 +2,7 @@
 
 ## the short version
 
-`stream_bind` and `file_bind` iterate over dynamic data from stdin and short-circuit on the first failure. they exist because you don't know the data at write time — it flows through pipes.
+`stream_bind` iterates over dynamic data from stdin and short-circuits on the first failure. it exists because you don't know the data at write time — it flows through pipes.
 
 for known step sequences (git add → commit → push), use `&&`. it already short-circuits. error context belongs in each function, not in a wrapper.
 
@@ -13,7 +13,6 @@ bind exists at the **primitive** layer only. it operates on dynamic stdin data �
 | layer | function | what it does |
 |-------|----------|-------------|
 | primitive | `ish_stream_bind` | apply function to each stdin line, stop on failure |
-| primitive | `ish_file_bind` | apply function to each stdin line (file paths), stop on failure |
 
 integrations (git, sqlite) do **not** have bind functions. their operations are known step sequences composed with `&&`:
 
@@ -62,7 +61,7 @@ printf '%s\n' "good" "bad" "good" | ish_stream_bind _fail_on_bad
 printf '%s\n' "a" "b" "c" | ish_stream_bind validate_item
 
 # process each file path from a list
-find_migration_files | ish_file_bind apply_migration
+find_migration_files | ish_stream_bind apply_migration
 ```
 
 **use `&&`** when chaining known operations:
@@ -86,13 +85,11 @@ the bind functions satisfy three laws that ensure composition works correctly:
 
 **associativity:** `data | bind f | bind g` equals `data | bind (f | bind g)` — grouping doesn't matter.
 
-these are verified by unit tests for both `stream_bind` and `file_bind`.
+these are verified by unit tests for `stream_bind`.
 
 ## see also
 
 - `core/source/stream.sh` — stream_bind implementation
-- `core/source/file.sh` — file_bind implementation
-- `core/test/unit/stream.bats` — bind tests including short-circuit proof
-- `core/test/unit/file.bats` — file bind tests including monad laws
+- `core/test/unit/stream.bats` — bind tests including short-circuit proof and monad laws
 - [layers.md](layers.md) — the full stack
 - [primitives.md](primitives.md) — type signatures and examples

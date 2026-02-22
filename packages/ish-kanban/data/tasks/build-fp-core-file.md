@@ -17,9 +17,7 @@ These wrap POSIX file operations in monadic error handling so callers chain file
 - [ ] implement `ish_file_append` - append stdin to file, fail with context
 - [ ] implement `ish_file_exists` - predicate for filter/guard
 - [ ] implement `ish_file_require` - assert file exists or fail with message
-- [ ] implement `ish_file_bind` - chain file operations with error propagation
 - [ ] write unit tests for each primitive
-- [ ] test monad laws (identity, composition) for file_bind
 - [ ] document with type signatures and examples
 
 ## deliverable
@@ -51,8 +49,6 @@ ish_file_exists()
 # @type: filepath -> string -> IO () | error
 ish_file_require()
 
-# @type: (filepath -> IO b) -> IO filepath -> IO b | error
-ish_file_bind()
 ```
 
 **Atomic writes are critical.** `ish_file_write` must use temp file + mv pattern. a failed write must not corrupt the target file. this is especially important for `kanban.sql` — a half-written dump is worse than no write at all.

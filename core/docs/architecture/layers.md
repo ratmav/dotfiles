@@ -36,7 +36,7 @@ no dependencies. everything above stands on these three.
 | file | `core/source/file.sh` | read, write, exists for persistent storage |
 | pipe | `core/source/pipe.sh` | process composition, PIPESTATUS, error chaining |
 
-built on file_descriptor. each has a `*_bind` for monadic composition.
+built on file_descriptor. bind (monadic composition) lives in stream — it iterates stdin, which is a stream operation regardless of what the data represents.
 
 ## integrations
 
