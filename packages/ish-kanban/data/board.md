@@ -27,11 +27,13 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo (priority order)
 
 **Primitives (built on file descriptors):**
-1. [ ] [build-fp-core-file](tasks/build-fp-core-file.md) - read, write, exists (buckets — persistent I/O endpoints). `ish_utils_exists_file` → `ish_file_exists`.
-2. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
+1. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
+
+**Adopt FP core in packages:**
+2. [ ] [refactor-packages-use-fp-core](tasks/refactor-packages-use-fp-core.md) - refactor ratfiles + kanban to use FP core (result, stream, file). Migrates `ish_utils_exists_file` → `ish_file_exists`.
 
 **Utils removal:**
-3. [ ] delete `source/utils/` directory and `utils.sh` — empty after exists, stream, and file migrations complete
+3. [ ] delete `source/utils/` directory and `utils.sh` — empty after refactor completes
 
 **Integrations (external binaries composed through primitives):**
 4. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
@@ -55,8 +57,7 @@ none - resolved architectural decisions documented in kanban tasks
 
 1. [ ] [reconcile-task-architecture](tasks/reconcile-task-architecture.md) - document top-down decision in architecture docs
 2. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
-3. [ ] refactor ratfiles to use ish_* primitives
-4. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, tui_error usage, quoted variables
+3. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, tui_error usage, quoted variables
 5. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
 6. [ ] [cleanup-docs](tasks/cleanup-docs.md) - remove home-manager/nix-darwin from systems
 7. [ ] [implement-module-namespace-linter](tasks/implement-module-namespace-linter.md) - static analysis for module_dir violations and DAG enforcement

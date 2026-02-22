@@ -11,7 +11,7 @@ patterns where bash's runtime provides the same guarantees as ML's computation m
 | ML concept | bash mechanism | enforcement | ish example |
 |---|---|---|---|
 | monadic bind | `\|\| return $?` in while loop | short-circuits on failure | `ish_stream_bind` |
-| result combinators | `&&`, `\|\|`, `return $?` | shell sequencing, channel separation | `a && b && c` |
+| result combinators | `&&`, `\|\|`, `return $?` | shell sequencing, channel separation | `ish_result_and_then`, `ish_result_or_else`, `ish_result_map` |
 | map | function applied per stdin line | pipe mechanism | `ish_stream_map` |
 | filter | predicate per stdin line | pipe mechanism | `ish_stream_filter` |
 | fold | accumulator over stdin | pipe mechanism | `ish_stream_fold` |

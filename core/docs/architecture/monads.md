@@ -4,7 +4,7 @@
 
 `stream_bind` iterates over dynamic data from stdin and short-circuits on the first failure. it exists because you don't know the data at write time — it flows through pipes.
 
-for known step sequences (git add → commit → push), use `&&`. it already short-circuits. error context belongs in each function, not in a wrapper.
+for known step sequences (git add → commit → push), use `ish_result_and_then`. it names the `&&` pattern, making tight coupling explicit. error context belongs in each function, not in a wrapper.
 
 ## where bind lives
 
@@ -13,16 +13,20 @@ bind exists at the **primitive** layer only. it operates on dynamic stdin data �
 | layer | function | what it does |
 |-------|----------|-------------|
 | primitive | `ish_stream_bind` | apply function to each stdin line, stop on failure |
+| primitive | `ish_result_and_then` | run functions in sequence, stop on first failure |
+| primitive | `ish_result_or_else` | run primary, fall back on failure |
+| primitive | `ish_result_map` | run command, transform output on success |
 
-integrations (git, sqlite) do **not** have bind functions. their operations are known step sequences composed with `&&`:
+stream_bind iterates dynamic data (N lines). result combinators chain single operations (known steps). integrations (git, sqlite) use result combinators for their step sequences:
 
 ```bash
-ish_git_add "kanban.sql" \
-    && ish_git_commit "update kanban data" \
-    && ish_git_push
+_add()    { ish_git_add "kanban.sql"; }
+_commit() { ish_git_commit "update kanban data"; }
+
+ish_result_and_then _add _commit ish_git_push
 ```
 
-each function provides its own error context — what failed, where, what to do. `&&` handles the short-circuiting. no wrapper needed.
+each function provides its own error context. `ish_result_and_then` handles the short-circuiting and names the intent: "these steps are a unit."
 
 ## the mechanism
 
@@ -64,16 +68,26 @@ printf '%s\n' "a" "b" "c" | ish_stream_bind validate_item
 find_migration_files | ish_stream_bind apply_migration
 ```
 
-**use `&&`** when chaining known operations:
+**use `ish_result_and_then`** when chaining known operations:
 
 ```bash
 # each function handles its own errors
-ish_git_add "foo.sql" \
-    && ish_git_commit "update foo" \
-    && ish_git_push
+_add()    { ish_git_add "foo.sql"; }
+_commit() { ish_git_commit "update foo"; }
+
+ish_result_and_then _add _commit ish_git_push
 ```
 
-the distinction: bind iterates over data. `&&` sequences commands.
+**use bare sequential calls** when steps are independent and partial success is acceptable:
+
+```bash
+# loose coupling — if apt fails, rust install still runs
+ish_ratfiles_bootstrap_kali_apt
+ish_ratfiles_bootstrap_kali_rust
+ish_ratfiles_bootstrap_kali_wezterm
+```
+
+the distinction: bind iterates over data. result_and_then sequences commands tightly. bare calls sequence loosely. the contrast between these three is itself documentation of intent.
 
 ## composition laws
 
@@ -90,6 +104,8 @@ these are verified by unit tests for `stream_bind`.
 ## see also
 
 - `core/source/stream.sh` — stream_bind implementation
+- `core/source/result.sh` — result combinator implementations
 - `core/test/unit/stream.bats` — bind tests including short-circuit proof and monad laws
+- `core/test/unit/result.bats` — result combinator tests
 - [layers.md](layers.md) — the full stack
 - [primitives.md](primitives.md) — type signatures and examples

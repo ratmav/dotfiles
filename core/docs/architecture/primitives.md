@@ -84,6 +84,22 @@ ish_file_exists --path=/tmp/foo.txt
 ish_file_require --path=/tmp/foo.txt
 ```
 
+### result
+
+```bash
+# @type: [(() -> IO ())] -> IO () | error
+# run each function in sequence, short-circuit on first failure
+ish_result_and_then step_a step_b step_c
+
+# @type: (() -> IO ()) -> (() -> IO ()) -> IO ()
+# run primary, if failure run fallback
+ish_result_or_else load_config use_defaults
+
+# @type: (() -> string) -> (string -> string) -> string | error
+# run command, capture stdout safely, transform on success
+ish_result_map get_version format_semver
+```
+
 ### pipe (planned)
 
 ```bash

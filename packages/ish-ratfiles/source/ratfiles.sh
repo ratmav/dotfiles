@@ -38,7 +38,7 @@ ish_ratfiles_help() {
 
 usage: ish ratfiles [command]
 
-ratfiles package - (rat)mav's dot(files)
+(rat)mav's dot(files)
 
 commands:
   bootstrap    setup development environment

@@ -33,10 +33,11 @@ no dependencies. everything above stands on these three.
 | module | file | what it does |
 |--------|------|-------------|
 | stream | `core/source/stream.sh` | map, bind, filter, fold over stdin/stdout |
+| result | `core/source/result.sh` | and_then, or_else, map for single command outcomes |
 | file | `core/source/file.sh` | read, write, exists for persistent storage |
 | pipe | `core/source/pipe.sh` | process composition, PIPESTATUS, error chaining |
 
-built on file_descriptor. bind (monadic composition) lives in stream — it iterates stdin, which is a stream operation regardless of what the data represents.
+built on file_descriptor. stream iterates sequences (N lines). result chains single operations. the contrast between `ish_result_and_then` (tight coupling) and bare sequential calls (loose coupling) is itself documentation of design intent.
 
 ## integrations
 

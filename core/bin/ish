@@ -51,8 +51,6 @@ ish_help() {
 
 usage: ish [command] [options]
 
-personal development environment on posix-like platforms.
-
 commands:
 $(ish_packages_list_for_help)
   lint         run linters for ish package
