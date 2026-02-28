@@ -66,6 +66,19 @@ teardown() {
   assert_output "HELLO"
 }
 
+@test "ish_pipe_compose handles more than five stages" {
+  _produce() { printf '%s\n' "hello"; }
+  _a() { sed 's/^/a_/'; }
+  _b() { sed 's/^/b_/'; }
+  _c() { sed 's/^/c_/'; }
+  _d() { sed 's/^/d_/'; }
+  _e() { sed 's/^/e_/'; }
+  _f() { sed 's/^/f_/'; }
+  run ish_pipe_compose _produce _a _b _c _d _e _f
+  assert_success
+  assert_output "f_e_d_c_b_a_hello"
+}
+
 @test "ish_pipe_compose requires at least two commands" {
   _noop() { :; }
   run ish_pipe_compose _noop

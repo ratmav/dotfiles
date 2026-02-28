@@ -21,16 +21,39 @@ ish_pipe_connect() {
 }
 
 ish_pipe_compose() {
-  [[ $# -lt 2 ]] && _pipe_error "at least two commands required"
+  local -a cmds=("$@") pids=()
+  local tmpdir i last_status
 
-  case $# in
-    2) "$1" | "$2" ;;
-    3) "$1" | "$2" | "$3" ;;
-    4) "$1" | "$2" | "$3" | "$4" ;;
-    5) "$1" | "$2" | "$3" | "$4" | "$5" ;;
-    *) _pipe_error "compose supports up to 5 stages" ;;
-  esac
-  ISH_PIPE_STATUS=("${PIPESTATUS[@]}")
+  [[ ${#cmds[@]} -lt 2 ]] && _pipe_error "at least two commands required"
+
+  # FIFOs, not eval or case dispatch. eval does not preserve PIPESTATUS.
+  # Case dispatch preserves PIPESTATUS but caps stage count artificially.
+  # Recursive approach loses middle-stage status to subshell boundaries.
+  tmpdir=$(mktemp -d) || _pipe_error "failed to create temp directory"
+
+  for ((i = 0; i < ${#cmds[@]} - 1; i++)); do
+    mkfifo "${tmpdir}/pipe_${i}" || { rm -rf "$tmpdir"; _pipe_error "failed to create fifo"; }
+  done
+
+  "${cmds[0]}" > "${tmpdir}/pipe_0" &
+  pids+=($!)
+
+  for ((i = 1; i < ${#cmds[@]} - 1; i++)); do
+    "${cmds[$i]}" < "${tmpdir}/pipe_$((i - 1))" > "${tmpdir}/pipe_${i}" &
+    pids+=($!)
+  done
+
+  "${cmds[-1]}" < "${tmpdir}/pipe_$((${#cmds[@]} - 2))"
+  last_status=$?
+
+  ISH_PIPE_STATUS=()
+  for pid in "${pids[@]}"; do
+    wait "$pid"
+    ISH_PIPE_STATUS+=($?)
+  done
+  ISH_PIPE_STATUS+=("$last_status")
+
+  rm -rf "$tmpdir"
 }
 
 ish_pipe_tee() {
