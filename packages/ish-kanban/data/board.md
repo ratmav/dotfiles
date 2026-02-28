@@ -26,28 +26,21 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo (priority order)
 
-**Primitives (built on file descriptors):**
-1. [ ] [build-fp-core-pipe](tasks/build-fp-core-pipe.md) - process composition, PIPESTATUS, error-aware chaining
-
 **Adopt FP core in packages:**
-2. [ ] [refactor-packages-use-fp-core](tasks/refactor-packages-use-fp-core.md) - refactor ratfiles + kanban to use FP core (result, stream, file). Migrates `ish_utils_exists_file` → `ish_file_exists`.
+1. [ ] [refactor-packages-use-fp-core](tasks/refactor-packages-use-fp-core.md) - refactor ratfiles + kanban to use FP core (result, stream, file). Migrates `ish_utils_exists_file` → `ish_file_exists`.
 
 **Utils removal:**
-3. [ ] delete `source/utils/` directory and `utils.sh` — empty after refactor completes
+2. [ ] delete `source/utils/` directory and `utils.sh` — empty after refactor completes
 
 **Integrations (external binaries composed through primitives):**
-4. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
-5. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
+3. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
+4. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
 
 **FP Layer:**
-6. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
-7. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-8. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-9. [ ] document FP patterns and usage
-
-### in progress
-
----
+5. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
+6. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
+7. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+8. [ ] document FP patterns and usage
 
 ## phase 2: refactor + cleanup
 

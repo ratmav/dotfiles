@@ -100,11 +100,23 @@ ish_result_or_else load_config use_defaults
 ish_result_map get_version format_semver
 ```
 
-### pipe (planned)
+### pipe
 
 ```bash
-# @type: [string] -> IO () | error (with PIPESTATUS awareness)
-ish_pipe_compose cmd_a cmd_b cmd_c
+# @type: cmd_a -> cmd_b -> IO output | error (captures PIPESTATUS)
+ish_pipe_connect cmd_a cmd_b
+
+# @type: [cmd] -> IO output | error (captures PIPESTATUS, 2-5 stages)
+ish_pipe_compose cmd_a cmd_b [cmd_c] [cmd_d] [cmd_e]
+
+# @type: stdin -> [destination] -> stdout (pass-through + write to files)
+ish_pipe_tee dest1 [dest2] ...
+
+# @type: IO [int] (one exit code per line from last pipeline)
+ish_pipe_status
+
+# @type: IO () | error (if any stage non-zero)
+ish_pipe_require_success
 ```
 
 ## testing strategy
