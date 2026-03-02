@@ -20,6 +20,8 @@ ish_ratfiles_git_clean_prune() {
   git remote prune "$remote"
   ish_tui_info --message="pruned $remote branch references."
 
+  ish_exists_executable --executable=awk || ish_tui_error --message="awk required"
+
   if git rev-parse --git-dir > /dev/null 2>&1; then
     gone_remote_branches=$(git branch -vv | grep "gone" | awk "{print \$1}")
 
@@ -37,27 +39,19 @@ ish_ratfiles_git_clean_prune() {
 
 ish_ratfiles_git_clean_worktrees() {
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    local main_worktree=$(git rev-parse --show-toplevel)
-    local worktrees=$(git worktree list --porcelain | grep "^worktree " | cut -d' ' -f2-)
-    local count=0
+    local main_worktree worktrees count
+    main_worktree=$(git rev-parse --show-toplevel)
+    worktrees=$(git worktree list --porcelain | grep "^worktree " | cut -d' ' -f2-)
 
     if [[ -z "$worktrees" ]]; then
       ish_tui_warn --message="no worktrees found."
       return
     fi
 
-    while IFS= read -r worktree; do
-      if [[ "$worktree" != "$main_worktree" ]]; then
-        ish_tui_info --message="removing worktree: $worktree"
-        if git worktree remove --force "$worktree" 2>/dev/null; then
-          ((count++))
-        else
-          ish_tui_warn --message="failed to remove $worktree"
-        fi
-      fi
-    done <<< "$worktrees"
+    count=$(echo "$worktrees" \
+      | ish_stream_filter _git_clean_not_main \
+      | ish_stream_fold _git_clean_remove_worktree 0)
 
-    # clean up any broken references
     git worktree prune
 
     if [[ $count -eq 0 ]]; then
@@ -67,5 +61,21 @@ ish_ratfiles_git_clean_worktrees() {
     fi
   else
     ish_tui_error --message="not a git repository."
+  fi
+}
+
+# Private functions
+
+_git_clean_not_main() { [[ "$1" != "$main_worktree" ]]; }
+
+_git_clean_remove_worktree() {
+  local count=$1 worktree=$2
+
+  ish_tui_info --message="removing worktree: $worktree"
+  if git worktree remove --force "$worktree" 2>/dev/null; then
+    echo $((count + 1))
+  else
+    ish_tui_warn --message="failed to remove $worktree"
+    echo "$count"
   fi
 }

@@ -91,7 +91,7 @@ ish_kanban_task_new() {
     ish_tui_error --message="task already exists: $name"
   fi
 
-  cat > "$task_file" <<EOF
+  ish_file_write --path="$task_file" <<EOF
 # ${name}
 
 **milestone:** 1

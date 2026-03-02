@@ -66,8 +66,8 @@ ish_ratfiles_bootstrap_kali_wezterm() {
     curl -fsSL "$gpg_key_url/gpg.key" | sudo gpg --yes --dearmor -o "$gpg_key_path"
     echo "$apt_source_content" | sudo tee "$apt_source_path" > /dev/null
 
-    sudo apt-get update
-    sudo apt-get install wezterm -y
+    ish_tui_quiet "sudo apt-get update"
+    ish_tui_quiet "sudo apt-get install wezterm -y"
 
     ish_tui_info --message="${FUNCNAME[0]}: installed wezterm."
   fi

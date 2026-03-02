@@ -21,7 +21,7 @@ ish_ratfiles_bootstrap_posix_nix_config() {
     ish_tui_warn --message="${FUNCNAME[0]}: nix flakes already enabled."
   else
     mkdir -p "$HOME/.config/nix"
-    echo "$nix_config" > "$nix_conf"
+    ish_stream_stdout "$nix_config" | ish_file_write --path="$nix_conf"
     ish_tui_info --message="${FUNCNAME[0]}: enabled nix flakes."
   fi
 }

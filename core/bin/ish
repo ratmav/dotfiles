@@ -19,7 +19,7 @@ ish_tui_set_colors
 ish_packages_discover
 
 ish_help() {
-  cat <<EOF
+  ish_stream_multiline_stderr <<EOF
                             .:
                             :.
                          :oo::.

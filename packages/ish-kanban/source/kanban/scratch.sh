@@ -47,7 +47,7 @@ ish_kanban_scratch_capture() {
   ish_kanban_dir="$(ish_packages_data_dir "ish-kanban")"
 
   # append to scratch.md as markdown list item
-  echo "- ${message}" >> "${ish_kanban_dir}/scratch.md"
+  ish_stream_stdout "- ${message}" | ish_file_append --path="${ish_kanban_dir}/scratch.md"
 
   ish_tui_info --message="captured: ${message}"
 }
