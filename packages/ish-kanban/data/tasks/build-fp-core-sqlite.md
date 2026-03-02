@@ -12,12 +12,12 @@ The kanban models own the SQL (what to query). This module owns the execution (h
 
 ## subtasks
 
-- [ ] implement `ish_sqlite_query_one` - execute query, return single row or fail
 - [ ] implement `ish_sqlite_transaction` - wrap operations in BEGIN/COMMIT, ROLLBACK on failure
 - [ ] implement `ish_sqlite_dump` - export data INSERTs to stdout (no schema)
 - [ ] implement `ish_sqlite_load` - import SQL from stdin
 - [ ] write unit tests for each function
 - [ ] document with type signatures and examples
+- [ ] audit: maximize ish primitive/integration usage (stream, file, pipe, result), and evaluate whether sqlite module + tests should split into submodules (section headers in tests = logical delimiters)
 
 ## deliverable
 
