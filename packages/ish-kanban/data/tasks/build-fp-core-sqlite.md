@@ -12,7 +12,6 @@ The kanban models own the SQL (what to query). This module owns the execution (h
 
 ## subtasks
 
-- [ ] implement `ish_sqlite_dump` - export data INSERTs to stdout (no schema)
 - [ ] implement `ish_sqlite_load` - import SQL from stdin
 - [ ] write unit tests for each function
 - [ ] document with type signatures and examples

@@ -97,6 +97,27 @@ ish_sqlite_transaction() {
     || _sqlite_error "transaction failed, rolled back"
 }
 
+ish_sqlite_dump() {
+  local db=""
+  local tables=""
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --db=*) db="${1#*=}"; shift ;;
+      --tables=*) tables="${1#*=}"; shift ;;
+      *) _sqlite_error "dump: unknown option: $1" ;;
+    esac
+  done
+
+  [[ -z "$db" ]] && _sqlite_error "dump: --db= required"
+  [[ -f "$db" ]] || _sqlite_error "dump: database not found: ${db}"
+
+  ish_sqlite_require
+
+  sqlite3 "$db" ".dump ${tables}" | grep '^INSERT' \
+    || _sqlite_error "dump: no data to export"
+}
+
 ish_sqlite_require() {
   ish_exists_executable --executable=sqlite3 \
     || _sqlite_error "sqlite3 not found. install sqlite3."
