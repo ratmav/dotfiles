@@ -7,6 +7,27 @@ ish_sqlite_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -
 
 source "${ish_sqlite_module_dir}/exists.sh"
 
+ish_sqlite_exec() {
+  local db=""
+  local sql=""
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --db=*) db="${1#*=}"; shift ;;
+      --sql=*) sql="${1#*=}"; shift ;;
+      *) _sqlite_error "exec: unknown option: $1" ;;
+    esac
+  done
+
+  [[ -z "$db" ]] && _sqlite_error "exec: --db= required"
+  [[ -z "$sql" ]] && _sqlite_error "exec: --sql= required"
+
+  ish_sqlite_require
+
+  sqlite3 "$db" "PRAGMA foreign_keys = ON; ${sql}" \
+    || _sqlite_error "exec failed: ${sql}"
+}
+
 ish_sqlite_require() {
   ish_exists_executable --executable=sqlite3 \
     || _sqlite_error "sqlite3 not found. install sqlite3."
