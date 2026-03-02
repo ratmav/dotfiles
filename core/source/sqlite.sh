@@ -76,6 +76,27 @@ ish_sqlite_query_one() {
   printf '%s\n' "$output"
 }
 
+ish_sqlite_transaction() {
+  local db=""
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --db=*) db="${1#*=}"; shift ;;
+      *) _sqlite_error "transaction: unknown option: $1" ;;
+    esac
+  done
+
+  [[ -z "$db" ]] && _sqlite_error "transaction: --db= required"
+
+  ish_sqlite_require
+
+  local sql
+  sql=$(cat) || _sqlite_error "transaction: failed to read stdin"
+
+  sqlite3 "$db" "PRAGMA foreign_keys = ON; BEGIN; ${sql} COMMIT;" \
+    || _sqlite_error "transaction failed, rolled back"
+}
+
 ish_sqlite_require() {
   ish_exists_executable --executable=sqlite3 \
     || _sqlite_error "sqlite3 not found. install sqlite3."
