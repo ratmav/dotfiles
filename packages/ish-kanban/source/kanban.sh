@@ -9,12 +9,7 @@ source "${ish_kanban_module_dir}/test.sh"
 
 ish_kanban_show() {
   local ish_kanban_dir
-
-  if [[ "${ISH_TESTING:-false}" == "true" ]]; then
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/test/fixtures"
-  else
-    ish_kanban_dir="${ISH_PACKAGES}/ish-kanban/data"
-  fi
+  ish_kanban_dir="$(ish_packages_data_dir "ish-kanban")"
 
   ish_tui_template_file --path="${ish_kanban_dir}/board.md"
 }
