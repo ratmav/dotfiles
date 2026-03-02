@@ -54,6 +54,18 @@ built on file_descriptor. stream iterates sequences (N lines). result chains sin
 every integration calls `ish_exists_executable` before invoking its binary.
 composed through primitives (stream + file + pipe).
 
+### why integrations must use primitives
+
+external binaries are unpredictable. `sqlite3`, `git`, `curl` — each has its own error format, output conventions, and behavioral quirks. a new release can change exit codes, reformat stderr, or alter default delimiters. ish has no control over these decisions.
+
+the primitives provide a consistent monadic contract: `ish_stream_stderr` for error output, `ish_stream_filter` for line filtering, `ish_stream_fold` for accumulation. when an integration uses these instead of raw `printf`, `grep`, or shell arithmetic, it inherits:
+
+- **uniform error propagation** — every error flows through the same mechanism
+- **composability** — output from one integration feeds into any primitive
+- **insulation** — if a CLI changes behavior, the fix is in one integration, not scattered across raw shell calls
+
+the rule: if an ish primitive exists for the operation, the integration uses it. raw shell is for the `sqlite3`/`git`/`curl` invocation itself — the boundary crossing. everything before and after that crossing flows through primitives.
+
 ## semantic layer
 
 translation from FP machinery to English-like names.

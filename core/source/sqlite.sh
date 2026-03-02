@@ -118,6 +118,24 @@ ish_sqlite_dump() {
     || _sqlite_error "dump: no data to export"
 }
 
+ish_sqlite_load() {
+  local db=""
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --db=*) db="${1#*=}"; shift ;;
+      *) _sqlite_error "load: unknown option: $1" ;;
+    esac
+  done
+
+  [[ -z "$db" ]] && _sqlite_error "load: --db= required"
+
+  ish_sqlite_require
+
+  sqlite3 "$db" \
+    || _sqlite_error "load failed"
+}
+
 ish_sqlite_require() {
   ish_exists_executable --executable=sqlite3 \
     || _sqlite_error "sqlite3 not found. install sqlite3."

@@ -12,10 +12,24 @@ The kanban models own the SQL (what to query). This module owns the execution (h
 
 ## subtasks
 
-- [ ] implement `ish_sqlite_load` - import SQL from stdin
-- [ ] write unit tests for each function
+**Primitive gap:**
+- [ ] add `ish_stream_read` to `core/source/stream.sh` — consume stdin, emit to stdout (identity operation, replaces raw `cat`)
+- [ ] unit tests for `ish_stream_read`
+
+**Audit corrections — use ish primitives:**
+- [ ] `_sqlite_error` → use `ish_stream_stderr` instead of raw printf
+- [ ] `query_one` row count → use `ish_stream_fold` instead of raw printf + grep -c
+- [ ] `query_one` output → use `ish_stream_stdout` instead of raw printf
+- [ ] `dump` filter → use `ish_stream_filter` instead of bare grep
+- [ ] `dump` file check → use `ish_file_exists` instead of raw `[[ -f ]]`
+- [ ] `transaction` stdin read → use `ish_stream_read` instead of raw cat
+- [ ] source `stream.sh` and `file.sh` (currently only sources `exists.sh`)
+
+**Audit corrections — structure:**
+- [ ] split test file into per-function files under `core/test/unit/sqlite/` (436 lines, 6 sections — past threshold)
+
+**Remaining:**
 - [ ] document with type signatures and examples
-- [ ] audit: maximize ish primitive/integration usage (stream, file, pipe, result), and evaluate whether sqlite module + tests should split into submodules (section headers in tests = logical delimiters)
 
 ## deliverable
 
