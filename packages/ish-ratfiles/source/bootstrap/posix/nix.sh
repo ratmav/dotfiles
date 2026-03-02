@@ -17,7 +17,7 @@ ish_ratfiles_bootstrap_posix_nix_config() {
   local nix_conf="$HOME/.config/nix/nix.conf"
   local nix_config="experimental-features = nix-command flakes"
 
-  if ish_utils_exists_file --file="$nix_conf" && grep -q "$nix_config" "$nix_conf"; then
+  if ish_file_exists --path="$nix_conf" && grep -q "$nix_config" "$nix_conf"; then
     ish_tui_warn --message="${FUNCNAME[0]}: nix flakes already enabled."
   else
     mkdir -p "$HOME/.config/nix"

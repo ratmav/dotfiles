@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source "${ISH_CORE}/source/tui.sh"
-source "${ISH_CORE}/source/utils.sh"
+source "${ISH_CORE}/source/result.sh"
 
 # Public functions (alphabetized)
 
@@ -86,18 +86,19 @@ _nix_find_package_path() {
 
 _nix_find_version_commit() {
   local package=$1 version=$2 path=$3
-  local commits
 
-  commits=$(_nix_get_package_commits "$path")
-  for commit in $commits; do
+  _get_commits() { _nix_get_package_commits "$path"; }
+
+  _find_match() {
     local found_version
-    found_version=$(_nix_get_version_from_commit "$commit" "$path")
-    if [[ "$found_version" == "$version" ]]; then
-      ish_tui_info --message="$commit"
-      return 0
-    fi
-  done
-  return 1
+    for commit in $1; do
+      found_version=$(_nix_get_version_from_commit "$commit" "$path")
+      [[ "$found_version" == "$version" ]] && ish_stream_stdout "$commit" && return 0
+    done
+    return 1
+  }
+
+  ish_result_map _get_commits _find_match
 }
 
 _nix_get_package_commits() {
@@ -108,9 +109,15 @@ _nix_get_package_commits() {
 
 _nix_get_version_from_commit() {
   local commit=$1 path=$2
-  curl -s "https://raw.githubusercontent.com/NixOS/nixpkgs/$commit/$path" | \
-    grep -E 'version\s*=' | head -1 | \
-    sed 's/.*version = "\([^"]*\)".*/\1/' 2>/dev/null || echo ""
+
+  _extract() {
+    curl -s "https://raw.githubusercontent.com/NixOS/nixpkgs/$commit/$path" | \
+      grep -E 'version\s*=' | head -1 | \
+      sed 's/.*version = "\([^"]*\)".*/\1/' 2>/dev/null
+  }
+  _empty() { echo ""; }
+
+  ish_result_or_else _extract _empty
 }
 
 _nix_print_pin_info() {

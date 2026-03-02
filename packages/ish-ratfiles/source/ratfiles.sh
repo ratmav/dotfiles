@@ -3,7 +3,6 @@
 ish_ratfiles_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ISH_CORE}/source/tui.sh"
-source "${ISH_CORE}/source/utils.sh"
 
 source "${ish_ratfiles_module_dir}/test.sh"
 source "${ish_ratfiles_module_dir}/lint.sh"

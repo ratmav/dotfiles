@@ -4,16 +4,17 @@ ish_ratfiles_bootstrap_macos_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>
 
 source "${ISH_CORE}/source/tui.sh"
 source "${ISH_CORE}/source/platform.sh"
-source "${ISH_CORE}/source/utils.sh"
+source "${ISH_CORE}/source/result.sh"
 source "${ish_ratfiles_bootstrap_macos_module_dir}/posix.sh"
 
 source "${ish_ratfiles_bootstrap_macos_module_dir}/macos/homebrew.sh"
 source "${ish_ratfiles_bootstrap_macos_module_dir}/macos/bash.sh"
 
 ish_ratfiles_bootstrap_macos_all() {
-  ish_ratfiles_bootstrap_macos_homebrew_install
-  ish_ratfiles_bootstrap_macos_homebrew_brew
-  ish_ratfiles_bootstrap_macos_homebrew_cask
+  ish_result_and_then \
+    ish_ratfiles_bootstrap_macos_homebrew_install \
+    ish_ratfiles_bootstrap_macos_homebrew_brew \
+    ish_ratfiles_bootstrap_macos_homebrew_cask
   ish_ratfiles_bootstrap_macos_bash
   ish_ratfiles_bootstrap_posix_all
 }
@@ -38,9 +39,10 @@ ish_ratfiles_bootstrap_macos_route() {
     shift
     case "${1-}" in
       all)
-        ish_ratfiles_bootstrap_macos_homebrew_install
-        ish_ratfiles_bootstrap_macos_homebrew_brew
-        ish_ratfiles_bootstrap_macos_homebrew_cask
+        ish_result_and_then \
+          ish_ratfiles_bootstrap_macos_homebrew_install \
+          ish_ratfiles_bootstrap_macos_homebrew_brew \
+          ish_ratfiles_bootstrap_macos_homebrew_cask
         ;;
       install)
         shift

@@ -2,7 +2,8 @@
 
 ish_platform_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ish_platform_module_dir}/utils.sh"
+source "${ish_platform_module_dir}/tui.sh"
+source "${ish_platform_module_dir}/file.sh"
 
 # Public functions (alphabetized)
 
@@ -61,7 +62,7 @@ ish_platform_route() {
 # Private functions (alphabetized)
 
 _platform_is_kali() {
-  if ish_utils_exists_file --file=/etc/issue; then
+  if ish_file_exists --path=/etc/issue; then
     if grep -q "Kali" /etc/issue; then
       return 0
     else

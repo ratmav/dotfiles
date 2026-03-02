@@ -9,7 +9,8 @@ setup() {
   export ISH_TESTING=true
 
   source "${ISH_CORE}/source/packages.sh"
-  source "${ISH_CORE}/source/utils.sh"
+  source "${ISH_CORE}/source/tui.sh"
+  source "${ISH_CORE}/source/file.sh"
   source "${ISH_PACKAGES}/ish-kanban/source/kanban/board.sh"
 }
 

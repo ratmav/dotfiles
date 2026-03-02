@@ -4,7 +4,7 @@ ish_kanban_board_parse() {
   local board_file
   board_file="$(ish_packages_data_dir "ish-kanban")/board.md"
 
-  ish_utils_exists_file --file="$board_file" || ish_tui_error --message="board not found: $board_file"
+  ish_file_exists --path="$board_file" || ish_tui_error --message="board not found: $board_file"
   ish_exists_executable --executable=awk || ish_tui_error --message="awk required"
 
   awk '
@@ -34,7 +34,7 @@ ish_kanban_board_get_milestone_desc() {
   [[ -z "$milestone" ]] && ish_tui_error --message="milestone number required"
 
   board_file="$(ish_packages_data_dir "ish-kanban")/board.md"
-  ish_utils_exists_file --file="$board_file" || ish_tui_error --message="board not found: $board_file"
+  ish_file_exists --path="$board_file" || ish_tui_error --message="board not found: $board_file"
   ish_exists_executable --executable=awk || ish_tui_error --message="awk required"
 
   awk -v m="$milestone" '
@@ -57,7 +57,7 @@ ish_kanban_board_validate_milestone() {
   [[ -z "$milestone" ]] && ish_tui_error --message="milestone number required"
 
   board_file="$(ish_packages_data_dir "ish-kanban")/board.md"
-  ish_utils_exists_file --file="$board_file" || ish_tui_error --message="board not found: $board_file"
+  ish_file_exists --path="$board_file" || ish_tui_error --message="board not found: $board_file"
   ish_exists_executable --executable=awk || ish_tui_error --message="awk required"
 
   found=$(awk -v m="$milestone" '

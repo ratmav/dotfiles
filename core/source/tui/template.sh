@@ -3,7 +3,7 @@
 # tui template module - string templating and file output
 # provides variable substitution ({{placeholder}}) and file content output
 #
-# dependencies: ish_tui_error, ish_utils_exists_file
+# dependencies: ish_tui_error, ish_file_exists
 # these functions are available because tui.sh sources dependencies before this module
 
 ish_tui_template() {
@@ -38,7 +38,7 @@ ish_tui_template_file() {
 
   [[ -z "$path" ]] && ish_tui_error --message="--path required"
 
-  if ! ish_utils_exists_file --file="$path"; then
+  if ! ish_file_exists --path="$path"; then
     if [[ ! -e "$path" ]]; then
       ish_tui_error --message="template not found: $path"
     else

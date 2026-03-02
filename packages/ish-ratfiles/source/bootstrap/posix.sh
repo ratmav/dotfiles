@@ -3,7 +3,8 @@
 ish_ratfiles_bootstrap_posix_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ISH_CORE}/source/tui.sh"
-source "${ISH_CORE}/source/utils.sh"
+source "${ISH_CORE}/source/file.sh"
+source "${ISH_CORE}/source/result.sh"
 
 source "${ish_ratfiles_bootstrap_posix_module_dir}/posix/nix.sh"
 source "${ish_ratfiles_bootstrap_posix_module_dir}/posix/git.sh"
@@ -11,14 +12,16 @@ source "${ish_ratfiles_bootstrap_posix_module_dir}/posix/wezterm.sh"
 source "${ish_ratfiles_bootstrap_posix_module_dir}/posix/nvim.sh"
 
 ish_ratfiles_bootstrap_posix_all() {
-  ish_ratfiles_bootstrap_posix_nix_install
-  ish_ratfiles_bootstrap_posix_nix_config
+  ish_result_and_then \
+    ish_ratfiles_bootstrap_posix_nix_install \
+    ish_ratfiles_bootstrap_posix_nix_config
   ish_ratfiles_bootstrap_posix_symlinks
   ish_ratfiles_bootstrap_posix_wezterm_configure
   ish_ratfiles_bootstrap_posix_git_configure
-  ish_ratfiles_bootstrap_posix_nvim_clean
-  ish_ratfiles_bootstrap_posix_nvim_configure
-  ish_ratfiles_bootstrap_posix_nvim_plugins
+  ish_result_and_then \
+    ish_ratfiles_bootstrap_posix_nvim_clean \
+    ish_ratfiles_bootstrap_posix_nvim_configure \
+    ish_ratfiles_bootstrap_posix_nvim_plugins
 }
 
 ish_ratfiles_bootstrap_posix_symlinks() {

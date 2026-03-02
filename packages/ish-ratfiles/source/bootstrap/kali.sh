@@ -4,14 +4,15 @@ ish_ratfiles_bootstrap_kali_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/
 
 source "${ISH_CORE}/source/tui.sh"
 source "${ISH_CORE}/source/platform.sh"
-source "${ISH_CORE}/source/utils.sh"
+source "${ISH_CORE}/source/result.sh"
 source "${ish_ratfiles_bootstrap_kali_module_dir}/posix.sh"
 
 ish_ratfiles_bootstrap_kali_all() {
-  ish_ratfiles_bootstrap_kali_apt
-  ish_ratfiles_bootstrap_kali_rust
-  ish_ratfiles_bootstrap_kali_wezterm
-  ish_ratfiles_bootstrap_posix_all
+  ish_result_and_then \
+    ish_ratfiles_bootstrap_kali_apt \
+    ish_ratfiles_bootstrap_kali_rust \
+    ish_ratfiles_bootstrap_kali_wezterm \
+    ish_ratfiles_bootstrap_posix_all
 }
 
 ish_ratfiles_bootstrap_kali_apt() {
