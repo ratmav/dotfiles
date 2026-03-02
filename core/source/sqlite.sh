@@ -28,6 +28,27 @@ ish_sqlite_exec() {
     || _sqlite_error "exec failed: ${sql}"
 }
 
+ish_sqlite_query() {
+  local db=""
+  local sql=""
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --db=*) db="${1#*=}"; shift ;;
+      --sql=*) sql="${1#*=}"; shift ;;
+      *) _sqlite_error "query: unknown option: $1" ;;
+    esac
+  done
+
+  [[ -z "$db" ]] && _sqlite_error "query: --db= required"
+  [[ -z "$sql" ]] && _sqlite_error "query: --sql= required"
+
+  ish_sqlite_require
+
+  sqlite3 -separator '|' "$db" "PRAGMA foreign_keys = ON; ${sql}" \
+    || _sqlite_error "query failed: ${sql}"
+}
+
 ish_sqlite_require() {
   ish_exists_executable --executable=sqlite3 \
     || _sqlite_error "sqlite3 not found. install sqlite3."
