@@ -85,6 +85,29 @@ setup() {
   assert_output "ok:good"
 }
 
+# ish_stream_read
+
+@test "ish_stream_read passes stdin to stdout" {
+  run ish_stream_read < <(printf '%s\n' "hello" "world")
+  assert_success
+  assert_line --index 0 "hello"
+  assert_line --index 1 "world"
+}
+
+@test "ish_stream_read with empty input produces no output" {
+  run ish_stream_read < <(printf "")
+  assert_success
+  refute_output
+}
+
+@test "ish_stream_read preserves whitespace" {
+  run ish_stream_read < <(printf '%s\n' "  leading" "trailing  " "  both  ")
+  assert_success
+  assert_line --index 0 "  leading"
+  assert_line --index 1 "trailing  "
+  assert_line --index 2 "  both  "
+}
+
 # ish_stream_stdout / ish_stream_stderr
 
 @test "ish_stream_stdout outputs to stdout" {

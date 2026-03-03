@@ -56,6 +56,13 @@ ish_stream_map() {
   done
 }
 
+ish_stream_read() {
+  local line
+  while IFS= read -r line; do
+    printf '%s\n' "$line"
+  done
+}
+
 ish_stream_multiline_stderr() {
   local lines
   local i
