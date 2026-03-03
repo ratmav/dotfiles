@@ -6,6 +6,8 @@
 ish_sqlite_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 source "${ish_sqlite_module_dir}/exists.sh"
+source "${ish_sqlite_module_dir}/file.sh"
+source "${ish_sqlite_module_dir}/stream.sh"
 
 ish_sqlite_exec() {
   local db=""
@@ -67,13 +69,13 @@ ish_sqlite_query_one() {
   local output
   output=$(ish_sqlite_query --db="$db" --sql="$sql") || return $?
 
-  local count
-  count=$(printf '%s\n' "$output" | grep -c '.')
+  [[ -z "$output" ]] && _sqlite_error "query_one: no rows returned"
 
-  [[ "$count" -eq 0 ]] && _sqlite_error "query_one: no rows returned"
+  local count
+  count=$(printf '%s\n' "$output" | ish_stream_fold _sqlite_count_line 0)
   [[ "$count" -gt 1 ]] && _sqlite_error "query_one: expected 1 row, got ${count}"
 
-  printf '%s\n' "$output"
+  ish_stream_stdout "$output"
 }
 
 ish_sqlite_transaction() {
@@ -91,7 +93,7 @@ ish_sqlite_transaction() {
   ish_sqlite_require
 
   local sql
-  sql=$(cat) || _sqlite_error "transaction: failed to read stdin"
+  sql=$(ish_stream_read) || _sqlite_error "transaction: failed to read stdin"
 
   sqlite3 "$db" "PRAGMA foreign_keys = ON; BEGIN; ${sql} COMMIT;" \
     || _sqlite_error "transaction failed, rolled back"
@@ -110,12 +112,17 @@ ish_sqlite_dump() {
   done
 
   [[ -z "$db" ]] && _sqlite_error "dump: --db= required"
-  [[ -f "$db" ]] || _sqlite_error "dump: database not found: ${db}"
+  ish_file_exists --path="$db" \
+    || _sqlite_error "dump: database not found: ${db}"
 
   ish_sqlite_require
 
-  sqlite3 "$db" ".dump ${tables}" | grep '^INSERT' \
-    || _sqlite_error "dump: no data to export"
+  local result
+  result=$(sqlite3 "$db" ".dump ${tables}" | ish_stream_filter _sqlite_is_insert)
+
+  [[ -z "$result" ]] && _sqlite_error "dump: no data to export"
+
+  ish_stream_stdout "$result"
 }
 
 ish_sqlite_load() {
@@ -143,7 +150,11 @@ ish_sqlite_require() {
 
 # Private functions
 
+_sqlite_count_line() { echo $(( $1 + 1 )); }
+
+_sqlite_is_insert() { [[ "$1" == INSERT* ]]; }
+
 _sqlite_error() {
-  printf '%s\n' "${ISH_COLOR_RED}ish_sqlite: ${1}${ISH_COLOR_CLEAR}" >&2
+  ish_stream_stderr "${ISH_COLOR_RED}ish_sqlite: ${1}${ISH_COLOR_CLEAR}"
   exit 1
 }

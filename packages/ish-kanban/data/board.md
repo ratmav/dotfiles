@@ -42,7 +42,8 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo
 
-1. [ ] [reconcile-task-architecture](tasks/reconcile-task-architecture.md) - document top-down decision in architecture docs
+1. [ ] [namespace-private-functions](tasks/namespace-private-functions.md) - prefix all private `_foo` functions with `_ish_` to prevent global collisions
+2. [ ] [reconcile-task-architecture](tasks/reconcile-task-architecture.md) - document top-down decision in architecture docs
 2. [ ] [ishen-dotfiles-package](tasks/ishen-dotfiles-package.md) - restructure dotfiles package
 3. [ ] run linter pass (flush out issues) - includes error handling checks: set -eeuo pipefail, ${1-} pattern, tui_error usage, quoted variables
 4. [ ] [audit-dead-files](tasks/audit-dead-files.md) - remove legacy bootstrap, dead code
