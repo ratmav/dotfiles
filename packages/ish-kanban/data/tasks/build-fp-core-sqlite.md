@@ -12,10 +12,6 @@ The kanban models own the SQL (what to query). This module owns the execution (h
 
 ## subtasks
 
-**Primitive gap:**
-- [ ] add `ish_stream_read` to `core/source/stream.sh` — consume stdin, emit to stdout (identity operation, replaces raw `cat`)
-- [ ] unit tests for `ish_stream_read`
-
 **Audit corrections — use ish primitives:**
 - [ ] `_sqlite_error` → use `ish_stream_stderr` instead of raw printf
 - [ ] `query_one` row count → use `ish_stream_fold` instead of raw printf + grep -c

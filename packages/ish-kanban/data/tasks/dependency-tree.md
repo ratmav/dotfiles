@@ -1,30 +1,20 @@
 # dependency-tree visualization
 
-**milestone:** 1 - local experience
-
-**dependencies:** kanban-refactor
+**dependencies:** kanban-sqlite-redesign
 
 ## description
 
-parse standardized task format to build and visualize dependency trees. helps identify what's ready to work on, what's blocked, and critical paths.
+CLI commands to query and visualize the dependency DAG. The DAG is the core data structure — these commands are how you read it. Ships with the redesign, not after.
 
 ## subtasks
 
-- [ ] implement task parser
-  - read all task files
-  - extract dependencies field
-  - build dependency graph
-- [ ] implement `ish kanban deps` - show full dependency tree
-  - graphical representation (mermaid or ascii)
+- [ ] implement `ish kanban deps` — show full dependency tree (ascii or mermaid)
   - highlight cycles if present
-- [ ] implement `ish kanban next` - show tasks with no unmet dependencies
-  - filter for tasks ready to work on
-  - exclude completed tasks
-  - show priority order
-- [ ] implement `ish kanban blocked` - show tasks waiting on dependencies
-  - list blocking dependencies
-  - show what needs to complete first
-- [ ] add tests for dependency resolution
+- [ ] implement `ish kanban next` — show tasks with no unmet dependencies
+  - uses the "open tasks" query from data_model.md
+- [ ] implement `ish kanban blocked` — show tasks waiting on dependencies
+  - show what blocks each task
+- [ ] add tests for dependency queries
 - [ ] document in conventions.md
 
 ## deliverable
@@ -33,8 +23,6 @@ dependency tree commands implemented, enabling dependency-aware task selection
 
 ## notes
 
-**standardized format enables automation:**
-task files have consistent structure with `**dependencies:**` field. this makes parsing straightforward and enables automatic dependency management.
+**queries already exist.** the open/blocked/blockers/unblocks queries are defined in `packages/ish-kanban/docs/data_model.md`. these commands are thin CLI wrappers around those queries via the model layer.
 
-**future enhancement:**
-could integrate with `ish kanban task new` to validate dependencies exist when creating tasks.
+**no parsing needed.** the old task described parsing markdown files for dependency fields. with SQLite, the dependency graph is a table — just query it.

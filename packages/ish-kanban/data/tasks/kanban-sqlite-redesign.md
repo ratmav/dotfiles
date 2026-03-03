@@ -78,5 +78,6 @@ data dir becomes a submodule (see kanban-data-submodule task). conflicts in `kan
 - `source/models/task.sh` — active record CRUD for tasks table
 - `source/models/dependency.sh` — active record CRUD for dependencies table
 - Updated CLI using model layer for all task/board operations
+- Dependency tree commands (`ish kanban deps`, `next`, `blocked`) — see dependency-tree task
 - Existing tasks migrated from markdown files to database
 - Unit and integration tests

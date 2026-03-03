@@ -61,12 +61,13 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo
 
 1. [ ] [kanban-sqlite-redesign](tasks/kanban-sqlite-redesign.md) - replace markdown board + task files with SQLite, migrations, and active record models
-2. [ ] [kanban-task-validation](tasks/kanban-task-validation.md) - add validation functions
-3. [ ] [kanban-task-close](tasks/kanban-task-close.md) - replace delete with close command
-4. [ ] [kanban-integration-testing](tasks/kanban-integration-testing.md) - complete integration test coverage
-5. [ ] [kanban-task-list-filters](tasks/kanban-task-list-filters.md) - enhance task listing with filters
-6. [ ] [kanban-data-submodule](tasks/kanban-data-submodule.md) - extract kanban data to git submodule
-7. [ ] delete dead kanban code (old markdown parsing, task files)
+2. [ ] [dependency-tree](tasks/dependency-tree.md) - DAG query commands (`deps`, `next`, `blocked`)
+3. [ ] [kanban-task-validation](tasks/kanban-task-validation.md) - add validation functions
+4. [ ] [kanban-task-close](tasks/kanban-task-close.md) - replace delete with close command
+5. [ ] [kanban-integration-testing](tasks/kanban-integration-testing.md) - complete integration test coverage
+6. [ ] [kanban-task-list-filters](tasks/kanban-task-list-filters.md) - enhance task listing with filters
+7. [ ] [kanban-data-submodule](tasks/kanban-data-submodule.md) - extract kanban data to git submodule
+8. [ ] delete dead kanban code (old markdown parsing, task files)
 
 ---
 
@@ -108,9 +109,8 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo
 
-1. [ ] [dependency-tree](tasks/dependency-tree.md) - kanban dependency visualization
-2. [ ] [scaffolding](tasks/scaffolding.md) - module scaffolding commands
-3. [ ] [setup-mdbook-docs](tasks/setup-mdbook-docs.md) - mdBook + mermaid for package docs
+1. [ ] [scaffolding](tasks/scaffolding.md) - module scaffolding commands
+2. [ ] [setup-mdbook-docs](tasks/setup-mdbook-docs.md) - mdBook + mermaid for package docs
 
 ---
 
