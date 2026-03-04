@@ -65,7 +65,7 @@ Say "eyes on target" to confirm alignment with CLAUDE.md principles. This signal
 - **Check kanban for next steps:** Use `./ish kanban show` to see what's next - don't guess or refer to internal plans
 - **Document in ish kanban:** When planning changes, document them in ish kanban tasks first
 - **Work from ish tasks:** When implementing, follow the ish tasks as the source of truth
-- **Update tasks as you work:** Mark tasks in progress, completed, or blocked
+- **Update tasks as you work:** Remove completed subtasks from the task file. Delete completed task files and remove them from the board. Don't document done. Do capture lessons learned, design decisions, and handoff context in active tasks.
 - **Don't curate context:** The user is the architect - they curate context, not you
 - **Don't guess when facts exist:** The kanban board and tasks are the hard facts - use them
 - **Get feedback directly:** Don't try to anticipate what the user wants - check the kanban or ask
