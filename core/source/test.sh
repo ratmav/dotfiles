@@ -23,7 +23,12 @@ ish_test_unit() {
   if [[ -n "$route" ]]; then
     test_path="${ISH_ROOT}/core/test/unit/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
-      ish_tui_error --message="test not found: $test_path"
+      test_path="${ISH_ROOT}/core/test/unit/${route}"
+      if [[ -d "$test_path" ]]; then
+        ish_tui_warn --message="no parent test file for ${route}, running directory"
+      else
+        ish_tui_error --message="test not found: ${route}"
+      fi
     fi
   else
     test_path="${ISH_ROOT}/core/test/unit/"
@@ -51,7 +56,12 @@ ish_test_integration() {
   if [[ -n "$route" ]]; then
     test_path="${ISH_ROOT}/core/test/integration/${route}.bats"
     if [[ ! -f "$test_path" ]]; then
-      ish_tui_error --message="test not found: $test_path"
+      test_path="${ISH_ROOT}/core/test/integration/${route}"
+      if [[ -d "$test_path" ]]; then
+        ish_tui_warn --message="no parent test file for ${route}, running directory"
+      else
+        ish_tui_error --message="test not found: ${route}"
+      fi
     fi
   else
     test_path="${ISH_ROOT}/core/test/integration/"
