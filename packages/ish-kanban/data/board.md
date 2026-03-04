@@ -27,8 +27,7 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo (priority order)
 
 **Integrations (external binaries composed through primitives):**
-1. [ ] [build-fp-core-sqlite](tasks/build-fp-core-sqlite.md) - sqlite3 query execution via stream + file + pipe
-2. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
+1. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
 
 **FP Layer:**
 3. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators

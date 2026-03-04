@@ -9,6 +9,11 @@ source "${ish_sqlite_module_dir}/exists.sh"
 source "${ish_sqlite_module_dir}/file.sh"
 source "${ish_sqlite_module_dir}/stream.sh"
 
+ish_sqlite_escape() {
+  local value="${1-}"
+  printf '%s' "${value//\'/\'\'}"
+}
+
 ish_sqlite_exec() {
   local db=""
   local sql=""

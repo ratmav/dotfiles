@@ -60,6 +60,10 @@ printf '%s\n' "foo" "bar" "baz" | ish_stream_filter is_valid
 # @type: (string -> string -> string) -> string -> stdin -> string
 printf '%s\n' "1" "2" "3" | ish_stream_fold sum_fn 0
 
+# @type: stdin -> stdout
+# identity operation — consume stdin, emit to stdout (replaces raw cat)
+printf '%s\n' "foo" "bar" | ish_stream_read
+
 # @type: string -> IO ()
 ish_stream_stdout "foo"
 ish_stream_stderr "bar"
