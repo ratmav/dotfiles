@@ -28,6 +28,7 @@ none - resolved architectural decisions documented in kanban tasks
 
 **Integrations (external binaries composed through primitives):**
 1. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
+2. [ ] [split-fp-core-sqlite](tasks/split-fp-core-sqlite.md) - split sqlite.sh into sqlite/ subdirectory to match test structure
 
 **FP Layer:**
 3. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
