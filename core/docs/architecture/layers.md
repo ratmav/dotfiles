@@ -58,9 +58,10 @@ foundation and primitives both live in `core/`. the five layers describe abstrac
 |--------|------|----------------|
 | color | `core/source/color.sh` | can this terminal render colors? |
 | file_descriptor | `core/source/file_descriptor.sh` | can I do POSIX I/O on this fd? |
+| escape | `core/source/escape.sh` | can I make this value safe for an external boundary? |
 | exists | `core/source/exists.sh` | is this command available? (`type` builtin) |
 
-no dependencies. everything above stands on these three.
+no dependencies. everything above stands on these four.
 
 ## primitives
 
@@ -121,7 +122,7 @@ function names map to file paths. left-to-right scope narrowing:
 ```
 ish_stream_map      → core/source/stream.sh
 ish_file_exists     → core/source/file.sh
-ish_sqlite3_query   → extensions/source/sqlite3.sh
+ish_sqlite3_exec    → extensions/source/sqlite3.sh
 ish_tui_error       → core/source/tui.sh
 ```
 

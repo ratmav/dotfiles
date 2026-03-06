@@ -49,10 +49,31 @@ teardown() {
   assert_output --partial "exec: --sql= required"
 }
 
-@test "ish_sqlite3_exec rejects unknown options" {
-  run ish_sqlite3_exec --foo=bar
-  assert_failure
-  assert_output --partial "exec: unknown option"
+@test "ish_sqlite3_exec binds positional params" {
+  local db="${ISH_TEST_FIXTURES}/test.db"
+  mkdir -p "$ISH_TEST_FIXTURES"
+
+  sqlite3 "$db" "CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT);"
+  run ish_sqlite3_exec --db="$db" --sql="INSERT INTO items (name) VALUES (?);" "hello"
+  assert_success
+
+  run sqlite3 "$db" "SELECT name FROM items;"
+  assert_output "hello"
+}
+
+@test "ish_sqlite3_exec prevents injection via params" {
+  local db="${ISH_TEST_FIXTURES}/test.db"
+  mkdir -p "$ISH_TEST_FIXTURES"
+
+  sqlite3 "$db" "CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT);"
+  run ish_sqlite3_exec --db="$db" --sql="INSERT INTO items (name) VALUES (?);" "Robert'; DROP TABLE items;--"
+  assert_success
+
+  run sqlite3 "$db" ".tables"
+  assert_output --partial "items"
+
+  run sqlite3 "$db" "SELECT name FROM items;"
+  assert_output "Robert'; DROP TABLE items;--"
 }
 
 @test "ish_sqlite3_exec fails on bad sql" {

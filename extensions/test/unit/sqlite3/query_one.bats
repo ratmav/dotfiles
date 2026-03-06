@@ -73,8 +73,15 @@ teardown() {
   assert_output --partial "query_one: --sql= required"
 }
 
-@test "ish_sqlite3_query_one rejects unknown options" {
-  run ish_sqlite3_query_one --foo=bar
-  assert_failure
-  assert_output --partial "query_one: unknown option"
+@test "ish_sqlite3_query_one binds positional params" {
+  local db="${ISH_TEST_FIXTURES}/test.db"
+  mkdir -p "$ISH_TEST_FIXTURES"
+
+  sqlite3 "$db" "CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT);"
+  sqlite3 "$db" "INSERT INTO items (name) VALUES ('foo');"
+  sqlite3 "$db" "INSERT INTO items (name) VALUES ('bar');"
+
+  run ish_sqlite3_query_one --db="$db" --sql="SELECT name FROM items WHERE name = ?;" "foo"
+  assert_success
+  assert_output "foo"
 }

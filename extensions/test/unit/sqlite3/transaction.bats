@@ -59,8 +59,15 @@ teardown() {
   assert_output --partial "transaction: --db= required"
 }
 
-@test "ish_sqlite3_transaction rejects unknown options" {
-  run ish_sqlite3_transaction --foo=bar <<< "SELECT 1;"
-  assert_failure
-  assert_output --partial "transaction: unknown option"
+@test "ish_sqlite3_transaction binds positional params" {
+  local db="${ISH_TEST_FIXTURES}/test.db"
+  mkdir -p "$ISH_TEST_FIXTURES"
+
+  sqlite3 "$db" "CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT);"
+
+  run ish_sqlite3_transaction --db="$db" "hello" <<< "INSERT INTO items (name) VALUES (?);"
+  assert_success
+
+  run sqlite3 "$db" "SELECT name FROM items;"
+  assert_output "hello"
 }

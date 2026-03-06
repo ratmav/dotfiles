@@ -26,14 +26,10 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo (priority order)
 
-**Integrations (external binaries composed through primitives):**
-1. [ ] [split-fp-core-sqlite3](tasks/split-fp-core-sqlite3.md) - sqlite3 escaping + exec/query DRY cleanup
-
-**FP Layer:**
-2. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
-3. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-4. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-5. [ ] document FP patterns and usage
+1. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
+2. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
+3. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+4. [ ] document FP patterns and usage
 
 ## phase 2: refactor + cleanup
 

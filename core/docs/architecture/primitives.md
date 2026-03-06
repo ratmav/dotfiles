@@ -34,6 +34,16 @@ ish_file_descriptor_duplicate --source=5 --target=6
 ish_file_descriptor_require --fd=5
 ```
 
+### escape
+
+```bash
+# @type: (string -> string) -> string -> string
+# apply an escaping strategy to a value for safe passage across external boundaries
+ish_escape strategy_fn "$value"
+```
+
+extensions provide strategy functions for their specific tool's quoting rules. the atom applies them.
+
 ### exists
 
 ```bash
