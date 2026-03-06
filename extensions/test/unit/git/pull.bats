@@ -6,7 +6,7 @@ setup() {
 
   load '../../test_helper/fixtures'
 
-  source ${ISH_CORE}/source/git.sh
+  source ${ISH_EXTENSIONS}/source/git.sh
 }
 
 teardown() {

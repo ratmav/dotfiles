@@ -4,7 +4,7 @@ setup() {
   load '../../test_helper/common-setup'
   _common_setup
 
-  source ${ISH_CORE}/source/sqlite.sh
+  source ${ISH_EXTENSIONS}/source/sqlite.sh
 }
 
 @test "ish_sqlite_error exits with failure" {

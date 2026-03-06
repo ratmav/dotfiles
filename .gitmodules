@@ -25,3 +25,12 @@
 [submodule "packages/ish-kanban/test/test_helper/bats-assert"]
 	path = packages/ish-kanban/test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git
+[submodule "extensions/test/bats"]
+	path = extensions/test/bats
+	url = https://github.com/bats-core/bats-core.git
+[submodule "extensions/test/test_helper/bats-support"]
+	path = extensions/test/test_helper/bats-support
+	url = https://github.com/bats-core/bats-support.git
+[submodule "extensions/test/test_helper/bats-assert"]
+	path = extensions/test/test_helper/bats-assert
+	url = https://github.com/bats-core/bats-assert.git

@@ -6,7 +6,7 @@ setup() {
 
   load '../../test_helper/fixtures'
 
-  source ${ISH_CORE}/source/sqlite.sh
+  source ${ISH_EXTENSIONS}/source/sqlite.sh
 }
 
 teardown() {

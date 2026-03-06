@@ -1,6 +1,6 @@
-# integrations
+# extensions
 
-type signatures and behavior for integration modules. integrations wrap external binaries, composing primitives (stream, file, pipe) around shell calls. they're not bash primitives — they depend on something being installed.
+type signatures and behavior for integration modules. extensions wrap external binaries, composing primitives (stream, file, pipe) around shell calls. they're not bash primitives — they depend on something being installed.
 
 ## sqlite
 
@@ -64,4 +64,4 @@ sqlite3 is fast. the bottleneck is process spawn (~5ms per invocation), not quer
 ## see also
 
 - [primitives.md](primitives.md) — foundation and primitive layers
-- [layers.md](layers.md) — where integrations sit in the stack
+- [layers.md](layers.md) — where extensions sit in the stack

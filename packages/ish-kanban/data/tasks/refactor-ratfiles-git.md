@@ -4,7 +4,7 @@
 
 ## description
 
-`packages/ish-ratfiles/source/git/clean.sh` makes raw git and shell calls where ish primitives and integrations exist. refactor to use ish atoms.
+`packages/ish-ratfiles/source/git/clean.sh` makes raw git and shell calls where ish primitives and extensions exist. refactor to use ish atoms.
 
 ## current raw calls to replace
 

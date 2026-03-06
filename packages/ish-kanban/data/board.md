@@ -7,7 +7,7 @@
 **Vision:** Functional infrastructure orchestration (see core/docs/vision/fp_vision.md)
 
 **Strategy:**
-1. Build FP core — primitives and integrations (phase 1)
+1. Build FP core — primitives and extensions (phase 1)
 2. Refactor existing code (ratfiles, etc.) to use FP, cleanup (phase 2)
 3. Implement kanban SQLite redesign using FP, delete dead code (phase 3)
 4. Proven patterns extend to registry, remote execution, infra packages (future)
@@ -27,7 +27,7 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo (priority order)
 
 **Integrations (external binaries composed through primitives):**
-1. [ ] [extract-integrations-directory](tasks/extract-integrations-directory.md) - extract git + sqlite to top-level integrations/ directory
+1. [ ] [extract-extensions-directory](tasks/extract-extensions-directory.md) - extract git + sqlite to top-level extensions/ directory
 2. [ ] [split-fp-core-sqlite](tasks/split-fp-core-sqlite.md) - sqlite escaping + exec/query DRY cleanup
 3. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git integration docs
 
@@ -139,9 +139,10 @@ none - resolved architectural decisions documented in kanban tasks
 
 **Key decisions:**
 - Top-down package model (ish loads packages)
-- FP core: foundation (color, file_descriptor, exists) → primitives (stream, file, pipe) → integrations (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
-- Integrations are built when their first consumer exists (sqlite/git for kanban, curl/ssh/jq for remote exec)
-- Bind lives at the primitive layer only (stream_bind) — iterates dynamic stdin data with short-circuit. Integrations (git, sqlite) use `&&` for known step sequences. See core/docs/architecture/monads.md
+- FP core: foundation (color, file_descriptor, exists) → primitives (stream, file, pipe) → extensions (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
+- Extensions are built when their first consumer exists (sqlite/git for kanban, curl/ssh/jq for remote exec)
+- Core + extensions = platform. Packages build on top. Extensions load at startup with core.
+- Bind lives at the primitive layer only (stream_bind) — iterates dynamic stdin data with short-circuit. Extensions (git, sqlite) use `&&` for known step sequences. See core/docs/architecture/monads.md
 - Build FP first, refactor existing code, then tackle kanban redesign with proven tools
 - Base case: local dotfiles management
 - Future: homelab/infrastructure orchestration

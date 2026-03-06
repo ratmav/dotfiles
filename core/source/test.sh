@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 ish_test_all() {
-  "${ISH_ROOT}/core/test/bats/bin/bats" --recursive "${ISH_ROOT}/core/test/unit/" "${ISH_ROOT}/core/test/integration/"
+  "${ISH_ROOT}/core/test/bats/bin/bats" --recursive \
+    "${ISH_ROOT}/core/test/unit/" \
+    "${ISH_ROOT}/core/test/integration/" \
+    "${ISH_ROOT}/extensions/test/unit/"
 }
 
 ish_test_unit() {
@@ -21,15 +24,8 @@ ish_test_unit() {
 
   local test_path
   if [[ -n "$route" ]]; then
-    test_path="${ISH_ROOT}/core/test/unit/${route}.bats"
-    if [[ ! -f "$test_path" ]]; then
-      test_path="${ISH_ROOT}/core/test/unit/${route}"
-      if [[ -d "$test_path" ]]; then
-        ish_tui_warn --message="no parent test file for ${route}, running directory"
-      else
-        ish_tui_error --message="test not found: ${route}"
-      fi
-    fi
+    test_path=$(_test_find_route "unit" "$route") \
+      || ish_tui_error --message="test not found: ${route}"
   else
     test_path="${ISH_ROOT}/core/test/unit/"
   fi
@@ -54,15 +50,8 @@ ish_test_integration() {
 
   local test_path
   if [[ -n "$route" ]]; then
-    test_path="${ISH_ROOT}/core/test/integration/${route}.bats"
-    if [[ ! -f "$test_path" ]]; then
-      test_path="${ISH_ROOT}/core/test/integration/${route}"
-      if [[ -d "$test_path" ]]; then
-        ish_tui_warn --message="no parent test file for ${route}, running directory"
-      else
-        ish_tui_error --message="test not found: ${route}"
-      fi
-    fi
+    test_path=$(_test_find_route "integration" "$route") \
+      || ish_tui_error --message="test not found: ${route}"
   else
     test_path="${ISH_ROOT}/core/test/integration/"
   fi
@@ -106,4 +95,19 @@ ish_test_route() {
     return 1
     ;;
   esac
+}
+
+# Private functions
+
+_test_find_route() {
+  local type="$1"
+  local route="$2"
+  local dirs=("${ISH_ROOT}/core/test/${type}" "${ISH_ROOT}/extensions/test/${type}")
+
+  for dir in "${dirs[@]}"; do
+    [[ -f "${dir}/${route}.bats" ]] && echo "${dir}/${route}.bats" && return 0
+    [[ -d "${dir}/${route}" ]] && echo "${dir}/${route}" && return 0
+  done
+
+  return 1
 }

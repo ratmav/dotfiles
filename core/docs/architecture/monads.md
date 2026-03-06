@@ -17,7 +17,7 @@ bind exists at the **primitive** layer only. it operates on dynamic stdin data â
 | primitive | `ish_result_or_else` | run primary, fall back on failure |
 | primitive | `ish_result_map` | run command, transform output on success |
 
-stream_bind iterates dynamic data (N lines). result combinators chain single operations (known steps). integrations (git, sqlite) use result combinators for their step sequences:
+stream_bind iterates dynamic data (N lines). result combinators chain single operations (known steps). extensions (git, sqlite) use result combinators for their step sequences:
 
 ```bash
 _add()    { ish_git_add "kanban.sql"; }

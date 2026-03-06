@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-# Integration layer. Wraps git binary.
+# Extension. Wraps git binary.
 # Composes stream primitives around shell calls to git.
 # All functions accept --dir= to target a specific repo (uses git -C).
 
 ish_git_module_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-source "${ish_git_module_dir}/exists.sh"
-source "${ish_git_module_dir}/stream.sh"
+source "${ISH_CORE}/source/exists.sh"
+source "${ISH_CORE}/source/stream.sh"
 
 source "${ish_git_module_dir}/git/error.sh"
 source "${ish_git_module_dir}/git/require.sh"

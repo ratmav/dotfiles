@@ -4,16 +4,22 @@ set -Eeuo pipefail
 
 ISH_ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." &>/dev/null && pwd -P)
 ISH_CORE="${ISH_ROOT}/core"
+ISH_EXTENSIONS="${ISH_ROOT}/extensions"
 ISH_PACKAGES="${ISH_ROOT}/packages"
 
-export ISH_ROOT ISH_CORE ISH_PACKAGES
+export ISH_ROOT ISH_CORE ISH_EXTENSIONS ISH_PACKAGES
 
 # Load utility functions (sourcing for function definitions, case statements fall through)
 source "${ISH_CORE}/source/tui.sh"
 source "${ISH_CORE}/source/platform.sh"
 source "${ISH_CORE}/source/packages.sh"
+source "${ISH_CORE}/source/extensions.sh"
 
 ish_tui_set_colors
+
+# Load extensions (core + extensions = platform for packages)
+ish_extensions_load git
+ish_extensions_load sqlite3
 
 # Discover and load packages
 ish_packages_discover

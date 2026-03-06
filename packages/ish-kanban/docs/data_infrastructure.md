@@ -70,9 +70,9 @@ the sqlite operations in kanban are a prime candidate for generic FP primitives 
 
 - **foundation**: file_descriptor — the POSIX I/O primitive everything stands on
 - **primitives** (built on file descriptors): stream, file, pipe
-- **integrations** (external binaries composed through primitives): sqlite and git
+- **extensions** (external binaries composed through primitives): sqlite and git
 
-all follow the same pattern — chained operations that short-circuit on failure. integrations depend on primitives, primitives depend on file_descriptor.
+all follow the same pattern — chained operations that short-circuit on failure. extensions depend on primitives, primitives depend on file_descriptor.
 
 **kanban-specific (`ish_kanban_model_*`):** thin wrappers that define the SQL and call the generic layer. the kanban models own the data model (what to query), the core owns the execution model (how to run it).
 

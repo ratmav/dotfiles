@@ -7,7 +7,7 @@ package code        uses semantic wrappers (reads like English)
     ↓
 semantic layer      hides FP machinery behind clear names
     ↓
-integrations        compose primitives around external binaries
+extensions        compose primitives around external binaries
     ↓
 primitives          FP operations on data flow
     ↓
@@ -39,22 +39,22 @@ no dependencies. everything above stands on these three.
 
 built on file_descriptor. stream iterates sequences (N lines). result chains single operations. the contrast between `ish_result_and_then` (tight coupling) and bare sequential calls (loose coupling) is itself documentation of design intent.
 
-## integrations
+## extensions
 
 "how do I use this external tool?"
 
 | module | file | wraps |
 |--------|------|-------|
-| sqlite | `core/source/sqlite.sh` | sqlite3 |
-| git | `core/source/git.sh` | git |
-| curl | `core/source/curl.sh` | curl |
-| ssh | `core/source/ssh.sh` | ssh |
-| jq | `core/source/jq.sh` | jq |
+| sqlite | `extensions/source/sqlite.sh` | sqlite3 |
+| git | `extensions/source/git.sh` | git |
+| curl | `extensions/source/curl.sh` | curl |
+| ssh | `extensions/source/ssh.sh` | ssh |
+| jq | `extensions/source/jq.sh` | jq |
 
 every integration calls `ish_exists_executable` before invoking its binary.
 composed through primitives (stream + file + pipe).
 
-### why integrations must use primitives
+### why extensions must use primitives
 
 external binaries are unpredictable. `sqlite3`, `git`, `curl` — each has its own error format, output conventions, and behavioral quirks. a new release can change exit codes, reformat stderr, or alter default delimiters. ish has no control over these decisions.
 
@@ -85,7 +85,7 @@ function names map to file paths. left-to-right scope narrowing:
 ```
 ish_stream_map      → core/source/stream.sh
 ish_file_exists     → core/source/file.sh
-ish_sqlite_query    → core/source/sqlite.sh
+ish_sqlite_query    → extensions/source/sqlite.sh
 ish_tui_error       → core/source/tui.sh
 ```
 

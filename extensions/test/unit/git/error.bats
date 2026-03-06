@@ -4,7 +4,7 @@ setup() {
   load '../../test_helper/common-setup'
   _common_setup
 
-  source ${ISH_CORE}/source/git.sh
+  source ${ISH_EXTENSIONS}/source/git.sh
 }
 
 @test "ish_git_error exits with failure" {
