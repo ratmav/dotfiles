@@ -27,8 +27,9 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo (priority order)
 
 **Integrations (external binaries composed through primitives):**
-1. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git operation chains via stream + file + pipe
-2. [ ] [split-fp-core-sqlite](tasks/split-fp-core-sqlite.md) - split sqlite.sh into sqlite/ subdirectory to match test structure
+1. [ ] [extract-integrations-directory](tasks/extract-integrations-directory.md) - extract git + sqlite to top-level integrations/ directory
+2. [ ] [split-fp-core-sqlite](tasks/split-fp-core-sqlite.md) - sqlite escaping + exec/query DRY cleanup
+3. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git integration docs
 
 **FP Layer:**
 3. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators

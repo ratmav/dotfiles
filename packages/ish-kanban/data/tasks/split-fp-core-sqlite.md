@@ -10,9 +10,9 @@ tests are already split into `core/test/unit/sqlite/` (require, query, query_one
 
 ## subtasks
 
-- [ ] split `sqlite.sh` into `sqlite/` subdirectory (require, query, query_one, exec, load, dump, transaction, escape)
-- [ ] verify tests still pass after split
+- [ ] add escaping to exec, query, transaction, dump, load — `ish_sqlite_escape` exists but is never called internally. design decision needed: where does escaping belong?
+- [ ] DRY: exec and query are structurally identical except for `-separator '|'`. consider a shared internal function.
 
 ## deliverable
 
-`core/source/sqlite/` with one file per operation, matching `core/test/unit/sqlite/` structure. no functional changes — pure structural split.
+`core/source/sqlite/` with one file per operation, matching `core/test/unit/sqlite/` structure.
