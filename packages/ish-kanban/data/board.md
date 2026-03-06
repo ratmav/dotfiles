@@ -27,15 +27,13 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo (priority order)
 
 **Integrations (external binaries composed through primitives):**
-1. [ ] [extract-extensions-directory](tasks/extract-extensions-directory.md) - extract git + sqlite3 to top-level extensions/ directory
-2. [ ] [split-fp-core-sqlite3](tasks/split-fp-core-sqlite3.md) - sqlite3 escaping + exec/query DRY cleanup
-3. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git integration docs
+1. [ ] [split-fp-core-sqlite3](tasks/split-fp-core-sqlite3.md) - sqlite3 escaping + exec/query DRY cleanup
 
 **FP Layer:**
-3. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
-4. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
-5. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
-6. [ ] document FP patterns and usage
+2. [ ] [build-fp-core-validate](tasks/build-fp-core-validate.md) - validators and combinators
+3. [ ] [build-fp-core-semantic](tasks/build-fp-core-semantic.md) - semantic wrappers (English-like names)
+4. [ ] [fix-lint-command](tasks/fix-lint-command.md) - simplify to `ish lint`, fix globbing so shellcheck works
+5. [ ] document FP patterns and usage
 
 ## phase 2: refactor + cleanup
 
