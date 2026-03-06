@@ -6,20 +6,20 @@ setup() {
 
   load '../../test_helper/fixtures'
 
-  source ${ISH_EXTENSIONS}/source/sqlite.sh
+  source ${ISH_EXTENSIONS}/source/sqlite3.sh
 }
 
 teardown() {
   fixture_cleanup
 }
 
-@test "ish_sqlite_require succeeds when sqlite3 exists" {
+@test "ish_sqlite3_require succeeds when sqlite3 exists" {
   fixture_executable sqlite3
-  run ish_sqlite_require
+  run ish_sqlite3_require
   assert_success
 }
 
-@test "ish_sqlite_require fails when sqlite3 missing" {
+@test "ish_sqlite3_require fails when sqlite3 missing" {
   # Ensure no fixture sqlite3 exists
   rm -f "$ISH_TEST_FIXTURES/sqlite3"
 
@@ -41,7 +41,7 @@ teardown() {
     fi
   done
 
-  run ish_sqlite_require
+  run ish_sqlite3_require
   assert_failure
   assert_output --partial "sqlite3 not found"
 

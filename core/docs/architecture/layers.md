@@ -1,18 +1,54 @@
 # layers
 
-the architecture is a stack. each layer depends only on the layer below it.
+## structure
+
+three top-level directories. dependencies only point down.
+
+```
+packages/       pluggable domain logic (kanban, dotfiles). discovered at startup.
+    ↓
+extensions/     wrap external CLI binaries (git, sqlite3). loaded explicitly at startup, guarded by binary detection.
+    ↓
+core/           pure bash utilities (foundation + primitives). always loaded. depends on nothing.
+```
+
+core + extensions = the platform. packages build on top.
+
+this structure exists so packages can consume external tools through ish wrappers instead of raw shell calls. the wrappers provide a conventional interface — consistent error handling, composable output, no global state mutation. a package that needs git uses `ish_git_add`, not `git add`. the extension owns the boundary crossing; the package stays in ish's world.
+
+### boot sequence (`core/bin/ish`)
+
+1. **core** — explicitly sourced: `tui.sh`, `platform.sh`, `packages.sh`, `extensions.sh`
+2. **extensions** — explicitly loaded via `ish_extensions_load`. each call checks if the wrapped binary exists. if missing, warns and skips. no discovery — each extension is a named call.
+3. **packages** — discovered via `ish_packages_discover`. scans `packages/ish-*/source/{name}.sh` and sources each router. packages provide CLI routes; core and extensions do not.
+
+### dependency rules
+
+| layer | depends on | provides |
+|-------|-----------|----------|
+| core | nothing | foundation, primitives, tui, platform, test runner |
+| extensions | core (via `${ISH_CORE}/source/`) | wrapped CLI operations (`ish_git_*`, `ish_sqlite3_*`) |
+| packages | core + extensions | CLI commands, domain logic |
+
+extensions source core explicitly: `source "${ISH_CORE}/source/stream.sh"`. the dependency direction is visible in the code.
+
+## abstraction layers
+
+within that structure, five abstraction layers. each depends only on the layer below it.
 
 ```
 package code        uses semantic wrappers (reads like English)
     ↓
 semantic layer      hides FP machinery behind clear names
     ↓
-extensions        compose primitives around external binaries
+extensions          compose primitives around external binaries
     ↓
 primitives          FP operations on data flow
     ↓
 foundation          environment introspection (the bottom)
 ```
+
+foundation and primitives both live in `core/`. the five layers describe abstraction levels; the three directories describe ownership and loading.
 
 ## foundation
 
@@ -45,13 +81,13 @@ built on file_descriptor. stream iterates sequences (N lines). result chains sin
 
 | module | file | wraps |
 |--------|------|-------|
-| sqlite | `extensions/source/sqlite.sh` | sqlite3 |
+| sqlite3 | `extensions/source/sqlite3.sh` | sqlite3 |
 | git | `extensions/source/git.sh` | git |
 | curl | `extensions/source/curl.sh` | curl |
 | ssh | `extensions/source/ssh.sh` | ssh |
 | jq | `extensions/source/jq.sh` | jq |
 
-every integration calls `ish_exists_executable` before invoking its binary.
+every extension calls `ish_exists_executable` before invoking its binary.
 composed through primitives (stream + file + pipe).
 
 ### why extensions must use primitives
@@ -85,7 +121,7 @@ function names map to file paths. left-to-right scope narrowing:
 ```
 ish_stream_map      → core/source/stream.sh
 ish_file_exists     → core/source/file.sh
-ish_sqlite_query    → extensions/source/sqlite.sh
+ish_sqlite3_query   → extensions/source/sqlite3.sh
 ish_tui_error       → core/source/tui.sh
 ```
 

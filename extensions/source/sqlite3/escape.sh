@@ -4,7 +4,7 @@
 #
 # no dependencies — pure string operation
 
-ish_sqlite_escape() {
+ish_sqlite3_escape() {
   local value="${1-}"
   printf '%s' "${value//\'/\'\'}"
 }

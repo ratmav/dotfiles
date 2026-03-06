@@ -6,25 +6,25 @@ setup() {
 
   load '../../test_helper/fixtures'
 
-  source ${ISH_EXTENSIONS}/source/sqlite.sh
+  source ${ISH_EXTENSIONS}/source/sqlite3.sh
 }
 
 teardown() {
   fixture_cleanup
 }
 
-@test "ish_sqlite_load imports sql from stdin" {
+@test "ish_sqlite3_load imports sql from stdin" {
   local db="${ISH_TEST_FIXTURES}/test.db"
   mkdir -p "$ISH_TEST_FIXTURES"
 
-  run ish_sqlite_load --db="$db" <<< "CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT); INSERT INTO items (name) VALUES ('foo');"
+  run ish_sqlite3_load --db="$db" <<< "CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT); INSERT INTO items (name) VALUES ('foo');"
   assert_success
 
   run sqlite3 "$db" "SELECT name FROM items;"
   assert_output "foo"
 }
 
-@test "ish_sqlite_load round trips with dump" {
+@test "ish_sqlite3_load round trips with dump" {
   local src="${ISH_TEST_FIXTURES}/src.db"
   local dst="${ISH_TEST_FIXTURES}/dst.db"
   mkdir -p "$ISH_TEST_FIXTURES"
@@ -37,28 +37,28 @@ teardown() {
   sqlite3 "$dst" "CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT);"
 
   # Dump from source, load into destination
-  ish_sqlite_dump --db="$src" | ish_sqlite_load --db="$dst"
+  ish_sqlite3_dump --db="$src" | ish_sqlite3_load --db="$dst"
 
   run sqlite3 "$dst" "SELECT count(*) FROM items;"
   assert_output "2"
 }
 
-@test "ish_sqlite_load fails on bad sql" {
+@test "ish_sqlite3_load fails on bad sql" {
   local db="${ISH_TEST_FIXTURES}/test.db"
   mkdir -p "$ISH_TEST_FIXTURES"
 
-  run ish_sqlite_load --db="$db" <<< "NOT VALID SQL AT ALL;"
+  run ish_sqlite3_load --db="$db" <<< "NOT VALID SQL AT ALL;"
   assert_failure
 }
 
-@test "ish_sqlite_load requires --db=" {
-  run ish_sqlite_load <<< "SELECT 1;"
+@test "ish_sqlite3_load requires --db=" {
+  run ish_sqlite3_load <<< "SELECT 1;"
   assert_failure
   assert_output --partial "load: --db= required"
 }
 
-@test "ish_sqlite_load rejects unknown options" {
-  run ish_sqlite_load --foo=bar <<< "SELECT 1;"
+@test "ish_sqlite3_load rejects unknown options" {
+  run ish_sqlite3_load --foo=bar <<< "SELECT 1;"
   assert_failure
   assert_output --partial "load: unknown option"
 }

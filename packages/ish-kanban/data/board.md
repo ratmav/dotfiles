@@ -12,7 +12,7 @@
 3. Implement kanban SQLite redesign using FP, delete dead code (phase 3)
 4. Proven patterns extend to registry, remote execution, infra packages (future)
 
-**Naming convention:** `ish_stream`, `ish_file`, `ish_sqlite`, `ish_git` (not utils - too generic)
+**Naming convention:** `ish_stream`, `ish_file`, `ish_sqlite3`, `ish_git` (not utils - too generic)
 
 ## open questions
 
@@ -27,8 +27,8 @@ none - resolved architectural decisions documented in kanban tasks
 ### todo (priority order)
 
 **Integrations (external binaries composed through primitives):**
-1. [ ] [extract-extensions-directory](tasks/extract-extensions-directory.md) - extract git + sqlite to top-level extensions/ directory
-2. [ ] [split-fp-core-sqlite](tasks/split-fp-core-sqlite.md) - sqlite escaping + exec/query DRY cleanup
+1. [ ] [extract-extensions-directory](tasks/extract-extensions-directory.md) - extract git + sqlite3 to top-level extensions/ directory
+2. [ ] [split-fp-core-sqlite3](tasks/split-fp-core-sqlite3.md) - sqlite3 escaping + exec/query DRY cleanup
 3. [ ] [build-fp-core-git](tasks/build-fp-core-git.md) - git integration docs
 
 **FP Layer:**
@@ -63,7 +63,7 @@ none - resolved architectural decisions documented in kanban tasks
 
 ### todo
 
-1. [ ] [kanban-sqlite-redesign](tasks/kanban-sqlite-redesign.md) - replace markdown board + task files with SQLite, migrations, and active record models
+1. [ ] [kanban-sqlite3-redesign](tasks/kanban-sqlite3-redesign.md) - replace markdown board + task files with SQLite, migrations, and active record models
 2. [ ] [dependency-tree](tasks/dependency-tree.md) - DAG query commands (`deps`, `next`, `blocked`)
 3. [ ] [kanban-task-validation](tasks/kanban-task-validation.md) - add validation functions
 4. [ ] [kanban-task-close](tasks/kanban-task-close.md) - replace delete with close command
@@ -139,10 +139,10 @@ none - resolved architectural decisions documented in kanban tasks
 
 **Key decisions:**
 - Top-down package model (ish loads packages)
-- FP core: foundation (color, file_descriptor, exists) → primitives (stream, file, pipe) → extensions (sqlite, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
-- Extensions are built when their first consumer exists (sqlite/git for kanban, curl/ssh/jq for remote exec)
+- FP core: foundation (color, file_descriptor, exists) → primitives (stream, file, pipe) → extensions (sqlite3, git in phase 1; curl, ssh, jq in phase 5) → layer (validate, semantic)
+- Extensions are built when their first consumer exists (sqlite3/git for kanban, curl/ssh/jq for remote exec)
 - Core + extensions = platform. Packages build on top. Extensions load at startup with core.
-- Bind lives at the primitive layer only (stream_bind) — iterates dynamic stdin data with short-circuit. Extensions (git, sqlite) use `&&` for known step sequences. See core/docs/architecture/monads.md
+- Bind lives at the primitive layer only (stream_bind) — iterates dynamic stdin data with short-circuit. Extensions (git, sqlite3) use `&&` for known step sequences. See core/docs/architecture/monads.md
 - Build FP first, refactor existing code, then tackle kanban redesign with proven tools
 - Base case: local dotfiles management
 - Future: homelab/infrastructure orchestration

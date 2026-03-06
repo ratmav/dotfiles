@@ -1,6 +1,6 @@
 # namespace private functions
 
-**dependencies:** build-fp-core-sqlite
+**dependencies:** build-fp-core-sqlite3
 
 **priority:** high
 
@@ -8,7 +8,7 @@
 
 Private functions use bare `_foo` prefix (e.g. `_stream_error`, `_sqlite_error`). Bash has no namespacing — all functions share a single global namespace. A collision between two `_foo_error` functions from different modules would silently shadow one, causing wrong behavior with no warning.
 
-Public functions already namespace correctly (`ish_stream_`, `ish_sqlite_`, `ish_kanban_`). Privates must follow the same pattern with a leading underscore.
+Public functions already namespace correctly (`ish_stream_`, `ish_sqlite3_`, `ish_kanban_`). Privates must follow the same pattern with a leading underscore.
 
 ## pattern
 

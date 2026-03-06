@@ -2,10 +2,10 @@
 
 # sqlite single-row query operation
 #
-# dependencies: ish_sqlite_error, ish_sqlite_query, ish_stream_fold, ish_stream_stdout
-# these functions are available because sqlite.sh sources dependencies before this module
+# dependencies: ish_sqlite3_error, ish_sqlite3_query, ish_stream_fold, ish_stream_stdout
+# these functions are available because sqlite3.sh sources dependencies before this module
 
-ish_sqlite_query_one() {
+ish_sqlite3_query_one() {
   local db=""
   local sql=""
 
@@ -13,25 +13,25 @@ ish_sqlite_query_one() {
     case $1 in
       --db=*) db="${1#*=}"; shift ;;
       --sql=*) sql="${1#*=}"; shift ;;
-      *) ish_sqlite_error "query_one: unknown option: $1" ;;
+      *) ish_sqlite3_error "query_one: unknown option: $1" ;;
     esac
   done
 
-  [[ -z "$db" ]] && ish_sqlite_error "query_one: --db= required"
-  [[ -z "$sql" ]] && ish_sqlite_error "query_one: --sql= required"
+  [[ -z "$db" ]] && ish_sqlite3_error "query_one: --db= required"
+  [[ -z "$sql" ]] && ish_sqlite3_error "query_one: --sql= required"
 
   local output
-  output=$(ish_sqlite_query --db="$db" --sql="$sql") || return $?
+  output=$(ish_sqlite3_query --db="$db" --sql="$sql") || return $?
 
-  [[ -z "$output" ]] && ish_sqlite_error "query_one: no rows returned"
+  [[ -z "$output" ]] && ish_sqlite3_error "query_one: no rows returned"
 
   local count
-  count=$(printf '%s\n' "$output" | ish_stream_fold _sqlite_count_line 0)
-  [[ "$count" -gt 1 ]] && ish_sqlite_error "query_one: expected 1 row, got ${count}"
+  count=$(printf '%s\n' "$output" | ish_stream_fold _sqlite3_count_line 0)
+  [[ "$count" -gt 1 ]] && ish_sqlite3_error "query_one: expected 1 row, got ${count}"
 
   ish_stream_stdout "$output"
 }
 
 # Private functions
 
-_sqlite_count_line() { echo $(( $1 + 1 )); }
+_sqlite3_count_line() { echo $(( $1 + 1 )); }

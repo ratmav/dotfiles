@@ -64,13 +64,13 @@ each model file defines bash functions that wrap CRUD operations on the correspo
 
 ## fp layering
 
-the sqlite operations in kanban are a prime candidate for generic FP primitives in `ish_*`. the split:
+the sqlite3 operations in kanban are a prime candidate for generic FP primitives in `ish_*`. the split:
 
 **generic (`ish_*`):** three layers emerging from kanban:
 
 - **foundation**: file_descriptor — the POSIX I/O primitive everything stands on
 - **primitives** (built on file descriptors): stream, file, pipe
-- **extensions** (external binaries composed through primitives): sqlite and git
+- **extensions** (external binaries composed through primitives): sqlite3 and git
 
 all follow the same pattern — chained operations that short-circuit on failure. extensions depend on primitives, primitives depend on file_descriptor.
 
