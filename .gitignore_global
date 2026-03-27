@@ -14,5 +14,6 @@
 # asdf version files
 .tool-versions
 
-# claude code
-.claude
+# claude code — ignore everything except .claude/skills/
+.claude/*
+!.claude/skills/

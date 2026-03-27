@@ -13,31 +13,106 @@ PATH precedence: `homebrew > asdf > nix` (ensures no collisions during transitio
 
 ## Migration Strategy
 
-Migrate tools one at a time from Homebrew to Nix:
+**⚠️ IMPORTANT**: We're transitioning to Home Manager for better declarative package management. This replaces the previous `nix-env` approach.
 
-### 1. Add tool to Nix config
-Edit `nix/base.nix`:
-```nix
-{ pkgs ? import <nixpkgs> {} }:
+### Clean Slate Migration
 
-with pkgs; [
-  direnv
-  ripgrep    # <- add new tool
-  neovim     # <- add another
-]
+Before starting, clean up existing `nix-env` installations to start fresh:
+
+```bash
+# List what's currently installed
+nix-env -q
+
+# Remove all packages (start with clean slate)
+nix-env -e '*'
+
+# Verify everything is removed
+nix-env -q
 ```
 
-### 2. Remove from Homebrew
+### Home Manager Setup
+
+#### 1. Install Home Manager
+```bash
+# Add Home Manager channel
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+
+# Install Home Manager
+nix-shell '<home-manager>' -A install
+```
+
+#### 2. Create Home Manager config
+Create `~/.config/home-manager/home.nix`:
+```nix
+{ config, pkgs, ... }:
+let
+  unstable = import <nixpkgs-unstable> { };
+in
+{
+  home.username = "cwatkins";  # Replace with your username
+  home.homeDirectory = "/Users/cwatkins";  # Replace with your home dir
+  home.stateVersion = "24.05";
+
+  programs.home-manager.enable = true;
+
+  home.packages = (with pkgs; [
+    awscli2
+    curl
+    direnv
+    gh
+    git
+    gnugrep
+    opentofu
+    gnused
+  ]) ++ (with unstable; [
+    azure-cli
+    goose-cli
+    uv
+  ]) ++ [
+    (pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
+      gke-gcloud-auth-plugin
+    ]))
+  ];
+}
+```
+
+#### 3. Apply configuration
+```bash
+home-manager switch
+```
+
+### Ongoing Migration Process
+
+For each tool, migrate from Homebrew to Home Manager:
+
+#### 1. Remove from Homebrew
 ```bash
 brew uninstall ripgrep
 ```
 
-### 3. Update Nix packages
-```bash
-nix-env --set -f nix/base.nix
+#### 2. Add to Home Manager config
+Edit `~/.config/home-manager/home.nix`:
+```nix
+home.packages = (with pkgs; [
+  # existing packages...
+  ripgrep    # <- add new tool
+  neovim     # <- add another
+]) ++ (with unstable; [
+  # unstable packages...
+]);
 ```
 
-**Note**: Using `--set` ensures only the packages declared in `nix/base.nix` are installed, removing any previously installed packages not in the declaration. This provides the declarative, idempotent behavior where your environment exactly matches your configuration file.
+#### 3. Apply changes
+```bash
+home-manager switch
+```
+
+**Benefits over `nix-env`:**
+- **Truly declarative**: Removed packages are automatically uninstalled
+- **Rollback support**: `home-manager generations` for easy rollbacks
+- **Broader scope**: Manages dotfiles, services, shell config, not just packages
+- **Atomic updates**: All-or-nothing updates prevent broken states
 
 ### 4. Test
 Verify the tool works correctly from the Nix installation.
@@ -151,7 +226,14 @@ The PATH precedence ensures Homebrew takes priority while you fix the Nix config
 
 ## Commands
 
+### Home Manager (New Approach)
 - **Bootstrap setup**: `./i.sh --call main_macos`
-- **Update Nix packages**: `nix-env --set -f nix/base.nix`
+- **Apply Home Manager config**: `home-manager switch`
+- **Check installed packages**: `home-manager packages`
+- **Rollback to previous generation**: `home-manager switch --rollback`
+- **List generations**: `home-manager generations`
+
+### Legacy nix-env (Deprecated)
+- ~~**Update Nix packages**: `nix-env --set -f nix/base.nix`~~
 - **Check what's installed**: `nix-env -q`
-- **Remove Nix package**: `nix-env -e package-name`
+- **Remove all packages**: `nix-env -e '*'`

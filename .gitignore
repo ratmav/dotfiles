@@ -1,3 +1,6 @@
+# Ignore all .local files/dirs (used for machine-specific overrides)
+*.local
 .misc_envars
+
 */neovim
 $HOME/neovim
