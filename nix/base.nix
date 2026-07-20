@@ -20,6 +20,7 @@ stable.buildEnv {
   ++ [ gdk ]
   ++ (with unstable; [
         azure-cli
+        devenv
         goose-cli
         uv
       ]);
